@@ -7,23 +7,38 @@
 //
 
 #import "ViewController.h"
+#import "DataSource.h"
 
 @interface ViewController ()
-
+@property (nonatomic) DataSource *dataSource;
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    MUKDataSource *dataSource = [[MUKDataSource alloc] init];
+    
+    self.dataSource = [self newDataSource];
+    [self.dataSource registerReusableViewsForTableView:self.tableView];
+    self.tableView.dataSource = self.dataSource;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Private
+
+- (DataSource *)newDataSource {
+    DataSource *dataSource = [[DataSource alloc] init];
+    
+    DataSource *insectsDataSource = [[DataSource alloc] init];
+    insectsDataSource.title = @"Insects";
+    insectsDataSource.items = @[ @"Spider", @"Fly" ];
+    [dataSource addChildDataSource:insectsDataSource];
+    
+    DataSource *otherAnimalsDataSource = [[DataSource alloc] init];
+    otherAnimalsDataSource.title = @"Other Animals";
+    otherAnimalsDataSource.items = @[ @"Cat", @"Dog", @"Pig", @"Horse" ];
+    [dataSource addChildDataSource:otherAnimalsDataSource];
+    
+    return dataSource;
 }
 
 @end
