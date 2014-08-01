@@ -1,6 +1,7 @@
 #import "MUKDataSource_Main.h"
 
 @interface MUKDataSource ()
+@property (nonatomic, copy) NSArray *items;
 @property (nonatomic, readwrite) NSArray *childDataSources;
 @property (nonatomic, weak, readwrite) MUKDataSource *parentDataSource;
 @end
