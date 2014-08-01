@@ -18,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
     self.dataSource = [self newDataSource];
     [self.dataSource registerReusableViewsForTableView:self.tableView];
     self.tableView.dataSource = self.dataSource;
@@ -39,6 +41,15 @@
     [dataSource addChildDataSource:otherAnimalsDataSource];
     
     return dataSource;
+}
+
+#pragma mark - <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *name = [self.dataSource itemAtIndexPath:indexPath];
+    NSLog(@"%@", name);
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

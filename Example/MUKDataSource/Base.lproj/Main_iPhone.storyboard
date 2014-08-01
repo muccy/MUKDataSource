@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--View Controller - Animals-->
         <scene sceneID="ZbW-ku-B1w">
             <objects>
                 <tableViewController id="1FH-08-nlp" customClass="ViewController" sceneMemberID="viewController">
@@ -17,7 +17,7 @@
                             <outlet property="delegate" destination="1FH-08-nlp" id="wCs-Mo-0tj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="2Vf-WZ-0cc"/>
+                    <navigationItem key="navigationItem" title="Animals" id="2Vf-WZ-0cc"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Xc-D3-U1D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

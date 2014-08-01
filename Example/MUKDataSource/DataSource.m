@@ -17,17 +17,27 @@
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
-- (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+- (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
 {
-    [super configureCell:cell forRowAtIndexPath:indexPath tableView:tableView];
+    [super configureCell:cell forRowAtIndexPath:indexPath inTableView:tableView];
     NSString *name = [self itemAtIndexPath:indexPath];
     cell.textLabel.text = name;
+}
+
+- (BOOL)canEditRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+{
+    return YES;
+}
+
+- (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+{
+    return YES;
 }
 
 @end

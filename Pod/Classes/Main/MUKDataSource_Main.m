@@ -22,6 +22,30 @@
     return [self itemAtIndexPath:indexPath usingIndexAtPosition:0];
 }
 
+- (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
+{
+    if (self == destinationDataSource) {
+        // Simple swap
+        NSMutableArray *items = [self.items mutableCopy];
+        [items exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
+        self.items = [items copy];
+    }
+    else {
+        NSMutableArray *items = [self.items mutableCopy];
+        id item = items[sourceIndex];
+        [items removeObjectAtIndex:sourceIndex];
+        
+        NSMutableArray *destinationItems = [destinationDataSource.items mutableCopy];
+        [destinationItems insertObject:item atIndex:destinationIndex];
+        
+        self.items = [items copy];
+        destinationDataSource.items = [destinationItems copy];
+    }
+    
+    // Notify to parent
+    [self.parentDataSource childDataSource:self didMoveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex];
+}
+
 #pragma mark - Containment
 
 - (void)addChildDataSource:(MUKDataSource *)dataSource {
@@ -49,9 +73,26 @@
     NSMutableArray *childDataSources = [self.childDataSources mutableCopy];
     [childDataSources removeObject:dataSource];
     self.childDataSources = [childDataSources copy];
+    
+    if (dataSource.parentDataSource == self) {
+        dataSource.parentDataSource = nil;
+    }
+}
+
+#pragma mark - Child Callbacks
+
+- (void)childDataSource:(MUKDataSource *)sourceDataSource didMoveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
+{
+    // Forward up
+    [self.parentDataSource childDataSource:sourceDataSource didMoveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex];
 }
 
 #pragma mark - Table View
+
+- (NSInteger)numberOfRowsForTableView:(UITableView *)tableView inSection:(NSInteger)section
+{
+    return [self.items count];
+}
 
 - (void)registerReusableViewsForTableView:(UITableView *)tableView {
     for (MUKDataSource *childDataSource in self.childDataSources) {
@@ -59,14 +100,34 @@
     } // for
 }
 
-- (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+- (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
 {
     return nil;
 }
 
-- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
 {
     //
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section tableView:(UITableView *)tableView
+{
+    return self.title;
+}
+
+- (NSString *)titleForFooterInSection:(NSInteger)section tableView:(UITableView *)tableView
+{
+    return nil;
+}
+
+- (BOOL)canEditRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+{
+    return NO;
+}
+
+- (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+{
+    return NO;
 }
 
 #pragma mark - Private - Contents
@@ -105,6 +166,10 @@
     return self.childDataSources[idx];
 }
 
+- (MUKDataSource *)childDataSourceForTableViewSection:(NSInteger)idx {
+    return [self childDataSourceAtIndex:idx];
+}
+
 #pragma mark - <UITableViewDataSource>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -116,10 +181,10 @@
     NSInteger count;
     
     if ([self hasChildDataSources]) {
-        count = [[self childDataSourceAtIndex:section] tableView:tableView numberOfRowsInSection:section];
+        count = [[self childDataSourceForTableViewSection:section] tableView:tableView numberOfRowsInSection:section];
     }
     else {
-        count = [self.items count];
+        count = [self numberOfRowsForTableView:tableView inSection:section];
     }
     
     return count;
@@ -127,8 +192,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self dequeueOrCreateCellForRowAtIndexPath:indexPath tableView:tableView];
-    [self configureCell:cell forRowAtIndexPath:indexPath tableView:tableView];
+    UITableViewCell *cell = [self dequeueOrCreateCellForRowAtIndexPath:indexPath inTableView:tableView];
+    [self configureCell:cell forRowAtIndexPath:indexPath inTableView:tableView];
     return cell;
 }
 
@@ -136,10 +201,10 @@
 {
     NSString *title;
     if ([self hasChildDataSources]) {
-        title = [[self childDataSourceAtIndex:section] tableView:tableView titleForHeaderInSection:section];
+        title = [[self childDataSourceForTableViewSection:section] tableView:tableView titleForHeaderInSection:section];
     }
     else {
-        title = self.title;
+        title = [self titleForHeaderInSection:section tableView:tableView];
     }
     
     return title;
@@ -149,10 +214,10 @@
 {
     NSString *title;
     if ([self hasChildDataSources]) {
-        title = [[self childDataSourceAtIndex:section] tableView:tableView titleForFooterInSection:section];
+        title = [[self childDataSourceForTableViewSection:section] tableView:tableView titleForFooterInSection:section];
     }
     else {
-        title = nil;
+        title = [self titleForFooterInSection:section tableView:tableView];
     }
     
     return title;
@@ -162,10 +227,10 @@
 {
     BOOL canEdit;
     if ([self hasChildDataSources]) {
-        canEdit = [[self childDataSourceAtIndex:indexPath.section] tableView:tableView canEditRowAtIndexPath:indexPath];
+        canEdit = [[self childDataSourceForTableViewSection:indexPath.section] tableView:tableView canEditRowAtIndexPath:indexPath];
     }
     else {
-        canEdit = NO;
+        canEdit = [self canEditRowAtIndexPath:indexPath inTableView:tableView];
     }
     
     return canEdit;
@@ -175,10 +240,10 @@
 {
     BOOL canMove;
     if ([self hasChildDataSources]) {
-        canMove = [[self childDataSourceAtIndex:indexPath.section] tableView:tableView canMoveRowAtIndexPath:indexPath];
+        canMove = [[self childDataSourceForTableViewSection:indexPath.section] tableView:tableView canMoveRowAtIndexPath:indexPath];
     }
     else {
-        canMove = NO;
+        canMove = [self canMoveRowAtIndexPath:indexPath inTableView:tableView];
     }
     
     return canMove;
@@ -190,7 +255,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
-    if ([self childDataSourceAtIndex:index]) {
+    if ([self childDataSourceForTableViewSection:index]) {
         return index;
     }
     
@@ -204,7 +269,24 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    // TODO
+    if ([sourceIndexPath isEqual:destinationIndexPath]) {
+        // No move
+        return;
+    }
+    
+    MUKDataSource *sourceDataSource, *destinationDataSource;
+
+    if ([self hasChildDataSources]) {
+        sourceDataSource = [self childDataSourceForTableViewSection:sourceIndexPath.section];
+        destinationDataSource = [self childDataSourceForTableViewSection:destinationIndexPath.section];
+    }
+    else {
+        sourceDataSource = destinationDataSource = self;
+    }
+    
+    if (sourceDataSource && destinationDataSource) {
+        [sourceDataSource moveItemAtIndex:sourceIndexPath.row toDataSource:destinationDataSource atIndex:destinationIndexPath.row];
+    }
 }
 
 @end
