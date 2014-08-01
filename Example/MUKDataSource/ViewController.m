@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Muccy. All rights reserved.
 //
 
-#import "MUKViewController.h"
+#import "ViewController.h"
 
-@interface MUKViewController ()
+@interface ViewController ()
 
 @end
 
-@implementation MUKViewController
+@implementation ViewController
 
 - (void)viewDidLoad
 {

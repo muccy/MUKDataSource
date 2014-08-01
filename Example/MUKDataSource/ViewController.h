@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MUKViewController : UIViewController
+@interface ViewController : UIViewController
 
 @end
