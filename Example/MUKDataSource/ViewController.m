@@ -253,8 +253,8 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 - (void)dataSource:(MUKDataSource *)dataSource didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     if (eventOrigin != MUKDataSourceEventOriginUserInteraction) {
-        NSIndexPath *const fromIndexPath = [sourceDataSource tableViewIndexPathFromItemIndex:sourceIndex checkingBounds:YES];
-        NSIndexPath *const toIndexPath = [destinationDataSource tableViewIndexPathFromItemIndex:destinationIndex checkingBounds:YES];
+        NSIndexPath *const fromIndexPath = [sourceDataSource tableViewIndexPathFromItemIndex:sourceIndex checkingBounds:NO];
+        NSIndexPath *const toIndexPath = [destinationDataSource tableViewIndexPathFromItemIndex:destinationIndex checkingBounds:NO];
 #if DEBUG_LOG
         NSLog(@"• Table View • Move %@ to %@", PrettyIndexPath(fromIndexPath), PrettyIndexPath(toIndexPath));
 #endif
@@ -286,7 +286,7 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 
 - (void)dataSource:(MUKDataSource *)dataSource didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes withItems:(NSArray *)newItems inDataSource:(MUKDataSource *)originatingDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:YES];
+    NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
     if ([indexPaths count] == [items count]) {
 #if DEBUG_LOG
         NSLog(@"• Table View • Reload %@", PrettyIndexPaths(indexPaths));
