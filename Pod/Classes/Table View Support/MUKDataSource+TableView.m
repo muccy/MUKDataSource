@@ -301,7 +301,7 @@
         if (UITableViewCellEditingStyleDelete == editingStyle) {
             NSInteger itemIndex = [self itemIndexFromTableViewRow:indexPath.row checkingBounds:YES];
             if (itemIndex != NSNotFound) {
-                [self removeItemAtIndex:itemIndex eventOrigin:MUKDataSourceEventOriginUserInteraction];
+                [self removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:itemIndex] eventOrigin:MUKDataSourceEventOriginUserInteraction];
             }
         }
         else if (UITableViewCellEditingStyleInsert == editingStyle) {
@@ -309,7 +309,7 @@
             
             if (newItem) {
                 NSInteger idx = [self destinationIndexForItem:newItem toInsertByCommittingRowAtIndexPath:indexPath inTableView:tableView];
-                [self insertItem:newItem atIndex:idx eventOrigin:MUKDataSourceEventOriginUserInteraction];
+                [self insertItems:@[newItem] atIndexes:[NSIndexSet indexSetWithIndex:idx] eventOrigin:MUKDataSourceEventOriginUserInteraction];
             }
         }
     }

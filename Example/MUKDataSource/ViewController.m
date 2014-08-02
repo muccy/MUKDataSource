@@ -9,8 +9,21 @@
 #import "ViewController.h"
 #import "DataSource.h"
 
-@interface ViewController () <MUKDataSourceDelegate>
+static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdentifier";
+
+
+@interface Command : NSObject
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) dispatch_block_t action;
+@end
+
+@implementation Command
+@end
+
+
+@interface ViewController () <MUKDataSourceDelegate, UIActionSheetDelegate>
 @property (nonatomic) DataSource *dataSource;
+@property (nonatomic, copy) NSArray *commands;
 @end
 
 @implementation ViewController
@@ -23,6 +36,8 @@
     self.dataSource = [self newDataSource];
     [self.dataSource registerReusableViewsForTableView:self.tableView];
     self.tableView.dataSource = self.dataSource;
+    
+    self.commands = [self newCommands];
 }
 
 #pragma mark - Overrides
@@ -35,6 +50,15 @@
     }
 }
 
+#pragma mark - Actions
+
+- (IBAction)commandsButtonPressed:(id)sender {
+    [self setEditing:NO animated:YES];
+    
+    UIActionSheet *actionSheet = [self newCommandsActionSheet];
+    [actionSheet showFromBarButtonItem:sender animated:YES];
+}
+
 #pragma mark - Private
 
 - (DataSource *)newDataSource {
@@ -44,14 +68,116 @@
     DataSource *insectsDataSource = [[DataSource alloc] init];
     insectsDataSource.title = @"Insects";
     insectsDataSource.items = @[ @"Spider", @"Fly" ];
+    insectsDataSource.userInfo = kInsectsDataSourceIdentifier;
     [dataSource addChildDataSource:insectsDataSource];
     
     DataSource *otherAnimalsDataSource = [[DataSource alloc] init];
     otherAnimalsDataSource.title = @"Other Animals";
-    otherAnimalsDataSource.items = @[ @"Cat", @"Dog", @"Pig", @"Horse" ];
+    otherAnimalsDataSource.items = @[ @"Cat", @"Snake", @"Rabbit", @"Dog", @"Pig", @"Camel", @"Horse" ];
     [dataSource addChildDataSource:otherAnimalsDataSource];
     
     return dataSource;
+}
+
+#pragma mark - Private - Commands
+
+- (NSArray *)newCommands {
+    NSMutableArray *commands = [[NSMutableArray alloc] init];
+    __weak ViewController *weakSelf = self;
+    
+    Command *command = [[Command alloc] init];
+    command.title = @"Uppercase";
+    command.action = ^{
+        ViewController *strongSelf = weakSelf;
+
+        for (DataSource *dataSource in strongSelf.dataSource.childDataSources)
+        {
+            NSMutableArray *uppercaseArray = [[NSMutableArray alloc] initWithCapacity:[dataSource.items count]];
+            for (id item in dataSource.items) {
+                [uppercaseArray addObject:[item uppercaseString]];
+            }
+            
+            NSMutableArray *proxy = [dataSource mutableArrayValueForKey:@"items"];
+            [proxy replaceObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [proxy count])] withObjects:uppercaseArray];
+        } // for
+    };
+    [commands addObject:command];
+    
+    command = [[Command alloc] init];
+    command.title = @"Sort A-Z";
+    command.action = ^{
+        ViewController *strongSelf = weakSelf;
+        
+        for (DataSource *dataSource in strongSelf.dataSource.childDataSources)
+        {
+            NSArray *sortedItems = [dataSource.items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+            NSMutableArray *proxy = [dataSource mutableArrayValueForKey:@"items"];
+            [proxy replaceObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [proxy count])] withObjects:sortedItems];
+        } // for
+    };
+    [commands addObject:command];
+    
+    command = [[Command alloc] init];
+    command.title = @"Remove S-names";
+    command.action = ^{
+        ViewController *strongSelf = weakSelf;
+        
+        for (DataSource *dataSource in strongSelf.dataSource.childDataSources)
+        {
+            NSIndexSet *matchingIndexes = [dataSource.items indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
+            {
+                return [[obj lowercaseString] hasPrefix:@"s"];
+            }];
+            
+            NSMutableArray *proxy = [dataSource mutableArrayValueForKey:@"items"];
+            [proxy removeObjectsAtIndexes:matchingIndexes];
+        } // for
+    };
+    [commands addObject:command];
+    
+    command = [[Command alloc] init];
+    command.title = @"Insert Emoji Insects";
+    command.action = ^{
+        ViewController *strongSelf = weakSelf;
+        
+        DataSource *insectsDataSource = nil;
+        for (DataSource *dataSource in strongSelf.dataSource.childDataSources) {
+            if (dataSource.userInfo == kInsectsDataSourceIdentifier) {
+                insectsDataSource = dataSource;
+                break;
+            }
+        } // for
+        
+        NSMutableArray *proxy = [insectsDataSource mutableArrayValueForKey:@"items"];
+        [proxy addObjectsFromArray:@[@"🐛", @"🐝", @"🐜", @"🐞"]];
+    };
+    [commands addObject:command];
+    
+    return commands;
+}
+
+- (UIActionSheet *)newCommandsActionSheet {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Commands" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+    
+    for (Command *command in self.commands) {
+        [actionSheet addButtonWithTitle:command.title];
+    } // for
+    
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
+    
+    return actionSheet;
+}
+
+#pragma mark - <UIActionSheetDelegate>
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != actionSheet.cancelButtonIndex) {
+        Command *command = self.commands[buttonIndex];
+        if (command.action) {
+            command.action();
+        }
+    }
 }
 
 #pragma mark - <UITableViewDelegate>
@@ -106,6 +232,14 @@
     NSArray *indexPaths = [targetDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
     if ([indexPaths count] == [items count]) {
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+- (void)dataSource:(MUKDataSource *)dataSource didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes withItems:(NSArray *)newItems inDataSource:(MUKDataSource *)originatingDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:YES];
+    if ([indexPaths count] == [items count]) {
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 

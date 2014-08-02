@@ -17,6 +17,15 @@
                             <outlet property="delegate" destination="1FH-08-nlp" id="wCs-Mo-0tj"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="EzK-Mh-0R1"/>
+                        <barButtonItem title="Commands" id="PmW-sa-kPa">
+                            <connections>
+                                <action selector="commandsButtonPressed:" destination="1FH-08-nlp" id="5bG-J4-aqS"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ytU-r6-weI"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Animals" id="2Vf-WZ-0cc"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Xc-D3-U1D" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -26,13 +35,17 @@
         <!--Navigation Controller-->
         <scene sceneID="Mtd-fg-2fl">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ndm-Rf-Iu7" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Ndm-Rf-Iu7" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LeN-SD-lgJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="e8z-KO-ppe">
+                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="1FH-08-nlp" kind="relationship" relationship="rootViewController" id="cWe-67-6an"/>
                     </connections>

@@ -10,6 +10,32 @@
 @implementation MUKDataSource
 @dynamic hasChildDataSources;
 
+#pragma mark - items KVC compliance
+
+- (NSUInteger)countOfItems {
+    return [_items count];
+}
+
+- (NSArray *)itemsAtIndexes:(NSIndexSet *)indexes {
+    return [_items objectsAtIndexes:indexes];
+}
+
+- (void)getItems:(__unsafe_unretained id *)buffer range:(NSRange)inRange {
+    return [_items getObjects:buffer range:inRange];
+}
+
+- (void)insertItems:(NSArray *)array atIndexes:(NSIndexSet *)indexes {
+    [self insertItems:array atIndexes:indexes eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
+- (void)removeItemsAtIndexes:(NSIndexSet *)indexes {
+    [self removeItemsAtIndexes:indexes eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
+- (void)replaceItemsAtIndexes:(NSIndexSet *)indexes withItems:(NSArray *)array {
+    [self replaceItemsAtIndexes:indexes withItems:array eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
 #pragma mark - Contents
 
 - (id)itemAtIndex:(NSInteger)idx {
@@ -89,11 +115,15 @@
 }
 
 - (void)removeItemAtIndex:(NSInteger)idx {
-    [self removeItemAtIndex:idx eventOrigin:MUKDataSourceEventOriginProgrammatic];
+    [self removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx]];
 }
 
 - (void)insertItem:(id)item atIndex:(NSInteger)idx {
-    [self insertItem:item atIndex:idx eventOrigin:MUKDataSourceEventOriginProgrammatic];
+    [self insertItems:@[item] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
+}
+
+- (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem {
+    [self replaceItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx] withItems:newItem];
 }
 
 #pragma mark - Containment
@@ -167,6 +197,18 @@
     }
 }
 
+- (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes withItems:(NSArray *)newItems inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didReplaceItems:items atIndexes:indexes withItems:newItems inDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceItems:atIndexes:withItems:inDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didReplaceItems:items atIndexes:indexes withItems:newItems inDataSource:dataSource eventOrigin:eventOrigin];
+    }
+}
+
 #pragma mark - Private - Contents
 
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath usingIndexAtPosition:(NSUInteger)position
@@ -213,33 +255,53 @@
     [self didMoveItemFromDataSource:self atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
 }
 
-- (void)removeItemAtIndex:(NSInteger)idx eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)removeItemsAtIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    NSMutableArray *items = [self.items mutableCopy];
-    id item = items[idx];
-    
-    [items removeObjectAtIndex:idx];
-    self.items = items;
-    
-    // Notify
-    NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndex:idx];
-    [self didRemoveItems:@[item] atIndexes:indexes fromDataSource:self eventOrigin:eventOrigin];
-}
-
-- (void)insertItem:(id)item atIndex:(NSInteger)idx eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
-{
-    if (!item) {
+    if ([indexes count] == 0) {
+        // Nothing to remove
         return;
     }
     
-    NSMutableArray *items = [self.items mutableCopy];
-    [items insertObject:item atIndex:idx];
+    NSMutableArray *newItems = [_items mutableCopy];
     
-    self.items = [items copy];
+    NSArray *removedItems = [_items objectsAtIndexes:indexes];
+    [newItems removeObjectsAtIndexes:indexes];
+    
+    _items = [newItems copy];
     
     // Notify
-    NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndex:idx];
-    [self didInsertItems:@[item] atIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
+    [self didRemoveItems:removedItems atIndexes:indexes fromDataSource:self eventOrigin:eventOrigin];
+}
+
+- (void)insertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if (!items || [items count] != [indexes count]) {
+        return;
+    }
+    
+    NSMutableArray *newItems = [_items mutableCopy];
+    [newItems insertObjects:items atIndexes:indexes];
+
+    _items = [newItems copy];
+    
+    // Notify
+    [self didInsertItems:items atIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
+}
+
+- (void)replaceItemsAtIndexes:(NSIndexSet *)indexes withItems:(NSArray *)items eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if (!indexes || [indexes count] != [items count]) {
+        return;
+    }
+    
+    NSMutableArray *newItems = [_items mutableCopy];
+    NSArray *const oldItems = [_items objectsAtIndexes:indexes];
+    [newItems replaceObjectsAtIndexes:indexes withObjects:items];
+    
+    _items = [newItems copy];
+    
+    // Notify
+    [self didReplaceItems:oldItems atIndexes:indexes withItems:items inDataSource:self eventOrigin:eventOrigin];
 }
 
 #pragma mark - Private - Containment
