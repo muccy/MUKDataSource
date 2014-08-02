@@ -92,6 +92,10 @@
     [self removeItemAtIndex:idx eventOrigin:MUKDataSourceEventOriginProgrammatic];
 }
 
+- (void)insertItem:(id)item atIndex:(NSInteger)idx {
+    [self insertItem:item atIndex:idx eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
 #pragma mark - Containment
 
 - (void)addChildDataSource:(MUKDataSource *)dataSource {
@@ -139,7 +143,7 @@
     }
 }
 
-- (void)didRemoveItems:(NSArray *)items atIndexes:(NSArray *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     // Notify upwards
     [self.parentDataSource didRemoveItems:items atIndexes:indexes fromDataSource:dataSource eventOrigin:eventOrigin];
@@ -148,6 +152,18 @@
     if ([self.delegate respondsToSelector:@selector(dataSource:didRemoveItems:atIndexes:fromDataSource:eventOrigin:)])
     {
         [self.delegate dataSource:self didRemoveItems:items atIndexes:indexes fromDataSource:dataSource eventOrigin:eventOrigin];
+    }
+}
+
+- (void)didInsertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didInsertItems:items atIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didInsertItems:atIndexes:toDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didInsertItems:items atIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
     }
 }
 
@@ -206,7 +222,24 @@
     self.items = items;
     
     // Notify
-    [self didRemoveItems:@[item] atIndexes:@[@(idx)] fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+    NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndex:idx];
+    [self didRemoveItems:@[item] atIndexes:indexes fromDataSource:self eventOrigin:eventOrigin];
+}
+
+- (void)insertItem:(id)item atIndex:(NSInteger)idx eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if (!item) {
+        return;
+    }
+    
+    NSMutableArray *items = [self.items mutableCopy];
+    [items insertObject:item atIndex:idx];
+    
+    self.items = [items copy];
+    
+    // Notify
+    NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndex:idx];
+    [self didInsertItems:@[item] atIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
 }
 
 #pragma mark - Private - Containment

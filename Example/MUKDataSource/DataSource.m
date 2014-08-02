@@ -8,9 +8,57 @@
 
 #import "DataSource.h"
 
+static void *kKVOEditingContext = &kKVOEditingContext;
+static NSString *const kAddAnimalItem = @"Add Animal";
+
 @implementation DataSource
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self addObserver:self forKeyPath:@"editing" options:NSKeyValueObservingOptionNew context:kKVOEditingContext];
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"editing" context:kKVOEditingContext];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    BOOL managed = NO;
+    
+    if (context == kKVOEditingContext) {
+        managed = YES;
+        BOOL const isEditing = [change[NSKeyValueChangeNewKey] boolValue];
+        
+        if (isEditing) {
+            [self insertItem:kAddAnimalItem atIndex:0];
+        }
+        else {
+            id firstItem = [self itemAtIndex:0];
+            if ([firstItem isEqualToString:kAddAnimalItem]) {
+                [self removeItemAtIndex:0];
+            }
+        }
+    }
+    
+    if (!managed) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
 #pragma mark - Overrides
+
+- (NSInteger)numberOfRowsForSection:(NSInteger)section inTableView:(UITableView *)tableView
+{
+    NSInteger count = [super numberOfRowsForSection:section inTableView:tableView];
+    return count;
+}
 
 - (void)registerReusableViewsForTableView:(UITableView *)tableView {
     [super registerReusableViewsForTableView:tableView];
@@ -32,14 +80,20 @@
     cell.textLabel.text = name;
 }
 
-- (BOOL)canEditRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+- (BOOL)canEditRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView
 {
-    return YES;
+    return self.editing;
 }
 
-- (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+- (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView
 {
-    return YES;
+    NSInteger idx = [self itemIndexFromTableViewRow:tableIndexPath.row checkingBounds:YES];
+    return ![[self itemAtIndex:idx] isEqualToString:kAddAnimalItem];
+}
+
+- (id)newItemToInsertByCommittingRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView
+{
+    return @"Unicorn";
 }
 
 @end

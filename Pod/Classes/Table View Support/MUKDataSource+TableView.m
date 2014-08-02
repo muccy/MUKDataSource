@@ -107,18 +107,18 @@
     return [NSIndexPath indexPathForRow:itemIndex inSection:dataSourceIndex];
 }
 
-- (NSArray *)tableViewIndexPathsFromItemIndexes:(NSArray *)itemIndexes checkingBounds:(BOOL)checkBounds
+- (NSArray *)tableViewIndexPathsFromItemIndexes:(NSIndexSet *)itemIndexes checkingBounds:(BOOL)checkBounds
 {
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     
-    for (NSNumber *itemIndexNumber in itemIndexes) {
-        NSIndexPath *indexPath = [self tableViewIndexPathFromItemIndex:[itemIndexNumber integerValue] checkingBounds:checkBounds];
+    [itemIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        NSIndexPath *indexPath = [self tableViewIndexPathFromItemIndex:idx checkingBounds:checkBounds];
         
         if (indexPath) {
             [indexPaths addObject:indexPath];
         }
-    } // for
-    
+    }];
+ 
     return [indexPaths copy];
 }
 
@@ -161,6 +161,16 @@
 - (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
 {
     return NO;
+}
+
+- (id)newItemToInsertByCommittingRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView
+{
+    return nil;
+}
+
+- (NSInteger)destinationIndexForItem:(id)item toInsertByCommittingRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView
+{
+    return [self.items count];
 }
 
 #pragma mark - Private
@@ -292,6 +302,14 @@
             NSInteger itemIndex = [self itemIndexFromTableViewRow:indexPath.row checkingBounds:YES];
             if (itemIndex != NSNotFound) {
                 [self removeItemAtIndex:itemIndex eventOrigin:MUKDataSourceEventOriginUserInteraction];
+            }
+        }
+        else if (UITableViewCellEditingStyleInsert == editingStyle) {
+            id newItem = [self newItemToInsertByCommittingRowAtIndexPath:indexPath inTableView:tableView];
+            
+            if (newItem) {
+                NSInteger idx = [self destinationIndexForItem:newItem toInsertByCommittingRowAtIndexPath:indexPath inTableView:tableView];
+                [self insertItem:newItem atIndex:idx eventOrigin:MUKDataSourceEventOriginUserInteraction];
             }
         }
     }

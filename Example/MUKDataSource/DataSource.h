@@ -9,5 +9,5 @@
 #import <MUKDataSource/MUKDataSource.h>
 
 @interface DataSource : MUKDataSource
-
+@property (nonatomic) BOOL editing;
 @end

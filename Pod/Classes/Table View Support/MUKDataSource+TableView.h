@@ -7,7 +7,7 @@
 - (NSIndexPath *)itemIndexPathFromTableViewIndexPath:(NSIndexPath *)tableIndexPath checkingBounds:(BOOL)checkBounds;
 
 - (NSIndexPath *)tableViewIndexPathFromItemIndex:(NSInteger)itemIndex checkingBounds:(BOOL)checkBounds;
-- (NSArray *)tableViewIndexPathsFromItemIndexes:(NSArray *)itemIndexes checkingBounds:(BOOL)checkBounds;
+- (NSArray *)tableViewIndexPathsFromItemIndexes:(NSIndexSet *)itemIndexes checkingBounds:(BOOL)checkBounds;
 
 // How many rows this data source represents?
 // section is informative
@@ -22,4 +22,7 @@
 
 - (BOOL)canEditRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView;
 - (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView;
+
+- (id)newItemToInsertByCommittingRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView;
+- (NSInteger)destinationIndexForItem:(id)item toInsertByCommittingRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView;
 @end

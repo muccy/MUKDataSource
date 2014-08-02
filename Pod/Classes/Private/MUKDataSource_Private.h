@@ -14,4 +14,5 @@
 
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 - (void)removeItemAtIndex:(NSInteger)idx eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)insertItem:(id)item atIndex:(NSInteger)idx eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 @end
