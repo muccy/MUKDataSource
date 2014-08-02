@@ -1,5 +1,6 @@
 #import "MUKDataSource_Main.h"
 #import "MUKDataSource_Private.h"
+#import "MUKDataSourceBatch.h"
 
 @interface MUKDataSource ()
 @property (nonatomic, copy) NSArray *items;
@@ -37,6 +38,104 @@
 }
 
 #pragma mark - Contents
+
+- (void)setItems:(NSArray *)items {
+    [self setItems:items animated:NO];
+}
+
+- (void)setItems:(NSArray *)items animated:(BOOL)animated {
+    if ([_items isEqualToArray:items]) {
+        return;
+    }
+    
+    // Define common storage code
+    dispatch_block_t storeItems = ^{
+        [self willChangeValueForKey:@"items"];
+        _items = [items copy];
+        [self didChangeValueForKey:@"items"];
+    };
+    
+    if (!animated) {
+        // 1-pass
+        storeItems();
+        
+        // TODO: notify section refreshed
+        
+        return;
+    }
+    
+    // Animated is way more complicated because I want to notify differences
+    // in order to animate them
+    
+    NSOrderedSet *oldItemSet = [[NSOrderedSet alloc] initWithArray:_items];
+    NSOrderedSet *newItemSet = [[NSOrderedSet alloc] initWithArray:items];
+    
+    // Find deleted items
+    NSMutableOrderedSet *deletedItems = [oldItemSet mutableCopy];
+    [deletedItems minusOrderedSet:newItemSet];
+    
+    // Find inserted items
+    NSMutableOrderedSet *insertedItems = [newItemSet mutableCopy];
+    [insertedItems minusOrderedSet:oldItemSet];
+    
+    // Find moved items
+    NSMutableOrderedSet *potentiallyMovedItems = [newItemSet mutableCopy];
+    [potentiallyMovedItems intersectOrderedSet:oldItemSet];
+    
+    // Get deleted indexes
+    NSIndexSet *deletedIndexes = [oldItemSet indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
+    {
+        return [deletedItems containsObject:obj];
+    }];
+    
+    // Get inserted indexes
+    NSIndexSet *insertedIndexes = [newItemSet indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
+    {
+        return [insertedItems containsObject:obj];
+    }];
+    
+    // Store items
+    storeItems();
+    
+    // Compose a batch of notifications
+    MUKDataSourceBatch *batch = [[MUKDataSourceBatch alloc] init];
+    
+    // Deletions
+    if ([deletedIndexes count] > 0) {
+        [batch addBlock:^{
+            [self didRemoveItems:[[deletedItems array] copy] atIndexes:deletedIndexes fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        }];
+    }
+    
+    // Insertions
+    if ([insertedItems count] > 0) {
+        [batch addBlock:^{
+            [self didInsertItems:[[insertedItems array] copy] atIndexes:insertedIndexes toDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        }];
+    }
+    
+    // Moves
+    NSMutableIndexSet *movedIndexSet = [[NSMutableIndexSet alloc] init];
+    
+    for (id movedItem in potentiallyMovedItems) {
+        NSInteger movedFromIndex = [oldItemSet indexOfObject:movedItem];
+        NSInteger movedToIndex = [newItemSet indexOfObject:movedItem];
+        BOOL const isInverseMove = [movedIndexSet containsIndex:movedToIndex];
+        
+        if (!isInverseMove && movedFromIndex != movedToIndex) {
+            [movedIndexSet addIndex:movedFromIndex];
+            
+            [batch addBlock:^{
+                [self didMoveItemFromDataSource:self atIndex:movedFromIndex toDataSource:self atIndex:movedToIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
+            }];
+        }
+    } // for
+    
+    // Request batch update
+    [self requestBatchUpdate:^{
+        [batch performAllBlocks];
+    }];
+}
 
 - (id)itemAtIndex:(NSInteger)idx {
     if (idx < 0 || idx >= [self.items count]) {
@@ -126,6 +225,12 @@
     [self replaceItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx] withItems:newItem];
 }
 
+- (void)requestBatchUpdate:(dispatch_block_t)updateBlock {
+    // Delegate is assigned to perform batch updates: do nothing here
+    
+    [self didRequestBatchUpdate:updateBlock fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
 #pragma mark - Containment
 
 - (void)addChildDataSource:(MUKDataSource *)dataSource {
@@ -206,6 +311,18 @@
     if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceItems:atIndexes:withItems:inDataSource:eventOrigin:)])
     {
         [self.delegate dataSource:self didReplaceItems:items atIndexes:indexes withItems:newItems inDataSource:dataSource eventOrigin:eventOrigin];
+    }
+}
+
+- (void)didRequestBatchUpdate:(dispatch_block_t)updateBlock fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didRequestBatchUpdate:fromDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:eventOrigin];
     }
 }
 

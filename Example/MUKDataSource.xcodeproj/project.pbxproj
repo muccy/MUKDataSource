@@ -45,6 +45,8 @@
 		06774E4B198CAD3A0066DE57 /* MUKDataSource+TableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MUKDataSource+TableView.m"; sourceTree = "<group>"; };
 		06774E4E198CAE1D0066DE57 /* MUKDataSource_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSource_Private.h; sourceTree = "<group>"; };
 		06774E4F198CD18D0066DE57 /* MUKDataSourceEventOrigin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceEventOrigin.h; sourceTree = "<group>"; };
+		06774E50198D3D000066DE57 /* MUKDataSourceBatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceBatch.h; sourceTree = "<group>"; };
+		06774E51198D3D000066DE57 /* MUKDataSourceBatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceBatch.m; sourceTree = "<group>"; };
 		06986C2C198BC0F20055F3E9 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		06986C2F198BC1590055F3E9 /* MUKDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSource.h; sourceTree = "<group>"; };
 		06986C33198BC2450055F3E9 /* MUKDataSource_Main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSource_Main.h; sourceTree = "<group>"; };
@@ -118,6 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				06774E4E198CAE1D0066DE57 /* MUKDataSource_Private.h */,
+				06774E50198D3D000066DE57 /* MUKDataSourceBatch.h */,
+				06774E51198D3D000066DE57 /* MUKDataSourceBatch.m */,
 			);
 			path = Private;
 			sourceTree = "<group>";

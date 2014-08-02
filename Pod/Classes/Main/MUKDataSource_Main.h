@@ -10,6 +10,7 @@
 @interface MUKDataSource (Contents)
 // KVC compliant for mutable changes via -mutableArrayValueForKey:
 @property (nonatomic, copy) NSArray *items;
+- (void)setItems:(NSArray *)items animated:(BOOL)animated;
 
 - (id)itemAtIndex:(NSInteger)idx;
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
@@ -21,6 +22,8 @@
 - (void)removeItemAtIndex:(NSInteger)idx;
 - (void)insertItem:(id)item atIndex:(NSInteger)idx;
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem;
+
+- (void)requestBatchUpdate:(dispatch_block_t)updateBlock;
 @end
 
 @interface MUKDataSource (Containment)
@@ -35,4 +38,6 @@
 - (void)didRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 - (void)didInsertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 - (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes withItems:(NSArray *)newItems inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+
+- (void)didRequestBatchUpdate:(dispatch_block_t)updateBlock fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 @end

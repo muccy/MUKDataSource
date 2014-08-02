@@ -9,8 +9,29 @@
 #import "ViewController.h"
 #import "DataSource.h"
 
-static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdentifier";
+#define DEBUG_LOG   0
 
+#if DEBUG_LOG
+static inline NSString *PrettyIndexPath(NSIndexPath *indexPath) {
+    return indexPath ? [NSString stringWithFormat:@"(%ld, %ld)", (long)indexPath.section, (long)indexPath.row] : @"(-, -)";
+}
+
+static NSString *PrettyIndexPaths(NSArray *indexPaths) {
+    NSMutableArray *components = [[NSMutableArray alloc] initWithCapacity:[indexPaths count]];
+    
+    for (NSIndexPath *indexPath in indexPaths) {
+        [components addObject:PrettyIndexPath(indexPath)];
+    } // for
+    
+    if ([components count] == 0) {
+        [components addObject:PrettyIndexPath(nil)];
+    }
+    
+    return [NSString stringWithFormat:@"[%@]", [components componentsJoinedByString:@", "]];
+}
+#endif
+
+static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdentifier";
 
 @interface Command : NSObject
 @property (nonatomic, copy) NSString *title;
@@ -153,6 +174,23 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
     };
     [commands addObject:command];
     
+    command = [[Command alloc] init];
+    command.title = @"Display Only Emoji Insects";
+    command.action = ^{
+        ViewController *strongSelf = weakSelf;
+        
+        DataSource *insectsDataSource = nil;
+        for (DataSource *dataSource in strongSelf.dataSource.childDataSources) {
+            if (dataSource.userInfo == kInsectsDataSourceIdentifier) {
+                insectsDataSource = dataSource;
+                break;
+            }
+        } // for
+        
+        [insectsDataSource setItems:@[@"🐛", @"🐜", @"🐞", @"🐝"] animated:YES];
+    };
+    [commands addObject:command];
+    
     return commands;
 }
 
@@ -215,7 +253,12 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 - (void)dataSource:(MUKDataSource *)dataSource didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     if (eventOrigin != MUKDataSourceEventOriginUserInteraction) {
-        [self.tableView moveRowAtIndexPath:[dataSource tableViewIndexPathFromItemIndex:sourceIndex checkingBounds:YES] toIndexPath:[dataSource tableViewIndexPathFromItemIndex:destinationIndex checkingBounds:YES]];
+        NSIndexPath *const fromIndexPath = [sourceDataSource tableViewIndexPathFromItemIndex:sourceIndex checkingBounds:YES];
+        NSIndexPath *const toIndexPath = [destinationDataSource tableViewIndexPathFromItemIndex:destinationIndex checkingBounds:YES];
+#if DEBUG_LOG
+        NSLog(@"• Table View • Move %@ to %@", PrettyIndexPath(fromIndexPath), PrettyIndexPath(toIndexPath));
+#endif
+        [self.tableView moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
     }
 }
 
@@ -223,6 +266,9 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 {
     NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
     if ([indexPaths count] == [items count]) {
+#if DEBUG_LOG
+        NSLog(@"• Table View • Delete %@", PrettyIndexPaths(indexPaths));
+#endif
         [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
@@ -231,6 +277,9 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 {
     NSArray *indexPaths = [targetDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
     if ([indexPaths count] == [items count]) {
+#if DEBUG_LOG
+        NSLog(@"• Table View • Insert %@", PrettyIndexPaths(indexPaths));
+#endif
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
@@ -239,8 +288,24 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 {
     NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:YES];
     if ([indexPaths count] == [items count]) {
+#if DEBUG_LOG
+        NSLog(@"• Table View • Reload %@", PrettyIndexPaths(indexPaths));
+#endif
         [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
+
+- (void)dataSource:(MUKDataSource *)dataSource didRequestBatchUpdate:(dispatch_block_t)updateBlock fromDataSource:(MUKDataSource *)originatingDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+#if DEBUG_LOG
+    NSLog(@"• Table View • Begin Batch Update");
+#endif
+    [self.tableView beginUpdates];
+    updateBlock();
+    [self.tableView endUpdates];
+#if DEBUG_LOG
+    NSLog(@"• Table View • End Batch Update");
+#endif
 }
 
 @end
