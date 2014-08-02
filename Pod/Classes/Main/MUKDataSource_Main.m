@@ -267,7 +267,7 @@
     NSArray *removedItems = [_items objectsAtIndexes:indexes];
     [newItems removeObjectsAtIndexes:indexes];
     
-    _items = [newItems copy];
+    self.items = newItems; // Implicit copy and KVO notification
     
     // Notify
     [self didRemoveItems:removedItems atIndexes:indexes fromDataSource:self eventOrigin:eventOrigin];
@@ -282,7 +282,7 @@
     NSMutableArray *newItems = [_items mutableCopy];
     [newItems insertObjects:items atIndexes:indexes];
 
-    _items = [newItems copy];
+    self.items = newItems; // Implicit copy and KVO notification
     
     // Notify
     [self didInsertItems:items atIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
@@ -298,7 +298,7 @@
     NSArray *const oldItems = [_items objectsAtIndexes:indexes];
     [newItems replaceObjectsAtIndexes:indexes withObjects:items];
     
-    _items = [newItems copy];
+    self.items = newItems; // Implicit copy and KVO notification
     
     // Notify
     [self didReplaceItems:oldItems atIndexes:indexes withItems:items inDataSource:self eventOrigin:eventOrigin];
