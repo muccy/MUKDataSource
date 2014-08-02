@@ -1,4 +1,5 @@
 #import "MUKDataSource_Main.h"
+#import "MUKDataSource_Private.h"
 
 @interface MUKDataSource ()
 @property (nonatomic, copy) NSArray *items;
@@ -7,6 +8,7 @@
 @end
 
 @implementation MUKDataSource
+@dynamic hasChildDataSources;
 
 #pragma mark - Contents
 
@@ -22,28 +24,72 @@
     return [self itemAtIndexPath:indexPath usingIndexAtPosition:0];
 }
 
-- (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
-{
-    if (self == destinationDataSource) {
-        // Simple swap
-        NSMutableArray *items = [self.items mutableCopy];
-        [items exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
-        self.items = [items copy];
-    }
-    else {
-        NSMutableArray *items = [self.items mutableCopy];
-        id item = items[sourceIndex];
-        [items removeObjectAtIndex:sourceIndex];
-        
-        NSMutableArray *destinationItems = [destinationDataSource.items mutableCopy];
-        [destinationItems insertObject:item atIndex:destinationIndex];
-        
-        self.items = [items copy];
-        destinationDataSource.items = [destinationItems copy];
+- (NSInteger)indexOfItem:(id)item {
+    return [self.items indexOfObject:item];
+}
+
+- (NSIndexPath *)indexPathOfItem:(id)item {
+    if (!item) {
+        return nil;
     }
     
-    // Notify to parent
-    [self.parentDataSource childDataSource:self didMoveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex];
+    NSIndexPath *foundIndexPath = nil;
+    
+    if (self.hasChildDataSources) {
+        // Request child to provide index path
+        // Stop at first one you can find
+        NSInteger childIndex = 0;
+        for (MUKDataSource *childDataSource in self.childDataSources) {
+            NSIndexPath *indexPath = [childDataSource indexPathOfItem:item];
+            
+            if (indexPath) {
+                foundIndexPath = indexPath;
+                break;
+            }
+            else {
+                childIndex++;
+            }
+        } // for
+        
+        // Enrich found index path with child index
+        if (foundIndexPath) {
+            // Prepend index
+            NSUInteger *indexes = calloc(foundIndexPath.length + 1, sizeof(NSUInteger));
+            
+            if (indexes != NULL) {
+                [foundIndexPath getIndexes:indexes];
+                
+                memmove(indexes + 1, indexes, sizeof(NSUInteger) * foundIndexPath.length);
+                indexes[0] = childIndex;
+                
+                foundIndexPath = [NSIndexPath indexPathWithIndexes:indexes length:foundIndexPath.length + 1];
+                
+                free(indexes);
+            }
+            else {
+                foundIndexPath = nil; // Invalidate
+            }
+        }
+    }
+    else {
+        // No children: we are in a leaf
+        // Search for an index and compose an index path with only one element
+        NSInteger idx = [self indexOfItem:item];
+        if (idx != NSNotFound) {
+            foundIndexPath = [NSIndexPath indexPathWithIndex:idx];
+        }
+    }
+    
+    return foundIndexPath;
+}
+
+- (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
+{
+    [self moveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
+- (void)removeItemAtIndex:(NSInteger)idx {
+    [self removeItemAtIndex:idx eventOrigin:MUKDataSourceEventOriginProgrammatic];
 }
 
 #pragma mark - Containment
@@ -79,55 +125,30 @@
     }
 }
 
-#pragma mark - Child Callbacks
+#pragma mark - Callbacks
 
-- (void)childDataSource:(MUKDataSource *)sourceDataSource didMoveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
+- (void)didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    // Forward up
-    [self.parentDataSource childDataSource:sourceDataSource didMoveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex];
+    // Notify upwards
+    [self.parentDataSource didMoveItemFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didMoveItemFromDataSource:atIndex:toDataSource:atIndex:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didMoveItemFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    }
 }
 
-#pragma mark - Table View
-
-- (NSInteger)numberOfRowsForTableView:(UITableView *)tableView inSection:(NSInteger)section
+- (void)didRemoveItems:(NSArray *)items atIndexes:(NSArray *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    return [self.items count];
-}
-
-- (void)registerReusableViewsForTableView:(UITableView *)tableView {
-    for (MUKDataSource *childDataSource in self.childDataSources) {
-        [childDataSource registerReusableViewsForTableView:tableView];
-    } // for
-}
-
-- (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
-{
-    return nil;
-}
-
-- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
-{
-    //
-}
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section tableView:(UITableView *)tableView
-{
-    return self.title;
-}
-
-- (NSString *)titleForFooterInSection:(NSInteger)section tableView:(UITableView *)tableView
-{
-    return nil;
-}
-
-- (BOOL)canEditRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
-{
-    return NO;
-}
-
-- (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
-{
-    return NO;
+    // Notify upwards
+    [self.parentDataSource didRemoveItems:items atIndexes:indexes fromDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didRemoveItems:atIndexes:fromDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didRemoveItems:items atIndexes:indexes fromDataSource:dataSource eventOrigin:eventOrigin];
+    }
 }
 
 #pragma mark - Private - Contents
@@ -152,6 +173,42 @@
     return item;
 }
 
+- (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if (self == destinationDataSource) {
+        // Simple swap
+        NSMutableArray *items = [self.items mutableCopy];
+        [items exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
+        self.items = items;
+    }
+    else {
+        NSMutableArray *items = [self.items mutableCopy];
+        id item = items[sourceIndex];
+        [items removeObjectAtIndex:sourceIndex];
+        
+        NSMutableArray *destinationItems = [destinationDataSource.items mutableCopy];
+        [destinationItems insertObject:item atIndex:destinationIndex];
+        
+        self.items = items;
+        destinationDataSource.items = [destinationItems copy];
+    }
+    
+    // Notify
+    [self didMoveItemFromDataSource:self atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+}
+
+- (void)removeItemAtIndex:(NSInteger)idx eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    NSMutableArray *items = [self.items mutableCopy];
+    id item = items[idx];
+    
+    [items removeObjectAtIndex:idx];
+    self.items = items;
+    
+    // Notify
+    [self didRemoveItems:@[item] atIndexes:@[@(idx)] fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
 #pragma mark - Private - Containment
 
 - (BOOL)hasChildDataSources {
@@ -164,129 +221,6 @@
     }
     
     return self.childDataSources[idx];
-}
-
-- (MUKDataSource *)childDataSourceForTableViewSection:(NSInteger)idx {
-    return [self childDataSourceAtIndex:idx];
-}
-
-#pragma mark - <UITableViewDataSource>
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self hasChildDataSources] ? [self.childDataSources count] : 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSInteger count;
-    
-    if ([self hasChildDataSources]) {
-        count = [[self childDataSourceForTableViewSection:section] tableView:tableView numberOfRowsInSection:section];
-    }
-    else {
-        count = [self numberOfRowsForTableView:tableView inSection:section];
-    }
-    
-    return count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [self dequeueOrCreateCellForRowAtIndexPath:indexPath inTableView:tableView];
-    [self configureCell:cell forRowAtIndexPath:indexPath inTableView:tableView];
-    return cell;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *title;
-    if ([self hasChildDataSources]) {
-        title = [[self childDataSourceForTableViewSection:section] tableView:tableView titleForHeaderInSection:section];
-    }
-    else {
-        title = [self titleForHeaderInSection:section tableView:tableView];
-    }
-    
-    return title;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
-    NSString *title;
-    if ([self hasChildDataSources]) {
-        title = [[self childDataSourceForTableViewSection:section] tableView:tableView titleForFooterInSection:section];
-    }
-    else {
-        title = [self titleForFooterInSection:section tableView:tableView];
-    }
-    
-    return title;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    BOOL canEdit;
-    if ([self hasChildDataSources]) {
-        canEdit = [[self childDataSourceForTableViewSection:indexPath.section] tableView:tableView canEditRowAtIndexPath:indexPath];
-    }
-    else {
-        canEdit = [self canEditRowAtIndexPath:indexPath inTableView:tableView];
-    }
-    
-    return canEdit;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    BOOL canMove;
-    if ([self hasChildDataSources]) {
-        canMove = [[self childDataSourceForTableViewSection:indexPath.section] tableView:tableView canMoveRowAtIndexPath:indexPath];
-    }
-    else {
-        canMove = [self canMoveRowAtIndexPath:indexPath inTableView:tableView];
-    }
-    
-    return canMove;
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return nil;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
-    if ([self childDataSourceForTableViewSection:index]) {
-        return index;
-    }
-    
-    return 0;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // TODO
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
-{
-    if ([sourceIndexPath isEqual:destinationIndexPath]) {
-        // No move
-        return;
-    }
-    
-    MUKDataSource *sourceDataSource, *destinationDataSource;
-
-    if ([self hasChildDataSources]) {
-        sourceDataSource = [self childDataSourceForTableViewSection:sourceIndexPath.section];
-        destinationDataSource = [self childDataSourceForTableViewSection:destinationIndexPath.section];
-    }
-    else {
-        sourceDataSource = destinationDataSource = self;
-    }
-    
-    if (sourceDataSource && destinationDataSource) {
-        [sourceDataSource moveItemAtIndex:sourceIndexPath.row toDataSource:destinationDataSource atIndex:destinationIndexPath.row];
-    }
 }
 
 @end

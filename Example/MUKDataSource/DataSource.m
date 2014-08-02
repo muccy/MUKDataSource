@@ -23,10 +23,12 @@
     return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
+- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView
 {
-    [super configureCell:cell forRowAtIndexPath:indexPath inTableView:tableView];
-    NSString *name = [self itemAtIndexPath:indexPath];
+    [super configureCell:cell forRowAtIndexPath:tableIndexPath inTableView:tableView];
+    
+    NSInteger idx = [self itemIndexFromTableViewRow:tableIndexPath.row checkingBounds:YES];
+    NSString *name = [self itemAtIndex:idx];
     cell.textLabel.text = name;
 }
 

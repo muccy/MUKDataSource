@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "DataSource.h"
 
-@interface ViewController ()
+@interface ViewController () <MUKDataSourceDelegate>
 @property (nonatomic) DataSource *dataSource;
 @end
 
@@ -29,6 +29,7 @@
 
 - (DataSource *)newDataSource {
     DataSource *dataSource = [[DataSource alloc] init];
+    dataSource.delegate = self;
     
     DataSource *insectsDataSource = [[DataSource alloc] init];
     insectsDataSource.title = @"Insects";
@@ -47,9 +48,28 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *name = [self.dataSource itemAtIndexPath:indexPath];
+    MUKDataSource *dataSource = (MUKDataSource *)tableView.dataSource;
+    NSIndexPath *itemIndexPath = [dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:YES];
+    NSString *name = [dataSource itemAtIndexPath:itemIndexPath];
     NSLog(@"%@", name);
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - <MUKDataSourceDelegate>
+
+- (void)dataSource:(MUKDataSource *)dataSource didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if (eventOrigin != MUKDataSourceEventOriginUserInteraction) {
+        [self.tableView moveRowAtIndexPath:[dataSource tableViewIndexPathFromItemIndex:sourceIndex checkingBounds:YES] toIndexPath:[dataSource tableViewIndexPathFromItemIndex:destinationIndex checkingBounds:YES]];
+    }
+}
+
+- (void)dataSource:(MUKDataSource *)dataSource didRemoveItems:(NSArray *)items atIndexes:(NSArray *)indexes fromDataSource:(MUKDataSource *)originatingDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
+    if ([indexPaths count] == [items count]) {
+        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 @end

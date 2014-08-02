@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
+#import <MUKDataSource/MUKDataSourceDelegate.h>
 
-@interface MUKDataSource : NSObject <UITableViewDataSource>
+@interface MUKDataSource : NSObject
+@property (nonatomic, weak) id<MUKDataSourceDelegate> delegate;
 @property (nonatomic, copy) NSString *title;
 @end
 
@@ -9,7 +11,11 @@
 - (id)itemAtIndex:(NSInteger)idx;
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 
+- (NSInteger)indexOfItem:(id)item;
+- (NSIndexPath *)indexPathOfItem:(id)item;
+
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex;
+- (void)removeItemAtIndex:(NSInteger)idx;
 @end
 
 @interface MUKDataSource (Containment)
@@ -19,22 +25,7 @@
 - (void)removeDataSource:(MUKDataSource *)dataSource;
 @end
 
-@interface MUKDataSource (ChildCallbacks)
-- (void)childDataSource:(MUKDataSource *)sourceDataSource didMoveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex;
-@end
-
-@interface MUKDataSource (TableView)
-- (NSInteger)numberOfRowsForTableView:(UITableView *)tableView inSection:(NSInteger)section;
-
-- (void)registerReusableViewsForTableView:(UITableView *)tableView;
-- (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section tableView:(UITableView *)tableView;
-- (NSString *)titleForFooterInSection:(NSInteger)section tableView:(UITableView *)tableView;
-
-- (BOOL)canEditRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-- (BOOL)canMoveRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-
-
+@interface MUKDataSource (Callbacks)
+- (void)didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didRemoveItems:(NSArray *)items atIndexes:(NSArray *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 @end
