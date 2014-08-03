@@ -1,110 +1,106 @@
 #import "MUKDataSource+TableView.h"
 #import "MUKDataSource_Private.h"
 
-@interface MUKDataSource (TableView_Private)
-@property (nonatomic, readonly) MUKDataSource *tableViewDataSource;
-@end
-
-@implementation MUKDataSource (TableView_Private)
-@dynamic tableViewDataSource;
-
-- (MUKDataSource *)tableViewDataSource {
-    MUKDataSource *dataSource;
-    
-    if (self.hasChildDataSources && !self.items) {
-        // I contain sections
-        dataSource = self;
-    }
-    else if (self.items && self.parentDataSource && !self.parentDataSource.items)
-    {
-        // I contain rows and my dad contains sections
-        dataSource = self.parentDataSource;
-    }
-    else if (self.items) {
-        // I contain rows and I have not a dad (mono-section)
-        dataSource = self;
-    }
-    else {
-        dataSource = nil;
-    }
-    
-    return dataSource;
-}
-
-@end
-
-@implementation MUKDataSource (TableView)
+@implementation MUKDataSource (TableView_Conversions)
 
 - (NSInteger)childDataSourceIndexFromTableViewSection:(NSInteger)section checkingBounds:(BOOL)checkBounds
 {
-    if (checkBounds && (section < 0 || section >= [self.childDataSources count]))
+    NSInteger childDataSourceIndex = section;
+    
+    if (checkBounds && (childDataSourceIndex < 0 || childDataSourceIndex >= [self.childDataSources count]))
     {
         return NSNotFound;
     }
     
-    return section;
+    return childDataSourceIndex;
 }
 
 - (NSInteger)itemIndexFromTableViewRow:(NSInteger)row checkingBounds:(BOOL)checkBounds
 {
-    if (checkBounds && (row < 0 || row >= [self.items count])) {
+    NSInteger itemIndex = row;
+    
+    if (checkBounds && (itemIndex < 0 || itemIndex >= [self.items count])) {
         return NSNotFound;
     }
     
-    return row;
+    return itemIndex;
 }
 
 - (NSIndexPath *)itemIndexPathFromTableViewIndexPath:(NSIndexPath *)tableIndexPath checkingBounds:(BOOL)checkBounds
 {
-    MUKDataSource *const tableViewDataSource = self.tableViewDataSource;
-    if (!tableViewDataSource) {
+    NSInteger const childDataSourceIndex = [self childDataSourceIndexFromTableViewSection:tableIndexPath.section checkingBounds:checkBounds];
+    if (childDataSourceIndex == NSNotFound) {
         return nil;
     }
     
-    // Get section
-    NSInteger section;
-    MUKDataSource *sectionDataSource;
-    if (tableViewDataSource.hasChildDataSources) {
-        section = [tableViewDataSource childDataSourceIndexFromTableViewSection:tableIndexPath.section checkingBounds:checkBounds];
-        sectionDataSource = [tableViewDataSource childDataSourceAtIndex:section];
-    }
-    else {
-        section = 0; // Mono-section
-        sectionDataSource = self;
-    }
-    
-    if (section == NSNotFound || !sectionDataSource) {
+    MUKDataSource *const itemsDataSource = [self childDataSourceAtIndex:childDataSourceIndex] ?: self;
+    NSInteger const itemIndex = [itemsDataSource itemIndexFromTableViewRow:tableIndexPath.row checkingBounds:checkBounds];
+    if (itemIndex == NSNotFound) {
         return nil;
     }
     
-    // Get row
-    NSInteger row = [sectionDataSource itemIndexFromTableViewRow:tableIndexPath.row checkingBounds:checkBounds];
+    NSUInteger const indexes[2] = { (NSUInteger)childDataSourceIndex, (NSUInteger)itemIndex };
+    return [NSIndexPath indexPathWithIndexes:indexes length:2];
+}
+
+- (NSInteger)tableViewSectionFromChildDataSourceIndex:(NSInteger)childDataSourceIndex checkingBounds:(BOOL)checkBounds
+{
+    if (checkBounds && (childDataSourceIndex < 0 || childDataSourceIndex >= [self.childDataSources count]))
+    {
+        return NSNotFound;
+    }
     
+    return childDataSourceIndex;
+}
+
+- (NSIndexSet *)tableViewSectionsFromChildDataSourceIndexes:(NSIndexSet *)childDataSourceIndexes checkingBounds:(BOOL)checkBounds
+{
+    NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+    
+    [childDataSourceIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop)
+    {
+        NSInteger section = [self tableViewSectionFromChildDataSourceIndex:idx checkingBounds:checkBounds];
+        
+        if (section != NSNotFound) {
+            [indexSet addIndex:section];
+        }
+    }];
+    
+    return [indexSet copy];
+}
+
+- (NSInteger)tableViewRowFromItemIndex:(NSInteger)itemIndex checkingBounds:(BOOL)checkBounds
+{
+    if (checkBounds && (itemIndex < 0 || itemIndex >= [self.items count])) {
+        return NSNotFound;
+    }
+    
+    return itemIndex;
+}
+
+- (NSIndexPath *)tableViewIndexPathFromItemIndexPath:(NSIndexPath *)itemIndexPath checkingBounds:(BOOL)checkBounds
+{
+    NSInteger const childDataSourceIndex = [itemIndexPath indexAtPosition:0];
+    NSInteger const section = [self tableViewSectionFromChildDataSourceIndex:childDataSourceIndex checkingBounds:checkBounds];
+    if (section == NSNotFound) {
+        return nil;
+    }
+    
+    MUKDataSource *const itemsDataSource = [self childDataSourceAtIndex:childDataSourceIndex] ?: self;
+    NSInteger const itemIndex = [itemIndexPath indexAtPosition:1];
+    NSInteger const row = [itemsDataSource tableViewRowFromItemIndex:itemIndex checkingBounds:checkBounds];
     if (row == NSNotFound) {
         return nil;
     }
-    
-    // Compose index path
+
     return [NSIndexPath indexPathForRow:row inSection:section];
 }
 
 - (NSIndexPath *)tableViewIndexPathFromItemIndex:(NSInteger)itemIndex checkingBounds:(BOOL)checkBounds
 {
-    if (checkBounds && (itemIndex < 0 || itemIndex >= [self.items count])) {
-        return nil;
-    }
-    
-    MUKDataSource *const tableViewDataSource = self.tableViewDataSource;
-    if (!tableViewDataSource) {
-        return nil;
-    }
-    
-    NSInteger dataSourceIndex = tableViewDataSource == self ? 0 : [tableViewDataSource.childDataSources indexOfObject:self];
-    if (dataSourceIndex == NSNotFound) {
-        return nil;
-    }
-    
-    return [NSIndexPath indexPathForRow:itemIndex inSection:dataSourceIndex];
+    NSUInteger const indexes[2] = { [self.parentDataSource.childDataSources indexOfObject:self], itemIndex };
+    NSIndexPath *const itemIndexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    return [self.parentDataSource tableViewIndexPathFromItemIndexPath:itemIndexPath checkingBounds:checkBounds];
 }
 
 - (NSArray *)tableViewIndexPathsFromItemIndexes:(NSIndexSet *)itemIndexes checkingBounds:(BOOL)checkBounds
@@ -121,6 +117,10 @@
  
     return [indexPaths copy];
 }
+
+@end
+
+@implementation MUKDataSource (TableView)
 
 - (NSInteger)numberOfRowsForSection:(NSInteger)section inTableView:(UITableView *)tableView
 {
@@ -324,7 +324,7 @@
     }
     else {
         MUKDataSource *const sourceDataSource = self;
-        MUKDataSource *const destinationDataSource = [self.tableViewDataSource childDataSourceForTableViewSection:destinationIndexPath.section] ?: self;
+        MUKDataSource *const destinationDataSource = [self.parentDataSource childDataSourceForTableViewSection:destinationIndexPath.section] ?: self;
 
         NSInteger const sourceIndex = [self itemIndexFromTableViewRow:sourceIndexPath.row checkingBounds:YES];
         NSInteger const destinationIndex = sourceDataSource != destinationDataSource ? [destinationDataSource itemIndexFromTableViewRow:destinationIndexPath.row checkingBounds:NO] : [destinationDataSource itemIndexFromTableViewRow:destinationIndexPath.row checkingBounds:YES];

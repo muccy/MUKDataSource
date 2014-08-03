@@ -5,6 +5,8 @@
 @property (nonatomic, weak) id<MUKDataSourceDelegate> delegate;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic) id userInfo;
+
+- (void)requestBatchUpdate:(dispatch_block_t)updateBlock;
 @end
 
 @interface MUKDataSource (Contents)
@@ -16,28 +18,40 @@
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 
 - (NSInteger)indexOfItem:(id)item;
-- (NSIndexPath *)indexPathOfItem:(id)item;
 
-- (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex;
-- (void)removeItemAtIndex:(NSInteger)idx;
 - (void)insertItem:(id)item atIndex:(NSInteger)idx;
+- (void)removeItemAtIndex:(NSInteger)idx;
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem;
-
-- (void)requestBatchUpdate:(dispatch_block_t)updateBlock;
+- (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex;
 @end
 
 @interface MUKDataSource (Containment)
-@property (nonatomic, readonly) NSArray *childDataSources;
 @property (nonatomic, weak, readonly) MUKDataSource *parentDataSource;
-- (void)addChildDataSource:(MUKDataSource *)dataSource;
-- (void)removeDataSource:(MUKDataSource *)dataSource;
+
+// KVC compliant for mutable changes via -mutableArrayValueForKey:
+@property (nonatomic, copy) NSArray *childDataSources;
+- (void)setChildDataSources:(NSArray *)childDataSources animated:(BOOL)animated;
+
+- (void)appendChildDataSource:(MUKDataSource *)dataSource;
+- (void)insertChildDataSource:(MUKDataSource *)dataSource atIndex:(NSInteger)idx;
+- (void)removeChildDataSource:(MUKDataSource *)dataSource;
+- (void)removeChildDataSourceAtIndex:(NSInteger)idx;
+- (void)replaceChildDataSourceAtIndex:(NSInteger)idx withDataSource:(MUKDataSource *)newDataSource;
+- (void)moveChildDataSourceAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex;
 @end
 
 @interface MUKDataSource (Callbacks)
-- (void)didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didInsertChildDataSourcesAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didRemoveChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didReplaceChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didMoveChildDataSourcesFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didRefreshChildDataSourcesAtIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+
+- (void)didInsertItemsAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 - (void)didRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
-- (void)didInsertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
-- (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes withItems:(NSArray *)newItems inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
+- (void)didReloadDataInDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 
 - (void)didRequestBatchUpdate:(dispatch_block_t)updateBlock fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 @end

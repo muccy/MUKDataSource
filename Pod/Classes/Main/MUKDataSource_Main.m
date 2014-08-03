@@ -1,6 +1,7 @@
 #import "MUKDataSource_Main.h"
 #import "MUKDataSource_Private.h"
 #import "MUKDataSourceBatch.h"
+#import "MUKDataSourceArrayDelta.h"
 
 @interface MUKDataSource ()
 @property (nonatomic, copy) NSArray *items;
@@ -11,7 +12,15 @@
 @implementation MUKDataSource
 @dynamic hasChildDataSources;
 
-#pragma mark - items KVC compliance
+#pragma mark - Methods
+
+- (void)requestBatchUpdate:(dispatch_block_t)updateBlock {
+    // Delegate is assigned to perform batch updates: do nothing here
+    
+    [self didRequestBatchUpdate:updateBlock fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
+#pragma mark - self.items KVC compliance
 
 - (NSUInteger)countOfItems {
     return [_items count];
@@ -37,29 +46,52 @@
     [self replaceItemsAtIndexes:indexes withItems:array eventOrigin:MUKDataSourceEventOriginProgrammatic];
 }
 
+#pragma mark - self.childDataSources KVC compliance
+
+- (NSUInteger)countOfChildDataSources {
+    return [_childDataSources count];
+}
+
+- (NSArray *)childDataSourcesAtIndexes:(NSIndexSet *)indexes {
+    return [_childDataSources objectsAtIndexes:indexes];
+}
+
+- (void)getChildDataSources:(__unsafe_unretained id *)buffer range:(NSRange)inRange
+{
+    return [_childDataSources getObjects:buffer range:inRange];
+}
+
+- (void)insertChildDataSources:(NSArray *)array atIndexes:(NSIndexSet *)indexes {
+    [self insertChildDataSources:array atIndexes:indexes eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
+- (void)removeChildDataSourcesAtIndexes:(NSIndexSet *)indexes {
+    [self removeChildDataSourcesAtIndexes:indexes eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
+- (void)replaceChildDataSourcesAtIndexes:(NSIndexSet *)indexes withChildDataSources:(NSArray *)array
+{
+    [self replaceChildDataSourcesAtIndexes:indexes withChildDataSources:array eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
 #pragma mark - Contents
 
 - (void)setItems:(NSArray *)items {
     [self setItems:items animated:NO];
 }
 
-- (void)setItems:(NSArray *)items animated:(BOOL)animated {
-    if ([_items isEqualToArray:items]) {
+- (void)setItems:(NSArray *)newItems animated:(BOOL)animated {
+    if ([_items isEqualToArray:newItems]) {
         return;
     }
-    
-    // Define common storage code
-    dispatch_block_t storeItems = ^{
-        [self willChangeValueForKey:@"items"];
-        _items = [items copy];
-        [self didChangeValueForKey:@"items"];
-    };
-    
+
     if (!animated) {
         // 1-pass
-        storeItems();
+        [self storeItems:newItems emittingKVONotifications:YES];
         
-        // TODO: notify section refreshed
+        // Notify data source refreshed
+        NSInteger const idx = [self.parentDataSource.childDataSources indexOfObject:self];
+        [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic];
         
         return;
     }
@@ -67,70 +99,38 @@
     // Animated is way more complicated because I want to notify differences
     // in order to animate them
     
-    NSOrderedSet *oldItemSet = [[NSOrderedSet alloc] initWithArray:_items];
-    NSOrderedSet *newItemSet = [[NSOrderedSet alloc] initWithArray:items];
+    // Calculate delta
+    MUKDataSourceArrayDelta *delta = [[MUKDataSourceArrayDelta alloc] initWithSourceArray:_items destinationArray:newItems];
     
-    // Find deleted items
-    NSMutableOrderedSet *deletedItems = [oldItemSet mutableCopy];
-    [deletedItems minusOrderedSet:newItemSet];
-    
-    // Find inserted items
-    NSMutableOrderedSet *insertedItems = [newItemSet mutableCopy];
-    [insertedItems minusOrderedSet:oldItemSet];
-    
-    // Find moved items
-    NSMutableOrderedSet *potentiallyMovedItems = [newItemSet mutableCopy];
-    [potentiallyMovedItems intersectOrderedSet:oldItemSet];
-    
-    // Get deleted indexes
-    NSIndexSet *deletedIndexes = [oldItemSet indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
-    {
-        return [deletedItems containsObject:obj];
-    }];
-    
-    // Get inserted indexes
-    NSIndexSet *insertedIndexes = [newItemSet indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
-    {
-        return [insertedItems containsObject:obj];
-    }];
-    
-    // Store items
-    storeItems();
+    // Store new items
+    [self storeItems:newItems emittingKVONotifications:YES];
     
     // Compose a batch of notifications
     MUKDataSourceBatch *batch = [[MUKDataSourceBatch alloc] init];
     
     // Deletions
-    if ([deletedIndexes count] > 0) {
+    if ([delta.deletedIndexes count] > 0) {
         [batch addBlock:^{
-            [self didRemoveItems:[[deletedItems array] copy] atIndexes:deletedIndexes fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+            [self didRemoveItems:delta.deletedObjects atIndexes:delta.deletedIndexes fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
         }];
     }
     
     // Insertions
-    if ([insertedItems count] > 0) {
+    if ([delta.insertedIndexes count] > 0) {
         [batch addBlock:^{
-            [self didInsertItems:[[insertedItems array] copy] atIndexes:insertedIndexes toDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+            [self didInsertItemsAtIndexes:delta.insertedIndexes toDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
         }];
     }
     
     // Moves
-    NSMutableIndexSet *movedIndexSet = [[NSMutableIndexSet alloc] init];
-    
-    for (id movedItem in potentiallyMovedItems) {
-        NSInteger movedFromIndex = [oldItemSet indexOfObject:movedItem];
-        NSInteger movedToIndex = [newItemSet indexOfObject:movedItem];
-        BOOL const isInverseMove = [movedIndexSet containsIndex:movedToIndex];
-        
-        if (!isInverseMove && movedFromIndex != movedToIndex) {
-            [movedIndexSet addIndex:movedFromIndex];
-            
-            [batch addBlock:^{
-                [self didMoveItemFromDataSource:self atIndex:movedFromIndex toDataSource:self atIndex:movedToIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
-            }];
-        }
-    } // for
-    
+    [delta enumerateMovementsUsingBlock:^(NSInteger fromIndex, NSInteger toIndex, BOOL *stop)
+    {
+        // Add move to batch
+        [batch addBlock:^{
+            [self didMoveItemFromDataSource:self atIndex:fromIndex toDataSource:self atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        }];
+    }];
+
     // Request batch update
     [self requestBatchUpdate:^{
         [batch performAllBlocks];
@@ -153,61 +153,6 @@
     return [self.items indexOfObject:item];
 }
 
-- (NSIndexPath *)indexPathOfItem:(id)item {
-    if (!item) {
-        return nil;
-    }
-    
-    NSIndexPath *foundIndexPath = nil;
-    
-    if (self.hasChildDataSources) {
-        // Request child to provide index path
-        // Stop at first one you can find
-        NSInteger childIndex = 0;
-        for (MUKDataSource *childDataSource in self.childDataSources) {
-            NSIndexPath *indexPath = [childDataSource indexPathOfItem:item];
-            
-            if (indexPath) {
-                foundIndexPath = indexPath;
-                break;
-            }
-            else {
-                childIndex++;
-            }
-        } // for
-        
-        // Enrich found index path with child index
-        if (foundIndexPath) {
-            // Prepend index
-            NSUInteger *indexes = calloc(foundIndexPath.length + 1, sizeof(NSUInteger));
-            
-            if (indexes != NULL) {
-                [foundIndexPath getIndexes:indexes];
-                
-                memmove(indexes + 1, indexes, sizeof(NSUInteger) * foundIndexPath.length);
-                indexes[0] = childIndex;
-                
-                foundIndexPath = [NSIndexPath indexPathWithIndexes:indexes length:foundIndexPath.length + 1];
-                
-                free(indexes);
-            }
-            else {
-                foundIndexPath = nil; // Invalidate
-            }
-        }
-    }
-    else {
-        // No children: we are in a leaf
-        // Search for an index and compose an index path with only one element
-        NSInteger idx = [self indexOfItem:item];
-        if (idx != NSNotFound) {
-            foundIndexPath = [NSIndexPath indexPathWithIndex:idx];
-        }
-    }
-    
-    return foundIndexPath;
-}
-
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
 {
     [self moveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
@@ -225,56 +170,184 @@
     [self replaceItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx] withItems:newItem];
 }
 
-- (void)requestBatchUpdate:(dispatch_block_t)updateBlock {
-    // Delegate is assigned to perform batch updates: do nothing here
-    
-    [self didRequestBatchUpdate:updateBlock fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
-}
-
 #pragma mark - Containment
 
-- (void)addChildDataSource:(MUKDataSource *)dataSource {
+- (void)setChildDataSources:(NSArray *)childDataSources {
+    [self setChildDataSources:childDataSources animated:NO];
+}
+
+- (void)setChildDataSources:(NSArray *)newChildDataSources animated:(BOOL)animated
+{
+    if ([_childDataSources isEqualToArray:newChildDataSources]) {
+        return;
+    }
+    
+    // Duplicate data sources not allowed
+    NSSet *newChildDataSourceSet = [[NSSet alloc] initWithArray:newChildDataSources];
+    if ([newChildDataSourceSet count] != [newChildDataSources count]) {
+        return;
+    }
+    
+    // Ensure they reference to their parent
+    [newChildDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:self];
+    
+    if (!animated) {
+        // 1-pass
+        [self storeChildDataSources:newChildDataSources emittingKVONotifications:YES];
+        
+        // Notify all data changed
+        [self didReloadDataInDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        
+        return;
+    }
+    
+    // Animated is way more complicated because I want to notify differences
+    // in order to animate them
+    
+    // Calculate delta
+    MUKDataSourceArrayDelta *delta = [[MUKDataSourceArrayDelta alloc] initWithSourceArray:_childDataSources destinationArray:newChildDataSources];
+    
+    // Store new child data sources
+    [self storeChildDataSources:newChildDataSources emittingKVONotifications:YES];
+    
+    // Compose a batch of notifications
+    MUKDataSourceBatch *batch = [[MUKDataSourceBatch alloc] init];
+    
+    // Deletions
+    if ([delta.deletedIndexes count] > 0) {
+        [batch addBlock:^{
+            [self didRemoveChildDataSources:delta.deletedObjects atIndexes:delta.deletedIndexes fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        }];
+    }
+    
+    // Insertions
+    if ([delta.insertedIndexes count] > 0) {
+        [batch addBlock:^{
+            [self didInsertChildDataSourcesAtIndexes:delta.insertedIndexes toDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        }];
+    }
+    
+    // Moves
+    [delta enumerateMovementsUsingBlock:^(NSInteger fromIndex, NSInteger toIndex, BOOL *stop)
+     {
+         // Add move to batch
+         [batch addBlock:^{
+             [self didMoveChildDataSourcesFromDataSource:self atIndex:fromIndex toDataSource:self atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
+         }];
+     }];
+    
+    // Request batch update
+    [self requestBatchUpdate:^{
+        [batch performAllBlocks];
+    }];
+}
+
+- (void)appendChildDataSource:(MUKDataSource *)dataSource {
+    [self insertChildDataSource:dataSource atIndex:[self.childDataSources count]];
+}
+
+- (void)insertChildDataSource:(MUKDataSource *)dataSource atIndex:(NSInteger)idx
+{
+    [self insertChildDataSources:@[dataSource] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
+}
+
+- (void)removeDataSource:(MUKDataSource *)dataSource {
     if (!dataSource) {
         return;
     }
     
-    // Create if still nil
-    NSArray *childDataSources = self.childDataSources ?: [NSArray array];
-    
-    // No duplicates
-    if ([childDataSources indexOfObject:dataSource] != NSNotFound) {
+    NSInteger idx = [self.childDataSources indexOfObject:dataSource];
+    if (idx == NSNotFound) {
         return;
     }
     
-    dataSource.parentDataSource = self;
-    self.childDataSources = [childDataSources arrayByAddingObject:dataSource];
+    [self removeChildDataSourceAtIndex:idx];
 }
 
-- (void)removeDataSource:(MUKDataSource *)dataSource {
-    if (!dataSource || !self.childDataSources) {
-        return;
-    }
-    
-    NSMutableArray *childDataSources = [self.childDataSources mutableCopy];
-    [childDataSources removeObject:dataSource];
-    self.childDataSources = [childDataSources copy];
-    
-    if (dataSource.parentDataSource == self) {
-        dataSource.parentDataSource = nil;
-    }
+- (void)removeChildDataSourceAtIndex:(NSInteger)idx {
+    [self removeChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx]];
+}
+
+- (void)replaceChildDataSourceAtIndex:(NSInteger)idx withDataSource:(MUKDataSource *)newDataSource
+{
+    [self replaceChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] withChildDataSources:@[newDataSource]];
+}
+
+- (void)moveChildDataSourceAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
+{
+    [self moveChildDataSourceAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
 }
 
 #pragma mark - Callbacks
 
-- (void)didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didInsertChildDataSourcesAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     // Notify upwards
-    [self.parentDataSource didMoveItemFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    [self.parentDataSource didInsertChildDataSourcesAtIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didMoveItemFromDataSource:atIndex:toDataSource:atIndex:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didInsertChildDataSourcesAtIndexes:toDataSource:eventOrigin:)])
     {
-        [self.delegate dataSource:self didMoveItemFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didInsertChildDataSourcesAtIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
+    }
+}
+
+- (void)didRemoveChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didRemoveChildDataSources:childDataSources atIndexes:indexes fromDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didRemoveChildDataSources:atIndexes:fromDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didRemoveChildDataSources:childDataSources atIndexes:indexes fromDataSource:dataSource eventOrigin:eventOrigin];
+    }
+}
+
+- (void)didReplaceChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didReplaceChildDataSources:childDataSources atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceChildDataSources:atIndexes:inDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didReplaceChildDataSources:childDataSources atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+    }
+}
+- (void)didMoveChildDataSourcesFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didMoveChildDataSourcesFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didMoveChildDataSourcesFromDataSource:atIndex:toDataSource:atIndex:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didMoveChildDataSourcesFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    }
+}
+
+- (void)didRefreshChildDataSourcesAtIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didRefreshChildDataSourcesAtIndexes:inDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+    }
+}
+
+- (void)didInsertItemsAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didInsertItemsAtIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didInsertItemsAtIndexes:toDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didInsertItemsAtIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
     }
 }
 
@@ -290,27 +363,39 @@
     }
 }
 
-- (void)didInsertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     // Notify upwards
-    [self.parentDataSource didInsertItems:items atIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
+    [self.parentDataSource didReplaceItems:items atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didInsertItems:atIndexes:toDataSource:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceItems:atIndexes:inDataSource:eventOrigin:)])
     {
-        [self.delegate dataSource:self didInsertItems:items atIndexes:indexes toDataSource:dataSource eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didReplaceItems:items atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
     }
 }
 
-- (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes withItems:(NSArray *)newItems inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didMoveItemFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     // Notify upwards
-    [self.parentDataSource didReplaceItems:items atIndexes:indexes withItems:newItems inDataSource:dataSource eventOrigin:eventOrigin];
+    [self.parentDataSource didMoveItemFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceItems:atIndexes:withItems:inDataSource:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didMoveItemFromDataSource:atIndex:toDataSource:atIndex:eventOrigin:)])
     {
-        [self.delegate dataSource:self didReplaceItems:items atIndexes:indexes withItems:newItems inDataSource:dataSource eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didMoveItemFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    }
+}
+
+- (void)didReloadDataInDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Notify upwards
+    [self.parentDataSource didReloadDataInDataSource:dataSource eventOrigin:eventOrigin];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didReloadDataInDataSource:eventOrigin:)])
+    {
+        [self.delegate dataSource:self didReloadDataInDataSource:dataSource eventOrigin:eventOrigin];
     }
 }
 
@@ -327,6 +412,19 @@
 }
 
 #pragma mark - Private - Contents
+
+- (void)storeItems:(NSArray *)items emittingKVONotifications:(BOOL)emitKVONotifications
+{
+    if (emitKVONotifications) {
+        [self willChangeValueForKey:@"items"];
+    }
+    
+    _items = [items copy];
+    
+    if (emitKVONotifications) {
+        [self didChangeValueForKey:@"items"];
+    }
+}
 
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath usingIndexAtPosition:(NSUInteger)position
 {
@@ -350,22 +448,35 @@
 
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    if (self == destinationDataSource) {
-        // Simple swap
-        NSMutableArray *items = [self.items mutableCopy];
-        [items exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
-        self.items = items;
+    // Abort identities
+    if (destinationDataSource == self && sourceIndex == destinationIndex) {
+        return;
+    }
+
+    // Get data
+    NSMutableArray *items = [self.items mutableCopy];
+    id const item = items[sourceIndex];
+
+    // Remove from original position
+    [items removeObjectAtIndex:sourceIndex];
+    
+    // Get target data
+    NSMutableArray *destinationItems;
+    if (destinationDataSource == self) {
+        destinationItems = items;
     }
     else {
-        NSMutableArray *items = [self.items mutableCopy];
-        id item = items[sourceIndex];
-        [items removeObjectAtIndex:sourceIndex];
-        
-        NSMutableArray *destinationItems = [destinationDataSource.items mutableCopy];
-        [destinationItems insertObject:item atIndex:destinationIndex];
-        
-        self.items = items;
-        destinationDataSource.items = [destinationItems copy];
+        destinationItems = [destinationDataSource.items mutableCopy] ?: [[NSMutableArray alloc] init];
+    }
+    
+    // Insert in destination items
+    [destinationItems insertObject:item atIndex:destinationIndex];
+    
+    // Store
+    [self storeItems:items emittingKVONotifications:YES];
+    
+    if (destinationDataSource != self) {
+        [destinationDataSource storeItems:destinationItems emittingKVONotifications:YES];
     }
     
     // Notify
@@ -384,7 +495,7 @@
     NSArray *removedItems = [_items objectsAtIndexes:indexes];
     [newItems removeObjectsAtIndexes:indexes];
     
-    self.items = newItems; // Implicit copy and KVO notification
+    [self storeItems:newItems emittingKVONotifications:YES];
     
     // Notify
     [self didRemoveItems:removedItems atIndexes:indexes fromDataSource:self eventOrigin:eventOrigin];
@@ -396,13 +507,13 @@
         return;
     }
     
-    NSMutableArray *newItems = [_items mutableCopy];
+    NSMutableArray *newItems = [_items mutableCopy] ?: [[NSMutableArray alloc] init];
     [newItems insertObjects:items atIndexes:indexes];
 
-    self.items = newItems; // Implicit copy and KVO notification
+    [self storeItems:newItems emittingKVONotifications:YES];
     
     // Notify
-    [self didInsertItems:items atIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
+    [self didInsertItemsAtIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
 }
 
 - (void)replaceItemsAtIndexes:(NSIndexSet *)indexes withItems:(NSArray *)items eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
@@ -415,10 +526,10 @@
     NSArray *const oldItems = [_items objectsAtIndexes:indexes];
     [newItems replaceObjectsAtIndexes:indexes withObjects:items];
     
-    self.items = newItems; // Implicit copy and KVO notification
+    [self storeItems:newItems emittingKVONotifications:YES];
     
     // Notify
-    [self didReplaceItems:oldItems atIndexes:indexes withItems:items inDataSource:self eventOrigin:eventOrigin];
+    [self didReplaceItems:oldItems atIndexes:indexes inDataSource:self eventOrigin:eventOrigin];
 }
 
 #pragma mark - Private - Containment
@@ -433,6 +544,134 @@
     }
     
     return self.childDataSources[idx];
+}
+
+- (BOOL)containsOneOrMoreChildDataSources:(NSArray *)dataSources {
+    if ([dataSources count] == 0) {
+        return NO;
+    }
+    
+    for (MUKDataSource *dataSource in dataSources) {
+        if ([self.childDataSources containsObject:dataSource]) {
+            return YES;
+        }
+    } // for
+    
+    return NO;
+}
+
+- (void)storeChildDataSources:(NSArray *)childDataSources emittingKVONotifications:(BOOL)emitKVONotifications
+{
+    if (emitKVONotifications) {
+        [self willChangeValueForKey:@"childDataSources"];
+    }
+    
+    _childDataSources = [childDataSources copy];
+    
+    if (emitKVONotifications) {
+        [self didChangeValueForKey:@"childDataSources"];
+    }
+}
+
+- (void)moveChildDataSourceAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    // Abort identities
+    if (destinationDataSource == self && sourceIndex == destinationIndex) {
+        return;
+    }
+    
+    // Get data
+    NSMutableArray *childDataSources = [self.childDataSources mutableCopy];
+    MUKDataSource *const movedChildDataSource = childDataSources[sourceIndex];
+    
+    // Get target data
+    NSMutableArray *destinationChildDataSources;
+    if (destinationDataSource == self) {
+        destinationChildDataSources = childDataSources;
+    }
+    else {
+        destinationChildDataSources = [destinationDataSource.items mutableCopy] ?: [[NSMutableArray alloc] init];
+    }
+    
+    // Abort moves that create duplicates
+    if (destinationDataSource != self && [destinationDataSource containsOneOrMoreChildDataSources:@[movedChildDataSource]])
+    {
+        return;
+    }
+    
+    // Remove from original position
+    [childDataSources removeObjectAtIndex:sourceIndex];
+    
+    // Insert in destination items
+    [destinationChildDataSources insertObject:movedChildDataSource atIndex:destinationIndex];
+    movedChildDataSource.parentDataSource = destinationDataSource;
+    
+    // Store
+    [self storeChildDataSources:childDataSources emittingKVONotifications:YES];
+    
+    if (destinationDataSource != self) {
+        [destinationDataSource storeChildDataSources:destinationChildDataSources emittingKVONotifications:YES];
+    }
+    
+    // Notify
+    [self didMoveChildDataSourcesFromDataSource:self atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+}
+
+- (void)removeChildDataSourcesAtIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if ([indexes count] == 0 || [_childDataSources count] == 0) {
+        // Nothing to remove
+        return;
+    }
+    
+    NSMutableArray *newChildDataSources = [_childDataSources mutableCopy];
+    
+    NSArray *removedChildDataSources = [_childDataSources objectsAtIndexes:indexes];
+    [newChildDataSources removeObjectsAtIndexes:indexes];
+    [removedChildDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:nil];
+    
+    [self storeChildDataSources:newChildDataSources emittingKVONotifications:YES];
+    
+    // Notify
+    [self didRemoveChildDataSources:removedChildDataSources atIndexes:indexes fromDataSource:self eventOrigin:eventOrigin];
+}
+
+- (void)insertChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if (!childDataSources || [childDataSources count] != [indexes count] ||
+        [self containsOneOrMoreChildDataSources:childDataSources])
+    {
+        return;
+    }
+    
+    NSMutableArray *newChildDataSources = [_childDataSources mutableCopy] ?: [[NSMutableArray alloc] init];
+    [newChildDataSources insertObjects:childDataSources atIndexes:indexes];    
+    [childDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:self];
+    
+    [self storeChildDataSources:newChildDataSources emittingKVONotifications:YES];
+    
+    // Notify
+    [self didInsertChildDataSourcesAtIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
+}
+
+- (void)replaceChildDataSourcesAtIndexes:(NSIndexSet *)indexes withChildDataSources:(NSArray *)childDataSources eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+{
+    if (!indexes || [indexes count] != [childDataSources count]) {
+        return;
+    }
+    
+    NSMutableArray *newChildDataSources = [_childDataSources mutableCopy];
+    NSArray *const oldChildDataSources = [_childDataSources objectsAtIndexes:indexes];
+    
+    [newChildDataSources replaceObjectsAtIndexes:indexes withObjects:childDataSources];
+    
+    [childDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:self];
+    [oldChildDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:nil];
+    
+    [self storeChildDataSources:newChildDataSources emittingKVONotifications:YES];
+    
+    // Notify
+    [self didReplaceChildDataSources:oldChildDataSources atIndexes:indexes inDataSource:self eventOrigin:eventOrigin];
 }
 
 @end
