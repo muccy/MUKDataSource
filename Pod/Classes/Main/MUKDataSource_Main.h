@@ -17,8 +17,6 @@
 - (id)itemAtIndex:(NSInteger)idx;
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSInteger)indexOfItem:(id)item;
-
 - (void)insertItem:(id)item atIndex:(NSInteger)idx;
 - (void)removeItemAtIndex:(NSInteger)idx;
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem;
@@ -31,6 +29,9 @@
 // KVC compliant for mutable changes via -mutableArrayValueForKey:
 @property (nonatomic, copy) NSArray *childDataSources;
 - (void)setChildDataSources:(NSArray *)childDataSources animated:(BOOL)animated;
+
+- (MUKDataSource *)childDataSourceAtIndex:(NSInteger)idx;
+- (MUKDataSource *)childDataSourceAtIndexPath:(NSIndexPath *)indexPath;
 
 - (void)appendChildDataSource:(MUKDataSource *)dataSource;
 - (void)insertChildDataSource:(MUKDataSource *)dataSource atIndex:(NSInteger)idx;

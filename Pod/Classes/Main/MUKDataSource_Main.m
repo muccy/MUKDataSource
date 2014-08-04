@@ -149,10 +149,6 @@
     return [self itemAtIndexPath:indexPath usingIndexAtPosition:0];
 }
 
-- (NSInteger)indexOfItem:(id)item {
-    return [self.items indexOfObject:item];
-}
-
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
 {
     [self moveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
@@ -242,6 +238,18 @@
     }];
 }
 
+- (MUKDataSource *)childDataSourceAtIndex:(NSInteger)idx {
+    if (idx < 0 || idx >= [self.childDataSources count]) {
+        return nil;
+    }
+    
+    return self.childDataSources[idx];
+}
+
+- (MUKDataSource *)childDataSourceAtIndexPath:(NSIndexPath *)indexPath {
+    return [self childDataSourceAtIndexPath:indexPath usingIndexAtPosition:0];
+}
+
 - (void)appendChildDataSource:(MUKDataSource *)dataSource {
     [self insertChildDataSource:dataSource atIndex:[self.childDataSources count]];
 }
@@ -251,7 +259,7 @@
     [self insertChildDataSources:@[dataSource] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
 }
 
-- (void)removeDataSource:(MUKDataSource *)dataSource {
+- (void)removeChildDataSource:(MUKDataSource *)dataSource {
     if (!dataSource) {
         return;
     }
@@ -448,6 +456,10 @@
 
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
+    if (!destinationDataSource) {
+        return;
+    }
+    
     // Abort identities
     if (destinationDataSource == self && sourceIndex == destinationIndex) {
         return;
@@ -538,12 +550,24 @@
     return [self.childDataSources count] > 0;
 }
 
-- (MUKDataSource *)childDataSourceAtIndex:(NSInteger)idx {
-    if (idx < 0 || idx >= [self.childDataSources count]) {
+- (MUKDataSource *)childDataSourceAtIndexPath:(NSIndexPath *)indexPath usingIndexAtPosition:(NSUInteger)position
+{
+    if (!indexPath || position >= indexPath.length) {
         return nil;
     }
     
-    return self.childDataSources[idx];
+    NSUInteger const idx = [indexPath indexAtPosition:position];
+    BOOL const lastAvailablePosition = position == indexPath.length - 1;
+    
+    MUKDataSource *childDataSource;
+    if (lastAvailablePosition) {
+        childDataSource = [self childDataSourceAtIndex:idx];
+    }
+    else {
+        childDataSource = [[self childDataSourceAtIndex:idx] childDataSourceAtIndexPath:indexPath usingIndexAtPosition:position+1];
+    }
+    
+    return childDataSource;
 }
 
 - (BOOL)containsOneOrMoreChildDataSources:(NSArray *)dataSources {
@@ -575,6 +599,10 @@
 
 - (void)moveChildDataSourceAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
+    if (!destinationDataSource) {
+        return;
+    }
+    
     // Abort identities
     if (destinationDataSource == self && sourceIndex == destinationIndex) {
         return;
@@ -654,24 +682,29 @@
     [self didInsertChildDataSourcesAtIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
 }
 
-- (void)replaceChildDataSourcesAtIndexes:(NSIndexSet *)indexes withChildDataSources:(NSArray *)childDataSources eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)replaceChildDataSourcesAtIndexes:(NSIndexSet *)indexes withChildDataSources:(NSArray *)insertedChildDataSources eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    if (!indexes || [indexes count] != [childDataSources count]) {
+    if (!indexes || [indexes count] != [insertedChildDataSources count]) {
         return;
     }
     
-    NSMutableArray *newChildDataSources = [_childDataSources mutableCopy];
-    NSArray *const oldChildDataSources = [_childDataSources objectsAtIndexes:indexes];
+    NSMutableArray *updatedChildDataSources = [_childDataSources mutableCopy];
+    NSArray *const removedChildDataSources = [_childDataSources objectsAtIndexes:indexes];
     
-    [newChildDataSources replaceObjectsAtIndexes:indexes withObjects:childDataSources];
+    [updatedChildDataSources replaceObjectsAtIndexes:indexes withObjects:insertedChildDataSources];
     
-    [childDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:self];
-    [oldChildDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:nil];
+    for (MUKDataSource *removedDataSource in removedChildDataSources) {
+        if (![updatedChildDataSources containsObject:removedDataSource]) {
+            removedDataSource.parentDataSource = nil;
+        }
+    } // for
+
+    [insertedChildDataSources makeObjectsPerformSelector:@selector(setParentDataSource:) withObject:self];
     
-    [self storeChildDataSources:newChildDataSources emittingKVONotifications:YES];
+    [self storeChildDataSources:updatedChildDataSources emittingKVONotifications:YES];
     
     // Notify
-    [self didReplaceChildDataSources:oldChildDataSources atIndexes:indexes inDataSource:self eventOrigin:eventOrigin];
+    [self didReplaceChildDataSources:removedChildDataSources atIndexes:indexes inDataSource:self eventOrigin:eventOrigin];
 }
 
 @end

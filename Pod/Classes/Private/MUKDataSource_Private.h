@@ -10,7 +10,6 @@
 
 @interface MUKDataSource ()
 @property (nonatomic, readonly) BOOL hasChildDataSources;
-- (MUKDataSource *)childDataSourceAtIndex:(NSInteger)idx;
 
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 - (void)removeItemsAtIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
