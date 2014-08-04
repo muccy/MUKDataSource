@@ -167,7 +167,7 @@
 }
 
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem {
-    [self replaceItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx] withItems:newItem];
+    [self replaceItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx] withItems:@[newItem]];
 }
 
 #pragma mark - Containment
