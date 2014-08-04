@@ -362,4 +362,281 @@ describe(@"Containment", ^{
     });
 });
 
+describe(@"Callbacks", ^{
+    it(@"should invoke callbacks for items insertion", ^{
+        MUKDataSource *rootDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *childDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *dataSource = [[MUKDataSource alloc] init];
+        rootDataSource.items = childDataSource.items = dataSource.items = @[];
+        [rootDataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:dataSource];
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        NSMutableArray *itemsProxy = [mockDataSource mutableArrayValueForKey:@"items"];
+        
+        void (^prepareExpectations)(NSIndexSet *, MUKDataSource *) = ^(NSIndexSet *insertedIndexSet, MUKDataSource *originatingDataSource)
+        {
+            OCMExpect([mockDataSource didInsertItemsAtIndexes:insertedIndexSet toDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockChildDataSource didInsertItemsAtIndexes:insertedIndexSet toDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockRootDataSource didInsertItemsAtIndexes:insertedIndexSet toDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        };
+        
+        // Insertion of multiple items
+        NSIndexSet *insertedIndexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        prepareExpectations(insertedIndexSet, dataSource);
+        [itemsProxy insertObjects:@[@"A", @"B"] atIndexes:insertedIndexSet];
+        
+        // Insertion of single item
+        insertedIndexSet = [NSIndexSet indexSetWithIndex:2];
+        prepareExpectations(insertedIndexSet, dataSource);
+        [mockDataSource insertItem:@"C" atIndex:[insertedIndexSet firstIndex]];
+        
+        // Invalid insertions will not cause any callback
+        [mockDataSource insertItem:nil atIndex:0];
+        
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
+    
+    it(@"should invoke callbacks for items deletion", ^{
+        MUKDataSource *rootDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *childDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *dataSource = [[MUKDataSource alloc] init];
+        dataSource.items = @[@"A", @"B", @"C", @"D"];
+        [rootDataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:dataSource];
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        NSMutableArray *itemsProxy = [mockDataSource mutableArrayValueForKey:@"items"];
+        
+        void (^prepareExpectations)(NSArray *, NSIndexSet *, MUKDataSource *) = ^(NSArray *deletedItems, NSIndexSet *deletedIndexes, MUKDataSource *originatingDataSource)
+        {
+            OCMExpect([mockDataSource didRemoveItems:deletedItems atIndexes:deletedIndexes fromDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockChildDataSource didRemoveItems:deletedItems atIndexes:deletedIndexes fromDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockRootDataSource didRemoveItems:deletedItems atIndexes:deletedIndexes fromDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        };
+        
+        // Deletion of multiple items
+        NSIndexSet *deletedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
+        NSArray *deletedItems = [[mockDataSource items] objectsAtIndexes:deletedIndexes];
+        prepareExpectations(deletedItems, deletedIndexes, dataSource);
+        [itemsProxy removeObjectsAtIndexes:deletedIndexes];
+        
+        // Deletion of single item
+        deletedIndexes = [NSIndexSet indexSetWithIndex:1];
+        deletedItems = [[mockDataSource items] objectsAtIndexes:deletedIndexes];
+        prepareExpectations(deletedItems, deletedIndexes, dataSource);
+        [mockDataSource removeItemAtIndex:[deletedIndexes firstIndex]];
+        
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
+
+    it(@"should invoke callbacks for items replace", ^{
+        MUKDataSource *rootDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *childDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *dataSource = [[MUKDataSource alloc] init];
+        dataSource.items = @[@"A", @"B", @"C", @"D"];
+        [rootDataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:dataSource];
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        NSMutableArray *itemsProxy = [mockDataSource mutableArrayValueForKey:@"items"];
+        
+        void (^prepareExpectations)(NSArray *, NSIndexSet *, MUKDataSource *) = ^(NSArray *oldItems, NSIndexSet *replacedIndexes, MUKDataSource *originatingDataSource)
+        {
+            OCMExpect([mockDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockChildDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockRootDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        };
+        
+        // Replace multiple items
+        NSIndexSet *replacedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        NSArray *replacedItems = [[mockDataSource items] objectsAtIndexes:replacedIndexes];
+        prepareExpectations(replacedItems, replacedIndexes, dataSource);
+        [itemsProxy replaceObjectsAtIndexes:replacedIndexes withObjects:@[@"X", @"Y"]];
+        
+        // Replace single item
+        replacedIndexes = [NSIndexSet indexSetWithIndex:3];
+        replacedItems = [[mockDataSource items] objectsAtIndexes:replacedIndexes];
+        prepareExpectations(replacedItems, replacedIndexes, dataSource);
+        [mockDataSource replaceItemAtIndex:[replacedIndexes firstIndex] withItem:@"Z"];
+        
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
+    
+    it(@"should invoke callbacks for items move", ^{
+        MUKDataSource *rootDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *childDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *dataSource = [[MUKDataSource alloc] init];
+        dataSource.items = @[@"A", @"B", @"C", @"D"];
+        [rootDataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:dataSource];
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        
+        void (^prepareExpectations)(MUKDataSource *, NSInteger, MUKDataSource *, NSInteger) = ^(MUKDataSource *fromDataSource, NSInteger fromIndex, MUKDataSource *toDataSource, NSInteger toIndex)
+        {
+            OCMExpect([mockDataSource didMoveItemFromDataSource:fromDataSource atIndex:fromIndex toDataSource:toDataSource atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockChildDataSource didMoveItemFromDataSource:fromDataSource atIndex:fromIndex toDataSource:toDataSource atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockRootDataSource didMoveItemFromDataSource:fromDataSource atIndex:fromIndex toDataSource:toDataSource atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        };
+        
+        // Move item inside same data source
+        MUKDataSource *fromDataSource = dataSource;
+        MUKDataSource *toDataSource = dataSource;
+        NSInteger fromIndex = 0;
+        NSInteger toIndex = 1;
+        prepareExpectations(fromDataSource, fromIndex, toDataSource, toIndex);
+        [mockDataSource moveItemAtIndex:fromIndex toDataSource:toDataSource atIndex:toIndex];
+        
+        // Move item between data sources
+        fromDataSource = dataSource;
+        toDataSource = childDataSource;
+        fromIndex = 2;
+        toIndex = 0;
+        prepareExpectations(fromDataSource, fromIndex, toDataSource, toIndex);
+        [mockDataSource moveItemAtIndex:fromIndex toDataSource:toDataSource atIndex:toIndex];
+        
+        // Invalid moves does not generate callbacks
+        [mockDataSource moveItemAtIndex:0 toDataSource:nil atIndex:0];
+        
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
+    
+    it(@"should invoke callbacks for items overwriting without animation", ^{
+        MUKDataSource *rootDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *childDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *dataSource = [[MUKDataSource alloc] init];
+        dataSource.items = @[@"A", @"B", @"C", @"D"];
+        [rootDataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:dataSource];
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        
+        void (^prepareExpectations)(NSInteger, MUKDataSource *) = ^(NSInteger idx, MUKDataSource *dataSource)
+        {
+            OCMExpect([mockDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockChildDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            
+            OCMExpect([mockRootDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        };
+        
+        NSArray *items = @[@"A", @"B"];
+        prepareExpectations(0, dataSource.parentDataSource);
+        [mockDataSource setItems:items animated:NO];
+        
+        // Setting same items does not generate callbacks
+        [mockDataSource setItems:items animated:NO];
+        
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
+    
+    it(@"should invoke callbacks for items overwriting with animation", ^{
+        MUKDataSource *rootDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *childDataSource = [[MUKDataSource alloc] init];
+        MUKDataSource *dataSource = [[MUKDataSource alloc] init];
+        dataSource.items = @[@"A", @"B", @"C", @"D"];
+        [rootDataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:dataSource];
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        
+        void (^prepareExpectations)(NSInteger, MUKDataSource *) = ^(NSInteger idx, MUKDataSource *dataSource)
+        {
+            // A, B, C, D  ---> E, A, C
+            void (^prepareInsertExpectation)(id) = ^(id mock) {
+                // E in 0
+                OCMExpect([mock didInsertItemsAtIndexes:[NSIndexSet indexSetWithIndex:0] toDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            };
+            
+            void (^prepareMoveExpectation)(id) = ^(id mock) {
+                // A: 0 -> 1
+                OCMExpect([mock didMoveItemFromDataSource:dataSource atIndex:0 toDataSource:dataSource atIndex:1 eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            };
+            
+            void (^prepareDeletionExpectation)(id) = ^(id mock) {
+                // B, D: deleted
+                NSMutableIndexSet *indexes = [[NSMutableIndexSet alloc] init];
+                [indexes addIndex:1];
+                [indexes addIndex:3];
+                
+                OCMExpect([mock didRemoveItems:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    if ([obj isKindOfClass:[NSArray class]]) {
+                        return [obj count] == 2 && [obj containsObject:@"B"] && [obj containsObject:@"D"];
+                    }
+                    
+                    return NO;
+                }] atIndexes:indexes fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            };
+            
+            OCMExpect([mockDataSource requestBatchUpdate:[OCMArg isNotNil]]).andForwardToRealObject();
+            
+            OCMExpect([mockDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockRootDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andDo(^(NSInvocation *invocation)
+            {
+                // Events contained inside batch are executed from here, instead
+                // of delegate (which is not tested here)
+                dispatch_block_t updateBlock;
+                [invocation getArgument:&updateBlock atIndex:2];
+                updateBlock();
+            });
+            
+            // Inside batch I expect...
+            prepareInsertExpectation(mockDataSource);
+            prepareInsertExpectation(mockChildDataSource);
+            prepareInsertExpectation(mockRootDataSource);
+            
+            prepareMoveExpectation(mockDataSource);
+            prepareMoveExpectation(mockChildDataSource);
+            prepareMoveExpectation(mockRootDataSource);
+            
+            prepareDeletionExpectation(mockDataSource);
+            prepareDeletionExpectation(mockChildDataSource);
+            prepareDeletionExpectation(mockRootDataSource);
+        };
+        
+        NSArray *items = @[@"E", @"A", @"C"];
+        prepareExpectations(0, dataSource);
+        [mockDataSource setItems:items animated:YES];
+        
+        // Setting same items does not generate callbacks
+        [mockDataSource setItems:items animated:YES];
+        
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
+});
+
 SpecEnd
