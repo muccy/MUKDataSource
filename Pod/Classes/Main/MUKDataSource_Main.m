@@ -159,10 +159,18 @@
 }
 
 - (void)insertItem:(id)item atIndex:(NSInteger)idx {
+    if (!item) {
+        return;
+    }
+    
     [self insertItems:@[item] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
 }
 
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem {
+    if (!newItem) {
+        return;
+    }
+    
     [self replaceItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx] withItems:@[newItem]];
 }
 
@@ -256,6 +264,10 @@
 
 - (void)insertChildDataSource:(MUKDataSource *)dataSource atIndex:(NSInteger)idx
 {
+    if (!dataSource) {
+        return;
+    }
+    
     [self insertChildDataSources:@[dataSource] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
 }
 
@@ -278,6 +290,10 @@
 
 - (void)replaceChildDataSourceAtIndex:(NSInteger)idx withDataSource:(MUKDataSource *)newDataSource
 {
+    if (!newDataSource) {
+        return;
+    }
+    
     [self replaceChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] withChildDataSources:@[newDataSource]];
 }
 

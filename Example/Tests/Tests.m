@@ -54,7 +54,7 @@ describe(@"Contents", ^{
     it(@"should throw an exception when you try to access KVC proxy with items is nil", ^{
         dataSource.items = nil;
         NSMutableArray *itemsProxy = [dataSource mutableArrayValueForKey:@"items"];
-        XCTAssertThrows(([itemsProxy addObjectsFromArray:@[@"A", @"B"]]), @"items key points to nil");
+        expect(^{ [itemsProxy addObjectsFromArray:@[@"A", @"B"]]; }).to.raiseAny();
     });
     
     it(@"should KVC compliant for items", ^{
@@ -90,28 +90,32 @@ describe(@"Contents", ^{
     it(@"should manage items with public primitives", ^{
         dataSource.items = nil;
         
-        XCTAssertThrows([dataSource insertItem:nil atIndex:0], @"Nil values not allowed");
-        XCTAssertThrows([dataSource insertItem:@"A" atIndex:1], @"Out out bounds");
+        expect(^{ [dataSource insertItem:@"A" atIndex:1]; }).to.raiseAny();
         [dataSource insertItem:@"B" atIndex:0];
         expect(dataSource.items).to.equal(@[@"B"]);
         [dataSource insertItem:@"C" atIndex:1];
         expect(dataSource.items).to.equal(@[@"B", @"C"]);
         [dataSource insertItem:@"A" atIndex:0];
         expect(dataSource.items).to.equal(@[@"A", @"B", @"C"]);
+        [dataSource insertItem:nil atIndex:0];
+        expect(dataSource.items).to.equal(@[@"A", @"B", @"C"]);
         
-        XCTAssertThrows([dataSource removeItemAtIndex:10], @"Out of bounds");
+        expect(^{ [dataSource removeItemAtIndex:10]; }).to.raiseAny();
         [dataSource removeItemAtIndex:1];
         expect(dataSource.items).to.equal(@[@"A", @"C"]);
         
-        XCTAssertThrows([dataSource replaceItemAtIndex:0 withItem:nil], @"Nil values not allowed");
-        XCTAssertThrows([dataSource replaceItemAtIndex:10 withItem:@"X"], @"Out of bounds");
+        expect(^{ [dataSource replaceItemAtIndex:10 withItem:@"X"]; }).to.raiseAny();
         [dataSource replaceItemAtIndex:1 withItem:@"B"];
+        expect(dataSource.items).to.equal(@[@"A", @"B"]);
+        [dataSource replaceItemAtIndex:1 withItem:nil];
         expect(dataSource.items).to.equal(@[@"A", @"B"]);
         
         [dataSource insertItem:@"C" atIndex:2];
-        XCTAssertThrows([dataSource moveItemAtIndex:10 toDataSource:dataSource atIndex:0], @"Out of bounds");
-        XCTAssertThrows([dataSource moveItemAtIndex:2 toDataSource:dataSource atIndex:-1], @"Out of bounds");
+        expect(^{ [dataSource moveItemAtIndex:10 toDataSource:dataSource atIndex:0]; }).to.raiseAny();
+        expect(^{ [dataSource moveItemAtIndex:2 toDataSource:dataSource atIndex:-1]; }).to.raiseAny();
         [dataSource moveItemAtIndex:2 toDataSource:dataSource atIndex:0];
+        expect(dataSource.items).to.equal(@[@"C", @"A", @"B"]);
+        [dataSource moveItemAtIndex:2 toDataSource:nil atIndex:0];
         expect(dataSource.items).to.equal(@[@"C", @"A", @"B"]);
     });
 });
@@ -158,7 +162,7 @@ describe(@"Containment", ^{
     {
         MUKDataSource *rootDataSource = CreateDataSource();
         NSMutableArray *itemsProxy = [rootDataSource mutableArrayValueForKey:@"childDataSources"];
-        XCTAssertThrows(([itemsProxy addObjectsFromArray:@[CreateDataSource()]]), @"childDataSources key points to nil");
+        expect(^{ [itemsProxy addObjectsFromArray:@[CreateDataSource()]]; }).to.raiseAny();
     });
     
     it(@"should KVC compliant for childDataSources", ^{
@@ -272,11 +276,14 @@ describe(@"Containment", ^{
         };
         
         // Insert
-        XCTAssertThrows([rootDataSource insertChildDataSource:nil atIndex:0], @"Nil values not allowed");
-        XCTAssertThrows([rootDataSource insertChildDataSource:CreateDataSource() atIndex:1], @"Out of bounds");
+        expect(^{ [rootDataSource insertChildDataSource:CreateDataSource() atIndex:1]; }).to.raiseAny();
         
         MUKDataSource *dataSource = CreateDataSource();
         [rootDataSource insertChildDataSource:dataSource atIndex:0];
+        expect(rootDataSource.childDataSources).to.equal(@[dataSource]);
+        testParent(rootDataSource.childDataSources);
+        
+        [rootDataSource insertChildDataSource:nil atIndex:0];
         expect(rootDataSource.childDataSources).to.equal(@[dataSource]);
         testParent(rootDataSource.childDataSources);
         
@@ -292,11 +299,9 @@ describe(@"Containment", ^{
         [rootDataSource appendChildDataSource:anotherDataSource];
         expect([rootDataSource.childDataSources count]).to.equal(2); // No duplicates
         testParent(rootDataSource.childDataSources);
-        
-        XCTAssertThrows([rootDataSource appendChildDataSource:nil], @"Nil values not allowed");
-        
+ 
         // Remove
-        XCTAssertThrows([rootDataSource removeChildDataSourceAtIndex:100], @"Out of bounds");
+        expect(^{ [rootDataSource removeChildDataSourceAtIndex:100]; }).to.raiseAny();
         
         [rootDataSource removeChildDataSourceAtIndex:0];
         expect(rootDataSource.childDataSources).to.equal(@[anotherDataSource]);
@@ -317,8 +322,7 @@ describe(@"Containment", ^{
         
         // Replace
         rootDataSource.childDataSources = @[dataSource];
-        XCTAssertThrows([rootDataSource replaceChildDataSourceAtIndex:100 withDataSource:anotherDataSource], @"Out of bounds");
-        XCTAssertThrows([rootDataSource replaceChildDataSourceAtIndex:0 withDataSource:nil], @"Nil value not allowed");
+        expect(^{ [rootDataSource replaceChildDataSourceAtIndex:100 withDataSource:anotherDataSource]; }).to.raiseAny();
         
         [rootDataSource replaceChildDataSourceAtIndex:0 withDataSource:anotherDataSource];
         expect(rootDataSource.childDataSources).to.equal(@[anotherDataSource]);
@@ -327,8 +331,8 @@ describe(@"Containment", ^{
         
         // Move
         rootDataSource.childDataSources = @[dataSource, anotherDataSource];
-        XCTAssertThrows([rootDataSource moveChildDataSourceAtIndex:100 toDataSource:rootDataSource atIndex:0], @"Out of bounds");
-        XCTAssertThrows([rootDataSource moveChildDataSourceAtIndex:0 toDataSource:rootDataSource atIndex:100], @"Out of bounds");
+        expect(^{ [rootDataSource moveChildDataSourceAtIndex:100 toDataSource:rootDataSource atIndex:0]; }).to.raiseAny();
+        expect(^{ [rootDataSource moveChildDataSourceAtIndex:0 toDataSource:rootDataSource atIndex:100]; }).to.raiseAny();
 
         [rootDataSource moveChildDataSourceAtIndex:0 toDataSource:rootDataSource atIndex:1];
         expect(rootDataSource.childDataSources).to.equal(@[anotherDataSource, dataSource]);
