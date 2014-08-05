@@ -931,6 +931,44 @@ describe(@"Callbacks", ^{
         expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
         expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
     });
+    
+    it(@"should invoke callbacks for batch update request", ^{
+        MUKDataSource *rootDataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        MUKDataSource *dataSource = CreateDataSource();
+        [rootDataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:dataSource];
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        
+        void (^prepareExpectations)(dispatch_block_t, MUKDataSource *) = ^(dispatch_block_t updateBlock, MUKDataSource *dataSource)
+        {
+            OCMExpect([mockDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockRootDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andDo(^(NSInvocation *invocation)
+            {
+                // Events contained inside batch are executed from here, instead
+                // of delegate (which is not tested here)
+                dispatch_block_t updateBlock;
+                [invocation getArgument:&updateBlock atIndex:2];
+                updateBlock();
+            });
+        };
+        
+        __block BOOL updateBlockCalled = NO;
+        dispatch_block_t updateBlock = ^{
+            updateBlockCalled = YES;
+        };
+        prepareExpectations(updateBlock, dataSource);
+        [mockDataSource requestBatchUpdate:updateBlock];
+        
+        expect(updateBlock).to.beTruthy();
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
 });
 
 SpecEnd
