@@ -236,7 +236,7 @@
      {
          // Add move to batch
          [batch addBlock:^{
-             [self didMoveChildDataSourcesFromDataSource:self atIndex:fromIndex toDataSource:self atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
+             [self didMoveChildDataSourceFromDataSource:self atIndex:fromIndex toDataSource:self atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
          }];
      }];
     
@@ -339,10 +339,10 @@
         [self.delegate dataSource:self didReplaceChildDataSources:childDataSources atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
     }
 }
-- (void)didMoveChildDataSourcesFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didMoveChildDataSourceFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     // Notify upwards
-    [self.parentDataSource didMoveChildDataSourcesFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    [self.parentDataSource didMoveChildDataSourceFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
     
     // Inform delegate
     if ([self.delegate respondsToSelector:@selector(dataSource:didMoveChildDataSourcesFromDataSource:atIndex:toDataSource:atIndex:eventOrigin:)])
@@ -658,7 +658,7 @@
     }
     
     // Notify
-    [self didMoveChildDataSourcesFromDataSource:self atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+    [self didMoveChildDataSourceFromDataSource:self atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
 }
 
 - (void)removeChildDataSourcesAtIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
