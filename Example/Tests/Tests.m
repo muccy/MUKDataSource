@@ -1153,6 +1153,19 @@ describe(@"Delegate", ^{
 
 SpecEnd
 
+#pragma mark - Content Loading
+SpecBegin(ContentLoading)
+
+#pragma mark State
+describe(@"State", ^{
+    it(@"should start at initial state", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadingStateInitial);
+    });
+});
+
+SpecEnd
+
 #pragma mark - Table View
 SpecBegin(TableView)
 

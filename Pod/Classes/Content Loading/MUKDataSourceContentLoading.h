@@ -1,0 +1,10 @@
+#import <Foundation/Foundation.h>
+
+extern NSString *const MUKDataSourceContentLoadingStateInitial;
+extern NSString *const MUKDataSourceContentLoadingStateRestoringFromCache;
+extern NSString *const MUKDataSourceContentLoadingStateRefreshing;
+extern NSString *const MUKDataSourceContentLoadingStateAppending;
+extern NSString *const MUKDataSourceContentLoadingStateLoaded;
+extern NSString *const MUKDataSourceContentLoadingStateSavingToCache;
+extern NSString *const MUKDataSourceContentLoadingStateNoContent;
+extern NSString *const MUKDataSourceContentLoadingStateError;

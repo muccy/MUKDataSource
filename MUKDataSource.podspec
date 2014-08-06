@@ -34,5 +34,5 @@ Pod::Spec.new do |s|
   s.private_header_files = 'Pod/Classes/Private/*.h'
 
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'TransitionKit', '~> 2.1'
 end

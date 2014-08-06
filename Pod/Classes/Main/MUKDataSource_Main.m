@@ -2,15 +2,31 @@
 #import "MUKDataSource_Private.h"
 #import "MUKDataSourceBatch.h"
 #import "MUKDataSourceArrayDelta.h"
+#import "MUKDataSourceContentLoading_Events.h"
+#import <TransitionKit/TransitionKit.h>
 
 @interface MUKDataSource ()
 @property (nonatomic, copy) NSArray *items;
 @property (nonatomic, readwrite) NSArray *childDataSources;
 @property (nonatomic, weak, readwrite) MUKDataSource *parentDataSource;
+@property (nonatomic, readonly) NSString *loadingState;
+
+@property (nonatomic) TKStateMachine *stateMachine;
 @end
 
 @implementation MUKDataSource
 @dynamic hasChildDataSources;
+@dynamic loadingState;
+
+#pragma mark - Accessors
+
+- (TKStateMachine *)stateMachine {
+    if (!_stateMachine) {
+        _stateMachine = [self newStateMachine];
+    }
+    
+    return _stateMachine;
+}
 
 #pragma mark - Methods
 
@@ -306,6 +322,16 @@
 - (void)moveChildDataSourceAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
 {
     [self moveChildDataSourceAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];
+}
+
+#pragma mark - State
+
+- (NSString *)loadingState {
+    if (!_stateMachine) {
+        return MUKDataSourceContentLoadingStateInitial;
+    }
+    
+    return self.stateMachine.currentState.name;
 }
 
 #pragma mark - Callbacks
@@ -727,6 +753,91 @@
     
     // Notify
     [self didReplaceChildDataSources:removedChildDataSources atIndexes:indexes inDataSource:self eventOrigin:eventOrigin];
+}
+
+#pragma mark - Private — State
+
+- (TKStateMachine *)newStateMachine {
+    TKStateMachine *stateMachine = [[TKStateMachine alloc] init];
+    
+    NSArray *states = [self newStateMachineStates];
+    [stateMachine addStates:states];
+    stateMachine.initialState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateInitial];
+    
+    NSArray *events = [self newEventsForStateMachine:stateMachine];
+    [stateMachine addEvents:events];
+    
+    return stateMachine;
+}
+
+- (NSArray *)newStateMachineStates {
+    NSMutableArray *states = [[NSMutableArray alloc] init];
+    
+    TKState *state = [TKState stateWithName:MUKDataSourceContentLoadingStateInitial];
+    [states addObject:state];
+    
+    state = [TKState stateWithName:MUKDataSourceContentLoadingStateRestoringFromCache];
+    [states addObject:state];
+    
+    state = [TKState stateWithName:MUKDataSourceContentLoadingStateRefreshing];
+    [states addObject:state];
+    
+    state = [TKState stateWithName:MUKDataSourceContentLoadingStateAppending];
+    [states addObject:state];
+    
+    state = [TKState stateWithName:MUKDataSourceContentLoadingStateLoaded];
+    [states addObject:state];
+    
+    state = [TKState stateWithName:MUKDataSourceContentLoadingStateSavingToCache];
+    [states addObject:state];
+    
+    state = [TKState stateWithName:MUKDataSourceContentLoadingStateNoContent];
+    [states addObject:state];
+    
+    state = [TKState stateWithName:MUKDataSourceContentLoadingStateError];
+    [states addObject:state];
+    
+    return [states copy];
+}
+
+- (NSArray *)newEventsForStateMachine:(TKStateMachine *)stateMachine {
+    if (!stateMachine) {
+        return nil;
+    }
+    
+    NSMutableArray *events = [[NSMutableArray alloc] init];
+    
+    TKState *const initialState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateInitial];
+    TKState *const restoringFromCacheState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateRestoringFromCache];
+    TKState *const loadedState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateLoaded];
+    TKState *const refreshingState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateRefreshing];
+    TKState *const appendingState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateAppending];
+    TKState *const noContentState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateNoContent];
+    TKState *const errorState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateError];
+    TKState *const savingCacheState = [stateMachine stateNamed:MUKDataSourceContentLoadingStateSavingToCache];
+    
+    TKEvent *event = [TKEvent eventWithName:MUKDataSourceContentLoadingEventRestoreFromCache transitioningFromStates:@[initialState] toState:restoringFromCacheState];
+    [events addObject:event];
+    
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadingEventRefresh transitioningFromStates:@[initialState, loadedState, noContentState, errorState] toState:refreshingState];
+    [events addObject:event];
+    
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadingEventAppend transitioningFromStates:@[loadedState] toState:appendingState];
+    [events addObject:event];
+    
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadingEventDisplayLoadedContents transitioningFromStates:@[restoringFromCacheState, refreshingState, appendingState, savingCacheState] toState:loadedState];
+    [events addObject:event];
+    
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadingEventDisplayNoContent transitioningFromStates:@[restoringFromCacheState, refreshingState, savingCacheState] toState:noContentState];
+    [events addObject:event];
+    
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadingEventDisplayError transitioningFromStates:@[refreshingState] toState:errorState];
+    [events addObject:event];
+    
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadingEventSaveToCache transitioningFromStates:@[loadedState] toState:savingCacheState];
+    [events addObject:event];
+    
+    return [events copy];
 }
 
 @end

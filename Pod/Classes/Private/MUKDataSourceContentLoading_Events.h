@@ -1,0 +1,9 @@
+#import <Foundation/Foundation.h>
+
+extern NSString *const MUKDataSourceContentLoadingEventRestoreFromCache;
+extern NSString *const MUKDataSourceContentLoadingEventRefresh;
+extern NSString *const MUKDataSourceContentLoadingEventAppend;
+extern NSString *const MUKDataSourceContentLoadingEventDisplayLoadedContents;
+extern NSString *const MUKDataSourceContentLoadingEventDisplayNoContent;
+extern NSString *const MUKDataSourceContentLoadingEventDisplayError;
+extern NSString *const MUKDataSourceContentLoadingEventSaveToCache;
