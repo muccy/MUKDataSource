@@ -91,7 +91,9 @@
         
         // Notify data source refreshed
         NSInteger const idx = [self.parentDataSource.childDataSources indexOfObject:self];
-        [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        if (idx != NSNotFound) {
+            [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        }
         
         return;
     }
@@ -155,11 +157,13 @@
 }
 
 - (void)removeItemAtIndex:(NSInteger)idx {
-    [self removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx]];
+    if (idx >= 0 && idx < NSNotFound) {
+        [self removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:idx]];
+    }
 }
 
 - (void)insertItem:(id)item atIndex:(NSInteger)idx {
-    if (!item) {
+    if (!item || idx < 0 || idx >= NSNotFound) {
         return;
     }
     
@@ -167,7 +171,7 @@
 }
 
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem {
-    if (!newItem) {
+    if (!newItem || idx < 0 || idx >= NSNotFound) {
         return;
     }
     
@@ -264,7 +268,7 @@
 
 - (void)insertChildDataSource:(MUKDataSource *)dataSource atIndex:(NSInteger)idx
 {
-    if (!dataSource) {
+    if (!dataSource || idx < 0 || idx >= NSNotFound) {
         return;
     }
     
@@ -285,12 +289,14 @@
 }
 
 - (void)removeChildDataSourceAtIndex:(NSInteger)idx {
-    [self removeChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx]];
+    if (idx >= 0 && idx < NSNotFound) {
+        [self removeChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx]];
+    }
 }
 
 - (void)replaceChildDataSourceAtIndex:(NSInteger)idx withDataSource:(MUKDataSource *)newDataSource
 {
-    if (!newDataSource) {
+    if (!newDataSource || idx < 0 || idx >= NSNotFound) {
         return;
     }
     

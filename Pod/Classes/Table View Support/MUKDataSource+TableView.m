@@ -309,7 +309,10 @@
             
             if (newItem) {
                 NSInteger idx = [self destinationIndexForItem:newItem toInsertByCommittingRowAtIndexPath:indexPath inTableView:tableView];
-                [self insertItems:@[newItem] atIndexes:[NSIndexSet indexSetWithIndex:idx] eventOrigin:MUKDataSourceEventOriginUserInteraction];
+                
+                if (idx != NSNotFound) {
+                    [self insertItems:@[newItem] atIndexes:[NSIndexSet indexSetWithIndex:idx] eventOrigin:MUKDataSourceEventOriginUserInteraction];
+                }
             }
         }
     }

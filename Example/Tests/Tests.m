@@ -24,8 +24,10 @@ static NSIndexPath *IndexPathWithIndexes(NSArray *indexesArray) {
     return indexPath;
 }
 
+#pragma mark - Main
 SpecBegin(Main)
 
+#pragma mark Contents
 describe(@"Contents", ^{
     MUKDataSource *dataSource = CreateDataSource();
 
@@ -120,6 +122,7 @@ describe(@"Contents", ^{
     });
 });
 
+#pragma mark Containment
 describe(@"Containment", ^{
     it(@"should begin with no parent", ^{
         expect(CreateDataSource().parentDataSource).to.beNil;
@@ -362,6 +365,7 @@ describe(@"Containment", ^{
     });
 });
 
+#pragma mark Callbacks
 describe(@"Callbacks", ^{
     it(@"should invoke callbacks for items insertion", ^{
         MUKDataSource *rootDataSource = CreateDataSource();
@@ -971,6 +975,7 @@ describe(@"Callbacks", ^{
     });
 });
 
+#pragma mark Delegate
 describe(@"Delegate", ^{
     it(@"should be invoked for child data sources insertion", ^{
         id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
@@ -1143,6 +1148,292 @@ describe(@"Delegate", ^{
         
         [childDataSource requestBatchUpdate:updateBlock];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+});
+
+SpecEnd
+
+#pragma mark - Table View
+SpecBegin(TableView)
+
+#pragma mark Conversions
+describe(@"Conversions", ^{
+    MUKDataSource *dataSource = CreateDataSource();
+    MUKDataSource *dataSource_0 = CreateDataSource();
+    MUKDataSource *dataSource_1 = CreateDataSource();
+    dataSource.childDataSources = @[dataSource_0, dataSource_1];
+    dataSource.items = @[@"A"];
+    dataSource_0.items = @[@"B", @"C"];
+    dataSource_1.items = @[@"D"];
+    
+    it(@"should map table sections to child data source indexes", ^{
+        expect([dataSource childDataSourceIndexFromTableViewSection:0 checkingBounds:YES]).to.equal(0);
+        expect([dataSource childDataSourceIndexFromTableViewSection:1 checkingBounds:YES]).to.equal(1);
+        expect([dataSource childDataSourceIndexFromTableViewSection:2 checkingBounds:YES]).to.equal(NSNotFound);
+        expect([dataSource childDataSourceIndexFromTableViewSection:-1 checkingBounds:YES]).to.equal(NSNotFound);
+        
+        expect([dataSource childDataSourceIndexFromTableViewSection:0 checkingBounds:NO]).to.equal(0);
+        expect([dataSource childDataSourceIndexFromTableViewSection:1 checkingBounds:NO]).to.equal(1);
+        expect([dataSource childDataSourceIndexFromTableViewSection:2 checkingBounds:NO]).to.equal(2);
+        expect([dataSource childDataSourceIndexFromTableViewSection:-1 checkingBounds:NO]).to.equal(-1);
+    });
+    
+    it(@"should map table rows to item indexes", ^{
+        expect([dataSource_0 itemIndexFromTableViewRow:0 checkingBounds:YES]).to.equal(0);
+        expect([dataSource_0 itemIndexFromTableViewRow:1 checkingBounds:YES]).to.equal(1);
+        expect([dataSource_0 itemIndexFromTableViewRow:2 checkingBounds:YES]).to.equal(NSNotFound);
+        expect([dataSource_0 itemIndexFromTableViewRow:-1 checkingBounds:YES]).to.equal(NSNotFound);
+        
+        expect([dataSource_0 itemIndexFromTableViewRow:0 checkingBounds:NO]).to.equal(0);
+        expect([dataSource_0 itemIndexFromTableViewRow:1 checkingBounds:NO]).to.equal(1);
+        expect([dataSource_0 itemIndexFromTableViewRow:2 checkingBounds:NO]).to.equal(2);
+        expect([dataSource_0 itemIndexFromTableViewRow:-1 checkingBounds:NO]).to.equal(-1);
+    });
+    
+    it(@"should map table index paths to item index paths", ^{
+        NSIndexPath *indexPath, *expectedIndexPath;
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@0, @0]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:YES]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@0, @1]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:YES]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@1, @0]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:YES]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@0, @100]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:YES]).to.beNil;
+        indexPath = IndexPathWithIndexes(@[@100, @0]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:YES]).to.beNil;
+        indexPath = IndexPathWithIndexes(@[@100, @100]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:YES]).to.beNil;
+        
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@0, @0]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@0, @1]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@1, @0]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@0, @100]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@100, @0]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = IndexPathWithIndexes(@[@100, @100]);
+        expect([dataSource itemIndexPathFromTableViewIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+    });
+    
+    it(@"should map child data source indexes to table sections", ^{
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:0 checkingBounds:YES]).to.equal(0);
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:1 checkingBounds:YES]).to.equal(1);
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:2 checkingBounds:YES]).to.equal(NSNotFound);
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:-1 checkingBounds:YES]).to.equal(NSNotFound);
+        
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:0 checkingBounds:NO]).to.equal(0);
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:1 checkingBounds:NO]).to.equal(1);
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:2 checkingBounds:NO]).to.equal(2);
+        expect([dataSource tableViewSectionFromChildDataSourceIndex:-1 checkingBounds:NO]).to.equal(-1);
+        
+        NSIndexSet *indexes, *expectedIndexes;
+        indexes = expectedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        expect([dataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:YES]).to.equal(expectedIndexes);
+
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 100)];
+        expectedIndexes = [NSIndexSet indexSetWithIndex:1];
+        expect([dataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:YES]).to.equal(expectedIndexes);
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(100, 100)];
+        expect([dataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:YES]).to.beNil;
+        
+        indexes = expectedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        expect([dataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO]).to.equal(expectedIndexes);
+        
+        indexes = expectedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 100)];
+        expect([dataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO]).to.equal(expectedIndexes);
+        
+        indexes = expectedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(100, 100)];
+        expect([dataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO]).to.beNil;
+    });
+    
+    it(@"should map item indexes to table rows", ^{
+        expect([dataSource_0 tableViewRowFromItemIndex:0 checkingBounds:YES]).to.equal(0);
+        expect([dataSource_0 tableViewRowFromItemIndex:1 checkingBounds:YES]).to.equal(1);
+        expect([dataSource_0 tableViewRowFromItemIndex:2 checkingBounds:YES]).to.equal(NSNotFound);
+        expect([dataSource_0 tableViewRowFromItemIndex:-1 checkingBounds:YES]).to.equal(NSNotFound);
+        
+        expect([dataSource_0 tableViewRowFromItemIndex:0 checkingBounds:NO]).to.equal(0);
+        expect([dataSource_0 tableViewRowFromItemIndex:1 checkingBounds:NO]).to.equal(1);
+        expect([dataSource_0 tableViewRowFromItemIndex:2 checkingBounds:NO]).to.equal(2);
+        expect([dataSource_0 tableViewRowFromItemIndex:-1 checkingBounds:NO]).to.equal(-1);
+    });
+    
+    it(@"should map item index paths to table index paths", ^{
+        NSIndexPath *indexPath, *expectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:YES]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:YES]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:YES]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:100 inSection:0];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:YES]).to.beNil;
+        indexPath = [NSIndexPath indexPathForRow:0 inSection:100];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:YES]).to.beNil;
+        indexPath = [NSIndexPath indexPathForRow:100 inSection:100];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:YES]).to.beNil;
+        
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:100 inSection:0];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:100];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+        indexPath = expectedIndexPath = [NSIndexPath indexPathForRow:100 inSection:100];
+        expect([dataSource tableViewIndexPathFromItemIndexPath:indexPath checkingBounds:NO]).to.equal(expectedIndexPath);
+    });
+    
+    it(@"should map item index paths to table index paths using implicit section", ^{
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        expect([dataSource_0 tableViewIndexPathFromItemIndex:1 checkingBounds:YES]).to.equal(indexPath);
+        indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+        expect([dataSource_1 tableViewIndexPathFromItemIndex:0 checkingBounds:YES]).to.equal(indexPath);
+        expect([dataSource_0 tableViewIndexPathFromItemIndex:100 checkingBounds:YES]).to.beNil;
+        expect([dataSource tableViewIndexPathFromItemIndex:0 checkingBounds:YES]).to.beNil;
+        
+        indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        expect([dataSource_0 tableViewIndexPathFromItemIndex:1 checkingBounds:NO]).to.equal(indexPath);
+        indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+        expect([dataSource_1 tableViewIndexPathFromItemIndex:0 checkingBounds:NO]).to.equal(indexPath);
+        indexPath = [NSIndexPath indexPathForRow:100 inSection:0];
+        expect([dataSource_0 tableViewIndexPathFromItemIndex:100 checkingBounds:NO]).to.equal(indexPath);
+        expect([dataSource tableViewIndexPathFromItemIndex:0 checkingBounds:NO]).to.beNil;
+        
+        // In groups
+        NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        NSArray *indexPaths = @[[NSIndexPath indexPathForRow:0 inSection:0], [NSIndexPath indexPathForRow:1 inSection:0]];
+        expect([dataSource_0 tableViewIndexPathsFromItemIndexes:indexes checkingBounds:YES]).to.equal(indexPaths);
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        indexPaths = @[[NSIndexPath indexPathForRow:0 inSection:1]];
+        expect([dataSource_1 tableViewIndexPathsFromItemIndexes:indexes checkingBounds:YES]).to.equal(indexPaths);
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(100, 2)];
+        expect([dataSource_0 tableViewIndexPathsFromItemIndexes:indexes checkingBounds:YES]).to.beNil;
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
+        expect([dataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:YES]).to.beNil;
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        indexPaths = @[[NSIndexPath indexPathForRow:0 inSection:0], [NSIndexPath indexPathForRow:1 inSection:0]];
+        expect([dataSource_0 tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO]).to.equal(indexPaths);
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
+        indexPaths = @[[NSIndexPath indexPathForRow:1 inSection:1], [NSIndexPath indexPathForRow:2 inSection:1]];
+        expect([dataSource_1 tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO]).to.equal(indexPaths);
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(100, 1)];
+        indexPath = [NSIndexPath indexPathForRow:100 inSection:0];
+        expect([dataSource_0 tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO]).to.beNil;
+        
+        indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
+        expect([dataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO]).to.beNil;
+    });
+
+});
+
+#pragma mark Structure
+describe(@"Structure", ^{
+    it(@"should create a section per child data source", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        dataSource.childDataSources = @[CreateDataSource(), CreateDataSource(), CreateDataSource()];
+        expect([dataSource numberOfSectionsInTableView:nil]).to.equal([dataSource.childDataSources count]);
+    });
+    
+    it(@"should create a row per item", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        dataSource.childDataSources = @[CreateDataSource(), CreateDataSource(), CreateDataSource()];
+        [dataSource childDataSourceAtIndex:0].items = @[@"A", @"B"];
+        [dataSource childDataSourceAtIndex:1].items = @[@"C", @"D", @"E"];
+        
+        expect([dataSource tableView:nil numberOfRowsInSection:0]).to.equal([[dataSource childDataSourceAtIndex:0].items count]);
+        expect([dataSource tableView:nil numberOfRowsInSection:1]).to.equal([[dataSource childDataSourceAtIndex:1].items count]);
+        expect([dataSource tableView:nil numberOfRowsInSection:2]).to.equal([[dataSource childDataSourceAtIndex:2].items count]);
+    });
+    
+    it(@"should provide a default header title", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        dataSource.childDataSources = @[CreateDataSource(), CreateDataSource()];
+        [dataSource childDataSourceAtIndex:0].title = @"A";
+        [dataSource childDataSourceAtIndex:1].title = @"B";
+        
+        expect([dataSource tableView:nil titleForHeaderInSection:0]).to.equal([dataSource childDataSourceAtIndex:0].title);
+        expect([dataSource tableView:nil titleForHeaderInSection:1]).to.equal([dataSource childDataSourceAtIndex:1].title);
+    });
+    
+    it(@"should be passive for other data", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        dataSource.childDataSources = @[CreateDataSource(), CreateDataSource()];
+        [dataSource childDataSourceAtIndex:0].items = @[@"A", @"B"];
+        [dataSource childDataSourceAtIndex:1].items = @[@"C", @"D", @"E"];
+        
+        expect([dataSource dequeueOrCreateCellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableView:nil]).to.beNil;
+        expect([dataSource titleForFooterInSection:0 tableView:nil]).to.beNil;
+        expect([dataSource canEditRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableView:nil]).to.beFalsy;
+        expect([dataSource canMoveRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableView:nil]).to.beFalsy;
+        expect([dataSource newItemToInsertByCommittingRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableView:nil]).to.beNil;
+    });
+    
+    it(@"should get table data from data source", ^{
+        id dataSourceMock = OCMPartialMock(CreateDataSource());
+        [dataSourceMock setChildDataSources:@[OCMPartialMock(CreateDataSource()), OCMPartialMock(CreateDataSource())]];
+        
+        [dataSourceMock childDataSourceAtIndex:0].items = @[@"A", @"B"];
+        [dataSourceMock childDataSourceAtIndex:1].items = @[@"C"];
+   
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 800.0f) style:UITableViewStylePlain];
+        tableView.dataSource = dataSourceMock;
+        
+        // Setup expectations
+        for (NSInteger section = 0; section < [[dataSourceMock childDataSources] count]; section++)
+        {
+            id sectionDataSourceMock = [dataSourceMock childDataSourceAtIndex:section];
+            OCMExpect([sectionDataSourceMock numberOfRowsForSection:section inTableView:tableView]).andForwardToRealObject();
+            OCMExpect([sectionDataSourceMock titleForHeaderInSection:section tableView:tableView]).andForwardToRealObject();
+            OCMExpect([sectionDataSourceMock titleForFooterInSection:section tableView:tableView]).andForwardToRealObject();
+            
+            for (NSInteger row = 0; row < [[sectionDataSourceMock items] count]; row++)
+            {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                
+                UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+                OCMExpect([sectionDataSourceMock dequeueOrCreateCellForRowAtIndexPath:indexPath inTableView:tableView]).andReturn(cell);
+                OCMExpect([sectionDataSourceMock configureCell:cell forRowAtIndexPath:indexPath inTableView:tableView]);
+                
+                OCMExpect([sectionDataSourceMock canEditRowAtIndexPath:indexPath inTableView:tableView]);
+            } // for row
+        } // for section
+        
+        // Fire composition
+        [tableView reloadData];
+        
+        for (NSInteger section = 0; section < [[dataSourceMock childDataSources] count]; section++)
+        {
+            id sectionDataSourceMock = [dataSourceMock childDataSourceAtIndex:section];
+
+            for (NSInteger row = 0; row < [[sectionDataSourceMock items] count]; row++)
+            {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                [tableView cellForRowAtIndexPath:indexPath];
+            } // for row
+        } // for section
+        
+        tableView.editing = YES;
+        
+        expect(^{ OCMVerifyAll(dataSourceMock); }).notTo.raiseAny();
+        expect(^{
+            for (id mock in [dataSourceMock childDataSources]) {
+                OCMVerifyAll(mock);
+            }
+        }).notTo.raiseAny();
     });
 });
 
