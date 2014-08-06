@@ -971,4 +971,179 @@ describe(@"Callbacks", ^{
     });
 });
 
+describe(@"Delegate", ^{
+    it(@"should be invoked for child data sources insertion", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger index = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didInsertChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:index] toDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource insertChildDataSource:CreateDataSource() atIndex:index];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for child data sources deletion", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger index = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:CreateDataSource()];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didRemoveChildDataSources:childDataSource.childDataSources atIndexes:[NSIndexSet indexSetWithIndex:0] fromDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource removeChildDataSourceAtIndex:index];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for child data sources replace", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger index = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:CreateDataSource()];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didReplaceChildDataSources:childDataSource.childDataSources atIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource replaceChildDataSourceAtIndex:index withDataSource:CreateDataSource()];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for child data sources move", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger fromIndex = 0;
+        NSInteger toIndex = 1;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        [childDataSource appendChildDataSource:CreateDataSource()];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didMoveChildDataSourceFromDataSource:childDataSource atIndex:fromIndex toDataSource:dataSource atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource moveChildDataSourceAtIndex:fromIndex toDataSource:dataSource atIndex:toIndex];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for child data sources refresh (items overwriting without animation)", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger index = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource.parentDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource setItems:@[@"A", @"B"] animated:NO];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for items insertion", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger index = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didInsertItemsAtIndexes:[NSIndexSet indexSetWithIndex:index] toDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource insertItem:@"A" atIndex:index];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for items deletion", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger index = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        childDataSource.items = @[@"A"];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didRemoveItems:childDataSource.items atIndexes:[NSIndexSet indexSetWithIndex:index] fromDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource removeItemAtIndex:index];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for item replace", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger index = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        childDataSource.items = @[@"A"];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didReplaceItems:childDataSource.items atIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource replaceItemAtIndex:index withItem:@"B"];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for item move", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        NSInteger fromIndex = 0;
+        NSInteger toIndex = 1;
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        dataSource.items = @[@"A"];
+        childDataSource.items = @[@"B"];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didMoveItemFromDataSource:childDataSource atIndex:fromIndex toDataSource:dataSource atIndex:toIndex eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource moveItemAtIndex:fromIndex toDataSource:dataSource atIndex:toIndex];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for reload data (data sources overwrite without animation)", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        dataSource.delegate = delegateMock;
+        
+        OCMExpect([delegateMock dataSource:dataSource didReloadDataInDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource setChildDataSources:@[CreateDataSource()] animated:NO];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for batch requests", ^{
+        id delegateMock = OCMStrictProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        dataSource.delegate = delegateMock;
+        
+        dispatch_block_t updateBlock = ^{};
+        OCMExpect([delegateMock dataSource:dataSource didRequestBatchUpdate:updateBlock fromDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        
+        [childDataSource requestBatchUpdate:updateBlock];
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+});
+
 SpecEnd

@@ -361,7 +361,7 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
     }
 }
 
-- (void)dataSource:(MUKDataSource *)dataSource didMoveChildDataSourcesFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)dataSource:(MUKDataSource *)dataSource didMoveChildDataSourceFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     NSInteger const fromSection = [sourceDataSource tableViewSectionFromChildDataSourceIndex:sourceIndex checkingBounds:NO];
     NSInteger const toSection = [destinationDataSource tableViewSectionFromChildDataSourceIndex:destinationIndex checkingBounds:NO];

@@ -345,9 +345,9 @@
     [self.parentDataSource didMoveChildDataSourceFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didMoveChildDataSourcesFromDataSource:atIndex:toDataSource:atIndex:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didMoveChildDataSourceFromDataSource:atIndex:toDataSource:atIndex:eventOrigin:)])
     {
-        [self.delegate dataSource:self didMoveChildDataSourcesFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didMoveChildDataSourceFromDataSource:sourceDataSource atIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:eventOrigin];
     }
 }
 
@@ -634,7 +634,7 @@
         destinationChildDataSources = childDataSources;
     }
     else {
-        destinationChildDataSources = [destinationDataSource.items mutableCopy] ?: [[NSMutableArray alloc] init];
+        destinationChildDataSources = [destinationDataSource.childDataSources mutableCopy] ?: [[NSMutableArray alloc] init];
     }
     
     // Abort moves that create duplicates
