@@ -1160,7 +1160,7 @@ SpecBegin(ContentLoading)
 describe(@"State", ^{
     it(@"should start at initial state", ^{
         MUKDataSource *dataSource = CreateDataSource();
-        expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadingStateInitial);
+        expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateInitial);
     });
 });
 

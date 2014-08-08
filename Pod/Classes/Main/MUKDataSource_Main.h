@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <MUKDataSource/MUKDataSourceDelegate.h>
 #import <MUKDataSource/MUKDataSourceContentLoading.h>
+#import <MUKDataSource/MUKDataSourceContentLoadState.h>
 
 @interface MUKDataSource : NSObject
 @property (nonatomic, weak) id<MUKDataSourceDelegate> delegate;
@@ -42,7 +43,7 @@
 - (void)moveChildDataSourceAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex;
 @end
 
-@interface MUKDataSource (State)
+@interface MUKDataSource (ContentLoading)
 @property (nonatomic, readonly) NSString *loadingState;
 @end
 
