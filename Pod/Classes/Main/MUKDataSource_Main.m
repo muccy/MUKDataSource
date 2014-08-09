@@ -522,25 +522,27 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     }
 }
 
+- (void)willTransitionToContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)dataSource
 {
     // Notify upwards
-    [self.parentDataSource didReloadDataInDataSource:dataSource eventOrigin:eventOrigin];
+    [self.parentDataSource willTransitionToContentLoadingState:state inDataSource:dataSource];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didReloadDataInDataSource:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:willTransitionToContentLoadingState:inDataSource:)])
     {
-        [self.delegate dataSource:self didReloadDataInDataSource:dataSource eventOrigin:eventOrigin];
+        [self.delegate dataSource:self willTransitionToContentLoadingState:state inDataSource:dataSource];
     }
 }
 
+- (void)didTransitionFromContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)dataSource
 {
     // Notify upwards
-    [self.parentDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:eventOrigin];
+    [self.parentDataSource didTransitionFromContentLoadingState:state inDataSource:dataSource];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didRequestBatchUpdate:fromDataSource:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didTransitionFromContentLoadingState:inDataSource:)])
     {
-        [self.delegate dataSource:self didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didTransitionFromContentLoadingState:state inDataSource:dataSource];
     }
 }
 
@@ -876,15 +878,31 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
         }
     };
     
+    void (^notifyWillTransition)(TKState *) = ^(TKState *state) {
+        MUKDataSource *strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf willTransitionToContentLoadingState:state.name inDataSource:strongSelf];
+        }
+    };
+    
+    void (^notifyDidTransition)(TKState *) = ^(TKState *state) {
+        MUKDataSource *strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf didTransitionFromContentLoadingState:state.name inDataSource:strongSelf];
+        }
+    };
+    
     // Actual attaching
     
     // Loading
     TKState *state = [stateMachine stateNamed:MUKDataSourceContentLoadStateLoading];
     [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
         notifyKVOForLoadingState(NO);
+        notifyWillTransition(transition.destinationState);
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
+        notifyDidTransition(transition.sourceState);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -892,9 +910,11 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     state = [stateMachine stateNamed:MUKDataSourceContentLoadStateRefreshing];
     [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
         notifyKVOForLoadingState(NO);
+        notifyWillTransition(transition.destinationState);
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
+        notifyDidTransition(transition.sourceState);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -902,9 +922,11 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     state = [stateMachine stateNamed:MUKDataSourceContentLoadStateAppending];
     [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
         notifyKVOForLoadingState(NO);
+        notifyWillTransition(transition.destinationState);
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
+        notifyDidTransition(transition.sourceState);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -912,11 +934,13 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     state = [stateMachine stateNamed:MUKDataSourceContentLoadStateLoaded];
     [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
         notifyKVOForLoadingState(NO);
+        notifyWillTransition(transition.destinationState);
         executeUpdate(transition);
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
         destroyCurrentContentLoading();
+        notifyDidTransition(transition.sourceState);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -924,10 +948,12 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     state = [stateMachine stateNamed:MUKDataSourceContentLoadStateEmpty];
     [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
         notifyKVOForLoadingState(NO);
+        notifyWillTransition(transition.destinationState);
         executeUpdate(transition);
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
+        notifyDidTransition(transition.sourceState);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -935,10 +961,12 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     state = [stateMachine stateNamed:MUKDataSourceContentLoadStateError];
     [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
         notifyKVOForLoadingState(NO);
+        notifyWillTransition(transition.destinationState);
         executeUpdate(transition);
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
+        notifyDidTransition(transition.sourceState);
         notifyKVOForLoadingState(YES);
     }];
 }

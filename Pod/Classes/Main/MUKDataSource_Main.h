@@ -68,4 +68,7 @@
 
 - (void)didReloadDataInDataSource:(MUKDataSource *)dataSource;
 - (void)didRequestBatchUpdate:(dispatch_block_t)updateBlock fromDataSource:(MUKDataSource *)dataSource;
+
+- (void)willTransitionToContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)dataSource;
+- (void)didTransitionFromContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)dataSource;
 @end
