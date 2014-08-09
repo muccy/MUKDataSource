@@ -19,6 +19,8 @@
 - (id)itemAtIndex:(NSInteger)idx;
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 
+- (NSUInteger)childDataSourcesItemCount;
+
 - (void)insertItem:(id)item atIndex:(NSInteger)idx;
 - (void)removeItemAtIndex:(NSInteger)idx;
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem;
@@ -45,6 +47,11 @@
 
 @interface MUKDataSource (ContentLoading)
 @property (nonatomic, readonly) NSString *loadingState;
+
+- (void)setNeedsLoadContent;
+- (void)setNeedsAppendContent;
+
+- (MUKDataSourceContentLoading *)newContentLoadingForState:(NSString *)state;
 @end
 
 @interface MUKDataSource (Callbacks)

@@ -4,6 +4,7 @@
 #import "MUKDataSourceArrayDelta.h"
 #import "MUKDataSourceContentLoadState.h"
 #import "MUKDataSourceContentLoadEvent.h"
+#import "MUKDataSourceContentLoading_Private.h"
 #import <TransitionKit/TransitionKit.h>
 
 NSString *const MUKDataSourceContentLoadStateInitial = @"MUKDataSourceContentLoadStateInitial";
@@ -21,6 +22,8 @@ NSString *const MUKDataSourceContentLoadEventDisplayLoaded = @"MUKDataSourceCont
 NSString *const MUKDataSourceContentLoadEventDisplayEmpty = @"MUKDataSourceContentLoadEventDisplayEmpty";
 NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceContentLoadEventDisplayError";
 
+static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMachineEventUpdateHandlerUserInfoKey";
+
 @interface MUKDataSource ()
 @property (nonatomic, copy) NSArray *items;
 @property (nonatomic, readwrite) NSArray *childDataSources;
@@ -28,6 +31,7 @@ NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceConte
 @property (nonatomic, readonly) NSString *loadingState;
 
 @property (nonatomic) TKStateMachine *stateMachine;
+@property (nonatomic) MUKDataSourceContentLoading *currentContentLoading;
 @end
 
 @implementation MUKDataSource
@@ -182,6 +186,16 @@ NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceConte
 
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath {
     return [self itemAtIndexPath:indexPath usingIndexAtPosition:0];
+}
+
+- (NSUInteger)childDataSourcesItemCount {
+    NSUInteger count = 0;
+    
+    for (MUKDataSource *childDataSource in self.childDataSources) {
+        count += [childDataSource.items count];
+    }
+    
+    return count;
 }
 
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
@@ -349,6 +363,20 @@ NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceConte
     }
     
     return self.stateMachine.currentState.name;
+}
+
+- (void)setNeedsLoadContent {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadContent) object:nil];
+    [self performSelector:@selector(loadContent) withObject:nil afterDelay:0.0];
+}
+
+- (void)setNeedsAppendContent {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(appendContent) object:nil];
+    [self performSelector:@selector(appendContent) withObject:nil afterDelay:0.0];
+}
+
+- (MUKDataSourceContentLoading *)newContentLoadingForState:(NSString *)state {
+    return nil;
 }
 
 #pragma mark - Callbacks
@@ -780,6 +808,7 @@ NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceConte
     NSArray *states = [self newStateMachineStates];
     [stateMachine addStates:states];
     stateMachine.initialState = [stateMachine stateNamed:MUKDataSourceContentLoadStateInitial];
+    [self attachStateHandlersToStateMachine:stateMachine];
     
     NSArray *events = [self newEventsForStateMachine:stateMachine];
     [stateMachine addEvents:events];
@@ -793,7 +822,109 @@ NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceConte
         return;
     }
     
-    // __weak MUKDataSource *const weakSelf = self;
+    __weak MUKDataSource *const weakSelf = self;
+    
+    // Common actions
+    void (^prepareCurrentContentLoadingAndExecute)(TKState *, TKState *) = ^(TKState *sourceState, TKState *loadingState)
+    {
+        MUKDataSource *strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf prepareContentLoadingFromState:sourceState.name loadingState:loadingState.name andExecute:YES];
+        }
+    };
+    
+    void (^destroyCurrentContentLoading)(void) = ^{
+        MUKDataSource *strongSelf = weakSelf;
+        if (strongSelf) {
+            strongSelf.currentContentLoading = nil;
+        }
+    };
+
+    void (^executeUpdate)(TKTransition *) = ^(TKTransition *transition) {
+        dispatch_block_t updateHandler = transition.userInfo[kStateMachineEventUpdateHandlerUserInfoKey];
+        
+        if (updateHandler) {
+            updateHandler();
+        }
+    };
+    
+    void (^notifyKVOForLoadingState)(BOOL) = ^(BOOL completed) {
+        MUKDataSource *strongSelf = weakSelf;
+        if (strongSelf) {
+            if (completed) {
+                [strongSelf didChangeValueForKey:@"loadingState"];
+            }
+            else {
+                [strongSelf willChangeValueForKey:@"loadingState"];
+            }
+        }
+    };
+    
+    // Actual attaching
+    
+    // Loading
+    TKState *state = [stateMachine stateNamed:MUKDataSourceContentLoadStateLoading];
+    [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        notifyKVOForLoadingState(NO);
+    }];
+    [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
+        notifyKVOForLoadingState(YES);
+    }];
+    
+    // Refreshing
+    state = [stateMachine stateNamed:MUKDataSourceContentLoadStateRefreshing];
+    [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        notifyKVOForLoadingState(NO);
+    }];
+    [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
+        notifyKVOForLoadingState(YES);
+    }];
+    
+    // Appending
+    state = [stateMachine stateNamed:MUKDataSourceContentLoadStateAppending];
+    [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        notifyKVOForLoadingState(NO);
+    }];
+    [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
+        notifyKVOForLoadingState(YES);
+    }];
+    
+    // Loaded
+    state = [stateMachine stateNamed:MUKDataSourceContentLoadStateLoaded];
+    [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        notifyKVOForLoadingState(NO);
+        executeUpdate(transition);
+    }];
+    [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
+        destroyCurrentContentLoading();
+        notifyKVOForLoadingState(YES);
+    }];
+    
+    // Empty
+    state = [stateMachine stateNamed:MUKDataSourceContentLoadStateEmpty];
+    [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        notifyKVOForLoadingState(NO);
+        executeUpdate(transition);
+    }];
+    [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        destroyCurrentContentLoading();
+        notifyKVOForLoadingState(YES);
+    }];
+    
+    // Error
+    state = [stateMachine stateNamed:MUKDataSourceContentLoadStateError];
+    [state setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        notifyKVOForLoadingState(NO);
+        executeUpdate(transition);
+    }];
+    [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        destroyCurrentContentLoading();
+        notifyKVOForLoadingState(YES);
+    }];
 }
 
 - (NSArray *)newStateMachineStates {
@@ -865,6 +996,178 @@ NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceConte
     }
     
     // __weak MUKDataSource *const weakSelf = self;
+}
+
+#pragma mark - Private - Content Loading
+
+- (BOOL)loadContent {
+    // Attempt first load
+    TKEvent *event = [self.stateMachine eventNamed:MUKDataSourceContentLoadEventBeginLoading];
+    BOOL success = [self.stateMachine fireEvent:event userInfo:nil error:nil];
+    if (success) {
+        return YES;
+    }
+    
+    // Attempt refresh
+    event = [self.stateMachine eventNamed:MUKDataSourceContentLoadEventBeginRefreshing];
+    success = [self.stateMachine fireEvent:event userInfo:nil error:nil];
+    if (success) {
+        return YES;
+    }
+    
+    // Check if it could reuse current state
+    if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] ||
+        [self.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing])
+    {
+        [self prepareContentLoadingFromState:self.currentContentLoading.sourceState loadingState:self.loadingState andExecute:YES];
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)appendContent {
+    TKEvent *event = [self.stateMachine eventNamed:MUKDataSourceContentLoadEventBeginAppending];
+    BOOL success = [self.stateMachine fireEvent:event userInfo:nil error:nil];
+    if (success) {
+        return YES;
+    }
+    
+    // Check if it could reuse current state
+    if ([self.loadingState isEqualToString:MUKDataSourceContentLoadEventBeginAppending])
+    {
+        [self prepareContentLoadingFromState:self.currentContentLoading.sourceState loadingState:self.loadingState andExecute:YES];
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (void)prepareContentLoadingFromState:(NSString *)sourceState loadingState:(NSString *)loadingState andExecute:(BOOL)execute
+{
+    // Abort current one
+    [self.currentContentLoading cancel];
+    
+    // Create new loading
+    MUKDataSourceContentLoading *contentLoading = [self newContentLoadingForState:loadingState];
+    contentLoading.sourceState = sourceState;
+    contentLoading.dataSource = self;
+    self.currentContentLoading = contentLoading;
+    
+    // Execute
+    if (execute && contentLoading.job) {
+        contentLoading.job();
+    }
+}
+
+- (void)didFinishContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler
+{
+    // Is it meaningful?
+    if (contentLoading.isCancelled || ![self.currentContentLoading isEqual:contentLoading])
+    {
+        return;
+    }
+    
+    // Pass to next state
+    TKEvent *event = [self nextStateMachineEventForFinishedContentLoading:contentLoading withResultType:resultType];
+    if (event) {
+        NSDictionary *userInfo = [self userInfoForStateMachineEvent:event finishedContentLoading:contentLoading withResultType:resultType error:error update:updateHandler];
+        [self.stateMachine fireEvent:event userInfo:userInfo error:nil];
+    }
+}
+
+- (TKEvent *)nextStateMachineEventForFinishedContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType
+{
+    NSString *eventName;
+    
+    switch (resultType) {
+        case MUKDataSourceContentLoadingResultTypeDone:
+            eventName = MUKDataSourceContentLoadEventDisplayLoaded;
+            break;
+            
+        case MUKDataSourceContentLoadingResultTypeEmpty: {
+            if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateAppending])
+            {
+                // Should come back to previous state, which must be content loaded
+                eventName = MUKDataSourceContentLoadEventDisplayLoaded;
+            }
+            else if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] ||
+                     [self.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing])
+            {
+                eventName = MUKDataSourceContentLoadEventDisplayEmpty;
+            }
+            else {
+                eventName = nil;
+            }
+            
+            break;
+        }
+            
+        case MUKDataSourceContentLoadingResultTypeError: {
+            if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateAppending])
+            {
+                // Should come back to previous state, which must be content loaded
+                eventName = MUKDataSourceContentLoadEventDisplayLoaded;
+            }
+            else if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] ||
+                     [self.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing])
+            {
+                eventName = MUKDataSourceContentLoadEventDisplayError;
+            }
+            else {
+                eventName = nil;
+            }
+            
+            break;
+        }
+            
+        case MUKDataSourceContentLoadingResultTypeCancelled:
+        default: {
+            if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateAppending])
+            {
+                eventName = MUKDataSourceContentLoadEventDisplayLoaded;
+            }
+            else if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] ||
+                     [self.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing])
+            {
+                // Try to recover
+                if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateInitial] ||
+                    [contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateEmpty])
+                {
+                    eventName = MUKDataSourceContentLoadEventDisplayEmpty;
+                }
+                else if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateLoaded])
+                {
+                    eventName = MUKDataSourceContentLoadEventDisplayLoaded;
+                }
+                else if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateError])
+                {
+                    eventName = MUKDataSourceContentLoadEventDisplayError;
+                }
+                else {
+                    eventName = nil;
+                }
+            }
+            break;
+        }
+    } // switch
+    
+    if (eventName) {
+        return [self.stateMachine eventNamed:eventName];
+    }
+    
+    return nil;
+}
+
+- (NSDictionary *)userInfoForStateMachineEvent:(TKEvent *)event finishedContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler
+{
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+    
+    if (updateHandler) {
+        userInfo[kStateMachineEventUpdateHandlerUserInfoKey] = [updateHandler copy];
+    }
+    
+    return [userInfo copy];
 }
 
 @end

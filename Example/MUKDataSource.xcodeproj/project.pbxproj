@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		06774E47198BCD360066DE57 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E46198BCD360066DE57 /* DataSource.m */; };
-		06774E601994F90F0066DE57 /* MUKDataSourceContentLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E5F1994F90F0066DE57 /* MUKDataSourceContentLoading.m */; };
+		06774E6519950F4C0066DE57 /* RemoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6419950F4C0066DE57 /* RemoteDataSource.m */; };
+		06774E67199517AB0066DE57 /* flowers.json in Resources */ = {isa = PBXBuildFile; fileRef = 06774E66199517AB0066DE57 /* flowers.json */; };
+		06774E6A199517C00066DE57 /* Flower.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E69199517C00066DE57 /* Flower.m */; };
+		06774E6D1995188A0066DE57 /* Florist.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6C1995188A0066DE57 /* Florist.m */; };
 		5ED957BE6DAB4B81B683C44C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F674411199F3468EB2B3326F /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -54,6 +57,14 @@
 		06774E5E1994F90F0066DE57 /* MUKDataSourceContentLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoading.h; sourceTree = "<group>"; };
 		06774E5F1994F90F0066DE57 /* MUKDataSourceContentLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceContentLoading.m; sourceTree = "<group>"; };
 		06774E611994FA100066DE57 /* MUKDataSourceContentLoadEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadEvent.h; sourceTree = "<group>"; };
+		06774E6219950A300066DE57 /* MUKDataSourceContentLoading_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoading_Private.h; sourceTree = "<group>"; };
+		06774E6319950F4C0066DE57 /* RemoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteDataSource.h; sourceTree = "<group>"; };
+		06774E6419950F4C0066DE57 /* RemoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteDataSource.m; sourceTree = "<group>"; };
+		06774E66199517AB0066DE57 /* flowers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = flowers.json; path = "../../../../../../../../../../Volumes/Macintosh HDD/File Utenti/muccy/Dropbox Locale/flowers.json"; sourceTree = "<group>"; };
+		06774E68199517C00066DE57 /* Flower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flower.h; sourceTree = "<group>"; };
+		06774E69199517C00066DE57 /* Flower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Flower.m; sourceTree = "<group>"; };
+		06774E6B1995188A0066DE57 /* Florist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Florist.h; sourceTree = "<group>"; };
+		06774E6C1995188A0066DE57 /* Florist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Florist.m; sourceTree = "<group>"; };
 		06986C2C198BC0F20055F3E9 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		06986C2F198BC1590055F3E9 /* MUKDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSource.h; sourceTree = "<group>"; };
 		06986C33198BC2450055F3E9 /* MUKDataSource_Main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSource_Main.h; sourceTree = "<group>"; };
@@ -132,6 +143,7 @@
 				06774E52198E7D5D0066DE57 /* MUKDataSourceArrayDelta.h */,
 				06774E53198E7D5D0066DE57 /* MUKDataSourceArrayDelta.m */,
 				06774E611994FA100066DE57 /* MUKDataSourceContentLoadEvent.h */,
+				06774E6219950A300066DE57 /* MUKDataSourceContentLoading_Private.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -234,6 +246,12 @@
 				6003F5A6195388D20070C39A /* ViewController.m */,
 				06774E45198BCD360066DE57 /* DataSource.h */,
 				06774E46198BCD360066DE57 /* DataSource.m */,
+				06774E6319950F4C0066DE57 /* RemoteDataSource.h */,
+				06774E6419950F4C0066DE57 /* RemoteDataSource.m */,
+				06774E68199517C00066DE57 /* Flower.h */,
+				06774E69199517C00066DE57 /* Flower.m */,
+				06774E6B1995188A0066DE57 /* Florist.h */,
+				06774E6C1995188A0066DE57 /* Florist.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
@@ -244,6 +262,7 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				06774E66199517AB0066DE57 /* flowers.json */,
 				6003F595195388D20070C39A /* MUKDataSource-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
@@ -366,6 +385,7 @@
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				06774E67199517AB0066DE57 /* flowers.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,11 +467,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06774E6519950F4C0066DE57 /* RemoteDataSource.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
+				06774E6A199517C00066DE57 /* Flower.m in Sources */,
 				6003F5A7195388D20070C39A /* ViewController.m in Sources */,
-				06774E601994F90F0066DE57 /* MUKDataSourceContentLoading.m in Sources */,
 				06774E47198BCD360066DE57 /* DataSource.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				06774E6D1995188A0066DE57 /* Florist.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
