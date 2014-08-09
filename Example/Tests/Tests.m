@@ -1,4 +1,8 @@
-#import <MUKDataSource/MUKDataSource.h>
+#import "MUKDataSource.h"
+#import "MUKDataSource_Private.h"
+#import "MUKDataSourceContentLoadEvent.h"
+#import "MUKDataSourceContentLoading_Private.h"
+#import <TransitionKit/TransitionKit.h>
 
 static inline MUKDataSource *CreateDataSource(void) {
     return [[MUKDataSource alloc] init];
@@ -979,6 +983,94 @@ describe(@"Callbacks", ^{
         expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
         expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
     });
+    
+    it(@"should invoke callbacks for state transitions", ^{
+        MUKDataSource *rootDataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        MUKDataSource *dataSource = CreateDataSource();
+        TKStateMachine *stateMachine = dataSource.stateMachine;
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        [mockRootDataSource appendChildDataSource:mockChildDataSource];
+        [mockChildDataSource appendChildDataSource:mockDataSource];
+        
+        void (^prepareExpectations)(NSString *, NSString *, MUKDataSource *) = ^(NSString *sourceState, NSString *destinationState, MUKDataSource *dataSource)
+        {
+            for (id mock in @[mockDataSource, mockChildDataSource, mockRootDataSource])
+            {
+                OCMExpect([mock willTransitionToContentLoadingState:destinationState inDataSource:dataSource]).andForwardToRealObject();
+                OCMExpect([mock didTransitionFromContentLoadingState:sourceState inDataSource:dataSource]).andForwardToRealObject();
+            } // for
+        };
+        
+        // Initial -> Loading
+        prepareExpectations(dataSource.loadingState, MUKDataSourceContentLoadStateLoading, dataSource);
+        [stateMachine fireEvent:MUKDataSourceContentLoadEventBeginLoading userInfo:nil error:nil];
+        
+        // Loading -> Loaded
+        prepareExpectations(dataSource.loadingState, MUKDataSourceContentLoadStateLoaded, dataSource);
+        [stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayLoaded userInfo:nil error:nil];
+        
+        // Loaded -> Refreshing
+        prepareExpectations(dataSource.loadingState, MUKDataSourceContentLoadStateRefreshing, dataSource);
+        [stateMachine fireEvent:MUKDataSourceContentLoadEventBeginRefreshing userInfo:nil error:nil];
+        
+        // Refreshing -> Empty
+        prepareExpectations(dataSource.loadingState, MUKDataSourceContentLoadStateEmpty, dataSource);
+        [stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayEmpty userInfo:nil error:nil];
+        
+        expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+    });
+    
+    it(@"should invoke callbacks for content loading", ^{
+        MUKDataSource *rootDataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        MUKDataSource *dataSource = CreateDataSource();
+        
+        id mockRootDataSource = OCMPartialMock(rootDataSource);
+        id mockChildDataSource = OCMPartialMock(childDataSource);
+        id mockDataSource = OCMPartialMock(dataSource);
+        [mockRootDataSource appendChildDataSource:mockChildDataSource];
+        [mockChildDataSource appendChildDataSource:mockDataSource];
+        
+        NSError *const error = [NSError errorWithDomain:@"Hi" code:0 userInfo:nil];
+        MUKDataSourceContentLoadingResultType const resultType = MUKDataSourceContentLoadingResultTypeComplete;
+        MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
+        id const contentLoadingMock = OCMPartialMock(contentLoading);
+        __weak id weakContentLoadingMock = contentLoadingMock;
+        [contentLoadingMock setJob:^{
+            [weakContentLoadingMock finishWithResultType:resultType error:error update:nil];
+        }];
+        
+        OCMStub([mockDataSource newContentLoadingForState:[OCMArg any]]).andReturn(contentLoadingMock);
+        OCMStub([contentLoadingMock dataSource]).andReturn(mockDataSource);
+        
+        void (^prepareExpectations)(void) = ^() {
+            for (id mock in @[mockDataSource, mockChildDataSource, mockRootDataSource])
+            {
+                OCMExpect([mock willLoadContent:contentLoadingMock]).andForwardToRealObject();
+                OCMExpect([mock didLoadContent:contentLoading withResultType:resultType error:error]).andForwardToRealObject();
+            } // for
+        };
+        
+        // Load
+        prepareExpectations();
+        [mockDataSource setNeedsLoadContent];
+        expect(^{ OCMVerifyAllWithDelay(mockDataSource, 0.1); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAllWithDelay(mockChildDataSource, 0.1); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAllWithDelay(mockRootDataSource, 0.1); }).notTo.raiseAny();
+        
+        // Append
+        contentLoading.cancelled = NO;
+        [mockDataSource setNeedsAppendContent];
+        expect(^{ OCMVerifyAllWithDelay(mockDataSource, 0.1); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAllWithDelay(mockChildDataSource, 0.1); }).notTo.raiseAny();
+        expect(^{ OCMVerifyAllWithDelay(mockRootDataSource, 0.1); }).notTo.raiseAny();
+    });
 });
 
 #pragma mark Delegate
@@ -1155,6 +1247,73 @@ describe(@"Delegate", ^{
         [childDataSource requestBatchUpdate:updateBlock];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
     });
+    
+    it(@"should be invoked for state transitions", ^{
+        id delegateMock = OCMProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        [dataSource appendChildDataSource:childDataSource];
+        dataSource.delegate = delegateMock;
+        
+        void (^prepareExpectations)(NSString *, NSString *) = ^(NSString *sourceState, NSString *destinationState) {
+            OCMExpect([delegateMock dataSource:dataSource willTransitionToContentLoadingState:destinationState inDataSource:childDataSource]);
+            OCMExpect([delegateMock dataSource:dataSource didTransitionFromContentLoadingState:sourceState inDataSource:childDataSource]);
+        };
+        
+        // Initial -> Loading
+        prepareExpectations(childDataSource.loadingState, MUKDataSourceContentLoadStateLoading);
+        [childDataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginLoading userInfo:nil error:nil];
+
+        // Loading -> Loaded
+        prepareExpectations(childDataSource.loadingState, MUKDataSourceContentLoadStateLoaded);
+        [childDataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayLoaded userInfo:nil error:nil];
+
+        // Loaded -> Refreshing
+        prepareExpectations(childDataSource.loadingState, MUKDataSourceContentLoadStateRefreshing);
+        [childDataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginRefreshing userInfo:nil error:nil];
+        
+        // Refreshing -> Empty
+        prepareExpectations(childDataSource.loadingState, MUKDataSourceContentLoadStateEmpty);
+        [childDataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayEmpty userInfo:nil error:nil];
+       
+        expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
+    });
+    
+    it(@"should be invoked for content loading", ^{
+        id delegateMock = OCMProtocolMock(@protocol(MUKDataSourceDelegate));
+        
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        id childDataSourceMock = OCMPartialMock(childDataSource);
+
+        [dataSource appendChildDataSource:childDataSourceMock];
+        dataSource.delegate = delegateMock;
+        
+        MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
+        MUKDataSourceContentLoadingResultType resultType = MUKDataSourceContentLoadingResultTypeComplete;
+        NSError *error = [NSError errorWithDomain:@"Hi" code:0 userInfo:nil];
+        __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
+        contentLoading.job = ^{
+            [weakContentLoading finishWithResultType:resultType error:error update:nil];
+        };
+        
+        OCMStub([childDataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
+        
+        void (^prepareExpectations)(void) = ^{
+            OCMExpect([delegateMock dataSource:dataSource willLoadContent:contentLoading]);
+            OCMExpect([delegateMock dataSource:dataSource didLoadContent:contentLoading withResultType:resultType error:error]);
+        };
+        
+        prepareExpectations();
+        [childDataSourceMock setNeedsLoadContent];
+        expect(^{ OCMVerifyAllWithDelay(delegateMock, 0.1); }).notTo.raiseAny();
+        
+        prepareExpectations();
+        contentLoading.cancelled = NO;
+        [childDataSourceMock setNeedsAppendContent];
+        expect(^{ OCMVerifyAllWithDelay(delegateMock, 0.1); }).notTo.raiseAny();
+    });
 });
 
 SpecEnd
@@ -1167,6 +1326,26 @@ describe(@"State", ^{
     it(@"should start at initial state", ^{
         MUKDataSource *dataSource = CreateDataSource();
         expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateInitial);
+    });
+    
+    it(@"should delay content loading", ^{
+        id dataSourceMock = OCMPartialMock(CreateDataSource());
+        OCMExpect([dataSourceMock loadContent]);
+        [dataSourceMock setNeedsLoadContent];
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
+        
+        OCMExpect([dataSourceMock appendContent]);
+        [dataSourceMock setNeedsAppendContent];
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
+    });
+    
+    it(@"should create content loading on the fly", ^{
+        id dataSourceMock = OCMPartialMock(CreateDataSource());
+        NSString *const firstLoadingState = MUKDataSourceContentLoadStateLoading;
+        OCMExpect([dataSourceMock newContentLoadingForState:firstLoadingState]);
+        
+        [dataSourceMock setNeedsLoadContent];
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
     });
 });
 

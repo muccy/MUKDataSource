@@ -32,9 +32,6 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
 @property (nonatomic, readwrite) NSArray *childDataSources;
 @property (nonatomic, weak, readwrite) MUKDataSource *parentDataSource;
 @property (nonatomic, readonly) NSString *loadingState;
-
-@property (nonatomic) TKStateMachine *stateMachine;
-@property (nonatomic) MUKDataSourceContentLoading *currentContentLoading;
 @end
 
 @implementation MUKDataSource

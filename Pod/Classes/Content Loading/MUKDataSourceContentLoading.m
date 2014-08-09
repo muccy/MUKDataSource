@@ -3,7 +3,6 @@
 #import "MUKDataSource_Private.h"
 
 @interface MUKDataSourceContentLoading ()
-@property (nonatomic, readwrite, getter = isCancelled) BOOL cancelled;
 @end
 
 @implementation MUKDataSourceContentLoading

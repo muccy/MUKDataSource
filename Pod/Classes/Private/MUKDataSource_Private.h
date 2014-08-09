@@ -8,6 +8,7 @@
 
 #import "MUKDataSource_Main.h"
 
+@class TKStateMachine;
 @interface MUKDataSource ()
 @property (nonatomic, readonly) BOOL hasChildDataSources;
 
@@ -15,6 +16,11 @@
 - (void)removeItemsAtIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 - (void)insertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 
+@property (nonatomic) TKStateMachine *stateMachine;
+@property (nonatomic) MUKDataSourceContentLoading *currentContentLoading;
+
+- (BOOL)loadContent;
+- (BOOL)appendContent;
 - (void)didFinishContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler;
 
 @end
