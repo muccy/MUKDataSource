@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "DataSource.h"
+#import "RemoteDataSource.h"
 
 #define DEBUG_LOG   0
 
@@ -58,8 +59,9 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 
 
 @interface ViewController () <MUKDataSourceDelegate, UIActionSheetDelegate>
-@property (nonatomic) DataSource *dataSource;
+@property (nonatomic) MUKDataSource *dataSource;
 @property (nonatomic, copy) NSArray *commands;
+@property (nonatomic) BOOL alreadySetNeedLoadContent;
 @end
 
 @implementation ViewController
@@ -76,41 +78,57 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
     self.commands = [self newCommands];
 }
 
-#pragma mark - Overrides
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing:editing animated:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    for (DataSource *sectionDataSource in self.dataSource.childDataSources) {
-        sectionDataSource.editing = editing;
+    if (!self.alreadySetNeedLoadContent) {
+        self.alreadySetNeedLoadContent = YES;
+        [self.dataSource setNeedsLoadContent];
     }
 }
+
+#pragma mark - Overrides
+
+//- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+//    [super setEditing:editing animated:animated];
+//    
+//    for (DataSource *sectionDataSource in self.dataSource.childDataSources) {
+//        sectionDataSource.editing = editing;
+//    }
+//}
 
 #pragma mark - Actions
 
 - (IBAction)commandsButtonPressed:(id)sender {
-    [self setEditing:NO animated:YES];
-    
-    UIActionSheet *actionSheet = [self newCommandsActionSheet];
-    [actionSheet showFromBarButtonItem:sender animated:YES];
+//    [self setEditing:NO animated:YES];
+//    
+//    UIActionSheet *actionSheet = [self newCommandsActionSheet];
+//    [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 #pragma mark - Private
 
-- (DataSource *)newDataSource {
-    DataSource *dataSource = [[DataSource alloc] init];
+- (MUKDataSource *)newDataSource {
+//    DataSource *dataSource = [[DataSource alloc] init];
+//    
+//    DataSource *insectsDataSource = [[DataSource alloc] init];
+//    insectsDataSource.title = @"Insects";
+//    insectsDataSource.items = @[ @"Spider", @"Fly" ];
+//    insectsDataSource.userInfo = kInsectsDataSourceIdentifier;
+//    [dataSource appendChildDataSource:insectsDataSource];
+//    
+//    DataSource *otherAnimalsDataSource = [[DataSource alloc] init];
+//    otherAnimalsDataSource.title = @"Other Animals";
+//    otherAnimalsDataSource.items = @[ @"Cat", @"Snake", @"Rabbit", @"Dog", @"Pig", @"Camel", @"Horse" ];
+//    [dataSource appendChildDataSource:otherAnimalsDataSource];
+//    
+//    dataSource.delegate = self;
+
+    RemoteDataSource *dataSource = [[RemoteDataSource alloc] init];
     
-    DataSource *insectsDataSource = [[DataSource alloc] init];
-    insectsDataSource.title = @"Insects";
-    insectsDataSource.items = @[ @"Spider", @"Fly" ];
-    insectsDataSource.userInfo = kInsectsDataSourceIdentifier;
-    [dataSource appendChildDataSource:insectsDataSource];
-    
-    DataSource *otherAnimalsDataSource = [[DataSource alloc] init];
-    otherAnimalsDataSource.title = @"Other Animals";
-    otherAnimalsDataSource.items = @[ @"Cat", @"Snake", @"Rabbit", @"Dog", @"Pig", @"Camel", @"Horse" ];
-    [dataSource appendChildDataSource:otherAnimalsDataSource];
-    
+    RemoteDataSource *sectionDataSource = [[RemoteDataSource alloc] init];
+    [dataSource appendChildDataSource:sectionDataSource];
+
     dataSource.delegate = self;
     
     return dataSource;

@@ -1063,8 +1063,7 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
 - (void)didFinishContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler
 {
     // Is it meaningful?
-    if (contentLoading.isCancelled || ![self.currentContentLoading isEqual:contentLoading])
-    {
+    if (contentLoading.isCancelled) {
         return;
     }
     
@@ -1121,35 +1120,8 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
             break;
         }
             
-        case MUKDataSourceContentLoadingResultTypeCancelled:
-        default: {
-            if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateAppending])
-            {
-                eventName = MUKDataSourceContentLoadEventDisplayLoaded;
-            }
-            else if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] ||
-                     [self.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing])
-            {
-                // Try to recover
-                if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateInitial] ||
-                    [contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateEmpty])
-                {
-                    eventName = MUKDataSourceContentLoadEventDisplayEmpty;
-                }
-                else if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateLoaded])
-                {
-                    eventName = MUKDataSourceContentLoadEventDisplayLoaded;
-                }
-                else if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateError])
-                {
-                    eventName = MUKDataSourceContentLoadEventDisplayError;
-                }
-                else {
-                    eventName = nil;
-                }
-            }
+        default:
             break;
-        }
     } // switch
     
     if (eventName) {

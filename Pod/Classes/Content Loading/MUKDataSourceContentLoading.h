@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, MUKDataSourceContentLoadingResultType) {
-    MUKDataSourceContentLoadingResultTypeCancelled,
     MUKDataSourceContentLoadingResultTypeEmpty,
     MUKDataSourceContentLoadingResultTypeError,
     MUKDataSourceContentLoadingResultTypeDone
