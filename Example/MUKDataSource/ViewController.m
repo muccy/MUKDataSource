@@ -12,6 +12,8 @@
 
 #define DEBUG_LOG   0
 
+static void *kLoadingStateKVOContext = &kLoadingStateKVOContext;
+
 #if DEBUG_LOG
 static inline NSString *PrettyIndexPath(NSIndexPath *indexPath) {
     return indexPath ? [NSString stringWithFormat:@"(%ld, %ld)", (long)indexPath.section, (long)indexPath.row] : @"(-, -)";
@@ -66,6 +68,10 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 
 @implementation ViewController
 
+- (void)dealloc {
+    [self.dataSource removeObserver:self forKeyPath:@"loadingState"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -76,6 +82,12 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
     self.tableView.dataSource = self.dataSource;
     
     self.commands = [self newCommands];
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+    
+    [self.dataSource addObserver:self forKeyPath:@"loadingState" options:NSKeyValueObservingOptionNew context:kLoadingStateKVOContext];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,6 +116,35 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
 //    
 //    UIActionSheet *actionSheet = [self newCommandsActionSheet];
 //    [actionSheet showFromBarButtonItem:sender animated:YES];
+}
+
+- (void)refreshControlValueChanged:(id)sender {
+    [self.dataSource setNeedsLoadContent];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    BOOL managed = NO;
+    
+    if (context == kLoadingStateKVOContext) {
+        managed = YES;
+        BOOL isRefreshing = [self.dataSource.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] || [self.dataSource.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing];
+        
+        if (isRefreshing && !self.refreshControl.isRefreshing) {
+            [self.refreshControl beginRefreshing];
+            CGPoint offset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - CGRectGetHeight(self.refreshControl.frame));
+            [self.tableView setContentOffset:offset animated:YES];
+        }
+        else if (!isRefreshing && self.refreshControl.isRefreshing) {
+            [self.refreshControl endRefreshing];
+        }
+    }
+    
+    if (!managed) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark - Private

@@ -12,14 +12,12 @@
 
 @implementation RemoteDataSource
 
-- (void)registerReusableViewsForTableView:(UITableView *)tableView {
-    [super registerReusableViewsForTableView:tableView];
-    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-}
-
 - (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
+    }
     return cell;
 }
 
@@ -31,6 +29,7 @@
     Flower *flower = [self itemAtIndex:itemIndex];
     
     cell.textLabel.text = flower.name;
+    cell.detailTextLabel.text = flower.botanicalName;
 }
 
 - (MUKDataSourceContentLoading *)newContentLoadingForState:(NSString *)state {
