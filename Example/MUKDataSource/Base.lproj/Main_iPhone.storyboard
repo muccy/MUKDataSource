@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ndm-Rf-Iu7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vGB-GT-3Hh">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--View Controller - Animals-->
+        <!--Animals Table View Controller - Animals-->
         <scene sceneID="ZbW-ku-B1w">
             <objects>
-                <tableViewController id="1FH-08-nlp" customClass="ViewController" sceneMemberID="viewController">
+                <tableViewController id="1FH-08-nlp" customClass="AnimalsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LJz-A4-mra">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -19,23 +19,25 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="EzK-Mh-0R1"/>
-                        <barButtonItem title="Commands" id="PmW-sa-kPa">
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ytU-r6-weI"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Animals" id="2Vf-WZ-0cc">
+                        <barButtonItem key="leftBarButtonItem" title="Commands" id="PmW-sa-kPa">
                             <connections>
                                 <action selector="commandsButtonPressed:" destination="1FH-08-nlp" id="5bG-J4-aqS"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ytU-r6-weI"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Animals" id="2Vf-WZ-0cc"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Xc-D3-U1D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="824" y="56"/>
+            <point key="canvasLocation" x="1350" y="56"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation Controller - Animals-->
         <scene sceneID="Mtd-fg-2fl">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="Ndm-Rf-Iu7" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ndm-Rf-Iu7" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Animals" id="9fJ-tY-mid"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LeN-SD-lgJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -51,6 +53,60 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UuP-U0-jnk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="824" y="56"/>
+        </scene>
+        <!--Flowers Table View Controller - Flowers-->
+        <scene sceneID="daJ-6x-G3q">
+            <objects>
+                <tableViewController id="qFq-dI-7fc" customClass="FlowersTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ERw-nz-NJU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="qFq-dI-7fc" id="Wbn-Uf-wQT"/>
+                            <outlet property="delegate" destination="qFq-dI-7fc" id="HTk-Fz-nJY"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Flowers" id="P8k-UG-6il"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qah-uh-jaU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1359" y="766"/>
+        </scene>
+        <!--Navigation Controller - Flowers-->
+        <scene sceneID="Qr8-5H-bub">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="T4j-uF-OX6" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Flowers" id="JMw-Vr-Lwx"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="K3b-gY-3YS">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="qFq-dI-7fc" kind="relationship" relationship="rootViewController" id="XXp-T2-PHT"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eLF-gN-8ZH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="824" y="766"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="fQK-ha-gsX">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="vGB-GT-3Hh" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="Hak-rm-Clz">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="T4j-uF-OX6" kind="relationship" relationship="viewControllers" id="oLx-Qi-gGU"/>
+                        <segue destination="Ndm-Rf-Iu7" kind="relationship" relationship="viewControllers" id="802-b5-DS6"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eha-0m-LDk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="298" y="56"/>
         </scene>

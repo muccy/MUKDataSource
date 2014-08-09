@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Muccy. All rights reserved.
 //
 
-#import "DataSource.h"
+#import "AnimalsDataSource.h"
 
 static void *kKVOEditingContext = &kKVOEditingContext;
 static NSString *const kAddAnimalItem = @"Add Animal";
 
-@implementation DataSource
+@implementation AnimalsDataSource
 
 - (id)init {
     self = [super init];

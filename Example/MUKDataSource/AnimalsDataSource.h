@@ -8,6 +8,6 @@
 
 #import <MUKDataSource/MUKDataSource.h>
 
-@interface DataSource : MUKDataSource
+@interface AnimalsDataSource : MUKDataSource
 @property (nonatomic) BOOL editing;
 @end

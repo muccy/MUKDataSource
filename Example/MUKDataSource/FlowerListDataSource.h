@@ -1,13 +1,13 @@
 //
-//  RemoteDataSource.h
+//  FlowersDataSource.h
 //  MUKDataSource
 //
-//  Created by Marco on 08/08/14.
+//  Created by Marco on 09/08/14.
 //  Copyright (c) 2014 Muccy. All rights reserved.
 //
 
 #import <MUKDataSource/MUKDataSource.h>
 
-@interface RemoteDataSource : MUKDataSource
+@interface FlowerListDataSource : MUKDataSource
 
 @end

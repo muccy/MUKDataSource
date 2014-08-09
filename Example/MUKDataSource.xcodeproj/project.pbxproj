@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		06774E47198BCD360066DE57 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E46198BCD360066DE57 /* DataSource.m */; };
-		06774E6519950F4C0066DE57 /* RemoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6419950F4C0066DE57 /* RemoteDataSource.m */; };
+		06774E47198BCD360066DE57 /* AnimalsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E46198BCD360066DE57 /* AnimalsDataSource.m */; };
+		06774E6519950F4C0066DE57 /* RemoteFlowersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */; };
 		06774E67199517AB0066DE57 /* flowers.json in Resources */ = {isa = PBXBuildFile; fileRef = 06774E66199517AB0066DE57 /* flowers.json */; };
 		06774E6A199517C00066DE57 /* Flower.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E69199517C00066DE57 /* Flower.m */; };
 		06774E6D1995188A0066DE57 /* Florist.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6C1995188A0066DE57 /* Florist.m */; };
+		06774E70199610910066DE57 /* AppendContentDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6F199610910066DE57 /* AppendContentDataSource.m */; };
+		06774E73199611110066DE57 /* FlowerListDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E72199611110066DE57 /* FlowerListDataSource.m */; };
+		06774E761996119E0066DE57 /* FlowersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E751996119E0066DE57 /* FlowersTableViewController.m */; };
+		06774E79199611F80066DE57 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E78199611F80066DE57 /* TableViewController.m */; };
+		06774E7C19961A640066DE57 /* AnimalsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E7B19961A640066DE57 /* AnimalsTableViewController.m */; };
 		5ED957BE6DAB4B81B683C44C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F674411199F3468EB2B3326F /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -21,7 +26,6 @@
 		6003F59E195388D20070C39A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* AppDelegate.m */; };
 		6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6003F59F195388D20070C39A /* Main_iPhone.storyboard */; };
 		6003F5A4195388D20070C39A /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A2195388D20070C39A /* Main_iPad.storyboard */; };
-		6003F5A7195388D20070C39A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* ViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -42,8 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		06774E45198BCD360066DE57 /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
-		06774E46198BCD360066DE57 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
+		06774E45198BCD360066DE57 /* AnimalsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsDataSource.h; sourceTree = "<group>"; };
+		06774E46198BCD360066DE57 /* AnimalsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsDataSource.m; sourceTree = "<group>"; };
 		06774E48198BF9750066DE57 /* MUKDataSourceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceDelegate.h; sourceTree = "<group>"; };
 		06774E4A198CAD3A0066DE57 /* MUKDataSource+TableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MUKDataSource+TableView.h"; sourceTree = "<group>"; };
 		06774E4B198CAD3A0066DE57 /* MUKDataSource+TableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MUKDataSource+TableView.m"; sourceTree = "<group>"; };
@@ -58,13 +62,23 @@
 		06774E5F1994F90F0066DE57 /* MUKDataSourceContentLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceContentLoading.m; sourceTree = "<group>"; };
 		06774E611994FA100066DE57 /* MUKDataSourceContentLoadEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadEvent.h; sourceTree = "<group>"; };
 		06774E6219950A300066DE57 /* MUKDataSourceContentLoading_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoading_Private.h; sourceTree = "<group>"; };
-		06774E6319950F4C0066DE57 /* RemoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteDataSource.h; sourceTree = "<group>"; };
-		06774E6419950F4C0066DE57 /* RemoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteDataSource.m; sourceTree = "<group>"; };
+		06774E6319950F4C0066DE57 /* RemoteFlowersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteFlowersDataSource.h; sourceTree = "<group>"; };
+		06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteFlowersDataSource.m; sourceTree = "<group>"; };
 		06774E66199517AB0066DE57 /* flowers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = flowers.json; path = "../../../../../../../../../../Volumes/Macintosh HDD/File Utenti/muccy/Dropbox Locale/flowers.json"; sourceTree = "<group>"; };
 		06774E68199517C00066DE57 /* Flower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flower.h; sourceTree = "<group>"; };
 		06774E69199517C00066DE57 /* Flower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Flower.m; sourceTree = "<group>"; };
 		06774E6B1995188A0066DE57 /* Florist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Florist.h; sourceTree = "<group>"; };
 		06774E6C1995188A0066DE57 /* Florist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Florist.m; sourceTree = "<group>"; };
+		06774E6E199610910066DE57 /* AppendContentDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppendContentDataSource.h; sourceTree = "<group>"; };
+		06774E6F199610910066DE57 /* AppendContentDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppendContentDataSource.m; sourceTree = "<group>"; };
+		06774E71199611110066DE57 /* FlowerListDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowerListDataSource.h; sourceTree = "<group>"; };
+		06774E72199611110066DE57 /* FlowerListDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowerListDataSource.m; sourceTree = "<group>"; };
+		06774E741996119E0066DE57 /* FlowersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowersTableViewController.h; sourceTree = "<group>"; };
+		06774E751996119E0066DE57 /* FlowersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowersTableViewController.m; sourceTree = "<group>"; };
+		06774E77199611F80066DE57 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		06774E78199611F80066DE57 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		06774E7A19961A640066DE57 /* AnimalsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsTableViewController.h; sourceTree = "<group>"; };
+		06774E7B19961A640066DE57 /* AnimalsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsTableViewController.m; sourceTree = "<group>"; };
 		06986C2C198BC0F20055F3E9 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		06986C2F198BC1590055F3E9 /* MUKDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSource.h; sourceTree = "<group>"; };
 		06986C33198BC2450055F3E9 /* MUKDataSource_Main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSource_Main.h; sourceTree = "<group>"; };
@@ -84,8 +98,6 @@
 		6003F59D195388D20070C39A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6003F5A0195388D20070C39A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		6003F5A3195388D20070C39A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -242,12 +254,20 @@
 				6003F59D195388D20070C39A /* AppDelegate.m */,
 				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
 				6003F5A2195388D20070C39A /* Main_iPad.storyboard */,
-				6003F5A5195388D20070C39A /* ViewController.h */,
-				6003F5A6195388D20070C39A /* ViewController.m */,
-				06774E45198BCD360066DE57 /* DataSource.h */,
-				06774E46198BCD360066DE57 /* DataSource.m */,
-				06774E6319950F4C0066DE57 /* RemoteDataSource.h */,
-				06774E6419950F4C0066DE57 /* RemoteDataSource.m */,
+				06774E77199611F80066DE57 /* TableViewController.h */,
+				06774E78199611F80066DE57 /* TableViewController.m */,
+				06774E7A19961A640066DE57 /* AnimalsTableViewController.h */,
+				06774E7B19961A640066DE57 /* AnimalsTableViewController.m */,
+				06774E741996119E0066DE57 /* FlowersTableViewController.h */,
+				06774E751996119E0066DE57 /* FlowersTableViewController.m */,
+				06774E45198BCD360066DE57 /* AnimalsDataSource.h */,
+				06774E46198BCD360066DE57 /* AnimalsDataSource.m */,
+				06774E6319950F4C0066DE57 /* RemoteFlowersDataSource.h */,
+				06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */,
+				06774E71199611110066DE57 /* FlowerListDataSource.h */,
+				06774E72199611110066DE57 /* FlowerListDataSource.m */,
+				06774E6E199610910066DE57 /* AppendContentDataSource.h */,
+				06774E6F199610910066DE57 /* AppendContentDataSource.m */,
 				06774E68199517C00066DE57 /* Flower.h */,
 				06774E69199517C00066DE57 /* Flower.m */,
 				06774E6B1995188A0066DE57 /* Florist.h */,
@@ -467,11 +487,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06774E6519950F4C0066DE57 /* RemoteDataSource.m in Sources */,
+				06774E79199611F80066DE57 /* TableViewController.m in Sources */,
+				06774E6519950F4C0066DE57 /* RemoteFlowersDataSource.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
+				06774E7C19961A640066DE57 /* AnimalsTableViewController.m in Sources */,
+				06774E70199610910066DE57 /* AppendContentDataSource.m in Sources */,
 				06774E6A199517C00066DE57 /* Flower.m in Sources */,
-				6003F5A7195388D20070C39A /* ViewController.m in Sources */,
-				06774E47198BCD360066DE57 /* DataSource.m in Sources */,
+				06774E761996119E0066DE57 /* FlowersTableViewController.m in Sources */,
+				06774E73199611110066DE57 /* FlowerListDataSource.m in Sources */,
+				06774E47198BCD360066DE57 /* AnimalsDataSource.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				06774E6D1995188A0066DE57 /* Florist.m in Sources */,
 			);
