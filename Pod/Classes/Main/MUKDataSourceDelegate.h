@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <MUKDataSource/MUKDataSourceEventOrigin.h>
+#import <MUKDataSource/MUKDataSourceContentLoadingResultType.h>
 
-@class MUKDataSource;
+@class MUKDataSource, MUKDataSourceContentLoading;
 @protocol MUKDataSourceDelegate <NSObject>
 @optional
 - (void)dataSource:(MUKDataSource *)dataSource didInsertChildDataSourcesAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)targetDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
@@ -20,4 +21,7 @@
 
 - (void)dataSource:(MUKDataSource *)dataSource willTransitionToContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)originatingDataSource;
 - (void)dataSource:(MUKDataSource *)dataSource didTransitionFromContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)originatingDataSource;
+
+- (void)dataSource:(MUKDataSource *)dataSource willLoadContent:(MUKDataSourceContentLoading *)contentLoading;
+- (void)dataSource:(MUKDataSource *)dataSource didLoadContent:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error;
 @end

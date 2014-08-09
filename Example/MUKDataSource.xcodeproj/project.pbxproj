@@ -46,6 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		065A168519964EBA0093D27B /* MUKDataSourceContentLoadingResultType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadingResultType.h; sourceTree = "<group>"; };
+		065A1687199657240093D27B /* MUKAppendContentDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKAppendContentDataSource.h; sourceTree = "<group>"; };
+		065A1688199657240093D27B /* MUKAppendContentDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKAppendContentDataSource.m; sourceTree = "<group>"; };
 		06774E45198BCD360066DE57 /* AnimalsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsDataSource.h; sourceTree = "<group>"; };
 		06774E46198BCD360066DE57 /* AnimalsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsDataSource.m; sourceTree = "<group>"; };
 		06774E48198BF9750066DE57 /* MUKDataSourceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceDelegate.h; sourceTree = "<group>"; };
@@ -137,6 +140,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		065A1686199657010093D27B /* Append Content */ = {
+			isa = PBXGroup;
+			children = (
+				065A1687199657240093D27B /* MUKAppendContentDataSource.h */,
+				065A1688199657240093D27B /* MUKAppendContentDataSource.m */,
+			);
+			path = "Append Content";
+			sourceTree = "<group>";
+		};
 		06774E49198CAD260066DE57 /* Table View Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +177,7 @@
 			children = (
 				06774E5E1994F90F0066DE57 /* MUKDataSourceContentLoading.h */,
 				06774E5F1994F90F0066DE57 /* MUKDataSourceContentLoading.m */,
+				065A168519964EBA0093D27B /* MUKDataSourceContentLoadingResultType.h */,
 			);
 			path = "Content Loading";
 			sourceTree = "<group>";
@@ -193,6 +206,7 @@
 				06986C2F198BC1590055F3E9 /* MUKDataSource.h */,
 				06986C32198BC2450055F3E9 /* Main */,
 				06774E5D1994F90F0066DE57 /* Content Loading */,
+				065A1686199657010093D27B /* Append Content */,
 				06774E4D198CAE000066DE57 /* Private */,
 				06774E49198CAD260066DE57 /* Table View Support */,
 			);

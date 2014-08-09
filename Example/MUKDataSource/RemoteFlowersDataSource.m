@@ -15,6 +15,22 @@
     static NSInteger const kCount = 20;
     MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
     __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
+    
+    MUKDataSourceContentLoadingResultType (^resultTypeForResults)(NSArray *) = ^(NSArray *results)
+    {
+        MUKDataSourceContentLoadingResultType resultType;
+        if ([results count] == 0) {
+            resultType = MUKDataSourceContentLoadingResultTypeEmpty;
+        }
+        else if ([results count] < kCount) {
+            resultType = MUKDataSourceContentLoadingResultTypePartial;
+        }
+        else {
+            resultType = MUKDataSourceContentLoadingResultTypeComplete;
+        }
+        
+        return resultType;
+    };
 
     if ([state isEqualToString:MUKDataSourceContentLoadStateLoading] ||
         [state isEqualToString:MUKDataSourceContentLoadStateRefreshing])
@@ -25,9 +41,9 @@
                 MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
                 
                 if (strongContentLoading && !strongContentLoading.isCancelled) {
-                    [strongContentLoading finishWithResultType:MUKDataSourceContentLoadingResultTypeDone error:nil update:^
+                    [strongContentLoading finishWithResultType:resultTypeForResults(flowers) error:nil update:^
                     {
-                        [[self childDataSourceAtIndex:0] setItems:flowers animated:YES];
+                        [[self childDataSourceAtIndex:0] setItems:flowers animated:NO];
                     }];
                 }
             }];
@@ -40,7 +56,7 @@
                 MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
                 
                 if (strongContentLoading && !strongContentLoading.isCancelled) {
-                    [strongContentLoading finishWithResultType:MUKDataSourceContentLoadingResultTypeDone error:nil update:^
+                    [strongContentLoading finishWithResultType:resultTypeForResults(flowers) error:nil update:^
                     {
                         NSMutableArray *proxy = [[self childDataSourceAtIndex:0] mutableArrayValueForKey:@"items"];
                         [proxy addObjectsFromArray:flowers];
@@ -54,7 +70,21 @@
     }
     
     return contentLoading;
-        
+}
+
+- (void)willLoadContent:(MUKDataSourceContentLoading *)contentLoading {
+    [super willLoadContent:contentLoading];
+    
+    MUKAppendContentDataSource *appendDataSource = [self.childDataSources lastObject];
+    [appendDataSource showAppendingContentIfNeededWithContentLoading:contentLoading animated:NO];
+}
+
+- (void)didLoadContent:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error
+{
+    [super didLoadContent:contentLoading withResultType:resultType error:error];
+    
+    MUKAppendContentDataSource *appendDataSource = [self.childDataSources lastObject];
+    [appendDataSource showCouldAppendContentIfNeededWithContentLoading:contentLoading resultType:resultType animated:NO];
 }
 
 @end

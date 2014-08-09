@@ -1,10 +1,5 @@
 #import <Foundation/Foundation.h>
-
-typedef NS_ENUM(NSInteger, MUKDataSourceContentLoadingResultType) {
-    MUKDataSourceContentLoadingResultTypeEmpty,
-    MUKDataSourceContentLoadingResultTypeError,
-    MUKDataSourceContentLoadingResultTypeDone
-};
+#import <MUKDataSource/MUKDataSourceContentLoadingResultType.h>
 
 @class MUKDataSource;
 @interface MUKDataSourceContentLoading : NSObject

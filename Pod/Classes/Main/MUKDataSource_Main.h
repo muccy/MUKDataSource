@@ -47,6 +47,7 @@
 
 @interface MUKDataSource (ContentLoading)
 @property (nonatomic, readonly) NSString *loadingState;
+- (BOOL)canTransitionToLoadingState:(NSString *)loadingState;
 
 - (void)setNeedsLoadContent;
 - (void)setNeedsAppendContent;
@@ -71,4 +72,7 @@
 
 - (void)willTransitionToContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)dataSource;
 - (void)didTransitionFromContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)dataSource;
+
+- (void)willLoadContent:(MUKDataSourceContentLoading *)contentLoading;
+- (void)didLoadContent:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error;
 @end

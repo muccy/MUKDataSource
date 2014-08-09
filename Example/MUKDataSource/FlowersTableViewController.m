@@ -31,4 +31,15 @@
     return YES;
 }
 
+#pragma mark - <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
+    if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[AppendContentDataSource class]])
+    {
+        [self.dataSource setNeedsAppendContent];
+    }
+}
+
 @end

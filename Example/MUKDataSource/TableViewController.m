@@ -130,7 +130,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     }
 }
 
-- (void)dataSource:(MUKDataSource *)dataSource didMoveChildDataSourceFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
+- (void)dataSource:(MUKDataSource *)dataSource didMoveChildDataSourceFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     NSInteger const fromSection = [sourceDataSource tableViewSectionFromChildDataSourceIndex:sourceIndex checkingBounds:NO];
     NSInteger const toSection = [destinationDataSource tableViewSectionFromChildDataSourceIndex:destinationIndex checkingBounds:NO];
@@ -224,17 +224,6 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 #if DEBUG_LOG
     NSLog(@"• State Transition • Will -> %@", state);
 #endif
-
-    BOOL const isRefreshing = [state isEqualToString:MUKDataSourceContentLoadStateLoading] || [state isEqualToString:MUKDataSourceContentLoadStateRefreshing];
-    
-    if (isRefreshing && !self.refreshControl.isRefreshing) {
-        [self.refreshControl beginRefreshing];
-        CGPoint offset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - CGRectGetHeight(self.refreshControl.frame));
-        [self.tableView setContentOffset:offset animated:YES];
-    }
-    else if (!isRefreshing && self.refreshControl.isRefreshing) {
-        [self.refreshControl endRefreshing];
-    }
 }
 
 - (void)dataSource:(MUKDataSource *)dataSource didTransitionFromContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)originatingDataSource
@@ -242,6 +231,30 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 #if DEBUG_LOG
     NSLog(@"• State Transition • Did -> %@", state);
 #endif
+}
+
+- (void)dataSource:(MUKDataSource *)dataSource willLoadContent:(MUKDataSourceContentLoading *)contentLoading
+{
+#if DEBUG_LOG
+    NSLog(@"• Content • Will Load");
+#endif
+    BOOL const isRefreshing = [dataSource.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] || [dataSource.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing];
+    
+    if (isRefreshing && !self.refreshControl.isRefreshing) {
+        [self.refreshControl beginRefreshing];
+        CGPoint offset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - CGRectGetHeight(self.refreshControl.frame));
+        [self.tableView setContentOffset:offset animated:YES];
+    }
+}
+
+- (void)dataSource:(MUKDataSource *)dataSource didLoadContent:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error
+{
+#if DEBUG_LOG
+    NSLog(@"• Content • Did Load");
+#endif
+    if (self.refreshControl.isRefreshing) {
+        [self.refreshControl endRefreshing];
+    }
 }
 
 @end

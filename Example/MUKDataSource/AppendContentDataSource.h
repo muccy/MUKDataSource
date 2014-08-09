@@ -8,6 +8,6 @@
 
 #import <MUKDataSource/MUKDataSource.h>
 
-@interface AppendContentDataSource : MUKDataSource
+@interface AppendContentDataSource : MUKAppendContentDataSource
 
 @end
