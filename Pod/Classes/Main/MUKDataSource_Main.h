@@ -6,7 +6,6 @@
 @interface MUKDataSource : NSObject
 @property (nonatomic, weak) id<MUKDataSourceDelegate> delegate;
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic) id userInfo;
 
 - (void)requestBatchUpdate:(dispatch_block_t)updateBlock;
 @end

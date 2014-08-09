@@ -48,7 +48,7 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
     AnimalsDataSource *insectsDataSource = [[AnimalsDataSource alloc] init];
     insectsDataSource.title = @"Insects";
     insectsDataSource.items = @[ @"Spider", @"Fly" ];
-    insectsDataSource.userInfo = kInsectsDataSourceIdentifier;
+    insectsDataSource.identifier = kInsectsDataSourceIdentifier;
     [dataSource appendChildDataSource:insectsDataSource];
     
     AnimalsDataSource *otherAnimalsDataSource = [[AnimalsDataSource alloc] init];
@@ -134,8 +134,10 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
         AnimalsTableViewController *strongSelf = weakSelf;
         
         AnimalsDataSource *insectsDataSource = nil;
-        for (AnimalsDataSource *dataSource in strongSelf.dataSource.childDataSources) {
-            if (dataSource.userInfo == kInsectsDataSourceIdentifier) {
+        for (AnimalsDataSource *dataSource in strongSelf.dataSource.childDataSources)
+        {
+            if ([dataSource.identifier isEqualToString:kInsectsDataSourceIdentifier])
+            {
                 insectsDataSource = dataSource;
                 break;
             }
@@ -152,8 +154,10 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
         AnimalsTableViewController *strongSelf = weakSelf;
         
         AnimalsDataSource *insectsDataSource = nil;
-        for (AnimalsDataSource *dataSource in strongSelf.dataSource.childDataSources) {
-            if (dataSource.userInfo == kInsectsDataSourceIdentifier) {
+        for (AnimalsDataSource *dataSource in strongSelf.dataSource.childDataSources)
+        {
+            if ([dataSource.identifier isEqualToString:kInsectsDataSourceIdentifier])
+            {
                 insectsDataSource = dataSource;
                 break;
             }
@@ -197,7 +201,7 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
         NSInteger insectsIndex = [strongSelf.dataSource.childDataSources indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
         {
             AnimalsDataSource *dataSource = obj;
-            if ([dataSource.userInfo isEqualToString:kInsectsDataSourceIdentifier])
+            if ([dataSource.identifier isEqualToString:kInsectsDataSourceIdentifier])
             {
                 *stop = YES;
                 return YES;

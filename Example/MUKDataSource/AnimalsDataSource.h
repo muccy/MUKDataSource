@@ -10,4 +10,5 @@
 
 @interface AnimalsDataSource : MUKDataSource
 @property (nonatomic) BOOL editing;
+@property (nonatomic, copy) NSString *identifier;
 @end
