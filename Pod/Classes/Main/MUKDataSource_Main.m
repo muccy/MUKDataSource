@@ -54,7 +54,7 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
 - (void)requestBatchUpdate:(dispatch_block_t)updateBlock {
     // Delegate is assigned to perform batch updates: do nothing here
     
-    [self didRequestBatchUpdate:updateBlock fromDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+    [self didRequestBatchUpdate:updateBlock fromDataSource:self];
 }
 
 #pragma mark - self.items KVC compliance
@@ -79,8 +79,19 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     [self removeItemsAtIndexes:indexes eventOrigin:MUKDataSourceEventOriginProgrammatic];
 }
 
-- (void)replaceItemsAtIndexes:(NSIndexSet *)indexes withItems:(NSArray *)array {
-    [self replaceItemsAtIndexes:indexes withItems:array eventOrigin:MUKDataSourceEventOriginProgrammatic];
+- (void)replaceItemsAtIndexes:(NSIndexSet *)indexes withItems:(NSArray *)items {
+    if (!indexes || [indexes count] != [items count]) {
+        return;
+    }
+    
+    NSMutableArray *newItems = [_items mutableCopy];
+    NSArray *const oldItems = [_items objectsAtIndexes:indexes];
+    [newItems replaceObjectsAtIndexes:indexes withObjects:items];
+    
+    [self storeItems:newItems emittingKVONotifications:YES];
+    
+    // Notify
+    [self didReplaceItems:oldItems atIndexes:indexes inDataSource:self];
 }
 
 #pragma mark - self.childDataSources KVC compliance
@@ -129,7 +140,7 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
         // Notify data source refreshed
         NSInteger const idx = [self.parentDataSource.childDataSources indexOfObject:self];
         if (idx != NSNotFound) {
-            [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic];
+            [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource];
         }
         
         return;
@@ -251,7 +262,7 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
         [self storeChildDataSources:newChildDataSources emittingKVONotifications:YES];
         
         // Notify all data changed
-        [self didReloadDataInDataSource:self eventOrigin:MUKDataSourceEventOriginProgrammatic];
+        [self didReloadDataInDataSource:self];
         
         return;
     }
@@ -405,15 +416,15 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     }
 }
 
-- (void)didReplaceChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didReplaceChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource
 {
     // Notify upwards
-    [self.parentDataSource didReplaceChildDataSources:childDataSources atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+    [self.parentDataSource didReplaceChildDataSources:childDataSources atIndexes:indexes inDataSource:dataSource];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceChildDataSources:atIndexes:inDataSource:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceChildDataSources:atIndexes:inDataSource:)])
     {
-        [self.delegate dataSource:self didReplaceChildDataSources:childDataSources atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didReplaceChildDataSources:childDataSources atIndexes:indexes inDataSource:dataSource];
     }
 }
 - (void)didMoveChildDataSourceFromDataSource:(MUKDataSource *)sourceDataSource atIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
@@ -428,15 +439,15 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     }
 }
 
-- (void)didRefreshChildDataSourcesAtIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didRefreshChildDataSourcesAtIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource
 {
     // Notify upwards
-    [self.parentDataSource didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+    [self.parentDataSource didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didRefreshChildDataSourcesAtIndexes:inDataSource:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didRefreshChildDataSourcesAtIndexes:inDataSource:)])
     {
-        [self.delegate dataSource:self didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource];
     }
 }
 
@@ -464,15 +475,15 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     }
 }
 
-- (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource
 {
     // Notify upwards
-    [self.parentDataSource didReplaceItems:items atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+    [self.parentDataSource didReplaceItems:items atIndexes:indexes inDataSource:dataSource];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceItems:atIndexes:inDataSource:eventOrigin:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didReplaceItems:atIndexes:inDataSource:)])
     {
-        [self.delegate dataSource:self didReplaceItems:items atIndexes:indexes inDataSource:dataSource eventOrigin:eventOrigin];
+        [self.delegate dataSource:self didReplaceItems:items atIndexes:indexes inDataSource:dataSource];
     }
 }
 
@@ -488,7 +499,29 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     }
 }
 
-- (void)didReloadDataInDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
+- (void)didReloadDataInDataSource:(MUKDataSource *)dataSource {
+    // Notify upwards
+    [self.parentDataSource didReloadDataInDataSource:dataSource];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didReloadDataInDataSource:)])
+    {
+        [self.delegate dataSource:self didReloadDataInDataSource:dataSource];
+    }
+}
+
+- (void)didRequestBatchUpdate:(dispatch_block_t)updateBlock fromDataSource:(MUKDataSource *)dataSource
+{
+    // Notify upwards
+    [self.parentDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource];
+    
+    // Inform delegate
+    if ([self.delegate respondsToSelector:@selector(dataSource:didRequestBatchUpdate:fromDataSource:)])
+    {
+        [self.delegate dataSource:self didRequestBatchUpdate:updateBlock fromDataSource:dataSource];
+    }
+}
+
 {
     // Notify upwards
     [self.parentDataSource didReloadDataInDataSource:dataSource eventOrigin:eventOrigin];
@@ -500,7 +533,6 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     }
 }
 
-- (void)didRequestBatchUpdate:(dispatch_block_t)updateBlock fromDataSource:(MUKDataSource *)dataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
     // Notify upwards
     [self.parentDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:eventOrigin];
@@ -619,22 +651,6 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     
     // Notify
     [self didInsertItemsAtIndexes:indexes toDataSource:self eventOrigin:eventOrigin];
-}
-
-- (void)replaceItemsAtIndexes:(NSIndexSet *)indexes withItems:(NSArray *)items eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
-{
-    if (!indexes || [indexes count] != [items count]) {
-        return;
-    }
-    
-    NSMutableArray *newItems = [_items mutableCopy];
-    NSArray *const oldItems = [_items objectsAtIndexes:indexes];
-    [newItems replaceObjectsAtIndexes:indexes withObjects:items];
-    
-    [self storeItems:newItems emittingKVONotifications:YES];
-    
-    // Notify
-    [self didReplaceItems:oldItems atIndexes:indexes inDataSource:self eventOrigin:eventOrigin];
 }
 
 #pragma mark - Private - Containment
@@ -797,7 +813,7 @@ static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"kStateMach
     [self storeChildDataSources:updatedChildDataSources emittingKVONotifications:YES];
     
     // Notify
-    [self didReplaceChildDataSources:removedChildDataSources atIndexes:indexes inDataSource:self eventOrigin:eventOrigin];
+    [self didReplaceChildDataSources:removedChildDataSources atIndexes:indexes inDataSource:self];
 }
 
 #pragma mark - Private — State

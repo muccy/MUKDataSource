@@ -467,11 +467,11 @@ describe(@"Callbacks", ^{
         
         void (^prepareExpectations)(NSArray *, NSIndexSet *, MUKDataSource *) = ^(NSArray *oldItems, NSIndexSet *replacedIndexes, MUKDataSource *originatingDataSource)
         {
-            OCMExpect([mockDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource]).andForwardToRealObject();
             
-            OCMExpect([mockChildDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource]).andForwardToRealObject();
             
-            OCMExpect([mockRootDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+            OCMExpect([mockRootDataSource didReplaceItems:oldItems atIndexes:replacedIndexes inDataSource:originatingDataSource]);
         };
         
         // Replace multiple items
@@ -550,11 +550,11 @@ describe(@"Callbacks", ^{
         
         void (^prepareExpectations)(NSInteger, MUKDataSource *) = ^(NSInteger idx, MUKDataSource *dataSource)
         {
-            OCMExpect([mockDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource]).andForwardToRealObject();
             
-            OCMExpect([mockChildDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource]).andForwardToRealObject();
             
-            OCMExpect([mockRootDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+            OCMExpect([mockRootDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource]);
         };
         
         NSArray *items = @[@"A", @"B"];
@@ -611,9 +611,9 @@ describe(@"Callbacks", ^{
             
             OCMExpect([mockDataSource requestBatchUpdate:[OCMArg isNotNil]]).andForwardToRealObject();
             
-            OCMExpect([mockDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
-            OCMExpect([mockChildDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
-            OCMExpect([mockRootDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andDo(^(NSInvocation *invocation)
+            OCMExpect([mockDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockRootDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource]).andDo(^(NSInvocation *invocation)
             {
                 // Events contained inside batch are executed from here, instead
                 // of delegate (which is not tested here)
@@ -757,11 +757,11 @@ describe(@"Callbacks", ^{
         
         void (^prepareExpectations)(NSArray *, NSIndexSet *, MUKDataSource *) = ^(NSArray *oldChildDataSources, NSIndexSet *replacedIndexes, MUKDataSource *originatingDataSource)
         {
-            OCMExpect([mockDataSource didReplaceChildDataSources:oldChildDataSources atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockDataSource didReplaceChildDataSources:oldChildDataSources atIndexes:replacedIndexes inDataSource:originatingDataSource]).andForwardToRealObject();
             
-            OCMExpect([mockChildDataSource didReplaceChildDataSources:oldChildDataSources atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didReplaceChildDataSources:oldChildDataSources atIndexes:replacedIndexes inDataSource:originatingDataSource]).andForwardToRealObject();
             
-            OCMExpect([mockRootDataSource didReplaceChildDataSources:oldChildDataSources atIndexes:replacedIndexes inDataSource:originatingDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+            OCMExpect([mockRootDataSource didReplaceChildDataSources:oldChildDataSources atIndexes:replacedIndexes inDataSource:originatingDataSource]);
         };
         
         // Replace multiple child data sources
@@ -840,11 +840,11 @@ describe(@"Callbacks", ^{
         
         void (^prepareExpectations)(MUKDataSource *) = ^(MUKDataSource *dataSource)
         {
-            OCMExpect([mockDataSource didReloadDataInDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockDataSource didReloadDataInDataSource:dataSource]).andForwardToRealObject();
             
-            OCMExpect([mockChildDataSource didReloadDataInDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didReloadDataInDataSource:dataSource]).andForwardToRealObject();
             
-            OCMExpect([mockRootDataSource didReloadDataInDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+            OCMExpect([mockRootDataSource didReloadDataInDataSource:dataSource]);
         };
         
         NSArray *newChildDataSources = @[CreateDataSource(), CreateDataSource()];
@@ -905,9 +905,9 @@ describe(@"Callbacks", ^{
             
             OCMExpect([mockDataSource requestBatchUpdate:[OCMArg isNotNil]]).andForwardToRealObject();
             
-            OCMExpect([mockDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
-            OCMExpect([mockChildDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
-            OCMExpect([mockRootDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andDo(^(NSInvocation *invocation)
+            OCMExpect([mockDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockRootDataSource didRequestBatchUpdate:[OCMArg isNotNil] fromDataSource:dataSource]).andDo(^(NSInvocation *invocation)
             {
                 // Events contained inside batch are executed from here, instead
                 // of delegate (which is not tested here)
@@ -955,9 +955,9 @@ describe(@"Callbacks", ^{
         
         void (^prepareExpectations)(dispatch_block_t, MUKDataSource *) = ^(dispatch_block_t updateBlock, MUKDataSource *dataSource)
         {
-            OCMExpect([mockDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
-            OCMExpect([mockChildDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andForwardToRealObject();
-            OCMExpect([mockRootDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]).andDo(^(NSInvocation *invocation)
+            OCMExpect([mockDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockRootDataSource didRequestBatchUpdate:updateBlock fromDataSource:dataSource]).andDo(^(NSInvocation *invocation)
             {
                 // Events contained inside batch are executed from here, instead
                 // of delegate (which is not tested here)
@@ -1024,7 +1024,7 @@ describe(@"Delegate", ^{
         [childDataSource appendChildDataSource:CreateDataSource()];
         dataSource.delegate = delegateMock;
         
-        OCMExpect([delegateMock dataSource:dataSource didReplaceChildDataSources:childDataSource.childDataSources atIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        OCMExpect([delegateMock dataSource:dataSource didReplaceChildDataSources:childDataSource.childDataSources atIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource]);
         
         [childDataSource replaceChildDataSourceAtIndex:index withDataSource:CreateDataSource()];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
@@ -1056,7 +1056,7 @@ describe(@"Delegate", ^{
         [dataSource appendChildDataSource:childDataSource];
         dataSource.delegate = delegateMock;
         
-        OCMExpect([delegateMock dataSource:dataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource.parentDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        OCMExpect([delegateMock dataSource:dataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource.parentDataSource]);
         
         [childDataSource setItems:@[@"A", @"B"] animated:NO];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
@@ -1103,7 +1103,7 @@ describe(@"Delegate", ^{
         childDataSource.items = @[@"A"];
         dataSource.delegate = delegateMock;
         
-        OCMExpect([delegateMock dataSource:dataSource didReplaceItems:childDataSource.items atIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        OCMExpect([delegateMock dataSource:dataSource didReplaceItems:childDataSource.items atIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource]);
         
         [childDataSource replaceItemAtIndex:index withItem:@"B"];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
@@ -1135,7 +1135,7 @@ describe(@"Delegate", ^{
         [dataSource appendChildDataSource:childDataSource];
         dataSource.delegate = delegateMock;
         
-        OCMExpect([delegateMock dataSource:dataSource didReloadDataInDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        OCMExpect([delegateMock dataSource:dataSource didReloadDataInDataSource:childDataSource]);
         
         [childDataSource setChildDataSources:@[CreateDataSource()] animated:NO];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
@@ -1150,7 +1150,7 @@ describe(@"Delegate", ^{
         dataSource.delegate = delegateMock;
         
         dispatch_block_t updateBlock = ^{};
-        OCMExpect([delegateMock dataSource:dataSource didRequestBatchUpdate:updateBlock fromDataSource:childDataSource eventOrigin:MUKDataSourceEventOriginProgrammatic]);
+        OCMExpect([delegateMock dataSource:dataSource didRequestBatchUpdate:updateBlock fromDataSource:childDataSource]);
         
         [childDataSource requestBatchUpdate:updateBlock];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
