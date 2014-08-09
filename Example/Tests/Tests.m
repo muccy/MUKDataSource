@@ -1327,7 +1327,9 @@ describe(@"State", ^{
         MUKDataSource *dataSource = CreateDataSource();
         expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateInitial);
     });
-    
+});
+         
+describe(@"Content loading", ^{
     it(@"should delay content loading", ^{
         id dataSourceMock = OCMPartialMock(CreateDataSource());
         OCMExpect([dataSourceMock loadContent]);
@@ -1346,6 +1348,70 @@ describe(@"State", ^{
         
         [dataSourceMock setNeedsLoadContent];
         expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
+    });
+    
+    it(@"should update its data source", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        id dataSourceMock = OCMPartialMock(dataSource);
+        
+        MUKDataSourceContentLoadingResultType resultType = MUKDataSourceContentLoadingResultTypeComplete;
+        MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
+        __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
+        __block BOOL jobBlockCalled = NO;
+        __block BOOL updateBlockCalled = NO;
+        dispatch_block_t updateBlock = ^{
+            updateBlockCalled = YES;
+        };
+        contentLoading.job = ^{
+            jobBlockCalled = YES;
+            [weakContentLoading finishWithResultType:resultType error:nil update:updateBlock];
+        };
+        OCMStub([dataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
+        
+        OCMExpect([dataSource didFinishContentLoading:contentLoading withResultType:resultType error:nil update:updateBlock]);
+        [dataSourceMock setNeedsLoadContent];
+        
+        expect(jobBlockCalled).will.beTruthy();
+        expect(updateBlockCalled).will.beTruthy();
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
+    });
+    
+    it(@"should coalesce consecutive content loadings", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        id dataSourceMock = OCMPartialMock(dataSource);
+        
+        OCMExpect([dataSourceMock loadContent]);
+        
+        [dataSourceMock setNeedsLoadContent];
+        [dataSourceMock setNeedsLoadContent];
+        
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).toNot.raiseAny();
+    });
+    
+    describe(@"should cancel previous content loading", ^{
+        MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
+        expect(contentLoading.isCancelled).to.beFalsy();
+        
+        [contentLoading cancel];
+        expect(contentLoading.isCancelled).to.beTruthy();
+        
+        NSArray *contentLoadings = @[[[MUKDataSourceContentLoading alloc] init], [[MUKDataSourceContentLoading alloc] init]];
+        NSInteger contentLoadingIndex = 0;
+        MUKDataSource *dataSource = CreateDataSource();
+        id dataSourceMock = OCMPartialMock(dataSource);
+        OCMStub([dataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoadings[contentLoadingIndex++]);
+        
+        [dataSourceMock setNeedsLoadContent];
+        
+        it(@"", ^AsyncBlock {
+            [dataSourceMock setNeedsLoadContent];
+            
+            expect([contentLoadings[0] isCancelled]).will.beTruthy();
+            expect([contentLoadings[1] isCancelled]).will.beFalsy();
+            expect(contentLoadingIndex).will.equal([contentLoadings count]-1);
+            
+            done();
+        });
     });
 });
 
