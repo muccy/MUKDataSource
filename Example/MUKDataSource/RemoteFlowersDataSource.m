@@ -40,7 +40,7 @@
             {
                 MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
                 
-                if (strongContentLoading && !strongContentLoading.isCancelled) {
+                if (strongContentLoading.isValid) {
                     [strongContentLoading finishWithResultType:resultTypeForResults(flowers) error:nil update:^
                     {
                         [[self childDataSourceAtIndex:0] setItems:flowers animated:NO];
@@ -55,7 +55,7 @@
             {
                 MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
                 
-                if (strongContentLoading && !strongContentLoading.isCancelled) {
+                if (strongContentLoading.isValid) {
                     [strongContentLoading finishWithResultType:resultTypeForResults(flowers) error:nil update:^
                     {
                         NSMutableArray *proxy = [[self childDataSourceAtIndex:0] mutableArrayValueForKey:@"items"];

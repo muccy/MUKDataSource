@@ -1127,7 +1127,7 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
 - (void)prepareContentLoadingFromState:(NSString *)sourceState loadingState:(NSString *)loadingState andExecute:(BOOL)execute
 {
     // Abort current one
-    [self.currentContentLoading cancel];
+    [self.currentContentLoading invalidate];
     
     // Create new loading
     MUKDataSourceContentLoading *contentLoading = [self newContentLoadingForState:loadingState];
@@ -1145,7 +1145,7 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
 - (void)didFinishContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler
 {
     // Is it meaningful?
-    if (contentLoading.isCancelled) {
+    if (!contentLoading.isValid) {
         return;
     }
     

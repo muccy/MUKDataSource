@@ -7,13 +7,22 @@
 
 @implementation MUKDataSourceContentLoading
 
-- (void)cancel {
-    self.cancelled = YES;
+- (id)init {
+    self = [super init];
+    if (self) {
+        _valid = YES;
+    }
+    
+    return self;
 }
 
 - (void)finishWithResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler
 {
     [self.dataSource didFinishContentLoading:self withResultType:resultType error:error update:updateHandler];
+}
+
+- (void)invalidate {
+    self.valid = NO;
 }
 
 @end

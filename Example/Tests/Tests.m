@@ -1065,7 +1065,7 @@ describe(@"Callbacks", ^{
         expect(^{ OCMVerifyAllWithDelay(mockRootDataSource, 0.1); }).notTo.raiseAny();
         
         // Append
-        contentLoading.cancelled = NO;
+        contentLoading.valid = YES;
         [mockDataSource setNeedsAppendContent];
         expect(^{ OCMVerifyAllWithDelay(mockDataSource, 0.1); }).notTo.raiseAny();
         expect(^{ OCMVerifyAllWithDelay(mockChildDataSource, 0.1); }).notTo.raiseAny();
@@ -1310,7 +1310,7 @@ describe(@"Delegate", ^{
         expect(^{ OCMVerifyAllWithDelay(delegateMock, 0.1); }).notTo.raiseAny();
         
         prepareExpectations();
-        contentLoading.cancelled = NO;
+        contentLoading.valid = YES;
         [childDataSourceMock setNeedsAppendContent];
         expect(^{ OCMVerifyAllWithDelay(delegateMock, 0.1); }).notTo.raiseAny();
     });
@@ -1388,12 +1388,12 @@ describe(@"Content loading", ^{
         expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).toNot.raiseAny();
     });
     
-    describe(@"should cancel previous content loading", ^{
+    describe(@"should invalidate previous content loading", ^{
         MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
-        expect(contentLoading.isCancelled).to.beFalsy();
+        expect(contentLoading.isValid).to.beTruthy();
         
-        [contentLoading cancel];
-        expect(contentLoading.isCancelled).to.beTruthy();
+        [contentLoading invalidate];
+        expect(contentLoading.isValid).to.beFalsy();
         
         NSArray *contentLoadings = @[[[MUKDataSourceContentLoading alloc] init], [[MUKDataSourceContentLoading alloc] init]];
         NSInteger contentLoadingIndex = 0;
@@ -1406,8 +1406,8 @@ describe(@"Content loading", ^{
         it(@"", ^AsyncBlock {
             [dataSourceMock setNeedsLoadContent];
             
-            expect([contentLoadings[0] isCancelled]).will.beTruthy();
-            expect([contentLoadings[1] isCancelled]).will.beFalsy();
+            expect([contentLoadings[0] isValid]).will.beFalsy();
+            expect([contentLoadings[1] isValid]).will.beTruthy();
             expect(contentLoadingIndex).will.equal([contentLoadings count]-1);
             
             done();
