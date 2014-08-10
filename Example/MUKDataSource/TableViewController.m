@@ -92,6 +92,37 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     [self.dataSource setNeedsLoadContent];
 }
 
+#pragma mark - <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
+    if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKAppendContentDataSource class]])
+    {
+        [self.dataSource setNeedsAppendContent];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height;
+    
+    NSInteger dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
+    if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKPlaceholderDataSource class]])
+    {
+        height = CGRectGetHeight(tableView.bounds) - tableView.contentInset.top;
+        
+        if (!self.refreshControl.isRefreshing) {
+            height -= tableView.contentInset.bottom;
+        }
+    }
+    else {
+        height = tableView.rowHeight;
+    }
+    
+    return height;
+}
+
 #pragma mark - <MUKDataSourceDelegate>
 
 - (void)dataSource:(MUKDataSource *)dataSource didInsertChildDataSourcesAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)targetDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
@@ -102,6 +133,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 #if DEBUG_LOG
         NSLog(@"• Table View • Insert sections: %@", PrettyIndexSet(sections));
 #endif
+        [dataSource registerReusableViewsForTableView:self.tableView];
         [self.tableView insertSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
@@ -158,6 +190,8 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 #if DEBUG_LOG
     NSLog(@"• Table View • Reload data");
 #endif
+    
+    [dataSource registerReusableViewsForTableView:self.tableView];
     [self.tableView reloadData];
 }
 
@@ -255,6 +289,8 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     if (self.refreshControl.isRefreshing) {
         [self.refreshControl endRefreshing];
     }
+    
+    self.tableView.separatorStyle = [[self.dataSource.childDataSources firstObject] isKindOfClass:[MUKPlaceholderDataSource class]] ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
 }
 
 @end

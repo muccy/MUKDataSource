@@ -49,6 +49,10 @@
 		065A168519964EBA0093D27B /* MUKDataSourceContentLoadingResultType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadingResultType.h; sourceTree = "<group>"; };
 		065A1687199657240093D27B /* MUKAppendContentDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKAppendContentDataSource.h; sourceTree = "<group>"; };
 		065A1688199657240093D27B /* MUKAppendContentDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKAppendContentDataSource.m; sourceTree = "<group>"; };
+		065A168A199764A70093D27B /* MUKPlaceholderDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKPlaceholderDataSource.h; sourceTree = "<group>"; };
+		065A168B199764A70093D27B /* MUKPlaceholderDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKPlaceholderDataSource.m; sourceTree = "<group>"; };
+		065A168C1997678C0093D27B /* MUKDataSourcePlaceholderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourcePlaceholderView.h; sourceTree = "<group>"; };
+		065A168D1997678C0093D27B /* MUKDataSourcePlaceholderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourcePlaceholderView.m; sourceTree = "<group>"; };
 		06774E45198BCD360066DE57 /* AnimalsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsDataSource.h; sourceTree = "<group>"; };
 		06774E46198BCD360066DE57 /* AnimalsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsDataSource.m; sourceTree = "<group>"; };
 		06774E48198BF9750066DE57 /* MUKDataSourceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceDelegate.h; sourceTree = "<group>"; };
@@ -149,6 +153,17 @@
 			path = "Append Content";
 			sourceTree = "<group>";
 		};
+		065A1689199764960093D27B /* Placeholder */ = {
+			isa = PBXGroup;
+			children = (
+				065A168A199764A70093D27B /* MUKPlaceholderDataSource.h */,
+				065A168B199764A70093D27B /* MUKPlaceholderDataSource.m */,
+				065A168C1997678C0093D27B /* MUKDataSourcePlaceholderView.h */,
+				065A168D1997678C0093D27B /* MUKDataSourcePlaceholderView.m */,
+			);
+			path = Placeholder;
+			sourceTree = "<group>";
+		};
 		06774E49198CAD260066DE57 /* Table View Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +222,7 @@
 				06986C32198BC2450055F3E9 /* Main */,
 				06774E5D1994F90F0066DE57 /* Content Loading */,
 				065A1686199657010093D27B /* Append Content */,
+				065A1689199764960093D27B /* Placeholder */,
 				06774E4D198CAE000066DE57 /* Private */,
 				06774E49198CAD260066DE57 /* Table View Support */,
 			);

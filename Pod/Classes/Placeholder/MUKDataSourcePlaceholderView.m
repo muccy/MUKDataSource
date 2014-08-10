@@ -1,0 +1,106 @@
+#import "MUKDataSourcePlaceholderView.h"
+
+@interface MUKDataSourcePlaceholderView ()
+@property (nonatomic, weak, readwrite) UILabel *titleLabel, *textLabel;
+@property (nonatomic, weak, readwrite) UIImageView *imageView;
+@end
+
+@implementation MUKDataSourcePlaceholderView
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        CommonInit(self);
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        CommonInit(self);
+    }
+    return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    CGFloat const availableWidth = CGRectGetWidth(self.bounds) - 10.0f;
+    [self.titleLabel sizeToFit];
+    CGRect frame = self.titleLabel.frame;
+    if (frame.size.width > availableWidth) {
+        frame.size.width = availableWidth;
+    }
+    self.titleLabel.frame = frame;
+    
+    frame = self.textLabel.frame;
+    frame.size.width = availableWidth;
+    self.textLabel.frame = frame;
+    [self.textLabel sizeToFit];
+    
+    [self.imageView sizeToFit];
+    
+    // Center horizontally
+    frame = self.titleLabel.frame;
+    frame.origin.x = roundf(CGRectGetMidX(self.bounds) - CGRectGetWidth(frame)/2.0f);
+    self.titleLabel.frame = frame;
+    
+    frame = self.textLabel.frame;
+    frame.origin.x = roundf(CGRectGetMidX(self.bounds) - CGRectGetWidth(frame)/2.0f);
+    self.textLabel.frame = frame;
+    
+    frame = self.imageView.frame;
+    frame.origin.x = roundf(CGRectGetMidX(self.bounds) - CGRectGetWidth(frame)/2.0f);
+    self.imageView.frame = frame;
+    
+    // Center vertically as a block
+    CGFloat const imageToTitleMargin = 10.0f;
+    CGFloat const titleToTextMargin = 5.0f;
+    CGFloat const totalVerticalHeight = CGRectGetHeight(self.imageView.frame) + imageToTitleMargin + CGRectGetHeight(self.titleLabel.frame) + titleToTextMargin + CGRectGetHeight(self.textLabel.frame);
+    CGFloat const remainingVerticalSpace = CGRectGetHeight(self.bounds) - totalVerticalHeight;
+    
+    frame = self.imageView.frame;
+    frame.origin.y = roundf(remainingVerticalSpace/2.0f);
+    self.imageView.frame = frame;
+    
+    frame = self.titleLabel.frame;
+    frame.origin.y = CGRectGetMaxY(self.imageView.frame) + imageToTitleMargin;
+    self.titleLabel.frame = frame;
+    
+    frame = self.textLabel.frame;
+    frame.origin.y = CGRectGetMaxY(self.titleLabel.frame) + titleToTextMargin;
+    self.textLabel.frame = frame;
+}
+
+#pragma mark - Private
+
+static void CommonInit(MUKDataSourcePlaceholderView *me) {
+    [me insertAllSubviews];
+}
+
+- (void)insertAllSubviews {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor darkTextColor];
+    label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    label.numberOfLines = 1;
+    label.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:label];
+    self.titleLabel = label;
+    
+    label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor lightGrayColor];
+    label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    label.numberOfLines = 0;
+    label.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:label];
+    self.textLabel = label;
+    
+    UIImageView *imageView = [[UIImageView alloc] init];
+    [self addSubview:imageView];
+    self.imageView = imageView;
+}
+
+@end

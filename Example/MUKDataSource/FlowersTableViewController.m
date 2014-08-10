@@ -20,28 +20,11 @@
 @implementation FlowersTableViewController
 
 - (MUKDataSource *)newDataSource {
-    RemoteFlowersDataSource *dataSource = [[RemoteFlowersDataSource alloc] init];
-    
-    FlowerListDataSource *sectionDataSource = [[FlowerListDataSource alloc] init];
-    AppendContentDataSource *appendContentSection = [[AppendContentDataSource alloc] init];
-    dataSource.childDataSources = @[sectionDataSource, appendContentSection];
-    
-    return dataSource;
+    return [[RemoteFlowersDataSource alloc] init];
 }
 
 - (BOOL)usesRefreshControl {
     return YES;
-}
-
-#pragma mark - <UITableViewDelegate>
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
-    if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[AppendContentDataSource class]])
-    {
-        [self.dataSource setNeedsAppendContent];
-    }
 }
 
 #pragma mark - <MUKDataSourceDelegate>
