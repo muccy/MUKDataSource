@@ -4,6 +4,7 @@
 static NSString *const kPlaceholderItem = @"MUKPlaceholderDataSourceItem";
 
 @implementation MUKPlaceholderDataSource
+@dynamic hidden;
 
 - (id)init {
     self = [super init];
@@ -15,6 +16,16 @@ static NSString *const kPlaceholderItem = @"MUKPlaceholderDataSourceItem";
     return self;
 }
 
+#pragma mark - Accessors
+
+- (BOOL)isHidden {
+    return ![self.items containsObject:kPlaceholderItem];
+}
+
+- (void)setHidden:(BOOL)hidden {
+    [self setHidden:hidden animated:NO];
+}
+
 - (void)setPlaceholderView:(UIView *)placeholderView {
     if (![_placeholderView isEqual:placeholderView]) {
         _placeholderView = placeholderView;
@@ -24,6 +35,18 @@ static NSString *const kPlaceholderItem = @"MUKPlaceholderDataSourceItem";
         if (idx != NSNotFound) {
             [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource];
         }
+    }
+}
+
+#pragma mark - Methods
+
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated {
+    if (hidden) {
+        [self setItems:@[] animated:animated];
+    }
+    else {
+        [self.placeholderView setNeedsLayout];
+        [self setItems:@[kPlaceholderItem] animated:animated];
     }
 }
 
@@ -46,20 +69,18 @@ static NSString *const kPlaceholderItem = @"MUKPlaceholderDataSourceItem";
 {
     [super configureCell:cell forRowAtIndexPath:tableIndexPath inTableView:tableView];
     
-    // Remove not actual
-    for (UIView *subview in cell.contentView.subviews) {
-        if ([subview isKindOfClass:[MUKDataSourcePlaceholderView class]] &&
-            ![subview isEqual:self.placeholderView])
-        {
+    // Make sure cell contains current view
+    if (![self.placeholderView.superview isEqual:cell.contentView]) {
+        // Clean
+        for (UIView *subview in cell.contentView.subviews) {
             [subview removeFromSuperview];
-            break;
         }
+        
+        // Insert
+        self.placeholderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        self.placeholderView.frame = cell.contentView.bounds;
+        [cell.contentView addSubview:self.placeholderView];
     }
-    
-    // Insert actual one
-    self.placeholderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    self.placeholderView.frame = cell.contentView.bounds;
-    [cell.contentView addSubview:self.placeholderView];
 }
 
 @end

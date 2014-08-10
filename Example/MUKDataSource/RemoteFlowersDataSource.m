@@ -8,14 +8,13 @@
 
 #import "RemoteFlowersDataSource.h"
 #import "FlowerListDataSource.h"
-#import "AppendContentDataSource.h"
 #import "Florist.h"
 
 #define DEBUG_SIMULATE_EMPTY_ON_REFRESH     0
 
 @interface RemoteFlowersDataSource ()
 @property (nonatomic, weak) FlowerListDataSource *flowerListDataSource;
-@property (nonatomic, weak) AppendContentDataSource *appendDataSource;
+@property (nonatomic, weak) MUKAppendContentDataSource *appendDataSource;
 @property (nonatomic, weak) MUKPlaceholderDataSource *placeholderDataSource;
 @end
 
@@ -24,7 +23,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        [self showPlaceholderForInitialState:YES error:nil];
+        [self createAllChildDataSources];
     }
     
     return self;
@@ -34,6 +33,7 @@
     static NSInteger const kCount = 20;
     MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
     __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
+    __weak RemoteFlowersDataSource *weakSelf = self;
     
     MUKDataSourceContentLoadingResultType (^resultTypeForResults)(NSArray *) = ^(NSArray *results)
     {
@@ -55,9 +55,11 @@
         [state isEqualToString:MUKDataSourceContentLoadStateRefreshing])
     {
         contentLoading.job = ^{
+            RemoteFlowersDataSource *strongSelf = weakSelf;
+            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
+
             [Florist flowersFromIndex:0 count:kCount completion:^(NSArray *flowers, NSError *error)
             {
-                MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
                 
                 if (strongContentLoading.isValid) {
                     MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
@@ -65,20 +67,14 @@
 #if DEBUG_SIMULATE_EMPTY_ON_REFRESH
                     if ([state isEqualToString:MUKDataSourceContentLoadStateRefreshing])
                     {
+                        flowers = @[];
                         resultType = MUKDataSourceContentLoadingResultTypeEmpty;
                     }
 #endif
                     
                     [strongContentLoading finishWithResultType:resultType error:error update:^
                     {
-                        if (resultType == MUKDataSourceContentLoadingResultTypeComplete ||
-                            resultType == MUKDataSourceContentLoadingResultTypePartial)
-                        {
-                            [self showFlowers:flowers];
-                        }
-                        else {
-                            [self showPlaceholderForInitialState:NO error:error];
-                        }
+                        strongSelf.flowerListDataSource.items = flowers;
                     }];
                 }
             }];
@@ -86,14 +82,17 @@
     }
     else if ([state isEqualToString:MUKDataSourceContentLoadStateAppending]) {
         contentLoading.job = ^{
-            [Florist flowersFromIndex:[self childDataSourcesItemCount] count:kCount completion:^(NSArray *flowers, NSError *error)
+            RemoteFlowersDataSource *strongSelf = weakSelf;
+            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
+
+            [Florist flowersFromIndex:[strongSelf childDataSourcesItemCount] count:kCount completion:^(NSArray *flowers, NSError *error)
             {
-                MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
-                
                 if (strongContentLoading.isValid) {
-                    [strongContentLoading finishWithResultType:resultTypeForResults(flowers) error:error update:^
+                    MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
+                    [strongContentLoading finishWithResultType:resultType error:error update:^
                     {
-                        [self appendFlowers:flowers];
+                        NSMutableArray *proxy = [strongSelf.flowerListDataSource mutableArrayValueForKey:@"items"];
+                        [proxy addObjectsFromArray:flowers];
                     }];
                 }
             }];
@@ -108,62 +107,92 @@
 
 - (void)willLoadContent:(MUKDataSourceContentLoading *)contentLoading {
     [super willLoadContent:contentLoading];
-    [self.appendDataSource showAppendingContentIfNeededWithContentLoading:contentLoading animated:NO];
+    [self adjustPlaceholderDataSourceStartingContentLoading:contentLoading];
+    [self adjustAppendContentDataSourceStartingContentLoading:contentLoading];
 }
 
 - (void)didLoadContent:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error
 {
+    [self adjustPlaceholderDataSourceFinishingContentLoading:contentLoading withResultType:resultType error:error];
+    [self adjustAppendContentDataSourceFinishingContentLoading:contentLoading withResultType:resultType error:error];
+    
+    // Called at bottom because, here, we are finishing completed loading (affecting
+    // child data source with a supplementary update). This way, delegate is invoked
+    // when we are really done
     [super didLoadContent:contentLoading withResultType:resultType error:error];
-    [self.appendDataSource showCouldAppendContentIfNeededWithContentLoading:contentLoading resultType:resultType animated:NO];
 }
 
 #pragma mark - Private
 
-- (void)prepareContentChildDataSources {
-    if (![self.childDataSources containsObject:self.flowerListDataSource]) {
-        FlowerListDataSource *flowerListDataSouce = [[FlowerListDataSource alloc] init];
-        AppendContentDataSource *appendDataSource = [[AppendContentDataSource alloc] init];
-        self.childDataSources = @[flowerListDataSouce, appendDataSource];
-        
-        self.flowerListDataSource = flowerListDataSouce;
-        self.appendDataSource = appendDataSource;
-    }
-}
-
-- (void)showFlowers:(NSArray *)flowers {
-    [self prepareContentChildDataSources];
-    [self.flowerListDataSource setItems:flowers animated:NO];
-}
-
-- (void)appendFlowers:(NSArray *)flowers {
-    [self prepareContentChildDataSources];
-    NSMutableArray *proxy = [self.flowerListDataSource mutableArrayValueForKey:@"items"];
-    [proxy addObjectsFromArray:flowers];
-}
-
-- (void)showPlaceholderForInitialState:(BOOL)initialState error:(NSError *)error {
-    if (![self.childDataSources containsObject:self.placeholderDataSource]) {
-        MUKPlaceholderDataSource *placeholderDataSource = [[MUKPlaceholderDataSource alloc] init];
-        self.childDataSources = @[placeholderDataSource];
-        self.placeholderDataSource = placeholderDataSource;
-    }
+- (void)createAllChildDataSources {
+    FlowerListDataSource *flowerListDataSource = [[FlowerListDataSource alloc] init];
+    MUKAppendContentDataSource *appendDataSource = [[MUKAppendContentDataSource alloc] init];
+    MUKPlaceholderDataSource *placeholderDataSource = [[MUKPlaceholderDataSource alloc] init];
+    self.childDataSources = @[placeholderDataSource, flowerListDataSource, appendDataSource];
     
-    MUKDataSourcePlaceholderView *placeholderView = (MUKDataSourcePlaceholderView *)self.placeholderDataSource.placeholderView;
-    placeholderView.imageView.image = [UIImage imageNamed:@"alert"];
-    placeholderView.titleLabel.text = error ? @"Error" : @"Empty";
+    self.flowerListDataSource = flowerListDataSource;
+    self.appendDataSource = appendDataSource;
+    self.placeholderDataSource = placeholderDataSource;
     
-    NSString *text;
-    if (error) {
-        text = [error localizedDescription];
+    MUKDataSourceAppendContentView *appendContentView = (MUKDataSourceAppendContentView *)appendDataSource.appendContentView;
+    appendContentView.textLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+}
+
+- (void)adjustPlaceholderDataSourceStartingContentLoading:(MUKDataSourceContentLoading *)contentLoading
+{
+    if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading]) {
+        // First load
+        [self showPlaceholderDataSourceWithTitle:@"Empty" text:@"Contents are loading right now" image:nil];
     }
-    else if (initialState) {
-        text = @"Contents are loading right now";
+}
+
+- (void)adjustAppendContentDataSourceStartingContentLoading:(MUKDataSourceContentLoading *)contentLoading
+{
+    if ([MUKAppendContentDataSource shouldTypicallyHideWhenWillLoadContent:contentLoading])
+    {
+        self.appendDataSource.hidden = YES;
     }
     else {
-        text = @"No Contents Found";
+        MUKDataSourceAppendContentView *appendContentView = (MUKDataSourceAppendContentView *)self.appendDataSource.appendContentView;
+        appendContentView.textLabel.text = @"Appending...";
+        [appendContentView.activityIndicatorView startAnimating];
+        self.appendDataSource.hidden = NO;
     }
+}
 
+- (void)adjustPlaceholderDataSourceFinishingContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error
+{
+    if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateEmpty] ||
+        [self.loadingState isEqualToString:MUKDataSourceContentLoadStateError])
+    {
+        [self showPlaceholderDataSourceWithTitle:([self.loadingState isEqualToString:MUKDataSourceContentLoadStateError] ? @"Error" : @"Empty") text:([error localizedDescription] ?: @"No Contents Found") image:[UIImage imageNamed:@"alert"]];
+    }
+    else {
+        self.placeholderDataSource.hidden = YES;
+    }
+}
+
+- (void)showPlaceholderDataSourceWithTitle:(NSString *)title text:(NSString *)text image:(UIImage *)image
+{
+    MUKDataSourcePlaceholderView *placeholderView = (MUKDataSourcePlaceholderView *)self.placeholderDataSource.placeholderView;
+    placeholderView.titleLabel.text = title;
     placeholderView.textLabel.text = text;
+    placeholderView.imageView.image = image;
+    self.placeholderDataSource.hidden = NO;
+}
+
+- (void)adjustAppendContentDataSourceFinishingContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error
+{
+    if ([MUKAppendContentDataSource shouldTypicallyHideWhenDidLoadContent:contentLoading withResultType:resultType])
+    {
+        self.appendDataSource.hidden = YES;
+    }
+    else {
+        MUKDataSourceAppendContentView *appendContentView = (MUKDataSourceAppendContentView *)self.appendDataSource.appendContentView;
+        appendContentView.textLabel.text = @"Append More";
+        [appendContentView.activityIndicatorView stopAnimating];
+        self.appendDataSource.hidden = NO;
+    }
 }
 
 @end

@@ -915,6 +915,7 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
         }
     };
     
+    // willLoadContent is invoked when preparing and executing load
     void (^notifyDidLoadContent)(TKTransition *) = ^(TKTransition *transition)
     {
         MUKDataSource *strongSelf = weakSelf;
@@ -973,8 +974,8 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
-        notifyDidLoadContent(transition);
         notifyDidTransitionFromState(transition.sourceState);
+        notifyDidLoadContent(transition);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -987,8 +988,8 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
-        notifyDidLoadContent(transition);
         notifyDidTransitionFromState(transition.sourceState);
+        notifyDidLoadContent(transition);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -1001,8 +1002,8 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
-        notifyDidLoadContent(transition);
         notifyDidTransitionFromState(transition.sourceState);
+        notifyDidLoadContent(transition);
         notifyKVOForLoadingState(YES);
     }];
 }

@@ -12,7 +12,6 @@
 		06774E67199517AB0066DE57 /* flowers.json in Resources */ = {isa = PBXBuildFile; fileRef = 06774E66199517AB0066DE57 /* flowers.json */; };
 		06774E6A199517C00066DE57 /* Flower.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E69199517C00066DE57 /* Flower.m */; };
 		06774E6D1995188A0066DE57 /* Florist.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6C1995188A0066DE57 /* Florist.m */; };
-		06774E70199610910066DE57 /* AppendContentDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6F199610910066DE57 /* AppendContentDataSource.m */; };
 		06774E73199611110066DE57 /* FlowerListDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E72199611110066DE57 /* FlowerListDataSource.m */; };
 		06774E761996119E0066DE57 /* FlowersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E751996119E0066DE57 /* FlowersTableViewController.m */; };
 		06774E79199611F80066DE57 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E78199611F80066DE57 /* TableViewController.m */; };
@@ -46,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		064F0E1A1997D69B00A4FB7F /* MUKDataSourceAppendContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceAppendContentView.h; sourceTree = "<group>"; };
+		064F0E1B1997D69B00A4FB7F /* MUKDataSourceAppendContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceAppendContentView.m; sourceTree = "<group>"; };
 		065A168519964EBA0093D27B /* MUKDataSourceContentLoadingResultType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadingResultType.h; sourceTree = "<group>"; };
 		065A1687199657240093D27B /* MUKAppendContentDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKAppendContentDataSource.h; sourceTree = "<group>"; };
 		065A1688199657240093D27B /* MUKAppendContentDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKAppendContentDataSource.m; sourceTree = "<group>"; };
@@ -76,8 +77,6 @@
 		06774E69199517C00066DE57 /* Flower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Flower.m; sourceTree = "<group>"; };
 		06774E6B1995188A0066DE57 /* Florist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Florist.h; sourceTree = "<group>"; };
 		06774E6C1995188A0066DE57 /* Florist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Florist.m; sourceTree = "<group>"; };
-		06774E6E199610910066DE57 /* AppendContentDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppendContentDataSource.h; sourceTree = "<group>"; };
-		06774E6F199610910066DE57 /* AppendContentDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppendContentDataSource.m; sourceTree = "<group>"; };
 		06774E71199611110066DE57 /* FlowerListDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowerListDataSource.h; sourceTree = "<group>"; };
 		06774E72199611110066DE57 /* FlowerListDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowerListDataSource.m; sourceTree = "<group>"; };
 		06774E741996119E0066DE57 /* FlowersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowersTableViewController.h; sourceTree = "<group>"; };
@@ -149,6 +148,8 @@
 			children = (
 				065A1687199657240093D27B /* MUKAppendContentDataSource.h */,
 				065A1688199657240093D27B /* MUKAppendContentDataSource.m */,
+				064F0E1A1997D69B00A4FB7F /* MUKDataSourceAppendContentView.h */,
+				064F0E1B1997D69B00A4FB7F /* MUKDataSourceAppendContentView.m */,
 			);
 			path = "Append Content";
 			sourceTree = "<group>";
@@ -296,8 +297,6 @@
 				06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */,
 				06774E71199611110066DE57 /* FlowerListDataSource.h */,
 				06774E72199611110066DE57 /* FlowerListDataSource.m */,
-				06774E6E199610910066DE57 /* AppendContentDataSource.h */,
-				06774E6F199610910066DE57 /* AppendContentDataSource.m */,
 				06774E68199517C00066DE57 /* Flower.h */,
 				06774E69199517C00066DE57 /* Flower.m */,
 				06774E6B1995188A0066DE57 /* Florist.h */,
@@ -521,7 +520,6 @@
 				06774E6519950F4C0066DE57 /* RemoteFlowersDataSource.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
 				06774E7C19961A640066DE57 /* AnimalsTableViewController.m in Sources */,
-				06774E70199610910066DE57 /* AppendContentDataSource.m in Sources */,
 				06774E6A199517C00066DE57 /* Flower.m in Sources */,
 				06774E761996119E0066DE57 /* FlowersTableViewController.m in Sources */,
 				06774E73199611110066DE57 /* FlowerListDataSource.m in Sources */,

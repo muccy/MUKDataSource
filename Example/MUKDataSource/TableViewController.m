@@ -100,6 +100,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKAppendContentDataSource class]])
     {
         [self.dataSource setNeedsAppendContent];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
@@ -290,7 +291,16 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
         [self.refreshControl endRefreshing];
     }
     
-    self.tableView.separatorStyle = [[self.dataSource.childDataSources firstObject] isKindOfClass:[MUKPlaceholderDataSource class]] ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    BOOL isDisplayingPlaceholder = NO;
+    for (MUKDataSource *childDataSource in self.dataSource.childDataSources) {
+        if ([childDataSource isKindOfClass:[MUKPlaceholderDataSource class]]) {
+            MUKPlaceholderDataSource *placeholderDataSource = (MUKPlaceholderDataSource *)childDataSource;
+            isDisplayingPlaceholder = !placeholderDataSource.isHidden;
+            break;
+        }
+    }
+    
+    self.tableView.separatorStyle = isDisplayingPlaceholder ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
 }
 
 @end
