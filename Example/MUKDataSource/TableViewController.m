@@ -222,14 +222,14 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 - (void)dataSource:(MUKDataSource *)dataSource willTransitionToContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)originatingDataSource
 {
 #if DEBUG_LOG
-    NSLog(@"• State Transition • Will -> %@", state);
+    NSLog(@"• State Transition • Will: from %@ to %@", originatingDataSource.loadingState, state);
 #endif
 }
 
 - (void)dataSource:(MUKDataSource *)dataSource didTransitionFromContentLoadingState:(NSString *)state inDataSource:(MUKDataSource *)originatingDataSource
 {
 #if DEBUG_LOG
-    NSLog(@"• State Transition • Did -> %@", state);
+    NSLog(@"• State Transition • Did: from %@ to %@", state, originatingDataSource.loadingState);
 #endif
 }
 

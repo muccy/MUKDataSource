@@ -17,7 +17,7 @@
 - (void)insertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes eventOrigin:(MUKDataSourceEventOrigin)eventOrigin;
 
 @property (nonatomic) TKStateMachine *stateMachine;
-@property (nonatomic) MUKDataSourceContentLoading *currentContentLoading;
+@property (nonatomic, readwrite) MUKDataSourceContentLoading *currentContentLoading;
 
 - (BOOL)loadContent;
 - (BOOL)appendContent;

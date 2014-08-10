@@ -11,6 +11,8 @@
 #import "FlowerListDataSource.h"
 #import "AppendContentDataSource.h"
 
+#define DEBUG_SIMULATE_CANCEL   0
+
 @interface FlowersTableViewController ()
 
 @end
@@ -40,6 +42,19 @@
     {
         [self.dataSource setNeedsAppendContent];
     }
+}
+
+#pragma mark - <MUKDataSourceDelegate>
+
+- (void)dataSource:(MUKDataSource *)dataSource willLoadContent:(MUKDataSourceContentLoading *)contentLoading
+{
+    [super dataSource:dataSource willLoadContent:contentLoading];
+
+#if DEBUG_SIMULATE_CANCEL
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [contentLoading finishWithResultType:MUKDataSourceContentLoadingResultTypeCancelled error:nil update:nil];
+    });
+#endif
 }
 
 @end

@@ -46,6 +46,7 @@
 
 @interface MUKDataSource (ContentLoading)
 @property (nonatomic, readonly) NSString *loadingState;
+@property (nonatomic, readonly) MUKDataSourceContentLoading *currentContentLoading;
 
 - (void)setNeedsLoadContent;
 - (void)setNeedsAppendContent;

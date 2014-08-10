@@ -4,5 +4,6 @@ typedef NS_ENUM(NSInteger, MUKDataSourceContentLoadingResultType) {
     MUKDataSourceContentLoadingResultTypeComplete,
     MUKDataSourceContentLoadingResultTypePartial,
     MUKDataSourceContentLoadingResultTypeEmpty,
-    MUKDataSourceContentLoadingResultTypeError
+    MUKDataSourceContentLoadingResultTypeError,
+    MUKDataSourceContentLoadingResultTypeCancelled
 };

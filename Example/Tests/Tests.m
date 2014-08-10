@@ -1344,10 +1344,13 @@ describe(@"Content loading", ^{
     it(@"should create content loading on the fly", ^{
         id dataSourceMock = OCMPartialMock(CreateDataSource());
         NSString *const firstLoadingState = MUKDataSourceContentLoadStateLoading;
-        OCMExpect([dataSourceMock newContentLoadingForState:firstLoadingState]);
+        MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
+        OCMExpect([dataSourceMock newContentLoadingForState:firstLoadingState]).andReturn(contentLoading);
         
+        expect([dataSourceMock currentContentLoading]).to.beNil();
         [dataSourceMock setNeedsLoadContent];
         expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
+        expect([dataSourceMock currentContentLoading]).will.equal(contentLoading);
     });
     
     it(@"should update its data source", ^{
@@ -1364,11 +1367,13 @@ describe(@"Content loading", ^{
         };
         contentLoading.job = ^{
             jobBlockCalled = YES;
-            [weakContentLoading finishWithResultType:resultType error:nil update:updateBlock];
+            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
+            [strongContentLoading finishWithResultType:resultType error:nil update:updateBlock];
         };
+        
         OCMStub([dataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
         
-        OCMExpect([dataSource didFinishContentLoading:contentLoading withResultType:resultType error:nil update:updateBlock]);
+        OCMExpect([dataSourceMock didFinishContentLoading:contentLoading withResultType:resultType error:nil update:updateBlock]).andForwardToRealObject();
         [dataSourceMock setNeedsLoadContent];
         
         expect(jobBlockCalled).will.beTruthy();

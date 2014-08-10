@@ -972,7 +972,6 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
         executeUpdate(transition);
     }];
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-        prepareCurrentContentLoadingAndExecute(transition.sourceState, transition.destinationState);
         destroyCurrentContentLoading();
         notifyDidLoadContent(transition);
         notifyDidTransitionFromState(transition.sourceState);
@@ -1072,11 +1071,7 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
 }
 
 - (void)attachEventHandlersToStateMachine:(TKStateMachine *)stateMachine {
-    if (!stateMachine) {
-        return;
-    }
-    
-    // __weak MUKDataSource *const weakSelf = self;
+    //
 }
 
 #pragma mark - Private - Content Loading
@@ -1144,10 +1139,13 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
 
 - (void)didFinishContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler
 {
-    // Is it meaningful?
+    // Is it still valid?
     if (!contentLoading.isValid) {
         return;
     }
+    
+    // Invalidate, because we are consuming it
+    [contentLoading invalidate];
     
     // Pass to next state
     TKEvent *event = [self nextStateMachineEventForFinishedContentLoading:contentLoading withResultType:resultType];
@@ -1193,6 +1191,32 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
             }
             else if ([self.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] ||
                      [self.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing])
+            {
+                eventName = MUKDataSourceContentLoadEventDisplayError;
+            }
+            else {
+                eventName = nil;
+            }
+            
+            break;
+        }
+            
+        case MUKDataSourceContentLoadingResultTypeCancelled: {
+            // Should come back to source state
+            if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateInitial])
+            {
+                // Don't come back to initial. Go to empty state.
+                eventName = MUKDataSourceContentLoadEventDisplayEmpty;
+            }
+            else if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateLoaded])
+            {
+                eventName = MUKDataSourceContentLoadEventDisplayLoaded;
+            }
+            else if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateEmpty])
+            {
+                eventName = MUKDataSourceContentLoadEventDisplayEmpty;
+            }
+            else if ([contentLoading.sourceState isEqualToString:MUKDataSourceContentLoadStateError])
             {
                 eventName = MUKDataSourceContentLoadEventDisplayError;
             }
