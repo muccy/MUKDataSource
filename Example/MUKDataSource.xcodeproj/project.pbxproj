@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		064F0E2D1998BD7A00A4FB7F /* AppendContentDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 064F0E2C1998BD7A00A4FB7F /* AppendContentDataSource.m */; };
 		06774E47198BCD360066DE57 /* AnimalsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E46198BCD360066DE57 /* AnimalsDataSource.m */; };
 		06774E6519950F4C0066DE57 /* RemoteFlowersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */; };
 		06774E67199517AB0066DE57 /* flowers.json in Resources */ = {isa = PBXBuildFile; fileRef = 06774E66199517AB0066DE57 /* flowers.json */; };
@@ -45,15 +46,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		064F0E1A1997D69B00A4FB7F /* MUKDataSourceAppendContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceAppendContentView.h; sourceTree = "<group>"; };
-		064F0E1B1997D69B00A4FB7F /* MUKDataSourceAppendContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceAppendContentView.m; sourceTree = "<group>"; };
+		064F0E1E1998B50F00A4FB7F /* MUKAppendContentDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKAppendContentDataSource.h; sourceTree = "<group>"; };
+		064F0E1F1998B50F00A4FB7F /* MUKAppendContentDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKAppendContentDataSource.m; sourceTree = "<group>"; };
+		064F0E201998B50F00A4FB7F /* MUKDataSourceAppendContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceAppendContentView.h; sourceTree = "<group>"; };
+		064F0E211998B50F00A4FB7F /* MUKDataSourceAppendContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceAppendContentView.m; sourceTree = "<group>"; };
+		064F0E231998B50F00A4FB7F /* MUKDataSourcePlaceholderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourcePlaceholderView.h; sourceTree = "<group>"; };
+		064F0E241998B50F00A4FB7F /* MUKDataSourcePlaceholderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourcePlaceholderView.m; sourceTree = "<group>"; };
+		064F0E251998B50F00A4FB7F /* MUKPlaceholderDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKPlaceholderDataSource.h; sourceTree = "<group>"; };
+		064F0E261998B50F00A4FB7F /* MUKPlaceholderDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKPlaceholderDataSource.m; sourceTree = "<group>"; };
+		064F0E291998B5AD00A4FB7F /* MUKSingleViewDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKSingleViewDataSource.h; sourceTree = "<group>"; };
+		064F0E2A1998B5AD00A4FB7F /* MUKSingleViewDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKSingleViewDataSource.m; sourceTree = "<group>"; };
+		064F0E2B1998BD7A00A4FB7F /* AppendContentDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppendContentDataSource.h; sourceTree = "<group>"; };
+		064F0E2C1998BD7A00A4FB7F /* AppendContentDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppendContentDataSource.m; sourceTree = "<group>"; };
 		065A168519964EBA0093D27B /* MUKDataSourceContentLoadingResultType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadingResultType.h; sourceTree = "<group>"; };
-		065A1687199657240093D27B /* MUKAppendContentDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKAppendContentDataSource.h; sourceTree = "<group>"; };
-		065A1688199657240093D27B /* MUKAppendContentDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKAppendContentDataSource.m; sourceTree = "<group>"; };
-		065A168A199764A70093D27B /* MUKPlaceholderDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKPlaceholderDataSource.h; sourceTree = "<group>"; };
-		065A168B199764A70093D27B /* MUKPlaceholderDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKPlaceholderDataSource.m; sourceTree = "<group>"; };
-		065A168C1997678C0093D27B /* MUKDataSourcePlaceholderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourcePlaceholderView.h; sourceTree = "<group>"; };
-		065A168D1997678C0093D27B /* MUKDataSourcePlaceholderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourcePlaceholderView.m; sourceTree = "<group>"; };
 		06774E45198BCD360066DE57 /* AnimalsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsDataSource.h; sourceTree = "<group>"; };
 		06774E46198BCD360066DE57 /* AnimalsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsDataSource.m; sourceTree = "<group>"; };
 		06774E48198BF9750066DE57 /* MUKDataSourceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceDelegate.h; sourceTree = "<group>"; };
@@ -143,26 +148,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		065A1686199657010093D27B /* Append Content */ = {
+		064F0E1C1998B50F00A4FB7F /* Specific Data Sources */ = {
 			isa = PBXGroup;
 			children = (
-				065A1687199657240093D27B /* MUKAppendContentDataSource.h */,
-				065A1688199657240093D27B /* MUKAppendContentDataSource.m */,
-				064F0E1A1997D69B00A4FB7F /* MUKDataSourceAppendContentView.h */,
-				064F0E1B1997D69B00A4FB7F /* MUKDataSourceAppendContentView.m */,
+				064F0E1D1998B50F00A4FB7F /* Append Content */,
+				064F0E221998B50F00A4FB7F /* Placeholder */,
+				064F0E281998B59D00A4FB7F /* Single View */,
+			);
+			path = "Specific Data Sources";
+			sourceTree = "<group>";
+		};
+		064F0E1D1998B50F00A4FB7F /* Append Content */ = {
+			isa = PBXGroup;
+			children = (
+				064F0E1E1998B50F00A4FB7F /* MUKAppendContentDataSource.h */,
+				064F0E1F1998B50F00A4FB7F /* MUKAppendContentDataSource.m */,
+				064F0E201998B50F00A4FB7F /* MUKDataSourceAppendContentView.h */,
+				064F0E211998B50F00A4FB7F /* MUKDataSourceAppendContentView.m */,
 			);
 			path = "Append Content";
 			sourceTree = "<group>";
 		};
-		065A1689199764960093D27B /* Placeholder */ = {
+		064F0E221998B50F00A4FB7F /* Placeholder */ = {
 			isa = PBXGroup;
 			children = (
-				065A168A199764A70093D27B /* MUKPlaceholderDataSource.h */,
-				065A168B199764A70093D27B /* MUKPlaceholderDataSource.m */,
-				065A168C1997678C0093D27B /* MUKDataSourcePlaceholderView.h */,
-				065A168D1997678C0093D27B /* MUKDataSourcePlaceholderView.m */,
+				064F0E231998B50F00A4FB7F /* MUKDataSourcePlaceholderView.h */,
+				064F0E241998B50F00A4FB7F /* MUKDataSourcePlaceholderView.m */,
+				064F0E251998B50F00A4FB7F /* MUKPlaceholderDataSource.h */,
+				064F0E261998B50F00A4FB7F /* MUKPlaceholderDataSource.m */,
 			);
 			path = Placeholder;
+			sourceTree = "<group>";
+		};
+		064F0E281998B59D00A4FB7F /* Single View */ = {
+			isa = PBXGroup;
+			children = (
+				064F0E291998B5AD00A4FB7F /* MUKSingleViewDataSource.h */,
+				064F0E2A1998B5AD00A4FB7F /* MUKSingleViewDataSource.m */,
+			);
+			path = "Single View";
 			sourceTree = "<group>";
 		};
 		06774E49198CAD260066DE57 /* Table View Support */ = {
@@ -222,10 +246,9 @@
 				06986C2F198BC1590055F3E9 /* MUKDataSource.h */,
 				06986C32198BC2450055F3E9 /* Main */,
 				06774E5D1994F90F0066DE57 /* Content Loading */,
-				065A1686199657010093D27B /* Append Content */,
-				065A1689199764960093D27B /* Placeholder */,
-				06774E4D198CAE000066DE57 /* Private */,
+				064F0E1C1998B50F00A4FB7F /* Specific Data Sources */,
 				06774E49198CAD260066DE57 /* Table View Support */,
+				06774E4D198CAE000066DE57 /* Private */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -297,6 +320,8 @@
 				06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */,
 				06774E71199611110066DE57 /* FlowerListDataSource.h */,
 				06774E72199611110066DE57 /* FlowerListDataSource.m */,
+				064F0E2B1998BD7A00A4FB7F /* AppendContentDataSource.h */,
+				064F0E2C1998BD7A00A4FB7F /* AppendContentDataSource.m */,
 				06774E68199517C00066DE57 /* Flower.h */,
 				06774E69199517C00066DE57 /* Flower.m */,
 				06774E6B1995188A0066DE57 /* Florist.h */,
@@ -526,6 +551,7 @@
 				06774E47198BCD360066DE57 /* AnimalsDataSource.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				06774E6D1995188A0066DE57 /* Florist.m in Sources */,
+				064F0E2D1998BD7A00A4FB7F /* AppendContentDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

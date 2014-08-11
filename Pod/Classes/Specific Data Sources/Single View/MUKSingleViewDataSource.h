@@ -1,8 +1,11 @@
 #import <MUKDataSource/MUKDataSource_Main.h>
-#import <MUKDataSource/MUKDataSourcePlaceholderView.h>
 
-@interface MUKPlaceholderDataSource : MUKDataSource
-@property (nonatomic) UIView *placeholderView;
+@interface MUKSingleViewDataSource : MUKDataSource
 @property (nonatomic, getter = isHidden) BOOL hidden;
 - (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+
+- (Class)viewClass;
+- (void)configureView:(UIView *)view;
+
+- (void)setNeedsUpdateView;
 @end

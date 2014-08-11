@@ -9,12 +9,13 @@
 #import "RemoteFlowersDataSource.h"
 #import "FlowerListDataSource.h"
 #import "Florist.h"
+#import "AppendContentDataSource.h"
 
 #define DEBUG_SIMULATE_EMPTY_ON_REFRESH     0
 
 @interface RemoteFlowersDataSource ()
 @property (nonatomic, weak) FlowerListDataSource *flowerListDataSource;
-@property (nonatomic, weak) MUKAppendContentDataSource *appendDataSource;
+@property (nonatomic, weak) AppendContentDataSource *appendDataSource;
 @property (nonatomic, weak) MUKPlaceholderDataSource *placeholderDataSource;
 @end
 
@@ -126,16 +127,13 @@
 
 - (void)createAllChildDataSources {
     FlowerListDataSource *flowerListDataSource = [[FlowerListDataSource alloc] init];
-    MUKAppendContentDataSource *appendDataSource = [[MUKAppendContentDataSource alloc] init];
+    AppendContentDataSource *appendDataSource = [[AppendContentDataSource alloc] init];
     MUKPlaceholderDataSource *placeholderDataSource = [[MUKPlaceholderDataSource alloc] init];
     self.childDataSources = @[placeholderDataSource, flowerListDataSource, appendDataSource];
     
     self.flowerListDataSource = flowerListDataSource;
     self.appendDataSource = appendDataSource;
     self.placeholderDataSource = placeholderDataSource;
-    
-    MUKDataSourceAppendContentView *appendContentView = (MUKDataSourceAppendContentView *)appendDataSource.appendContentView;
-    appendContentView.textLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
 }
 
 - (void)adjustPlaceholderDataSourceStartingContentLoading:(MUKDataSourceContentLoading *)contentLoading
@@ -153,9 +151,8 @@
         self.appendDataSource.hidden = YES;
     }
     else {
-        MUKDataSourceAppendContentView *appendContentView = (MUKDataSourceAppendContentView *)self.appendDataSource.appendContentView;
-        appendContentView.textLabel.text = @"Appending...";
-        [appendContentView.activityIndicatorView startAnimating];
+        self.appendDataSource.title = @"Appending...";
+        self.appendDataSource.showsActivityIndicator = YES;
         self.appendDataSource.hidden = NO;
     }
 }
@@ -174,10 +171,9 @@
 
 - (void)showPlaceholderDataSourceWithTitle:(NSString *)title text:(NSString *)text image:(UIImage *)image
 {
-    MUKDataSourcePlaceholderView *placeholderView = (MUKDataSourcePlaceholderView *)self.placeholderDataSource.placeholderView;
-    placeholderView.titleLabel.text = title;
-    placeholderView.textLabel.text = text;
-    placeholderView.imageView.image = image;
+    self.placeholderDataSource.title = title;
+    self.placeholderDataSource.text = text;
+    self.placeholderDataSource.image = image;
     self.placeholderDataSource.hidden = NO;
 }
 
@@ -188,9 +184,8 @@
         self.appendDataSource.hidden = YES;
     }
     else {
-        MUKDataSourceAppendContentView *appendContentView = (MUKDataSourceAppendContentView *)self.appendDataSource.appendContentView;
-        appendContentView.textLabel.text = @"Append More";
-        [appendContentView.activityIndicatorView stopAnimating];
+        self.appendDataSource.title = @"Append More";
+        self.appendDataSource.showsActivityIndicator = NO;
         self.appendDataSource.hidden = NO;
     }
 }
