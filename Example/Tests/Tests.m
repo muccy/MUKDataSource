@@ -241,13 +241,7 @@ describe(@"Containment", ^{
         indexPath = IndexPathWithIndexes(@[@0, @1, @0, @1, @1]);
         expect([rootDataSource itemAtIndexPath:indexPath]).to.beNil;
     });
-    
-    it(@"should count child data sources items", ^{
-        expect([rootDataSource childDataSourcesItemCount]).to.equal(2);
-        expect([dataSource_0 childDataSourcesItemCount]).to.equal(4);
-        expect([dataSource_0_0 childDataSourcesItemCount]).to.equal(0);
-    });
-    
+
     it(@"should access child data sources", ^{
         expect([rootDataSource childDataSourceAtIndex:0]).to.equal(dataSource_0);
         expect([rootDataSource childDataSourceAtIndex:-1]).to.beNil;

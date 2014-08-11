@@ -18,8 +18,6 @@
 - (id)itemAtIndex:(NSInteger)idx;
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSUInteger)childDataSourcesItemCount;
-
 - (void)insertItem:(id)item atIndex:(NSInteger)idx;
 - (void)removeItemAtIndex:(NSInteger)idx;
 - (void)replaceItemAtIndex:(NSInteger)idx withItem:(id)newItem;

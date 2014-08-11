@@ -199,16 +199,6 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
     return [self itemAtIndexPath:indexPath usingIndexAtPosition:0];
 }
 
-- (NSUInteger)childDataSourcesItemCount {
-    NSUInteger count = 0;
-    
-    for (MUKDataSource *childDataSource in self.childDataSources) {
-        count += [childDataSource.items count];
-    }
-    
-    return count;
-}
-
 - (void)moveItemAtIndex:(NSInteger)sourceIndex toDataSource:(MUKDataSource *)destinationDataSource atIndex:(NSInteger)destinationIndex
 {
     [self moveItemAtIndex:sourceIndex toDataSource:destinationDataSource atIndex:destinationIndex eventOrigin:MUKDataSourceEventOriginProgrammatic];

@@ -86,7 +86,7 @@
             RemoteFlowersDataSource *strongSelf = weakSelf;
             MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
 
-            [Florist flowersFromIndex:[strongSelf childDataSourcesItemCount] count:kCount completion:^(NSArray *flowers, NSError *error)
+            [Florist flowersFromIndex:[strongSelf.flowerListDataSource.items count] count:kCount completion:^(NSArray *flowers, NSError *error)
             {
                 if (strongContentLoading.isValid) {
                     MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
@@ -151,7 +151,7 @@
         self.appendDataSource.hidden = YES;
     }
     else {
-        self.appendDataSource.title = @"Appending...";
+        self.appendDataSource.title = @"Loading...";
         self.appendDataSource.showsActivityIndicator = YES;
         self.appendDataSource.hidden = NO;
     }
@@ -184,7 +184,7 @@
         self.appendDataSource.hidden = YES;
     }
     else {
-        self.appendDataSource.title = @"Append More";
+        self.appendDataSource.title = @"Show More Flowers";
         self.appendDataSource.showsActivityIndicator = NO;
         self.appendDataSource.hidden = NO;
     }
