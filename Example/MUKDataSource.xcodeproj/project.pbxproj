@@ -59,6 +59,8 @@
 		064F0E2B1998BD7A00A4FB7F /* AppendContentDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppendContentDataSource.h; sourceTree = "<group>"; };
 		064F0E2C1998BD7A00A4FB7F /* AppendContentDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppendContentDataSource.m; sourceTree = "<group>"; };
 		065A168519964EBA0093D27B /* MUKDataSourceContentLoadingResultType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadingResultType.h; sourceTree = "<group>"; };
+		066BCA76199CA7C1008669A7 /* MUKDataSourceSnapshot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceSnapshot.h; sourceTree = "<group>"; };
+		066BCA77199CA7C1008669A7 /* MUKDataSourceSnapshot.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceSnapshot.m; sourceTree = "<group>"; };
 		06774E45198BCD360066DE57 /* AnimalsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsDataSource.h; sourceTree = "<group>"; };
 		06774E46198BCD360066DE57 /* AnimalsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsDataSource.m; sourceTree = "<group>"; };
 		06774E48198BF9750066DE57 /* MUKDataSourceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceDelegate.h; sourceTree = "<group>"; };
@@ -189,6 +191,15 @@
 			path = "Single View";
 			sourceTree = "<group>";
 		};
+		066BCA75199CA7AB008669A7 /* Snapshot */ = {
+			isa = PBXGroup;
+			children = (
+				066BCA76199CA7C1008669A7 /* MUKDataSourceSnapshot.h */,
+				066BCA77199CA7C1008669A7 /* MUKDataSourceSnapshot.m */,
+			);
+			path = Snapshot;
+			sourceTree = "<group>";
+		};
 		06774E49198CAD260066DE57 /* Table View Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +259,7 @@
 				06774E5D1994F90F0066DE57 /* Content Loading */,
 				064F0E1C1998B50F00A4FB7F /* Specific Data Sources */,
 				06774E49198CAD260066DE57 /* Table View Support */,
+				066BCA75199CA7AB008669A7 /* Snapshot */,
 				06774E4D198CAE000066DE57 /* Private */,
 			);
 			path = Classes;

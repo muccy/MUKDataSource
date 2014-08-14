@@ -31,6 +31,19 @@ static NSIndexPath *IndexPathWithIndexes(NSArray *indexesArray) {
 #pragma mark - Main
 SpecBegin(Main)
 
+it(@"should always differentiate data sources", ^{
+    MUKDataSource *dataSource1 = CreateDataSource();
+    expect([dataSource1 isEqualToDataSource:nil]).to.beFalsy();
+    
+    dataSource1.items = @[@"A"];
+    MUKDataSource *dataSource2 = CreateDataSource();
+    dataSource2.items = dataSource1.items;
+    expect([dataSource1 isEqualToDataSource:dataSource2]).to.beFalsy();
+    
+    expect([dataSource1 isEqualToDataSource:dataSource1]).to.beTruthy();
+    expect([dataSource2 isEqualToDataSource:dataSource2]).to.beTruthy();
+});
+
 #pragma mark Contents
 describe(@"Contents", ^{
     MUKDataSource *dataSource = CreateDataSource();
@@ -296,6 +309,10 @@ describe(@"Containment", ^{
         
         [rootDataSource insertChildDataSource:dataSource atIndex:0];
         expect([rootDataSource.childDataSources count]).to.equal(1); // No duplicates
+        testParent(rootDataSource.childDataSources);
+        
+        [rootDataSource insertChildDataSource:rootDataSource atIndex:0];
+        expect([rootDataSource.childDataSources count]).to.equal(1); // No self
         testParent(rootDataSource.childDataSources);
         
         MUKDataSource *anotherDataSource = CreateDataSource();
@@ -1412,6 +1429,149 @@ describe(@"Content loading", ^{
             done();
         });
     });
+});
+
+SpecEnd
+
+#pragma mark - Snapshotting
+SpecBegin(Snapshotting)
+
+it(@"should tell if snapshot would have sense", ^{
+    id dataSourceMock = OCMPartialMock(CreateDataSource());
+    [dataSourceMock setChildDataSources:@[OCMPartialMock(CreateDataSource()), OCMPartialMock(CreateDataSource())]];
+    
+    // A child could not be snapshotted
+    id mock = [dataSourceMock childDataSources][0];
+    OCMExpect([mock shouldBeSnapshotted]).andReturn(YES);
+    
+    mock = [dataSourceMock childDataSources][1];
+    OCMExpect([mock shouldBeSnapshotted]).andReturn(NO);
+    
+    expect([dataSourceMock shouldBeSnapshotted]).to.beFalsy();
+    expect(^{
+        for (id mock in [dataSourceMock childDataSources]) {
+            OCMVerifyAll(mock);
+        }
+    }).notTo.raiseAny();
+    
+    // Father has a transitional state
+    [[dataSourceMock stateMachine] fireEvent:MUKDataSourceContentLoadEventBeginLoading userInfo:nil error:nil];
+    expect([dataSourceMock shouldBeSnapshotted]).to.beFalsy();
+    
+    // Everything is OK
+    [[dataSourceMock stateMachine] fireEvent:MUKDataSourceContentLoadEventDisplayLoaded userInfo:nil error:nil];
+    
+    mock = [dataSourceMock childDataSources][0];
+    OCMExpect([mock shouldBeSnapshotted]).andReturn(YES);
+    
+    mock = [dataSourceMock childDataSources][1];
+    OCMExpect([mock shouldBeSnapshotted]).andReturn(YES);
+    
+    expect([dataSourceMock shouldBeSnapshotted]).to.beTruthy();
+    expect(^{
+        for (id mock in [dataSourceMock childDataSources]) {
+            OCMVerifyAll(mock);
+        }
+    }).notTo.raiseAny();
+});
+
+it(@"should take snapshots of itself", ^{
+    MUKDataSource *dataSource = CreateDataSource();
+    MUKDataSourceSnapshot *snapshot = [dataSource newSnapshot];
+    expect(snapshot.dataSource).to.equal(dataSource);
+    expect([snapshot.date timeIntervalSinceReferenceDate]).to.beCloseToWithin([NSDate timeIntervalSinceReferenceDate], 0.001);
+});
+
+it(@"should archive properly", ^{
+    MUKDataSource *dataSource = CreateDataSource();
+    dataSource.items = @[@"A", @"B"];
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginLoading userInfo:nil error:nil];
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayLoaded userInfo:nil error:nil];
+    
+    MUKDataSource *childDataSource = CreateDataSource();
+    childDataSource.items = @[@"C"];
+    [dataSource appendChildDataSource:childDataSource];
+    
+    MUKDataSourceSnapshot *snapshot = [dataSource newSnapshot];
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:snapshot];
+    
+    MUKDataSourceSnapshot *unarchivedSnapshot = [NSKeyedUnarchiver unarchiveObjectWithData:archive];
+    expect(unarchivedSnapshot.date).to.equal(snapshot.date);
+    expect(unarchivedSnapshot.dataSource.items).to.equal(dataSource.items);
+    expect([unarchivedSnapshot.dataSource.childDataSources count]).to.equal([dataSource.childDataSources count]);
+    expect([unarchivedSnapshot.dataSource childDataSourceAtIndex:0].items).to.equal(childDataSource.items);
+    expect(unarchivedSnapshot.dataSource.loadingState).to.equal(dataSource.loadingState);
+});
+
+it(@"should suggest a result type", ^{
+    MUKDataSource *dataSource = CreateDataSource();
+    MUKDataSourceSnapshot *snapshot = [[MUKDataSourceSnapshot alloc] initWithDataSource:dataSource];
+    
+    expect(snapshot.equivalentResultType).to.equal(MUKDataSourceContentLoadingResultTypeEmpty);
+    
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginLoading userInfo:nil error:nil];
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayError userInfo:nil error:nil];
+    expect(snapshot.equivalentResultType).to.equal(MUKDataSourceContentLoadingResultTypeError);
+    
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginRefreshing userInfo:nil error:nil];
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayLoaded userInfo:nil error:nil];
+    expect(snapshot.equivalentResultType).to.equal(MUKDataSourceContentLoadingResultTypeComplete);
+    
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginRefreshing userInfo:nil error:nil];
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayEmpty userInfo:nil error:nil];
+    expect(snapshot.equivalentResultType).to.equal(MUKDataSourceContentLoadingResultTypeEmpty);
+});
+
+it(@"should restore in loading state", ^{
+    MUKDataSource *originalDataSource = CreateDataSource();
+    expect([originalDataSource shouldBeRestoredWithSnapshot:nil]).to.beFalsy();
+    
+    MUKDataSourceSnapshot *snapshot = [[MUKDataSourceSnapshot alloc] initWithDataSource:originalDataSource];
+    
+    MUKDataSource *dataSource = CreateDataSource();
+    expect([dataSource shouldBeRestoredWithSnapshot:snapshot]).to.beFalsy();
+    
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginLoading userInfo:nil error:nil];
+    expect([dataSource shouldBeRestoredWithSnapshot:snapshot]).to.beTruthy();
+    
+    [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayLoaded userInfo:nil error:nil];
+    expect([dataSource shouldBeRestoredWithSnapshot:snapshot]).to.beFalsy();
+});
+
+it(@"should restore in content loading final update", ^{
+    MUKDataSource *originalDataSource = CreateDataSource();
+    originalDataSource.items = @[@"A", @"B"];
+    
+    MUKDataSource *childDataSource = CreateDataSource();
+    childDataSource.items = @[@"C", @"D"];
+    [originalDataSource appendChildDataSource:childDataSource];
+    
+    MUKDataSourceSnapshot *snapshot = [[MUKDataSourceSnapshot alloc] initWithDataSource:originalDataSource];
+    
+    MUKDataSource *dataSource = CreateDataSource();
+    id dataSourceMock = OCMPartialMock(dataSource);
+    
+    MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
+    __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
+    contentLoading.job = ^{
+        MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
+        if ([dataSourceMock shouldBeRestoredWithSnapshot:snapshot]) {
+            [strongContentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
+             {
+                 [dataSourceMock restoreFromSnapshot:snapshot];
+             }];
+        }
+    };
+    
+    OCMStub([dataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
+    OCMExpect([dataSourceMock shouldBeRestoredWithSnapshot:snapshot]).andForwardToRealObject();
+    OCMExpect([dataSourceMock restoreFromSnapshot:snapshot]).andForwardToRealObject();
+    
+    [dataSourceMock loadContent];
+    expect(^{ OCMVerifyAll(dataSourceMock); }).notTo.raiseAny();
+    expect(dataSource.items).to.equal(originalDataSource.items);
+    expect([dataSource.childDataSources count]).to.equal([originalDataSource.childDataSources count]);
+    expect([dataSource childDataSourceAtIndex:0].items).to.equal(childDataSource.items);
 });
 
 SpecEnd

@@ -9,3 +9,5 @@
 
 #import <MUKDataSource/MUKDataSourcePlaceholderView.h>
 #import <MUKDataSource/MUKDataSourceAppendContentView.h>
+
+#import <MUKDataSource/MUKDataSourceSnapshot.h>

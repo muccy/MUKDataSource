@@ -27,6 +27,8 @@ static NSString *const kStateMachineEventContentLoadingUserInfoKey = @"MUKDataSo
 static NSString *const kStateMachineEventContentLoadingResultTypeUserInfoKey = @"MUKDataSourceStateMachineEventContentLoadingResultTypeUserInfoKey";
 static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceStateMachineEventErrorUserInfoKey";
 
+static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
+
 @interface MUKDataSource ()
 @property (nonatomic, copy) NSArray *items;
 @property (nonatomic, readwrite) NSArray *childDataSources;
@@ -37,6 +39,24 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
 @implementation MUKDataSource
 @dynamic hasChildDataSources;
 @dynamic loadingState;
+
+#pragma mark - Overrides
+
+- (BOOL)isEqual:(id)object {
+    if (object == self) {
+        return YES;
+    }
+    
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    
+    return [self isEqualToDataSource:object];
+}
+
+- (NSUInteger)hash {
+    return 1126121986 ^ [super hash];
+}
 
 #pragma mark - Accessors
 
@@ -55,6 +75,13 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
     // Delegate is assigned to perform batch updates: do nothing here
     
     [self didRequestBatchUpdate:updateBlock fromDataSource:self];
+}
+
+- (BOOL)isEqualToDataSource:(MUKDataSource *)dataSource {
+    // I can't compare items and child data source because I may want parallel
+    // data sources. For example a table view with empty sections to begin. I prefer
+    // not to make assumptions at this stage.
+    return dataSource == self;
 }
 
 #pragma mark - self.items KVC compliance
@@ -316,7 +343,7 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
 
 - (void)insertChildDataSource:(MUKDataSource *)dataSource atIndex:(NSInteger)idx
 {
-    if (!dataSource || idx < 0 || idx >= NSNotFound) {
+    if (!dataSource || dataSource == self || idx < 0 || idx >= NSNotFound) {
         return;
     }
     
@@ -557,6 +584,57 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
     {
         [self.delegate dataSource:self didLoadContent:contentLoading withResultType:resultType error:error];
     }
+}
+
+#pragma mark - Snapshotting
+
+- (BOOL)shouldBeSnapshotted {
+    // State should not be transitional
+    BOOL shouldBeSnapshotted = [[[self class] snapshotValidLoadingStates] containsObject:self.loadingState];
+    
+    if (!shouldBeSnapshotted) {
+        // Fail immediately
+        return shouldBeSnapshotted;
+    }
+    
+    // If I have children I should ask them if everyone is ready to be shapshotted, too
+    if ([self.childDataSources count] > 0) {
+        for (MUKDataSource *childDataSource in self.childDataSources) {
+            if (![childDataSource shouldBeSnapshotted]) { // Recursion
+                shouldBeSnapshotted = NO;
+                break;
+            }
+        } // for
+    }
+
+    return shouldBeSnapshotted;
+}
+
+- (MUKDataSourceSnapshot *)newSnapshot {
+    return [[MUKDataSourceSnapshot alloc] initWithDataSource:self];
+}
+
+- (BOOL)shouldBeRestoredWithSnapshot:(MUKDataSourceSnapshot *)snapshot {
+    // State should be transitional
+    NSArray *validStates = @[ MUKDataSourceContentLoadStateLoading, MUKDataSourceContentLoadStateRefreshing ];
+    if (![validStates containsObject:self.loadingState]) {
+        return NO;
+    }
+    
+    // Snapshot state should not be transitional
+    return [[[self class] snapshotValidLoadingStates] containsObject:snapshot.dataSource.loadingState];
+}
+
+- (void)restoreFromSnapshot:(MUKDataSourceSnapshot *)snapshot {
+    self.title = snapshot.dataSource.title;
+
+    // Restore in a batch
+    MUKDataSourceBatch *batch = [[MUKDataSourceBatch alloc] init];
+    [batch addBlock:^{
+        self.items = snapshot.dataSource.items;
+        self.childDataSources = snapshot.dataSource.childDataSources;
+    }];
+    [batch performAllBlocks];
 }
 
 #pragma mark - Private - Contents
@@ -1247,6 +1325,40 @@ static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceState
     }
     
     return [userInfo copy];
+}
+
+#pragma mark - Private — Snapshotting
+
++ (NSArray *)snapshotValidLoadingStates {
+    return @[ MUKDataSourceContentLoadStateEmpty, MUKDataSourceContentLoadStateError, MUKDataSourceContentLoadStateInitial, MUKDataSourceContentLoadStateLoaded];
+}
+
+#pragma mark - <NSSecureCoding>
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _title = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"title"];
+        _items = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"items"];
+        _childDataSources = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"childDataSources"];
+        _parentDataSource = [aDecoder decodeObjectOfClass:[MUKDataSource class] forKey:@"parentDataSource"];
+        _stateMachine = [aDecoder decodeObjectOfClass:[TKStateMachine class] forKey:@"stateMachine"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_title forKey:@"title"];
+    [aCoder encodeObject:_items forKey:@"items"];
+    [aCoder encodeObject:_childDataSources forKey:@"childDataSources"];
+    [aCoder encodeConditionalObject:_parentDataSource forKey:@"parentDataSource"];
+    [aCoder encodeObject:_stateMachine forKey:@"stateMachine"];
+    [aCoder encodeObject:@"1.0.0" forKey:kArchiveVersionKey];
 }
 
 @end

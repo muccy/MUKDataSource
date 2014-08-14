@@ -2,12 +2,14 @@
 #import <MUKDataSource/MUKDataSourceDelegate.h>
 #import <MUKDataSource/MUKDataSourceContentLoading.h>
 #import <MUKDataSource/MUKDataSourceContentLoadState.h>
+#import <MUKDataSource/MUKDataSourceSnapshot.h>
 
-@interface MUKDataSource : NSObject
+@interface MUKDataSource : NSObject <NSSecureCoding>
 @property (nonatomic, weak) id<MUKDataSourceDelegate> delegate;
 @property (nonatomic, copy) NSString *title;
 
 - (void)requestBatchUpdate:(dispatch_block_t)updateBlock;
+- (BOOL)isEqualToDataSource:(MUKDataSource *)dataSource;
 @end
 
 @interface MUKDataSource (Contents)
@@ -72,4 +74,12 @@
 
 - (void)willLoadContent:(MUKDataSourceContentLoading *)contentLoading;
 - (void)didLoadContent:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error;
+@end
+
+@interface MUKDataSource (Snaphotting)
+- (BOOL)shouldBeSnapshotted;
+- (MUKDataSourceSnapshot *)newSnapshot;
+
+- (BOOL)shouldBeRestoredWithSnapshot:(MUKDataSourceSnapshot *)snapshot;
+- (void)restoreFromSnapshot:(MUKDataSourceSnapshot *)snapshot;
 @end
