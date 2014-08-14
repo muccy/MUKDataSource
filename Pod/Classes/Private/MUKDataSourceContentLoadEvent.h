@@ -29,3 +29,15 @@ extern NSString *const MUKDataSourceContentLoadEventDisplayEmpty;
 // Loading -> Error
 // Refreshing -> Error
 extern NSString *const MUKDataSourceContentLoadEventDisplayError;
+
+// Declare loaded without loading
+// Initial -> Loaded
+// Empty -> Loaded
+// Error -> Loaded
+extern NSString *const MUKDataSourceContentLoadEventDeclareLoaded;
+
+// Declare empty without refreshing
+// Initial -> Empty
+// Loaded -> Empty
+// Error -> Empty
+extern NSString *const MUKDataSourceContentLoadEventDeclareEmpty;

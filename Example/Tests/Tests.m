@@ -1431,6 +1431,64 @@ describe(@"Content loading", ^{
     });
 });
 
+describe(@"Content declaration", ^{
+    it(@"should delay content declaration", ^{
+        id dataSourceMock = OCMPartialMock(CreateDataSource());
+        OCMExpect([dataSourceMock declareLoadingState:MUKDataSourceContentLoadStateLoaded]);
+        [dataSourceMock setNeedsDeclareLoaded];
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
+        
+        OCMExpect([dataSourceMock declareLoadingState:MUKDataSourceContentLoadStateEmpty]);
+        [dataSourceMock setNeedsDeclareEmpty];
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).notTo.raiseAny();
+    });
+    
+    it(@"should coalesce consecutive content declarations", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        id dataSourceMock = OCMPartialMock(dataSource);
+        
+        OCMExpect([dataSourceMock declareLoadingState:MUKDataSourceContentLoadStateLoaded]);
+        
+        [dataSourceMock setNeedsDeclareLoaded];
+        [dataSourceMock setNeedsDeclareLoaded];
+        
+        expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).toNot.raiseAny();
+    });
+    
+    it(@"should pass to new state directly only when possible", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        
+        [dataSource declareLoadingState:MUKDataSourceContentLoadStateLoaded];
+        expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateLoaded);
+        
+        [dataSource declareLoadingState:MUKDataSourceContentLoadStateRefreshing];
+        expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateLoaded);
+        
+        [dataSource declareLoadingState:MUKDataSourceContentLoadStateEmpty];
+        expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateEmpty);
+    });
+    
+    it(@"should notify state changes", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        MUKDataSource *childDataSource = CreateDataSource();
+        
+        id dataSourceMock = OCMPartialMock(dataSource);
+        id childDataSourceMock = OCMPartialMock(childDataSource);
+        
+        [dataSourceMock appendChildDataSource:childDataSourceMock];
+        
+        OCMExpect([dataSourceMock willTransitionToContentLoadingState:MUKDataSourceContentLoadStateLoaded inDataSource:childDataSource]).andForwardToRealObject();
+        OCMExpect([dataSourceMock didTransitionFromContentLoadingState:childDataSource.loadingState inDataSource:childDataSource]).andForwardToRealObject();
+        [childDataSourceMock declareLoadingState:MUKDataSourceContentLoadStateLoaded];
+        expect(^{ OCMVerifyAll(dataSourceMock); }).notTo.raiseAny();
+        
+        OCMExpect([dataSourceMock willTransitionToContentLoadingState:MUKDataSourceContentLoadStateEmpty inDataSource:childDataSource]).andForwardToRealObject();
+        OCMExpect([dataSourceMock didTransitionFromContentLoadingState:childDataSource.loadingState inDataSource:childDataSource]).andForwardToRealObject();
+        [childDataSourceMock declareLoadingState:MUKDataSourceContentLoadStateEmpty];
+        expect(^{ OCMVerifyAll(dataSourceMock); }).notTo.raiseAny();
+    });
+});
+
 SpecEnd
 
 #pragma mark - Snapshotting
@@ -1479,7 +1537,7 @@ it(@"should take snapshots of itself", ^{
     MUKDataSource *dataSource = CreateDataSource();
     MUKDataSourceSnapshot *snapshot = [dataSource newSnapshot];
     expect(snapshot.dataSource).to.equal(dataSource);
-    expect([snapshot.date timeIntervalSinceReferenceDate]).to.beCloseToWithin([NSDate timeIntervalSinceReferenceDate], 0.001);
+    expect([snapshot.date timeIntervalSinceReferenceDate]).to.beCloseToWithin([NSDate timeIntervalSinceReferenceDate], 0.1);
 });
 
 it(@"should archive properly", ^{

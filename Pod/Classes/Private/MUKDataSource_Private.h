@@ -22,5 +22,6 @@
 - (BOOL)loadContent;
 - (BOOL)appendContent;
 - (void)didFinishContentLoading:(MUKDataSourceContentLoading *)contentLoading withResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler;
+- (BOOL)declareLoadingState:(NSString *)declaredLoadingState;
 
 @end

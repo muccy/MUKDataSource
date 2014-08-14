@@ -52,6 +52,9 @@
 - (void)setNeedsAppendContent;
 
 - (MUKDataSourceContentLoading *)newContentLoadingForState:(NSString *)state;
+
+- (void)setNeedsDeclareLoaded;
+- (void)setNeedsDeclareEmpty;
 @end
 
 @interface MUKDataSource (Callbacks)

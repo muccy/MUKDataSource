@@ -21,11 +21,14 @@ NSString *const MUKDataSourceContentLoadEventBeginAppending = @"MUKDataSourceCon
 NSString *const MUKDataSourceContentLoadEventDisplayLoaded = @"MUKDataSourceContentLoadEventDisplayLoaded";
 NSString *const MUKDataSourceContentLoadEventDisplayEmpty = @"MUKDataSourceContentLoadEventDisplayEmpty";
 NSString *const MUKDataSourceContentLoadEventDisplayError = @"MUKDataSourceContentLoadEventDisplayError";
+NSString *const MUKDataSourceContentLoadEventDeclareLoaded = @"MUKDataSourceContentLoadEventDeclareLoaded";
+NSString *const MUKDataSourceContentLoadEventDeclareEmpty = @"MUKDataSourceContentLoadEventDeclareEmpty";
 
 static NSString *const kStateMachineEventUpdateHandlerUserInfoKey = @"MUKDataSourceStateMachineEventUpdateHandlerUserInfoKey";
 static NSString *const kStateMachineEventContentLoadingUserInfoKey = @"MUKDataSourceStateMachineEventContentLoadingUserInfoKey";
 static NSString *const kStateMachineEventContentLoadingResultTypeUserInfoKey = @"MUKDataSourceStateMachineEventContentLoadingResultTypeUserInfoKey";
 static NSString *const kStateMachineEventErrorUserInfoKey = @"MUKDataSourceStateMachineEventErrorUserInfoKey";
+static NSString *const kStateMachineEventIsDeclarationUserInfoKey = @"MUKDataSourceStateMachineEventIsDeclarationUserInfoKey";
 
 static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
 
@@ -394,17 +397,31 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
 }
 
 - (void)setNeedsLoadContent {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadContent) object:nil];
+    [self cancelPreviousContentLoadingRequests];
+    [self cancelPreviousLoadingStateDeclarationRequests];
     [self performSelector:@selector(loadContent) withObject:nil afterDelay:0.0];
 }
 
 - (void)setNeedsAppendContent {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(appendContent) object:nil];
+    [self cancelPreviousContentLoadingRequests];
+    [self cancelPreviousLoadingStateDeclarationRequests];
     [self performSelector:@selector(appendContent) withObject:nil afterDelay:0.0];
 }
 
 - (MUKDataSourceContentLoading *)newContentLoadingForState:(NSString *)state {
     return nil;
+}
+
+- (void)setNeedsDeclareEmpty {
+    [self cancelPreviousContentLoadingRequests];
+    [self cancelPreviousLoadingStateDeclarationRequests];
+    [self performSelector:@selector(declareLoadingState:) withObject:MUKDataSourceContentLoadStateEmpty afterDelay:0.0];
+}
+
+- (void)setNeedsDeclareLoaded {
+    [self cancelPreviousContentLoadingRequests];
+    [self cancelPreviousLoadingStateDeclarationRequests];
+    [self performSelector:@selector(declareLoadingState:) withObject:MUKDataSourceContentLoadStateLoaded afterDelay:0.0];
 }
 
 #pragma mark - Callbacks
@@ -984,14 +1001,18 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     };
     
     // willLoadContent is invoked when preparing and executing load
-    void (^notifyDidLoadContent)(TKTransition *) = ^(TKTransition *transition)
+    void (^notifyDidLoadContentIfNeeded)(TKTransition *) = ^(TKTransition *transition)
     {
         MUKDataSource *strongSelf = weakSelf;
         if (strongSelf) {
-            MUKDataSourceContentLoading *contentLoading = transition.userInfo[kStateMachineEventContentLoadingUserInfoKey];
-            MUKDataSourceContentLoadingResultType resultType = [transition.userInfo[kStateMachineEventContentLoadingResultTypeUserInfoKey] integerValue];
-            NSError *error = transition.userInfo[kStateMachineEventErrorUserInfoKey];
-            [strongSelf didLoadContent:contentLoading withResultType:resultType error:error];
+            BOOL isDeclaration = [transition.userInfo[kStateMachineEventIsDeclarationUserInfoKey] boolValue];
+            
+            if (!isDeclaration) {
+                MUKDataSourceContentLoading *contentLoading = transition.userInfo[kStateMachineEventContentLoadingUserInfoKey];
+                MUKDataSourceContentLoadingResultType resultType = [transition.userInfo[kStateMachineEventContentLoadingResultTypeUserInfoKey] integerValue];
+                NSError *error = transition.userInfo[kStateMachineEventErrorUserInfoKey];
+                [strongSelf didLoadContent:contentLoading withResultType:resultType error:error];
+            }
         }
     };
     
@@ -1043,7 +1064,7 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
         notifyDidTransitionFromState(transition.sourceState);
-        notifyDidLoadContent(transition);
+        notifyDidLoadContentIfNeeded(transition);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -1057,7 +1078,7 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
         notifyDidTransitionFromState(transition.sourceState);
-        notifyDidLoadContent(transition);
+        notifyDidLoadContentIfNeeded(transition);
         notifyKVOForLoadingState(YES);
     }];
     
@@ -1071,7 +1092,7 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     [state setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
         destroyCurrentContentLoading();
         notifyDidTransitionFromState(transition.sourceState);
-        notifyDidLoadContent(transition);
+        notifyDidLoadContentIfNeeded(transition);
         notifyKVOForLoadingState(YES);
     }];
 }
@@ -1136,6 +1157,12 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     event = [TKEvent eventWithName:MUKDataSourceContentLoadEventDisplayError transitioningFromStates:@[loadingState, refreshingState] toState:errorState];
     [events addObject:event];
     
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadEventDeclareLoaded transitioningFromStates:@[initialState, emptyState, errorState] toState:loadedState];
+    [events addObject:event];
+    
+    event = [TKEvent eventWithName:MUKDataSourceContentLoadEventDeclareEmpty transitioningFromStates:@[initialState, loadedState, errorState] toState:emptyState];
+    [events addObject:event];
+    
     return [events copy];
 }
 
@@ -1144,6 +1171,11 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
 }
 
 #pragma mark - Private - Content Loading
+
+- (void)cancelPreviousContentLoadingRequests {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadContent) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(appendContent) object:nil];
+}
 
 - (BOOL)loadContent {
     // Attempt first load
@@ -1325,6 +1357,46 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     }
     
     return [userInfo copy];
+}
+
+- (void)cancelPreviousLoadingStateDeclarationRequests {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(declareLoadingState:) object:MUKDataSourceContentLoadStateEmpty];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(declareLoadingState:) object:MUKDataSourceContentLoadStateLoaded];
+}
+
+- (BOOL)declareLoadingState:(NSString *)declaredLoadingState {
+    // Try to pass to next state
+    TKEvent *event = [self nextStateMachineEventForDeclaredLoadingState:declaredLoadingState];
+    
+    if (event) {
+        NSDictionary *userInfo = @{kStateMachineEventIsDeclarationUserInfoKey: @YES};
+        return [self.stateMachine fireEvent:event userInfo:userInfo error:nil];
+    }
+    
+    return NO;
+}
+
+- (TKEvent *)nextStateMachineEventForDeclaredLoadingState:(NSString *)declaredLoadingState
+{
+    NSString *eventName;
+    
+    if ([declaredLoadingState isEqualToString:MUKDataSourceContentLoadStateLoaded])
+    {
+        eventName = MUKDataSourceContentLoadEventDeclareLoaded;
+    }
+    else if ([declaredLoadingState isEqualToString:MUKDataSourceContentLoadStateEmpty])
+    {
+        eventName = MUKDataSourceContentLoadEventDeclareEmpty;
+    }
+    else {
+        eventName = nil;
+    }
+    
+    if (eventName) {
+        return [self.stateMachine eventNamed:eventName];
+    }
+    
+    return nil;
 }
 
 #pragma mark - Private — Snapshotting
