@@ -15,7 +15,6 @@
 		06774E6D1995188A0066DE57 /* Florist.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6C1995188A0066DE57 /* Florist.m */; };
 		06774E73199611110066DE57 /* FlowerListDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E72199611110066DE57 /* FlowerListDataSource.m */; };
 		06774E761996119E0066DE57 /* FlowersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E751996119E0066DE57 /* FlowersTableViewController.m */; };
-		06774E79199611F80066DE57 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E78199611F80066DE57 /* TableViewController.m */; };
 		06774E7C19961A640066DE57 /* AnimalsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E7B19961A640066DE57 /* AnimalsTableViewController.m */; };
 		5ED957BE6DAB4B81B683C44C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F674411199F3468EB2B3326F /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -61,6 +60,8 @@
 		065A168519964EBA0093D27B /* MUKDataSourceContentLoadingResultType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoadingResultType.h; sourceTree = "<group>"; };
 		066BCA76199CA7C1008669A7 /* MUKDataSourceSnapshot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceSnapshot.h; sourceTree = "<group>"; };
 		066BCA77199CA7C1008669A7 /* MUKDataSourceSnapshot.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceSnapshot.m; sourceTree = "<group>"; };
+		066BCA79199D043F008669A7 /* MUKTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKTableViewController.h; sourceTree = "<group>"; };
+		066BCA7A199D043F008669A7 /* MUKTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKTableViewController.m; sourceTree = "<group>"; };
 		06774E45198BCD360066DE57 /* AnimalsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsDataSource.h; sourceTree = "<group>"; };
 		06774E46198BCD360066DE57 /* AnimalsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsDataSource.m; sourceTree = "<group>"; };
 		06774E48198BF9750066DE57 /* MUKDataSourceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceDelegate.h; sourceTree = "<group>"; };
@@ -88,8 +89,6 @@
 		06774E72199611110066DE57 /* FlowerListDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowerListDataSource.m; sourceTree = "<group>"; };
 		06774E741996119E0066DE57 /* FlowersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowersTableViewController.h; sourceTree = "<group>"; };
 		06774E751996119E0066DE57 /* FlowersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowersTableViewController.m; sourceTree = "<group>"; };
-		06774E77199611F80066DE57 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
-		06774E78199611F80066DE57 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		06774E7A19961A640066DE57 /* AnimalsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsTableViewController.h; sourceTree = "<group>"; };
 		06774E7B19961A640066DE57 /* AnimalsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsTableViewController.m; sourceTree = "<group>"; };
 		06986C2C198BC0F20055F3E9 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -200,9 +199,19 @@
 			path = Snapshot;
 			sourceTree = "<group>";
 		};
+		066BCA78199D0432008669A7 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				066BCA79199D043F008669A7 /* MUKTableViewController.h */,
+				066BCA7A199D043F008669A7 /* MUKTableViewController.m */,
+			);
+			path = "View Controller";
+			sourceTree = "<group>";
+		};
 		06774E49198CAD260066DE57 /* Table View Support */ = {
 			isa = PBXGroup;
 			children = (
+				066BCA78199D0432008669A7 /* View Controller */,
 				06774E4A198CAD3A0066DE57 /* MUKDataSource+TableView.h */,
 				06774E4B198CAD3A0066DE57 /* MUKDataSource+TableView.m */,
 			);
@@ -320,8 +329,6 @@
 				6003F59D195388D20070C39A /* AppDelegate.m */,
 				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
 				6003F5A2195388D20070C39A /* Main_iPad.storyboard */,
-				06774E77199611F80066DE57 /* TableViewController.h */,
-				06774E78199611F80066DE57 /* TableViewController.m */,
 				06774E7A19961A640066DE57 /* AnimalsTableViewController.h */,
 				06774E7B19961A640066DE57 /* AnimalsTableViewController.m */,
 				06774E741996119E0066DE57 /* FlowersTableViewController.h */,
@@ -553,7 +560,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06774E79199611F80066DE57 /* TableViewController.m in Sources */,
 				06774E6519950F4C0066DE57 /* RemoteFlowersDataSource.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
 				06774E7C19961A640066DE57 /* AnimalsTableViewController.m in Sources */,

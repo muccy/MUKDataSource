@@ -18,12 +18,9 @@
 
 @implementation FlowersTableViewController
 
-- (MUKDataSource *)newDataSource {
-    return [[RemoteFlowersDataSource alloc] init];
-}
-
-- (BOOL)usesRefreshControl {
-    return YES;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.dataSource = [[RemoteFlowersDataSource alloc] init];
 }
 
 #pragma mark - <MUKDataSourceDelegate>

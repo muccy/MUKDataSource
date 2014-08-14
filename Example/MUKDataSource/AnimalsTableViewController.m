@@ -29,6 +29,9 @@ static NSString *const kInsectsDataSourceIdentifier = @"kInsectsDataSourceIdenti
     [super viewDidLoad];
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.dataSource = [self newDataSource];
+    self.automaticallySetNeedsLoadContentAtViewWillAppear = NO;
+    self.usesRefreshControl = NO;
 }
 
 #pragma mark - Overrides

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Muccy. All rights reserved.
 //
 
-#import "TableViewController.h"
+#import <MUKDataSource/MUKDataSource.h>
 
-@interface FlowersTableViewController : TableViewController
+@interface FlowersTableViewController : MUKTableViewController
 
 @end

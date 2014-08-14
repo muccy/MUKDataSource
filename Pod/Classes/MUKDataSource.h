@@ -11,3 +11,5 @@
 #import <MUKDataSource/MUKDataSourceAppendContentView.h>
 
 #import <MUKDataSource/MUKDataSourceSnapshot.h>
+
+#import <MUKDataSource/MUKTableViewController.h>

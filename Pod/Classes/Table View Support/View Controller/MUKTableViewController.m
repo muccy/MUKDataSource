@@ -1,12 +1,4 @@
-//
-//  TableViewController.m
-//  MUKDataSource
-//
-//  Created by Marco on 09/08/14.
-//  Copyright (c) 2014 Muccy. All rights reserved.
-//
-
-#import "TableViewController.h"
+#import "MUKTableViewController.h"
 
 #define DEBUG_LOG   0
 
@@ -45,48 +37,97 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 }
 #endif
 
-@interface TableViewController ()
-@property (nonatomic, readwrite) MUKDataSource *dataSource;
-@property (nonatomic) BOOL alreadySetNeedLoadContent;
+@interface MUKTableViewController ()
+@property (nonatomic) BOOL alreadySetFirstNeedLoadContent;
 @end
 
-@implementation TableViewController
+@implementation MUKTableViewController
+
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self) {
+        CommonInit(self);
+    }
+    
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        CommonInit(self);
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.dataSource = [self newDataSource];
-    [self.dataSource registerReusableViewsForTableView:self.tableView];
-    self.tableView.dataSource = self.dataSource;
-    self.dataSource.delegate = self;
-    
-    if ([self usesRefreshControl]) {
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        [refreshControl addTarget:self action:@selector(refreshControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-        self.refreshControl = refreshControl;
+    if (self.usesRefreshControl) {
+        [self insertRefreshControl];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!self.alreadySetNeedLoadContent && self.refreshControl) {
-        self.alreadySetNeedLoadContent = YES;
-        [self.dataSource setNeedsLoadContent];
+    if (!self.alreadySetFirstNeedLoadContent) {
+        self.alreadySetFirstNeedLoadContent = YES; // Consume the chance
+        
+        if (self.automaticallySetNeedsLoadContentAtViewWillAppear) {
+            [self.dataSource setNeedsLoadContent];
+        }
     }
 }
 
-#pragma mark - Methods
+#pragma mark - Accessors
 
-- (MUKDataSource *)newDataSource {
-    return nil;
+- (void)setDataSource:(MUKDataSource *)dataSource {
+    if (dataSource != _dataSource) {
+        if (_dataSource.delegate == self) {
+            _dataSource.delegate = nil;
+        }
+        
+        _dataSource = dataSource;
+        dataSource.delegate = self;
+        self.tableView.dataSource = dataSource;
+        [dataSource registerReusableViewsForTableView:self.tableView];
+    }
 }
 
-- (BOOL)usesRefreshControl {
-    return NO;
+- (void)setUsesRefreshControl:(BOOL)usesRefreshControl {
+    if (usesRefreshControl != _usesRefreshControl) {
+        _usesRefreshControl = usesRefreshControl;
+        
+        if (usesRefreshControl) {
+            [self insertRefreshControl];
+        }
+        else {
+            self.refreshControl = nil;
+        }
+    }
 }
 
-#pragma mark - Actions
+#pragma mark - Private
+
+static void CommonInit(MUKTableViewController *me) {
+    me->_automaticallySetNeedsLoadContentAtViewWillAppear = YES;
+    me->_usesRefreshControl = YES;
+}
+
+- (void)insertRefreshControl {
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+}
+
+static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewController *me)
+{
+    return tableView.dataSource == me.dataSource;
+}
+
+#pragma mark - Private — Actions
 
 - (void)refreshControlValueChanged:(id)sender {
     [self.dataSource setNeedsLoadContent];
@@ -96,11 +137,13 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
-    if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKAppendContentDataSource class]])
-    {
-        [self.dataSource setNeedsAppendContent];
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (IsBackedTableView(tableView, self)) {
+        NSInteger const dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
+        
+        if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKAppendContentDataSource class]])
+        {
+            [self.dataSource setNeedsAppendContent];
+        }
     }
 }
 
@@ -108,13 +151,19 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 {
     CGFloat height;
     
-    NSInteger dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
-    if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKPlaceholderDataSource class]])
-    {
-        height = CGRectGetHeight(tableView.bounds) - tableView.contentInset.top;
-        
-        if (!self.refreshControl.isRefreshing) {
-            height -= tableView.contentInset.bottom;
+    if (IsBackedTableView(tableView, self)) {
+        NSInteger const dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
+
+        if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKPlaceholderDataSource class]])
+        {
+            height = CGRectGetHeight(tableView.bounds) - tableView.contentInset.top;
+            
+            if (!self.refreshControl.isRefreshing) {
+                height -= tableView.contentInset.bottom;
+            }
+        }
+        else {
+            height = tableView.rowHeight;
         }
     }
     else {
@@ -128,7 +177,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)dataSource:(MUKDataSource *)dataSource didInsertChildDataSourcesAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)targetDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    NSIndexSet *sections = [targetDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
+    NSIndexSet *const sections = [targetDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
     
     if ([sections count] == [indexes count]) {
 #if DEBUG_LOG
@@ -141,7 +190,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)dataSource:(MUKDataSource *)dataSource didRemoveChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)originatingDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    NSIndexSet *sections = [originatingDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
+    NSIndexSet *const sections = [originatingDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
     
     if ([sections count] == [indexes count]) {
 #if DEBUG_LOG
@@ -153,7 +202,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)dataSource:(MUKDataSource *)dataSource didReplaceChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)originatingDataSource
 {
-    NSIndexSet *sections = [originatingDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
+    NSIndexSet *const sections = [originatingDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
     
     if ([sections count] == [indexes count]) {
 #if DEBUG_LOG
@@ -176,7 +225,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)dataSource:(MUKDataSource *)dataSource didRefreshChildDataSourcesAtIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)originatingDataSource
 {
-    NSIndexSet *sections = [originatingDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
+    NSIndexSet *const sections = [originatingDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
     
     if ([sections count] == [indexes count]) {
 #if DEBUG_LOG
@@ -198,7 +247,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)dataSource:(MUKDataSource *)dataSource didInsertItemsAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)targetDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    NSArray *indexPaths = [targetDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
+    NSArray *const indexPaths = [targetDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
     if ([indexPaths count] == [indexes count]) {
 #if DEBUG_LOG
         NSLog(@"• Table View • Insert rows: %@", PrettyIndexPaths(indexPaths));
@@ -209,7 +258,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)dataSource:(MUKDataSource *)dataSource didRemoveItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)originatingDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
 {
-    NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
+    NSArray *const indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
     if ([indexPaths count] == [items count]) {
 #if DEBUG_LOG
         NSLog(@"• Table View • Delete rows: %@", PrettyIndexPaths(indexPaths));
@@ -220,7 +269,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (void)dataSource:(MUKDataSource *)dataSource didReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)originatingDataSource
 {
-    NSArray *indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
+    NSArray *const indexPaths = [originatingDataSource tableViewIndexPathsFromItemIndexes:indexes checkingBounds:NO];
     if ([indexPaths count] == [items count]) {
 #if DEBUG_LOG
         NSLog(@"• Table View • Reload rows: %@", PrettyIndexPaths(indexPaths));
@@ -273,9 +322,11 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 #if DEBUG_LOG
     NSLog(@"• Content • Will Load");
 #endif
+    
     BOOL const isRefreshing = [dataSource.loadingState isEqualToString:MUKDataSourceContentLoadStateLoading] || [dataSource.loadingState isEqualToString:MUKDataSourceContentLoadStateRefreshing];
     
-    if (isRefreshing && !self.refreshControl.isRefreshing) {
+    if (isRefreshing && self.refreshControl && !self.refreshControl.isRefreshing)
+    {
         [self.refreshControl beginRefreshing];
         CGPoint offset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - CGRectGetHeight(self.refreshControl.frame));
         [self.tableView setContentOffset:offset animated:YES];
@@ -287,6 +338,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 #if DEBUG_LOG
     NSLog(@"• Content • Did Load");
 #endif
+    
     if (self.refreshControl.isRefreshing) {
         [self.refreshControl endRefreshing];
     }
