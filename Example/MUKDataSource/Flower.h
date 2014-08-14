@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Flower : NSObject
+@interface Flower : NSObject <NSSecureCoding>
 @property (nonatomic, copy) NSString *name, *botanicalName;
 
 - (BOOL)isEqualToFlower:(Flower *)flower;

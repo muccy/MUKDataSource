@@ -26,4 +26,25 @@
     return 34678 ^ [self.name hash];
 }
 
+#pragma mark - <NSSecureCoding>
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        _botanicalName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"botanicalName"];
+        _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_name forKey:@"name"];
+    [aCoder encodeObject:_botanicalName forKey:@"botanicalName"];
+}
+
 @end

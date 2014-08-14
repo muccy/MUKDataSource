@@ -14,12 +14,15 @@
 #define DEBUG_SIMULATE_EMPTY_ON_REFRESH     0
 
 @interface RemoteFlowersDataSource ()
-@property (nonatomic, weak) FlowerListDataSource *flowerListDataSource;
-@property (nonatomic, weak) AppendContentDataSource *appendDataSource;
-@property (nonatomic, weak) MUKPlaceholderDataSource *placeholderDataSource;
+@property (nonatomic) FlowerListDataSource *flowerListDataSource;
+@property (nonatomic) AppendContentDataSource *appendDataSource;
+@property (nonatomic) MUKPlaceholderDataSource *placeholderDataSource;
 @end
 
 @implementation RemoteFlowersDataSource
+@dynamic flowerListDataSource;
+@dynamic appendDataSource;
+@dynamic placeholderDataSource;
 
 - (id)init {
     self = [super init];
@@ -29,6 +32,52 @@
     
     return self;
 }
+
+#pragma mark - Accessors
+
+- (FlowerListDataSource *)flowerListDataSource {
+    NSInteger idx = [self.childDataSources indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
+    {
+        if ([obj isKindOfClass:[FlowerListDataSource class]]) {
+            *stop = YES;
+            return YES;
+        }
+        
+        return NO;
+    }];
+    
+    return (FlowerListDataSource *)[self childDataSourceAtIndex:idx];
+}
+
+- (AppendContentDataSource *)appendDataSource {
+    NSInteger idx = [self.childDataSources indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
+    {
+        if ([obj isKindOfClass:[AppendContentDataSource class]]) {
+            *stop = YES;
+            return YES;
+        }
+        
+        return NO;
+    }];
+    
+    return (AppendContentDataSource *)[self childDataSourceAtIndex:idx];
+}
+
+- (MUKPlaceholderDataSource *)placeholderDataSource {
+    NSInteger idx = [self.childDataSources indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
+    {
+        if ([obj isKindOfClass:[MUKPlaceholderDataSource class]]) {
+            *stop = YES;
+            return YES;
+        }
+        
+        return NO;
+    }];
+    
+    return (MUKPlaceholderDataSource *)[self childDataSourceAtIndex:idx];
+}
+
+#pragma mark - Overrides
 
 - (MUKDataSourceContentLoading *)newContentLoadingForState:(NSString *)state {
     static NSInteger const kCount = 20;
@@ -52,34 +101,55 @@
         return resultType;
     };
 
-    if ([state isEqualToString:MUKDataSourceContentLoadStateLoading] ||
-        [state isEqualToString:MUKDataSourceContentLoadStateRefreshing])
-    {
+    if ([state isEqualToString:MUKDataSourceContentLoadStateLoading]) {
+        contentLoading.job = ^{
+            RemoteFlowersDataSource *strongSelf = weakSelf;
+            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
+            
+            // Load from cache
+            [strongSelf loadCachedDataSourceSnapshotWithCompletionHandler:^(MUKDataSourceSnapshot *snapshot)
+            {
+                if ([strongContentLoading.dataSource shouldBeRestoredWithSnapshot:snapshot])
+                {
+                    [strongContentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
+                    {
+                        [strongContentLoading.dataSource restoreFromSnapshot:snapshot];
+                    }];
+                }
+                else {
+                    // Load from remote if snapshot is not valid
+                    [Florist flowersFromIndex:0 count:kCount completion:^(NSArray *flowers, NSError *error)
+                    {
+                        MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
+                        [strongContentLoading finishWithResultType:resultType error:error update:^
+                        {
+                            strongSelf.flowerListDataSource.items = flowers;
+                        }];
+                     }];
+                }
+            }];
+        }; // job
+    }
+    else if ([state isEqualToString:MUKDataSourceContentLoadStateRefreshing]) {
         contentLoading.job = ^{
             RemoteFlowersDataSource *strongSelf = weakSelf;
             MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
 
             [Florist flowersFromIndex:0 count:kCount completion:^(NSArray *flowers, NSError *error)
             {
+                MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
                 
-                if (strongContentLoading.isValid) {
-                    MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
-                    
 #if DEBUG_SIMULATE_EMPTY_ON_REFRESH
-                    if ([state isEqualToString:MUKDataSourceContentLoadStateRefreshing])
-                    {
-                        flowers = @[];
-                        resultType = MUKDataSourceContentLoadingResultTypeEmpty;
-                    }
+                flowers = @[];
+                resultType = MUKDataSourceContentLoadingResultTypeEmpty;
 #endif
-                    
-                    [strongContentLoading finishWithResultType:resultType error:error update:^
-                    {
-                        strongSelf.flowerListDataSource.items = flowers;
-                    }];
-                }
+                
+                [strongContentLoading finishWithResultType:resultType error:error update:^
+                {
+                    strongSelf.flowerListDataSource.items = flowers;
+                }];
             }];
-        };
+        }; // job
     }
     else if ([state isEqualToString:MUKDataSourceContentLoadStateAppending]) {
         contentLoading.job = ^{
@@ -97,7 +167,7 @@
                     }];
                 }
             }];
-        };
+        }; // job
     }
     else {
         contentLoading = nil;
@@ -121,6 +191,10 @@
     // child data source with a supplementary update). This way, delegate is invoked
     // when we are really done
     [super didLoadContent:contentLoading withResultType:resultType error:error];
+    
+    // Cache snapshot
+    MUKDataSourceSnapshot *snapshot = [self newSnapshot];
+    [self cacheDataSourceSnapshot:snapshot completion:nil];
 }
 
 #pragma mark - Private
@@ -130,10 +204,6 @@
     AppendContentDataSource *appendDataSource = [[AppendContentDataSource alloc] init];
     MUKPlaceholderDataSource *placeholderDataSource = [[MUKPlaceholderDataSource alloc] init];
     self.childDataSources = @[placeholderDataSource, flowerListDataSource, appendDataSource];
-    
-    self.flowerListDataSource = flowerListDataSource;
-    self.appendDataSource = appendDataSource;
-    self.placeholderDataSource = placeholderDataSource;
 }
 
 - (void)adjustPlaceholderDataSourceStartingContentLoading:(MUKDataSourceContentLoading *)contentLoading
@@ -188,6 +258,41 @@
         self.appendDataSource.showsActivityIndicator = NO;
         self.appendDataSource.hidden = NO;
     }
+}
+
+- (NSURL *)cachedDataSourceSnapshotFileURL {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    return [[NSURL fileURLWithPath:[paths firstObject]] URLByAppendingPathComponent:@"RemoteFlowersDataSource.snapshot"];
+}
+
+- (void)loadCachedDataSourceSnapshotWithCompletionHandler:(void (^)(MUKDataSourceSnapshot *))completionHandler
+{
+    if (!completionHandler) {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    {
+        NSString *path = [[self cachedDataSourceSnapshotFileURL] path];
+        MUKDataSourceSnapshot *snapshot = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(snapshot);
+        });
+    });
+}
+
+- (void)cacheDataSourceSnapshot:(MUKDataSourceSnapshot *)snapshot completion:(void (^)(BOOL))completionHandler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    {
+        NSString *path = [[self cachedDataSourceSnapshotFileURL] path];
+        BOOL success = [NSKeyedArchiver archiveRootObject:snapshot toFile:path];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionHandler) {
+                completionHandler(success);
+            }
+        });
+    });
 }
 
 @end

@@ -101,4 +101,20 @@
     return shouldHide;
 }
 
+#pragma mark - <NSSecureCoding>
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _showsActivityIndicator = [aDecoder decodeBoolForKey:@"showsActivityIndicator"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeBool:_showsActivityIndicator forKey:@"showsActivityIndicator"];
+}
+
 @end

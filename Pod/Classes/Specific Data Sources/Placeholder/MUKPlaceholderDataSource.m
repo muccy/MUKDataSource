@@ -60,4 +60,22 @@
     }
 }
 
+#pragma mark - <NSSecureCoding>
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _text = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"text"];
+        _image = [aDecoder decodeObjectOfClass:[UIImage class] forKey:@"image"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:_text forKey:@"text"];
+    [aCoder encodeObject:_image forKey:@"image"];
+}
+
 @end
