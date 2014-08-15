@@ -109,7 +109,7 @@ static NSString *const kItem = @"MUKSingleViewDataSourceItem";
             // Notify data source refreshed
             NSInteger const idx = [self.parentDataSource.childDataSources indexOfObject:self];
             if (idx != NSNotFound) {
-                [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource];
+                [self didRefreshChildDataSourceAtIndex:idx inDataSource:self.parentDataSource];
             }
         }
     }

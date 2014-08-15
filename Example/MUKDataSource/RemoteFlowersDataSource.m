@@ -109,7 +109,7 @@
             // Load from cache
             [strongSelf loadCachedDataSourceSnapshotWithCompletionHandler:^(MUKDataSourceSnapshot *snapshot)
             {
-                if ([strongContentLoading.dataSource shouldBeRestoredWithSnapshot:snapshot])
+                if ([strongContentLoading.dataSource shouldBeRestoredFromSnapshot:snapshot])
                 {
                     [strongContentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
                     {

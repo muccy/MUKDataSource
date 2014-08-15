@@ -223,15 +223,15 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
     [self.tableView moveSection:fromSection toSection:toSection];
 }
 
-- (void)dataSource:(MUKDataSource *)dataSource didRefreshChildDataSourcesAtIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)originatingDataSource
+- (void)dataSource:(MUKDataSource *)dataSource didRefreshChildDataSourceAtIndex:(NSInteger)idx inDataSource:(MUKDataSource *)originatingDataSource
 {
-    NSIndexSet *const sections = [originatingDataSource tableViewSectionsFromChildDataSourceIndexes:indexes checkingBounds:NO];
+    NSInteger const section = [originatingDataSource tableViewSectionFromChildDataSourceIndex:idx checkingBounds:NO];
     
-    if ([sections count] == [indexes count]) {
+    if (section != NSNotFound) {
 #if DEBUG_LOG
-        NSLog(@"• Table View • Refresh sections: %@", PrettyIndexSet(sections));
+        NSLog(@"• Table View • Refresh section: %ld", section);
 #endif
-        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:idx] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 

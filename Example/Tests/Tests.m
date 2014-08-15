@@ -565,11 +565,11 @@ describe(@"Callbacks", ^{
         
         void (^prepareExpectations)(NSInteger, MUKDataSource *) = ^(NSInteger idx, MUKDataSource *dataSource)
         {
-            OCMExpect([mockDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockDataSource didRefreshChildDataSourceAtIndex:idx inDataSource:dataSource]).andForwardToRealObject();
             
-            OCMExpect([mockChildDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource]).andForwardToRealObject();
+            OCMExpect([mockChildDataSource didRefreshChildDataSourceAtIndex:idx inDataSource:dataSource]).andForwardToRealObject();
             
-            OCMExpect([mockRootDataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:dataSource]);
+            OCMExpect([mockRootDataSource didRefreshChildDataSourceAtIndex:idx inDataSource:dataSource]);
         };
         
         NSArray *items = @[@"A", @"B"];
@@ -1159,7 +1159,7 @@ describe(@"Delegate", ^{
         [dataSource appendChildDataSource:childDataSource];
         dataSource.delegate = delegateMock;
         
-        OCMExpect([delegateMock dataSource:dataSource didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:index] inDataSource:childDataSource.parentDataSource]);
+        OCMExpect([delegateMock dataSource:dataSource didRefreshChildDataSourceAtIndex:index inDataSource:childDataSource.parentDataSource]);
         
         [childDataSource setItems:@[@"A", @"B"] animated:NO];
         expect(^{ OCMVerifyAll(delegateMock); }).notTo.raiseAny();
@@ -1582,18 +1582,18 @@ it(@"should suggest a result type", ^{
 
 it(@"should restore in loading state", ^{
     MUKDataSource *originalDataSource = CreateDataSource();
-    expect([originalDataSource shouldBeRestoredWithSnapshot:nil]).to.beFalsy();
+    expect([originalDataSource shouldBeRestoredFromSnapshot:nil]).to.beFalsy();
     
     MUKDataSourceSnapshot *snapshot = [[MUKDataSourceSnapshot alloc] initWithDataSource:originalDataSource];
     
     MUKDataSource *dataSource = CreateDataSource();
-    expect([dataSource shouldBeRestoredWithSnapshot:snapshot]).to.beFalsy();
+    expect([dataSource shouldBeRestoredFromSnapshot:snapshot]).to.beFalsy();
     
     [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventBeginLoading userInfo:nil error:nil];
-    expect([dataSource shouldBeRestoredWithSnapshot:snapshot]).to.beTruthy();
+    expect([dataSource shouldBeRestoredFromSnapshot:snapshot]).to.beTruthy();
     
     [dataSource.stateMachine fireEvent:MUKDataSourceContentLoadEventDisplayLoaded userInfo:nil error:nil];
-    expect([dataSource shouldBeRestoredWithSnapshot:snapshot]).to.beFalsy();
+    expect([dataSource shouldBeRestoredFromSnapshot:snapshot]).to.beFalsy();
 });
 
 it(@"should restore in content loading final update", ^{
@@ -1613,7 +1613,7 @@ it(@"should restore in content loading final update", ^{
     __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
     contentLoading.job = ^{
         MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
-        if ([dataSourceMock shouldBeRestoredWithSnapshot:snapshot]) {
+        if ([dataSourceMock shouldBeRestoredFromSnapshot:snapshot]) {
             [strongContentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
              {
                  [dataSourceMock restoreFromSnapshot:snapshot];
@@ -1622,7 +1622,7 @@ it(@"should restore in content loading final update", ^{
     };
     
     OCMStub([dataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
-    OCMExpect([dataSourceMock shouldBeRestoredWithSnapshot:snapshot]).andForwardToRealObject();
+    OCMExpect([dataSourceMock shouldBeRestoredFromSnapshot:snapshot]).andForwardToRealObject();
     OCMExpect([dataSourceMock restoreFromSnapshot:snapshot]).andForwardToRealObject();
     
     [dataSourceMock loadContent];

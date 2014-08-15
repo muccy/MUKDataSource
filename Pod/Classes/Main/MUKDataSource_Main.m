@@ -170,7 +170,7 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
         // Notify data source refreshed
         NSInteger const idx = [self.parentDataSource.childDataSources indexOfObject:self];
         if (idx != NSNotFound) {
-            [self didRefreshChildDataSourcesAtIndexes:[NSIndexSet indexSetWithIndex:idx] inDataSource:self.parentDataSource];
+            [self didRefreshChildDataSourceAtIndex:idx inDataSource:self.parentDataSource];
         }
         
         return;
@@ -473,15 +473,15 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     }
 }
 
-- (void)didRefreshChildDataSourcesAtIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource
+- (void)didRefreshChildDataSourceAtIndex:(NSInteger)idx inDataSource:(MUKDataSource *)dataSource
 {
     // Notify upwards
-    [self.parentDataSource didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource];
+    [self.parentDataSource didRefreshChildDataSourceAtIndex:idx inDataSource:dataSource];
     
     // Inform delegate
-    if ([self.delegate respondsToSelector:@selector(dataSource:didRefreshChildDataSourcesAtIndexes:inDataSource:)])
+    if ([self.delegate respondsToSelector:@selector(dataSource:didRefreshChildDataSourceAtIndex:inDataSource:)])
     {
-        [self.delegate dataSource:self didRefreshChildDataSourcesAtIndexes:indexes inDataSource:dataSource];
+        [self.delegate dataSource:self didRefreshChildDataSourceAtIndex:idx inDataSource:dataSource];
     }
 }
 
@@ -631,7 +631,7 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     return [[MUKDataSourceSnapshot alloc] initWithDataSource:self];
 }
 
-- (BOOL)shouldBeRestoredWithSnapshot:(MUKDataSourceSnapshot *)snapshot {
+- (BOOL)shouldBeRestoredFromSnapshot:(MUKDataSourceSnapshot *)snapshot {
     // State should be transitional
     NSArray *validStates = @[ MUKDataSourceContentLoadStateLoading, MUKDataSourceContentLoadStateRefreshing ];
     if (![validStates containsObject:self.loadingState]) {
@@ -644,14 +644,8 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
 
 - (void)restoreFromSnapshot:(MUKDataSourceSnapshot *)snapshot {
     self.title = snapshot.dataSource.title;
-
-    // Restore in a batch
-    MUKDataSourceBatch *batch = [[MUKDataSourceBatch alloc] init];
-    [batch addBlock:^{
-        self.items = snapshot.dataSource.items;
-        self.childDataSources = snapshot.dataSource.childDataSources;
-    }];
-    [batch performAllBlocks];
+    self.items = snapshot.dataSource.items;
+    self.childDataSources = snapshot.dataSource.childDataSources;
 }
 
 #pragma mark - Private - Contents
