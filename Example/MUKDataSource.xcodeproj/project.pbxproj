@@ -173,10 +173,10 @@
 		064F0E221998B50F00A4FB7F /* Placeholder */ = {
 			isa = PBXGroup;
 			children = (
-				064F0E231998B50F00A4FB7F /* MUKDataSourcePlaceholderView.h */,
-				064F0E241998B50F00A4FB7F /* MUKDataSourcePlaceholderView.m */,
 				064F0E251998B50F00A4FB7F /* MUKPlaceholderDataSource.h */,
 				064F0E261998B50F00A4FB7F /* MUKPlaceholderDataSource.m */,
+				064F0E231998B50F00A4FB7F /* MUKDataSourcePlaceholderView.h */,
+				064F0E241998B50F00A4FB7F /* MUKDataSourcePlaceholderView.m */,
 			);
 			path = Placeholder;
 			sourceTree = "<group>";
