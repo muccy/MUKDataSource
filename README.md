@@ -164,5 +164,4 @@ Marco Muccinelli, muccymac@gmail.com
 
 ## License
 
-MUKDataSource is available under the MIT license. See the LICENSE file for more info.
-
+`MUKDataSource` is available under the MIT license. See the LICENSE file for more info.
