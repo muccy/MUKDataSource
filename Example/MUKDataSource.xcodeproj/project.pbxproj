@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		064F0E2D1998BD7A00A4FB7F /* AppendContentDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 064F0E2C1998BD7A00A4FB7F /* AppendContentDataSource.m */; };
+		066BCA7C199F57FB008669A7 /* flowers.json in Resources */ = {isa = PBXBuildFile; fileRef = 066BCA7B199F57FB008669A7 /* flowers.json */; };
 		06774E47198BCD360066DE57 /* AnimalsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E46198BCD360066DE57 /* AnimalsDataSource.m */; };
 		06774E6519950F4C0066DE57 /* RemoteFlowersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */; };
-		06774E67199517AB0066DE57 /* flowers.json in Resources */ = {isa = PBXBuildFile; fileRef = 06774E66199517AB0066DE57 /* flowers.json */; };
 		06774E6A199517C00066DE57 /* Flower.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E69199517C00066DE57 /* Flower.m */; };
 		06774E6D1995188A0066DE57 /* Florist.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E6C1995188A0066DE57 /* Florist.m */; };
 		06774E73199611110066DE57 /* FlowerListDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06774E72199611110066DE57 /* FlowerListDataSource.m */; };
@@ -62,6 +62,7 @@
 		066BCA77199CA7C1008669A7 /* MUKDataSourceSnapshot.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceSnapshot.m; sourceTree = "<group>"; };
 		066BCA79199D043F008669A7 /* MUKTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKTableViewController.h; sourceTree = "<group>"; };
 		066BCA7A199D043F008669A7 /* MUKTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKTableViewController.m; sourceTree = "<group>"; };
+		066BCA7B199F57FB008669A7 /* flowers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = flowers.json; sourceTree = "<group>"; };
 		06774E45198BCD360066DE57 /* AnimalsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimalsDataSource.h; sourceTree = "<group>"; };
 		06774E46198BCD360066DE57 /* AnimalsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimalsDataSource.m; sourceTree = "<group>"; };
 		06774E48198BF9750066DE57 /* MUKDataSourceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceDelegate.h; sourceTree = "<group>"; };
@@ -80,7 +81,6 @@
 		06774E6219950A300066DE57 /* MUKDataSourceContentLoading_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentLoading_Private.h; sourceTree = "<group>"; };
 		06774E6319950F4C0066DE57 /* RemoteFlowersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteFlowersDataSource.h; sourceTree = "<group>"; };
 		06774E6419950F4C0066DE57 /* RemoteFlowersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteFlowersDataSource.m; sourceTree = "<group>"; };
-		06774E66199517AB0066DE57 /* flowers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = flowers.json; path = "../../../../../../../../../../Volumes/Macintosh HDD/File Utenti/muccy/Dropbox Locale/flowers.json"; sourceTree = "<group>"; };
 		06774E68199517C00066DE57 /* Flower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flower.h; sourceTree = "<group>"; };
 		06774E69199517C00066DE57 /* Flower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Flower.m; sourceTree = "<group>"; };
 		06774E6B1995188A0066DE57 /* Florist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Florist.h; sourceTree = "<group>"; };
@@ -355,7 +355,7 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				06774E66199517AB0066DE57 /* flowers.json */,
+				066BCA7B199F57FB008669A7 /* flowers.json */,
 				6003F595195388D20070C39A /* MUKDataSource-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
@@ -478,7 +478,7 @@
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
-				06774E67199517AB0066DE57 /* flowers.json in Resources */,
+				066BCA7C199F57FB008669A7 /* flowers.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
