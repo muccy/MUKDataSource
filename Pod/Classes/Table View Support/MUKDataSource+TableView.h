@@ -26,7 +26,7 @@
  Each item represents a table view row and each child data source represents a 
  table view section.
  You should call this method on table view data source.
- @param indexPath Table view index path.
+ @param tableIndexPath Table view index path.
  @param checkBounds If YES returned index path is validated against childDataSources
  and items arrays.
  @return Item index path which represents table view index path. It may return nil 

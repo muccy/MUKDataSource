@@ -9,7 +9,7 @@
  Each data source can contain items, which are model object to be displayed.
  What is more it can have child data sources, in order to create a hierarchy.
  Every data source manage items and child data sources, notifying changes to
- parent data sources and delegate objects.
+ parent data source and delegate objects.
  Loading, refreshing, appending and displaying of content is backed by a state
  machine and it is completely agnostic (you can load data with Cocoa APIs, 
  AFNetworking or what you prefer).
@@ -259,7 +259,7 @@
 /**
  Callback invoked when child data sources have been replaced inside graph.
  By default it passes the message to parentDataSource and invokes delegate.
- @param childDataSource Child data sources that are no more inside graph.
+ @param childDataSources Child data sources that are no more inside graph.
  @param indexes Replaced child data source indexes.
  @param dataSource Data source which received the event.
  */
@@ -283,7 +283,7 @@
  This happens when you invoked setItems:animated: without animation: callback is 
  invoked relatively to parentDataSource.
  By default it passes the message to parentDataSource and invokes delegate.
- @param index Refreshed child data source index.
+ @param idx Refreshed child data source index.
  @param dataSource Data source which received the event.
  */
 - (void)didRefreshChildDataSourceAtIndex:(NSInteger)idx inDataSource:(MUKDataSource *)dataSource;

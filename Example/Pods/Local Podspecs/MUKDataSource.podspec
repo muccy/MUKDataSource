@@ -1,38 +1,29 @@
-#
-# Be sure to run `pod lib lint MUKDataSource.podspec' to ensure this is a
-# valid spec and remove all comments before submitting the spec.
-#
-# Any lines starting with a # are optional, but encouraged
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = "MUKDataSource"
-  s.version          = "0.1.0"
-  s.summary          = "A short description of MUKDataSource."
+  s.version          = "1.0.0"
+  s.summary          = "A central point to store, organize and load data on iOS. Ready to be your UITableView data source."
   s.description      = <<-DESC
-                       An optional longer description of MUKDataSource
+                        A class designed to provide data (it's not too surprising, I think). It has been hugely inspired by [Apple WWDC 2014 Session 232](https://developer.apple.com/videos/wwdc/2014/?id=232), Advanced User Interfaces with Collection Views.
 
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                        Each data source can contain items, which are model object to be displayed. What is more it can have child data sources, in order to create a hierarchy.
+
+                        Every data source manage items and child data sources, notifying changes to parent data source and delegate objects.
+
+                        Loading, refreshing, appending and displaying of content is backed by a [state machine](https://github.com/blakewatters/TransitionKit) and it is completely agnostic (you can load data with Cocoa APIs, [AFNetworking](https://github.com/AFNetworking/AFNetworking) or what you prefer).
+
+                        MUKDataSource is ready to back a UITableView instance: just assign a MUKDataSource instance to tableView.dataSource and observe changes to apply. Otherwise you could use MUKTableViewController, which is a ready to use UITableViewController subclass.
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/MUKDataSource"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.homepage         = "https://github.com/muccy/MUKDataSource"
   s.license          = 'MIT'
-  s.author           = { "Muccy" => "muccymac@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/MUKDataSource.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { "Marco Muccinelli" => "muccymac@gmail.com" }
+  s.source           = { :git => "https://github.com/muccy/MUKDataSource.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes', 'Pod/Classes/**/*.{h,m}'
-  s.resources = 'Pod/Assets/*.png'
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
   s.private_header_files = 'Pod/Classes/Private/*.h'
-
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.compiler_flags  = '-Wdocumentation'
+  
   s.dependency 'TransitionKit', '~> 2.1'
 end

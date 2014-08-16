@@ -31,7 +31,7 @@
 /**
  Child data sources have been replaced inside graph.
  @param dataSource Data source which has sent this message to its delegate.
- @param childDataSource Child data sources that are no more inside graph.
+ @param childDataSources Child data sources that are no more inside graph.
  @param indexes Replaced child data source indexes.
  @param originatingDataSource Data source which received the event.
  */
@@ -54,7 +54,7 @@
  This happens when you invoked setItems:animated: without animation: callback is
  invoked relatively to parentDataSource.
  @param dataSource Data source which has sent this message to its delegate.
- @param index Refreshed child data source index.
+ @param idx Refreshed child data source index.
  @param originatingDataSource Data source which received the event.
  */
 - (void)dataSource:(MUKDataSource *)dataSource didRefreshChildDataSourceAtIndex:(NSInteger)idx inDataSource:(MUKDataSource *)originatingDataSource;
