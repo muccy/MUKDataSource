@@ -196,7 +196,7 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
         {
             height = CGRectGetHeight(tableView.bounds) - tableView.contentInset.top;
             
-            if (!self.refreshControl.isRefreshing) {
+            if (self.refreshControl && !self.refreshControl.isRefreshing) {
                 height -= tableView.contentInset.bottom;
             }
         }

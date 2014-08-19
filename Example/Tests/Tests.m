@@ -582,6 +582,11 @@ describe(@"Callbacks", ^{
         expect(^{ OCMVerifyAll(mockDataSource); }).notTo.raiseAny();
         expect(^{ OCMVerifyAll(mockChildDataSource); }).notTo.raiseAny();
         expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
+        
+        // Setting items on root data source lead to reloadData callback
+        OCMExpect([mockRootDataSource didReloadDataInDataSource:rootDataSource]);
+        [mockRootDataSource setItems:@[@"C"] animated:NO];
+        expect(^{ OCMVerifyAll(mockRootDataSource); }).notTo.raiseAny();
     });
     
     it(@"should invoke callbacks for items overwriting with animation", ^{

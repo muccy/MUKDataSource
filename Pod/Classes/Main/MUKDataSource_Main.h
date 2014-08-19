@@ -280,8 +280,9 @@
 /**
  Callback invoked when entire child data source content has been refreshed
  inside graph.
- This happens when you invoked setItems:animated: without animation: callback is 
- invoked relatively to parentDataSource.
+ This happens when you invoked setItems:animated: without animation. It this case 
+ callback is invoked relatively to parentDataSource if any. If no parentDataSource is
+ set, didReloadDataInDataSource: is preferred.
  By default it passes the message to parentDataSource and invokes delegate.
  @param idx Refreshed child data source index.
  @param dataSource Data source which received the event.
@@ -329,6 +330,8 @@
 /**
  Callback invoked when child data sources have been refreshed inside graph.
  This happens when you invoked setChildDataSources:animated: without animation.
+ It is invoked also if you invoked setItems:animated: without animation in a data
+ source which has no parentDataSource.
  By default it passes the message to parentDataSource and invokes delegate.
  @param dataSource Data source which received the event.
  */

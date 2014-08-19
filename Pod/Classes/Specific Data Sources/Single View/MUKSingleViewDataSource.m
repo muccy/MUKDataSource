@@ -107,9 +107,14 @@ static NSString *const kItem = @"MUKSingleViewDataSourceItem";
         
         if (!self.isHidden) {
             // Notify data source refreshed
-            NSInteger const idx = [self.parentDataSource.childDataSources indexOfObject:self];
-            if (idx != NSNotFound) {
-                [self didRefreshChildDataSourceAtIndex:idx inDataSource:self.parentDataSource];
+            if (self.parentDataSource) {
+                NSInteger const idx = [self.parentDataSource.childDataSources indexOfObject:self];
+                if (idx != NSNotFound) {
+                    [self didRefreshChildDataSourceAtIndex:idx inDataSource:self.parentDataSource];
+                }
+            }
+            else {
+                [self didReloadDataInDataSource:self];
             }
         }
     }
