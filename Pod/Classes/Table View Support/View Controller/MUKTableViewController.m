@@ -109,6 +109,44 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     }
 }
 
+#pragma mark - Row Animation
+
+- (UITableViewRowAnimation)rowAnimationToInsertSections:(NSIndexSet *)sections forChildDataSourcesAtIndexes:(NSIndexSet *)indexes
+{
+    return UITableViewRowAnimationAutomatic;
+}
+
+- (UITableViewRowAnimation)rowAnimationToDeleteSections:(NSIndexSet *)sections forChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes
+{
+    return UITableViewRowAnimationAutomatic;
+}
+
+- (UITableViewRowAnimation)rowAnimationToReloadSections:(NSIndexSet *)sections toReplaceChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes
+{
+    return UITableViewRowAnimationAutomatic;
+}
+
+- (UITableViewRowAnimation)rowAnimationToReloadSection:(NSInteger)section toRefreshChildDataSourcesAtIndex:(NSInteger)idx
+{
+    return UITableViewRowAnimationAutomatic;
+}
+
+
+- (UITableViewRowAnimation)rowAnimationToInsertRowsAtIndexPaths:(NSArray *)indexPaths forItemsAtIndexes:(NSIndexSet *)indexes inChildDataSource:(MUKDataSource *)dataSource
+{
+    return UITableViewRowAnimationAutomatic;
+}
+
+- (UITableViewRowAnimation)rowAnimationToDeleteRowsAtIndexPaths:(NSArray *)indexPaths forItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inChildDataSource:(MUKDataSource *)dataSource
+{
+    return UITableViewRowAnimationAutomatic;
+}
+
+- (UITableViewRowAnimation)rowAnimationToReloadRowsAtIndexPaths:(NSArray *)indexPaths toReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource
+{
+    return UITableViewRowAnimationAutomatic;
+}
+
 #pragma mark - Private
 
 static void CommonInit(MUKTableViewController *me) {
@@ -184,7 +222,9 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
         NSLog(@"• Table View • Insert sections: %@", PrettyIndexSet(sections));
 #endif
         [dataSource registerReusableViewsForTableView:self.tableView];
-        [self.tableView insertSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        UITableViewRowAnimation rowAnimation = [self rowAnimationToInsertSections:sections forChildDataSourcesAtIndexes:indexes];
+        [self.tableView insertSections:sections withRowAnimation:rowAnimation];
     }
 }
 
@@ -196,7 +236,8 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 #if DEBUG_LOG
         NSLog(@"• Table View • Remove sections: %@", PrettyIndexSet(sections));
 #endif
-        [self.tableView deleteSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
+        UITableViewRowAnimation rowAnimation = [self rowAnimationToDeleteSections:sections forChildDataSources:childDataSources atIndexes:indexes];
+        [self.tableView deleteSections:sections withRowAnimation:rowAnimation];
     }
 }
 
@@ -208,7 +249,8 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 #if DEBUG_LOG
         NSLog(@"• Table View • Replace sections: %@", PrettyIndexSet(sections));
 #endif
-        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
+        UITableViewRowAnimation rowAnimation = [self rowAnimationToReloadSections:sections toReplaceChildDataSources:childDataSources atIndexes:indexes];
+        [self.tableView reloadSections:sections withRowAnimation:rowAnimation];
     }
 }
 
@@ -231,7 +273,8 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 #if DEBUG_LOG
         NSLog(@"• Table View • Refresh section: %ld", section);
 #endif
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:idx] withRowAnimation:UITableViewRowAnimationAutomatic];
+        UITableViewRowAnimation rowAnimation = [self rowAnimationToReloadSection:section toRefreshChildDataSourcesAtIndex:idx];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:idx] withRowAnimation:rowAnimation];
     }
 }
 
@@ -252,7 +295,8 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 #if DEBUG_LOG
         NSLog(@"• Table View • Insert rows: %@", PrettyIndexPaths(indexPaths));
 #endif
-        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        UITableViewRowAnimation rowAnimation = [self rowAnimationToInsertRowsAtIndexPaths:indexPaths forItemsAtIndexes:indexes inChildDataSource:targetDataSource];
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:rowAnimation];
     }
 }
 
@@ -263,7 +307,8 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 #if DEBUG_LOG
         NSLog(@"• Table View • Delete rows: %@", PrettyIndexPaths(indexPaths));
 #endif
-        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        UITableViewRowAnimation rowAnimation = [self rowAnimationToDeleteRowsAtIndexPaths:indexPaths forItems:items atIndexes:indexes inChildDataSource:originatingDataSource];
+        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:rowAnimation];
     }
 }
 
@@ -274,7 +319,8 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 #if DEBUG_LOG
         NSLog(@"• Table View • Reload rows: %@", PrettyIndexPaths(indexPaths));
 #endif
-        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        UITableViewRowAnimation rowAnimation = [self rowAnimationToReloadRowsAtIndexPaths:indexPaths toReplaceItems:items atIndexes:indexes inDataSource:originatingDataSource];
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:rowAnimation];
     }
 }
 
