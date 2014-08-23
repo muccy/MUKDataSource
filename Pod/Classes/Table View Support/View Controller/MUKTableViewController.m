@@ -68,6 +68,11 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     if (self.usesRefreshControl) {
         [self insertRefreshControl];
     }
+    
+    if (self.tableView.dataSource != self.dataSource) {
+        self.tableView.dataSource = self.dataSource;
+        [self.dataSource registerReusableViewsForTableView:self.tableView];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,6 +80,10 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     
     if (!self.alreadySetFirstNeedLoadContent) {
         self.alreadySetFirstNeedLoadContent = YES; // Consume the chance
+        
+        if (self.automaticallyAdjustsSeparatorStyleForPlaceholder) {
+            self.tableView.separatorStyle = self.dataSource.isDisplayingPlaceholderDataSource ? UITableViewCellSeparatorStyleNone : self.tableView.separatorStyle;
+        }
         
         if (self.automaticallySetNeedsLoadContentAtViewWillAppear) {
             [self.dataSource setNeedsLoadContent];
@@ -92,8 +101,12 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
         
         _dataSource = dataSource;
         dataSource.delegate = self;
-        self.tableView.dataSource = dataSource;
-        [dataSource registerReusableViewsForTableView:self.tableView];
+        
+        if ([self isViewLoaded]) {
+            // Postpone to -viewDidLoad
+            self.tableView.dataSource = dataSource;
+            [dataSource registerReusableViewsForTableView:self.tableView];
+        }
     }
 }
 
@@ -152,7 +165,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 - (CGFloat)heightForPlaceholderDataSource:(MUKPlaceholderDataSource *)dataSource rowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height = CGRectGetHeight(self.tableView.bounds) - self.tableView.contentInset.top;
+    CGFloat height = CGRectGetHeight(self.tableView.bounds) - self.tableView.contentInset.top - self.tableView.contentInset.bottom;
     
     if (self.refreshControl && !self.refreshControl.isRefreshing) {
         height -= self.tableView.contentInset.bottom;
