@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "MUKDataSource"
-  s.version          = "1.0.2"
+  s.version          = "1.0.3"
   s.summary          = "A central point to store, organize and load data on iOS. Ready to be your UITableView data source."
   s.description      = <<-DESC
                         A class designed to provide data (it's not too surprising, I think). It has been hugely inspired by [Apple WWDC 2014 Session 232](https://developer.apple.com/videos/wwdc/2014/?id=232), Advanced User Interfaces with Collection Views.

@@ -384,6 +384,18 @@ describe(@"Containment", ^{
         expect(dataSource_0.items).to.equal(@[@"A", @"C"]);
         expect(dataSource_1.items).to.equal(@[@"B"]);
     });
+    
+    it(@"should detect placeholder data sources", ^{
+        MUKDataSource *rootDataSource = CreateDataSource();
+        MUKPlaceholderDataSource *placeholderDataSource = [[MUKPlaceholderDataSource alloc] init];
+        rootDataSource.childDataSources = @[CreateDataSource(), placeholderDataSource, CreateDataSource()];
+        
+        placeholderDataSource.hidden = YES;
+        expect(rootDataSource.isDisplayingPlaceholderDataSource).to.beFalsy();
+        
+        placeholderDataSource.hidden = NO;
+        expect(rootDataSource.isDisplayingPlaceholderDataSource).to.beTruthy();
+    });
 });
 
 #pragma mark Callbacks

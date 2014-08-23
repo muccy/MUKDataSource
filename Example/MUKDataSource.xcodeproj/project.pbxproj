@@ -45,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		063BE66519A8728C00F0E658 /* MUKDataSource+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MUKDataSource+Placeholder.h"; sourceTree = "<group>"; };
+		063BE66619A8728C00F0E658 /* MUKDataSource+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MUKDataSource+Placeholder.m"; sourceTree = "<group>"; };
 		064F0E1E1998B50F00A4FB7F /* MUKAppendContentDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKAppendContentDataSource.h; sourceTree = "<group>"; };
 		064F0E1F1998B50F00A4FB7F /* MUKAppendContentDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKAppendContentDataSource.m; sourceTree = "<group>"; };
 		064F0E201998B50F00A4FB7F /* MUKDataSourceAppendContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceAppendContentView.h; sourceTree = "<group>"; };
@@ -177,6 +179,8 @@
 				064F0E261998B50F00A4FB7F /* MUKPlaceholderDataSource.m */,
 				064F0E231998B50F00A4FB7F /* MUKDataSourcePlaceholderView.h */,
 				064F0E241998B50F00A4FB7F /* MUKDataSourcePlaceholderView.m */,
+				063BE66519A8728C00F0E658 /* MUKDataSource+Placeholder.h */,
+				063BE66619A8728C00F0E658 /* MUKDataSource+Placeholder.m */,
 			);
 			path = Placeholder;
 			sourceTree = "<group>";
