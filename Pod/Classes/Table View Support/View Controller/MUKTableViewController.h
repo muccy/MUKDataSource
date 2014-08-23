@@ -85,3 +85,20 @@
  */
 - (UITableViewRowAnimation)rowAnimationToReloadRowsAtIndexPaths:(NSArray *)indexPaths toReplaceItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)dataSource;
 @end
+
+@interface MUKTableViewController (Placeholder)
+/**
+ The height placeholder should have in table view.
+ Defaults to full height.
+ @param dataSource The placeholder data source.
+ @param indexPath Row index path.
+ @return Row height.
+ */
+- (CGFloat)heightForPlaceholderDataSource:(MUKPlaceholderDataSource *)dataSource rowAtIndexPath:(NSIndexPath *)indexPath;
+/**
+ Tells if view controller should toggle between UITableViewCellSeparatorStyleNone
+ and UITableViewCellSeparatorStyleSingleLine when placeholder is hidden/unhidden.
+ Defaults to YES.
+ */
+@property (nonatomic) BOOL automaticallyAdjustsSeparatorStyleForPlaceholder;
+@end

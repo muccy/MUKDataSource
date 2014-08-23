@@ -39,6 +39,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 
 @interface MUKTableViewController ()
 @property (nonatomic) BOOL alreadySetFirstNeedLoadContent;
+@property (nonatomic) BOOL automaticallyAdjustsSeparatorStyleForPlaceholder;
 @end
 
 @implementation MUKTableViewController
@@ -147,11 +148,25 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
     return UITableViewRowAnimationAutomatic;
 }
 
+#pragma mark - Placeholder
+
+- (CGFloat)heightForPlaceholderDataSource:(MUKPlaceholderDataSource *)dataSource rowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height = CGRectGetHeight(self.tableView.bounds) - self.tableView.contentInset.top;
+    
+    if (self.refreshControl && !self.refreshControl.isRefreshing) {
+        height -= self.tableView.contentInset.bottom;
+    }
+    
+    return height;
+}
+
 #pragma mark - Private
 
 static void CommonInit(MUKTableViewController *me) {
     me->_automaticallySetNeedsLoadContentAtViewWillAppear = YES;
     me->_usesRefreshControl = YES;
+    me->_automaticallyAdjustsSeparatorStyleForPlaceholder = YES;
 }
 
 - (void)insertRefreshControl {
@@ -191,14 +206,10 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
     
     if (IsBackedTableView(tableView, self)) {
         NSInteger const dataSourceIndex = [self.dataSource childDataSourceIndexFromTableViewSection:indexPath.section checkingBounds:YES];
-
-        if ([[self.dataSource childDataSourceAtIndex:dataSourceIndex] isKindOfClass:[MUKPlaceholderDataSource class]])
-        {
-            height = CGRectGetHeight(tableView.bounds) - tableView.contentInset.top;
-            
-            if (self.refreshControl && !self.refreshControl.isRefreshing) {
-                height -= tableView.contentInset.bottom;
-            }
+        MUKDataSource *const dataSource = [self.dataSource childDataSourceAtIndex:dataSourceIndex];
+        
+        if ([dataSource isKindOfClass:[MUKPlaceholderDataSource class]]) {
+            height = [self heightForPlaceholderDataSource:(MUKPlaceholderDataSource *)dataSource rowAtIndexPath:indexPath];
         }
         else {
             height = tableView.rowHeight;
@@ -226,6 +237,10 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
         UITableViewRowAnimation rowAnimation = [self rowAnimationToInsertSections:sections forChildDataSourcesAtIndexes:indexes];
         [self.tableView insertSections:sections withRowAnimation:rowAnimation];
     }
+    
+    if (self.automaticallyAdjustsSeparatorStyleForPlaceholder) {
+        self.tableView.separatorStyle = dataSource.isDisplayingPlaceholderDataSource ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    }
 }
 
 - (void)dataSource:(MUKDataSource *)dataSource didRemoveChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes fromDataSource:(MUKDataSource *)originatingDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
@@ -239,6 +254,10 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
         UITableViewRowAnimation rowAnimation = [self rowAnimationToDeleteSections:sections forChildDataSources:childDataSources atIndexes:indexes];
         [self.tableView deleteSections:sections withRowAnimation:rowAnimation];
     }
+    
+    if (self.automaticallyAdjustsSeparatorStyleForPlaceholder) {
+        self.tableView.separatorStyle = dataSource.isDisplayingPlaceholderDataSource ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    }
 }
 
 - (void)dataSource:(MUKDataSource *)dataSource didReplaceChildDataSources:(NSArray *)childDataSources atIndexes:(NSIndexSet *)indexes inDataSource:(MUKDataSource *)originatingDataSource
@@ -251,6 +270,10 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 #endif
         UITableViewRowAnimation rowAnimation = [self rowAnimationToReloadSections:sections toReplaceChildDataSources:childDataSources atIndexes:indexes];
         [self.tableView reloadSections:sections withRowAnimation:rowAnimation];
+    }
+    
+    if (self.automaticallyAdjustsSeparatorStyleForPlaceholder) {
+        self.tableView.separatorStyle = dataSource.isDisplayingPlaceholderDataSource ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
     }
 }
 
@@ -276,6 +299,10 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
         UITableViewRowAnimation rowAnimation = [self rowAnimationToReloadSection:section toRefreshChildDataSourcesAtIndex:idx];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:idx] withRowAnimation:rowAnimation];
     }
+    
+    if (self.automaticallyAdjustsSeparatorStyleForPlaceholder) {
+        self.tableView.separatorStyle = dataSource.isDisplayingPlaceholderDataSource ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    }
 }
 
 - (void)dataSource:(MUKDataSource *)dataSource didReloadDataInDataSource:(MUKDataSource *)originatingDataSource
@@ -286,6 +313,10 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
     
     [dataSource registerReusableViewsForTableView:self.tableView];
     [self.tableView reloadData];
+    
+    if (self.automaticallyAdjustsSeparatorStyleForPlaceholder) {
+        self.tableView.separatorStyle = dataSource.isDisplayingPlaceholderDataSource ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    }
 }
 
 - (void)dataSource:(MUKDataSource *)dataSource didInsertItemsAtIndexes:(NSIndexSet *)indexes toDataSource:(MUKDataSource *)targetDataSource eventOrigin:(MUKDataSourceEventOrigin)eventOrigin
@@ -388,17 +419,6 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
     if (self.refreshControl.isRefreshing) {
         [self.refreshControl endRefreshing];
     }
-    
-    BOOL isDisplayingPlaceholder = NO;
-    for (MUKDataSource *childDataSource in self.dataSource.childDataSources) {
-        if ([childDataSource isKindOfClass:[MUKPlaceholderDataSource class]]) {
-            MUKPlaceholderDataSource *placeholderDataSource = (MUKPlaceholderDataSource *)childDataSource;
-            isDisplayingPlaceholder = !placeholderDataSource.isHidden;
-            break;
-        }
-    }
-    
-    self.tableView.separatorStyle = isDisplayingPlaceholder ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
 }
 
 @end
