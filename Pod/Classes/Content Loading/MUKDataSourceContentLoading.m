@@ -16,6 +16,12 @@
     return self;
 }
 
+- (void)performJob {
+    if (self.job) {
+        self.job();
+    }
+}
+
 - (void)finishWithResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler
 {
     [self.dataSource didFinishContentLoading:self withResultType:resultType error:error update:updateHandler];

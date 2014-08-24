@@ -25,6 +25,11 @@
  */
 @property (nonatomic, copy) dispatch_block_t job;
 /**
+ Performs content loading job.
+ Default implemetation executes job block.
+ */
+- (void)performJob;
+/**
  Finishes content loading.
  You should call this method inside job block in order to finish and update data
  source.

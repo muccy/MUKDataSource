@@ -1081,6 +1081,7 @@ describe(@"Callbacks", ^{
             for (id mock in @[mockDataSource, mockChildDataSource, mockRootDataSource])
             {
                 OCMExpect([mock willLoadContent:contentLoadingMock]).andForwardToRealObject();
+                OCMExpect([contentLoadingMock performJob]).andForwardToRealObject();
                 OCMExpect([mock didLoadContent:contentLoading withResultType:resultType error:error]).andForwardToRealObject();
             } // for
         };

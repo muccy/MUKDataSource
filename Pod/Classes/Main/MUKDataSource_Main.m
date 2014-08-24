@@ -1231,9 +1231,9 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     self.currentContentLoading = contentLoading;
     
     // Execute
-    if (execute && contentLoading.job) {
+    if (execute) {
         [self willLoadContent:contentLoading];
-        contentLoading.job();
+        [contentLoading performJob];
     }
 }
 
