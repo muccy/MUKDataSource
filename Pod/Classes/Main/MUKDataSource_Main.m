@@ -152,6 +152,13 @@ static NSString *const kArchiveVersionKey = @"MUKDataSource.Archive.Version";
     [self replaceChildDataSourcesAtIndexes:indexes withChildDataSources:array eventOrigin:MUKDataSourceEventOriginProgrammatic];
 }
 
+#pragma mark - Dynamic properties KVO compliance
+
++ (NSSet *)keyPathsForValuesAffectingLoadingState {
+    NSString *const keyPath = [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(stateMachine)), NSStringFromSelector(@selector(currentState))];
+    return [NSSet setWithObject:keyPath];
+}
+
 #pragma mark - Contents
 
 - (void)setItems:(NSArray *)items {

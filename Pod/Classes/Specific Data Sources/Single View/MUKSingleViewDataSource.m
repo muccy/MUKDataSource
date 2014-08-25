@@ -29,6 +29,12 @@ static NSString *const kItem = @"MUKSingleViewDataSourceItem";
     [self setHidden:hidden animated:NO];
 }
 
+#pragma mark - KVO
+
++ (NSSet *)keyPathsForValuesAffectingHidden {
+    return [NSSet setWithObject:NSStringFromSelector(@selector(items))];
+}
+
 #pragma mark - Methods
 
 - (void)setHidden:(BOOL)hidden animated:(BOOL)animated {

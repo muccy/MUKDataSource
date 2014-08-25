@@ -1392,6 +1392,22 @@ describe(@"State", ^{
         MUKDataSource *dataSource = CreateDataSource();
         expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateInitial);
     });
+    
+    it(@"should be KVO compliant", ^{
+        MUKDataSource *dataSource = CreateDataSource();
+        id observer = OCMClassMock([NSObject class]);
+        
+        // Attach
+        OCMExpect([observer observeValueForKeyPath:@"loadingState" ofObject:dataSource change:[OCMArg any] context:[OCMArg anyPointer]]);
+        [dataSource addObserver:observer forKeyPath:@"loadingState" options:NSKeyValueObservingOptionInitial context:NULL];
+        expect(^{ OCMVerifyAll(observer); }).notTo.raiseAny();
+        
+        // Transition to a state
+        OCMExpect([observer observeValueForKeyPath:@"loadingState" ofObject:dataSource change:[OCMArg any] context:[OCMArg anyPointer]]);
+        [dataSource declareLoadingState:MUKDataSourceContentLoadStateEmpty];
+        expect(dataSource.loadingState).to.equal(MUKDataSourceContentLoadStateEmpty);
+        expect(^{ OCMVerifyAll(observer); }).notTo.raiseAny();
+    });
 });
          
 describe(@"Content loading", ^{

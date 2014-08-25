@@ -24,7 +24,7 @@
     // MUKPlaceholderDataSource's -setHidden:animated: is overridden to notify
     // changes to hidden property, too.
     
-    return [NSSet setWithObjects:NSStringFromSelector(@selector(childDataSources)), nil];
+    return [NSSet setWithObject:NSStringFromSelector(@selector(childDataSources))];
 }
 
 @end
