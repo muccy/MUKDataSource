@@ -37,12 +37,20 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
 }
 #endif
 
+static void *kIsDisplayingPlaceholderDataSourceKVOContext = & kIsDisplayingPlaceholderDataSourceKVOContext;
+
 @interface MUKTableViewController ()
 @property (nonatomic) BOOL alreadySetFirstNeedLoadContent;
 @property (nonatomic) BOOL automaticallyAdjustsSeparatorStyleForPlaceholder;
+@property (nonatomic) BOOL isObservingIsDisplayingPlaceholderDataSource;
+@property (nonatomic) UITableViewCellSeparatorStyle tableViewOriginalSeparatorStyle;
 @end
 
 @implementation MUKTableViewController
+
+- (void)dealloc {
+    [self stopObservingIsDisplayingPlaceholderDataSource];
+}
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -82,7 +90,7 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
         self.alreadySetFirstNeedLoadContent = YES; // Consume the chance
         
         if (self.automaticallyAdjustsSeparatorStyleForPlaceholder) {
-            self.tableView.separatorStyle = self.dataSource.isDisplayingPlaceholderDataSource ? UITableViewCellSeparatorStyleNone : self.tableView.separatorStyle;
+            [self startObservingIsDisplayingPlaceholderDataSource];
         }
         
         if (self.automaticallySetNeedsLoadContentAtViewWillAppear) {
@@ -120,6 +128,49 @@ static NSString *PrettyIndexSet(NSIndexSet *indexSet) {
         else {
             self.refreshControl = nil;
         }
+    }
+}
+
+- (void)setAutomaticallyAdjustsSeparatorStyleForPlaceholder:(BOOL)automaticallyAdjustsSeparatorStyleForPlaceholder
+{
+    if (automaticallyAdjustsSeparatorStyleForPlaceholder != _automaticallyAdjustsSeparatorStyleForPlaceholder)
+    {
+        _automaticallyAdjustsSeparatorStyleForPlaceholder = automaticallyAdjustsSeparatorStyleForPlaceholder;
+        
+        if (automaticallyAdjustsSeparatorStyleForPlaceholder) {
+            [self startObservingIsDisplayingPlaceholderDataSource];
+        }
+        else {
+            [self stopObservingIsDisplayingPlaceholderDataSource];
+        }
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    BOOL managed = NO;
+    
+    if (context == kIsDisplayingPlaceholderDataSourceKVOContext) {
+        managed = YES;
+        
+        if ([self isViewLoaded]) {
+            BOOL oldValue = [change[NSKeyValueChangeOldKey] boolValue];
+            BOOL newValue = [change[NSKeyValueChangeNewKey] boolValue];
+            
+            if (!oldValue && newValue) {
+                self.tableViewOriginalSeparatorStyle = self.tableViewOriginalSeparatorStyle;
+                self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            }
+            else if (oldValue && !newValue) {
+                self.tableView.separatorStyle = self.tableViewOriginalSeparatorStyle;
+            }
+        }
+    }
+    
+    if (!managed) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
@@ -197,6 +248,22 @@ static inline BOOL IsBackedTableView(UITableView *tableView, MUKTableViewControl
 
 - (void)refreshControlValueChanged:(id)sender {
     [self.dataSource setNeedsLoadContent];
+}
+
+#pragma mark - Private - Placeholder Data Source
+
+- (void)startObservingIsDisplayingPlaceholderDataSource {
+    if (!self.isObservingIsDisplayingPlaceholderDataSource) {
+        self.isObservingIsDisplayingPlaceholderDataSource = YES;
+        [self addObserver:self forKeyPath:@"dataSource.isDisplayingPlaceholderDataSource" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:kIsDisplayingPlaceholderDataSourceKVOContext];
+    }
+}
+
+- (void)stopObservingIsDisplayingPlaceholderDataSource {
+    if (self.isObservingIsDisplayingPlaceholderDataSource) {
+        self.isObservingIsDisplayingPlaceholderDataSource = NO;
+        [self removeObserver:self forKeyPath:@"dataSource.isDisplayingPlaceholderDataSource"];
+    }
 }
 
 #pragma mark - <UITableViewDelegate>
