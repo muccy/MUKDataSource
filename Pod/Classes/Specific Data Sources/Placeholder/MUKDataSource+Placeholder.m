@@ -18,4 +18,13 @@
     return NO;
 }
 
+#pragma mark - Dynamic properties KVO compliance
+
++ (NSSet *)keyPathsForValuesAffectingDisplaysPlaceholderDataSource {
+    // MUKPlaceholderDataSource's -setHidden:animated: is overridden to notify
+    // changes to hidden property, too.
+    
+    return [NSSet setWithObjects:NSStringFromSelector(@selector(childDataSources)), nil];
+}
+
 @end

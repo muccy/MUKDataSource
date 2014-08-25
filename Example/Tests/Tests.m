@@ -1100,6 +1100,42 @@ describe(@"Callbacks", ^{
         expect(^{ OCMVerifyAllWithDelay(mockChildDataSource, 0.1); }).notTo.raiseAny();
         expect(^{ OCMVerifyAllWithDelay(mockRootDataSource, 0.1); }).notTo.raiseAny();
     });
+    
+    it(@"should be KVO-compliant for placeholder observation", ^{
+        id observer = OCMClassMock([NSObject class]);
+        MUKDataSource *rootDataSource = CreateDataSource();
+        OCMExpect([observer observeValueForKeyPath:@"displaysPlaceholderDataSource" ofObject:rootDataSource change:[OCMArg any] context:[OCMArg anyPointer]]);
+
+        // Initial KVO
+        [rootDataSource addObserver:observer forKeyPath:@"displaysPlaceholderDataSource" options:NSKeyValueObservingOptionInitial context:NULL];
+        expect(^{ OCMVerifyAll(observer); }).notTo.raiseAny();
+        expect(rootDataSource.isDisplayingPlaceholderDataSource).to.beFalsy();
+        
+        // Add placeholder
+        OCMExpect([observer observeValueForKeyPath:@"displaysPlaceholderDataSource" ofObject:rootDataSource change:[OCMArg any] context:[OCMArg anyPointer]]);
+        MUKPlaceholderDataSource *placeholderDataSource = [[MUKPlaceholderDataSource alloc] init];
+        [rootDataSource appendChildDataSource:placeholderDataSource];
+        expect(rootDataSource.isDisplayingPlaceholderDataSource).to.beTruthy();
+        expect(^{ OCMVerifyAll(observer); }).notTo.raiseAny();
+        
+        // Hide placeholder
+        OCMExpect([observer observeValueForKeyPath:@"displaysPlaceholderDataSource" ofObject:rootDataSource change:[OCMArg any] context:[OCMArg anyPointer]]);
+        placeholderDataSource.hidden = YES;
+        expect(rootDataSource.isDisplayingPlaceholderDataSource).to.beFalsy();
+        expect(^{ OCMVerifyAll(observer); }).notTo.raiseAny();
+        
+        // Show placeholder
+        OCMExpect([observer observeValueForKeyPath:@"displaysPlaceholderDataSource" ofObject:rootDataSource change:[OCMArg any] context:[OCMArg anyPointer]]);
+        placeholderDataSource.hidden = NO;
+        expect(rootDataSource.isDisplayingPlaceholderDataSource).to.beTruthy();
+        expect(^{ OCMVerifyAll(observer); }).notTo.raiseAny();
+        
+        // Remove placeholder
+        OCMExpect([observer observeValueForKeyPath:@"displaysPlaceholderDataSource" ofObject:rootDataSource change:[OCMArg any] context:[OCMArg anyPointer]]);
+        [rootDataSource removeChildDataSource:placeholderDataSource];
+        expect(rootDataSource.isDisplayingPlaceholderDataSource).to.beFalsy();
+        expect(^{ OCMVerifyAll(observer); }).notTo.raiseAny();
+    });
 });
 
 #pragma mark Delegate

@@ -6,6 +6,12 @@
 
 #pragma mark - Overrides
 
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated {
+    [self.parentDataSource willChangeValueForKey:@"displaysPlaceholderDataSource"];
+    [super setHidden:hidden animated:animated];
+    [self.parentDataSource didChangeValueForKey:@"displaysPlaceholderDataSource"];
+}
+
 - (UITableViewCell *)dequeueOrCreateCellForRowAtIndexPath:(NSIndexPath *)tableIndexPath inTableView:(UITableView *)tableView
 {
     UITableViewCell *cell = [super dequeueOrCreateCellForRowAtIndexPath:tableIndexPath inTableView:tableView];
