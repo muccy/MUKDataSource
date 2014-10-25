@@ -51,4 +51,14 @@ typedef void (^MUKDataSourceContentLoadingJobBlock)(MUKDataSourceContentLoading 
  like items and childDataSources.
  */
 - (void)finishWithResultType:(MUKDataSourceContentLoadingResultType)resultType error:(NSError *)error update:(dispatch_block_t)updateHandler;
+/**
+ Sets valid to NO.
+ You should not call this method directly. It is called by data source when proper
+ (e.g.: a new content loading suppresses the previous one). Please note that 
+ invalidation does not mean failure: every content loading is invalidated when finished,
+ to mark as consumed.
+ You could override this method in order to kill background operations immediately 
+ (remember to call super implementation).
+ */
+- (void)invalidate;
 @end

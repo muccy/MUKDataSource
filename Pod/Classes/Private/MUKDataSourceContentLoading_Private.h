@@ -4,5 +4,4 @@
 @property (nonatomic, copy, readwrite) NSString *sourceState;
 @property (nonatomic, weak, readwrite) MUKDataSource *dataSource;
 @property (nonatomic, readwrite, getter = isValid) BOOL valid;
-- (void)invalidate;
 @end
