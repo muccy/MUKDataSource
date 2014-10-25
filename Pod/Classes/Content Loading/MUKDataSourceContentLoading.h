@@ -1,6 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <MUKDataSource/MUKDataSourceContentLoadingResultType.h>
 
+@class MUKDataSourceContentLoading;
+/**
+ The job done by a content loading.
+ You can use the passed contentLoading in order not to do the 
+ weak/strong dance.
+ */
+typedef void (^MUKDataSourceContentLoadingJobBlock)(MUKDataSourceContentLoading *contentLoading);
+
 @class MUKDataSource;
 /**
  An object which encapsulates a single content loading for data source.
@@ -23,7 +31,7 @@
  A block which contains content loading logic.
  It is executed by data source.
  */
-@property (nonatomic, copy) dispatch_block_t job;
+@property (nonatomic, copy) MUKDataSourceContentLoadingJobBlock job;
 /**
  Performs content loading job.
  Default implemetation executes job block.

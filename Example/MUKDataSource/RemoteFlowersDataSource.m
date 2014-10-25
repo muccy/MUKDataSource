@@ -82,7 +82,6 @@
 - (MUKDataSourceContentLoading *)newContentLoadingForState:(NSString *)state {
     static NSInteger const kCount = 20;
     MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
-    __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
     __weak RemoteFlowersDataSource *weakSelf = self;
     
     MUKDataSourceContentLoadingResultType (^resultTypeForResults)(NSArray *) = ^(NSArray *results)
@@ -102,18 +101,17 @@
     };
 
     if ([state isEqualToString:MUKDataSourceContentLoadStateLoading]) {
-        contentLoading.job = ^{
+        contentLoading.job = ^(MUKDataSourceContentLoading *contentLoading) {
             RemoteFlowersDataSource *strongSelf = weakSelf;
-            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
             
             // Load from cache
             [strongSelf loadCachedDataSourceSnapshotWithCompletionHandler:^(MUKDataSourceSnapshot *snapshot)
             {
-                if ([strongContentLoading.dataSource shouldBeRestoredFromSnapshot:snapshot])
+                if ([contentLoading.dataSource shouldBeRestoredFromSnapshot:snapshot])
                 {
-                    [strongContentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
+                    [contentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
                     {
-                        [strongContentLoading.dataSource restoreFromSnapshot:snapshot];
+                        [contentLoading.dataSource restoreFromSnapshot:snapshot];
                     }];
                 }
                 else {
@@ -121,7 +119,7 @@
                     [Florist flowersFromIndex:0 count:kCount completion:^(NSArray *flowers, NSError *error)
                     {
                         MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
-                        [strongContentLoading finishWithResultType:resultType error:error update:^
+                        [contentLoading finishWithResultType:resultType error:error update:^
                         {
                             strongSelf.flowerListDataSource.items = flowers;
                         }];
@@ -131,9 +129,8 @@
         }; // job
     }
     else if ([state isEqualToString:MUKDataSourceContentLoadStateRefreshing]) {
-        contentLoading.job = ^{
+        contentLoading.job = ^(MUKDataSourceContentLoading *contentLoading) {
             RemoteFlowersDataSource *strongSelf = weakSelf;
-            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
 
             [Florist flowersFromIndex:0 count:kCount completion:^(NSArray *flowers, NSError *error)
             {
@@ -144,7 +141,7 @@
                 resultType = MUKDataSourceContentLoadingResultTypeEmpty;
 #endif
                 
-                [strongContentLoading finishWithResultType:resultType error:error update:^
+                [contentLoading finishWithResultType:resultType error:error update:^
                 {
                     strongSelf.flowerListDataSource.items = flowers;
                 }];
@@ -152,15 +149,14 @@
         }; // job
     }
     else if ([state isEqualToString:MUKDataSourceContentLoadStateAppending]) {
-        contentLoading.job = ^{
+        contentLoading.job = ^(MUKDataSourceContentLoading *contentLoading) {
             RemoteFlowersDataSource *strongSelf = weakSelf;
-            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
 
             [Florist flowersFromIndex:[strongSelf.flowerListDataSource.items count] count:kCount completion:^(NSArray *flowers, NSError *error)
             {
-                if (strongContentLoading.isValid) {
+                if (contentLoading.isValid) {
                     MUKDataSourceContentLoadingResultType resultType = resultTypeForResults(flowers);
-                    [strongContentLoading finishWithResultType:resultType error:error update:^
+                    [contentLoading finishWithResultType:resultType error:error update:^
                     {
                         NSMutableArray *proxy = [strongSelf.flowerListDataSource mutableArrayValueForKey:@"items"];
                         [proxy addObjectsFromArray:flowers];

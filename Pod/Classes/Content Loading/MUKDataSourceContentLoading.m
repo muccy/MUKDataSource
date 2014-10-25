@@ -18,7 +18,7 @@
 
 - (void)performJob {
     if (self.job) {
-        self.job();
+        self.job(self);
     }
 }
 

@@ -1069,9 +1069,8 @@ describe(@"Callbacks", ^{
         MUKDataSourceContentLoadingResultType const resultType = MUKDataSourceContentLoadingResultTypeComplete;
         MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
         id const contentLoadingMock = OCMPartialMock(contentLoading);
-        __weak id weakContentLoadingMock = contentLoadingMock;
-        [contentLoadingMock setJob:^{
-            [weakContentLoadingMock finishWithResultType:resultType error:error update:nil];
+        [contentLoadingMock setJob:^(MUKDataSourceContentLoading *contentLoading) {
+            [contentLoading finishWithResultType:resultType error:error update:nil];
         }];
         
         OCMStub([mockDataSource newContentLoadingForState:[OCMArg any]]).andReturn(contentLoadingMock);
@@ -1358,9 +1357,8 @@ describe(@"Delegate", ^{
         MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
         MUKDataSourceContentLoadingResultType resultType = MUKDataSourceContentLoadingResultTypeComplete;
         NSError *error = [NSError errorWithDomain:@"Hi" code:0 userInfo:nil];
-        __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
-        contentLoading.job = ^{
-            [weakContentLoading finishWithResultType:resultType error:error update:nil];
+        contentLoading.job = ^(MUKDataSourceContentLoading *contentLoading) {
+            [contentLoading finishWithResultType:resultType error:error update:nil];
         };
         
         OCMStub([childDataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
@@ -1440,16 +1438,14 @@ describe(@"Content loading", ^{
         
         MUKDataSourceContentLoadingResultType resultType = MUKDataSourceContentLoadingResultTypeComplete;
         MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
-        __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
         __block BOOL jobBlockCalled = NO;
         __block BOOL updateBlockCalled = NO;
         dispatch_block_t updateBlock = ^{
             updateBlockCalled = YES;
         };
-        contentLoading.job = ^{
+        contentLoading.job = ^(MUKDataSourceContentLoading *contentLoading) {
             jobBlockCalled = YES;
-            MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
-            [strongContentLoading finishWithResultType:resultType error:nil update:updateBlock];
+            [contentLoading finishWithResultType:resultType error:nil update:updateBlock];
         };
         
         OCMStub([dataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
@@ -1472,6 +1468,25 @@ describe(@"Content loading", ^{
         [dataSourceMock setNeedsLoadContent];
         
         expect(^{ OCMVerifyAllWithDelay(dataSourceMock, 0.1); }).toNot.raiseAny();
+    });
+    
+    it(@"should call job with itself", ^{
+        MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
+        __block BOOL jobBlockCalled = NO;
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        contentLoading.job = ^(MUKDataSourceContentLoading *internalContentLoading) {
+            jobBlockCalled = YES;
+            expect(internalContentLoading).equal(contentLoading);
+        };
+#pragma clang diagnostic pop   
+        
+        id dataSourceMock = OCMPartialMock(CreateDataSource());
+        OCMStub([dataSourceMock newContentLoadingForState:[OCMArg any]]).andReturn(contentLoading);
+        [dataSourceMock setNeedsLoadContent];
+        
+        expect(jobBlockCalled).will.beTruthy();
     });
     
     describe(@"should invalidate previous content loading", ^{
@@ -1680,11 +1695,9 @@ it(@"should restore in content loading final update", ^{
     id dataSourceMock = OCMPartialMock(dataSource);
     
     MUKDataSourceContentLoading *contentLoading = [[MUKDataSourceContentLoading alloc] init];
-    __weak MUKDataSourceContentLoading *weakContentLoading = contentLoading;
-    contentLoading.job = ^{
-        MUKDataSourceContentLoading *strongContentLoading = weakContentLoading;
+    contentLoading.job = ^(MUKDataSourceContentLoading *contentLoading) {
         if ([dataSourceMock shouldBeRestoredFromSnapshot:snapshot]) {
-            [strongContentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
+            [contentLoading finishWithResultType:snapshot.equivalentResultType error:nil update:^
              {
                  [dataSourceMock restoreFromSnapshot:snapshot];
              }];
