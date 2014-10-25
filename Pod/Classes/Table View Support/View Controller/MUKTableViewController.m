@@ -156,8 +156,11 @@ static void *kIsDisplayingPlaceholderDataSourceKVOContext = & kIsDisplayingPlace
         managed = YES;
         
         if ([self isViewLoaded]) {
-            BOOL oldValue = [change[NSKeyValueChangeOldKey] boolValue];
-            BOOL newValue = [change[NSKeyValueChangeNewKey] boolValue];
+            id value = change[NSKeyValueChangeOldKey];
+            BOOL oldValue = [value respondsToSelector:@selector(boolValue)] ? [value boolValue] : NO;
+            
+            value = change[NSKeyValueChangeNewKey];
+            BOOL newValue = [value respondsToSelector:@selector(boolValue)] ? [value boolValue] : NO;
             
             if (!oldValue && newValue) {
                 self.tableViewOriginalSeparatorStyle = self.tableViewOriginalSeparatorStyle;
