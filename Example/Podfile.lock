@@ -1,10 +1,10 @@
 PODS:
   - Expecta (0.3.1)
-  - MUKDataSource (1.0.3):
+  - MUKDataSource (1.0.6):
     - TransitionKit (~> 2.1)
   - OCMock (3.0.2)
   - Specta (0.2.1)
-  - TransitionKit (2.1.0)
+  - TransitionKit (2.1.1)
 
 DEPENDENCIES:
   - Expecta
@@ -18,9 +18,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
-  MUKDataSource: 529bb358e5603bd98917dfe504e331256719cc1c
+  MUKDataSource: e992543356acbfb751a44d52068515576f933147
   OCMock: b9836ab89d8d5e66cbe6333f93857037c310ee62
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
-  TransitionKit: 6a6f3ddda38ae758778aa889dcb930e4f8d64edc
+  TransitionKit: 9ce324caba25cb0a4c9f3334302d89685595455c
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.4
