@@ -220,11 +220,6 @@ static void *kIsDisplayingPlaceholderDataSourceKVOContext = & kIsDisplayingPlace
 - (CGFloat)heightForPlaceholderDataSource:(MUKPlaceholderDataSource *)dataSource rowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height = CGRectGetHeight(self.tableView.bounds) - self.tableView.contentInset.top - self.tableView.contentInset.bottom;
-    
-    if (self.refreshControl && !self.refreshControl.isRefreshing) {
-        height -= self.tableView.contentInset.bottom;
-    }
-    
     return height;
 }
 
