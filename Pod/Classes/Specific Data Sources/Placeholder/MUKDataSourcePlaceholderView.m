@@ -26,7 +26,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat const availableWidth = CGRectGetWidth(self.bounds) - 10.0f;
+    UIEdgeInsets const titleLabelMinimumMargins = [self titleLabelMinimumMargins];
+    CGFloat const availableWidth = CGRectGetWidth(self.bounds) - titleLabelMinimumMargins.left - titleLabelMinimumMargins.right;
     [self.titleLabel sizeToFit];
     CGRect frame = self.titleLabel.frame;
     if (frame.size.width > availableWidth) {
@@ -55,8 +56,8 @@
     self.imageView.frame = frame;
     
     // Center vertically as a block
-    CGFloat const imageToTitleMargin = 10.0f;
-    CGFloat const titleToTextMargin = 5.0f;
+    CGFloat const imageToTitleMargin = titleLabelMinimumMargins.top;
+    CGFloat const titleToTextMargin = titleLabelMinimumMargins.bottom;
     CGFloat const totalVerticalHeight = CGRectGetHeight(self.imageView.frame) + imageToTitleMargin + CGRectGetHeight(self.titleLabel.frame) + titleToTextMargin + CGRectGetHeight(self.textLabel.frame);
     CGFloat const remainingVerticalSpace = CGRectGetHeight(self.bounds) - totalVerticalHeight;
     
@@ -71,6 +72,10 @@
     frame = self.textLabel.frame;
     frame.origin.y = CGRectGetMaxY(self.titleLabel.frame) + titleToTextMargin;
     self.textLabel.frame = frame;
+}
+
+- (UIEdgeInsets)titleLabelMinimumMargins {
+    return UIEdgeInsetsMake(10.0f, 5.0f, 5.0f, 5.0f);
 }
 
 #pragma mark - Private
