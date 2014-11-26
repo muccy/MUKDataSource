@@ -19,4 +19,9 @@
  It is layed out above titleLabel.
  */
 @property (nonatomic, weak, readonly) UIImageView *imageView;
+/**
+ Margins of title label.
+ Default: 10 pt to image (top); 5 pt to left/right; 5 pt to text (bottom).
+ */
+- (UIEdgeInsets)titleLabelMinimumMargins;
 @end
