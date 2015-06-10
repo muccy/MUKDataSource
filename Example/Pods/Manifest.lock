@@ -1,0 +1,14 @@
+PODS:
+  - MUKDataSource (2.0.0)
+
+DEPENDENCIES:
+  - MUKDataSource (from `../`)
+
+EXTERNAL SOURCES:
+  MUKDataSource:
+    :path: ../
+
+SPEC CHECKSUMS:
+  MUKDataSource: 97f77edf89ed713a5488d7f1d74862acaf884fcb
+
+COCOAPODS: 0.37.2
