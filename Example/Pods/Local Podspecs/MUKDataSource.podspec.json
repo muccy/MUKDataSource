@@ -17,5 +17,10 @@
   },
   "requires_arc": true,
   "source_files": "Pod/**/*.{h,m}",
-  "compiler_flags": "-Wdocumentation"
+  "compiler_flags": "-Wdocumentation",
+  "dependencies": {
+    "KVOController": [
+      "~> 1.0.3"
+    ]
+  }
 }

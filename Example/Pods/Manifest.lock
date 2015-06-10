@@ -1,5 +1,7 @@
 PODS:
-  - MUKDataSource (2.0.0)
+  - KVOController (1.0.3)
+  - MUKDataSource (2.0.0):
+    - KVOController (~> 1.0.3)
 
 DEPENDENCIES:
   - MUKDataSource (from `../`)
@@ -9,6 +11,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  MUKDataSource: 97f77edf89ed713a5488d7f1d74862acaf884fcb
+  KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
+  MUKDataSource: 6893827f1e8712ee3563913109d0055a03390059
 
 COCOAPODS: 0.37.2

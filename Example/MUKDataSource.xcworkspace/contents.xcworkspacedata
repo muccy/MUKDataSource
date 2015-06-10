@@ -10,6 +10,36 @@
       <FileRef
          location = "group:MUKDataSource.m">
       </FileRef>
+      <FileRef
+         location = "group:MUKDataSourceIdentifiable.h">
+      </FileRef>
+      <FileRef
+         location = "group:MUKDataSourceContentSection.h">
+      </FileRef>
+      <Group
+         location = "group:Table View Support"
+         name = "Table View Support">
+         <Group
+            location = "group:Section"
+            name = "Section">
+            <FileRef
+               location = "group:MUKDataSourceTableSection.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceTableSection.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:View Controller"
+            name = "View Controller">
+            <FileRef
+               location = "group:MUKTableViewController.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKTableViewController.m">
+            </FileRef>
+         </Group>
+      </Group>
    </Group>
    <FileRef
       location = "group:MUKDataSource.xcodeproj">

@@ -13,4 +13,6 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/**/*.{h,m}'
   s.compiler_flags  = '-Wdocumentation'
+  
+  s.dependency  'KVOController', '~> 1.0.3'
 end

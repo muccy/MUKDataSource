@@ -6,6 +6,12 @@
 // project.
 
 
+// KVOController
+#define COCOAPODS_POD_AVAILABLE_KVOController
+#define COCOAPODS_VERSION_MAJOR_KVOController 1
+#define COCOAPODS_VERSION_MINOR_KVOController 0
+#define COCOAPODS_VERSION_PATCH_KVOController 3
+
 // MUKDataSource
 #define COCOAPODS_POD_AVAILABLE_MUKDataSource
 #define COCOAPODS_VERSION_MAJOR_MUKDataSource 2
