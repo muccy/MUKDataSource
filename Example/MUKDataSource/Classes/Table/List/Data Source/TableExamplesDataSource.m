@@ -49,6 +49,8 @@
     [examples addObject:[self newSectionComboInsertionReloadExample]];
     [examples addObject:[self newSectionComboInsertionMovementsExample]];
     [examples addObject:[self newSectionComboDeletionReloadExample]];
+    [examples addObject:[self newSectionComboDeletionMovementsExample]];
+    [examples addObject:[self newSectionComboInsertionDeletionReloadExample]];
     
     return [examples copy];
 }
@@ -120,6 +122,26 @@
     NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"d" title:@"D'"] ];
     
     TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+reload" title:@"Deletion + Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newSectionComboDeletionMovementsExample {
+    // a, b, c, d, e
+    // b, e, c
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"e"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"e"], [self newSectionWithIdentifier:@"c"] ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+movements" title:@"Deletion + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newSectionComboInsertionDeletionReloadExample {
+    // a, b, c
+    // a, d, b', e
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"b" title:@"B'"], [self newSectionWithIdentifier:@"e"] ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+deletion+reload" title:@"Insertion + Deletion + Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
     return example;
 }
 
