@@ -8,13 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		0683FA461B285EEF002C694B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA451B285EEF002C694B /* main.m */; };
-		0683FA491B285EEF002C694B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA481B285EEF002C694B /* AppDelegate.m */; };
 		0683FA521B285EEF002C694B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA501B285EEF002C694B /* Main.storyboard */; };
 		0683FA541B285EEF002C694B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA531B285EEF002C694B /* Images.xcassets */; };
 		0683FA571B285EEF002C694B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA551B285EEF002C694B /* LaunchScreen.xib */; };
 		0683FA631B285EEF002C694B /* MUKDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA621B285EEF002C694B /* MUKDataSourceTests.m */; };
-		0683FA6E1B2893BF002C694B /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA6D1B2893BF002C694B /* TableViewController.m */; };
+		0683FA701B2D7952002C694B /* MUKDataSourceTableUpdateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA6F1B2D7952002C694B /* MUKDataSourceTableUpdateTests.m */; };
+		0683FA771B2D9942002C694B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA741B2D9942002C694B /* AppDelegate.m */; };
+		0683FA7A1B2D9960002C694B /* TableExamplesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA791B2D9960002C694B /* TableExamplesViewController.m */; };
+		0683FA7E1B2D99AD002C694B /* TableExamplesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA7D1B2D99AD002C694B /* TableExamplesDataSource.m */; };
+		0683FA861B2D9B9C002C694B /* TableExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA851B2D9B9C002C694B /* TableExampleViewController.m */; };
+		0683FA8A1B2D9BE3002C694B /* TableExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA891B2D9BE3002C694B /* TableExample.m */; };
+		0683FA8E1B2D9DC8002C694B /* TableExampleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA8D1B2D9DC8002C694B /* TableExampleDataSource.m */; };
 		4899C46890BB1C25B329F6D8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C82181A8B8647E020A3326B7 /* libPods.a */; };
+		53573B1C29C682A3B1B27834 /* libPods-MUKDataSourceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,19 +37,31 @@
 		0683FA401B285EEF002C694B /* MUKDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MUKDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0683FA441B285EEF002C694B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0683FA451B285EEF002C694B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		0683FA471B285EEF002C694B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		0683FA481B285EEF002C694B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0683FA511B285EEF002C694B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0683FA531B285EEF002C694B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0683FA561B285EEF002C694B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		0683FA5C1B285EEF002C694B /* MUKDataSourceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MUKDataSourceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0683FA611B285EEF002C694B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0683FA621B285EEF002C694B /* MUKDataSourceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTests.m; sourceTree = "<group>"; };
-		0683FA6C1B2893BF002C694B /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
-		0683FA6D1B2893BF002C694B /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		0683FA6F1B2D7952002C694B /* MUKDataSourceTableUpdateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableUpdateTests.m; sourceTree = "<group>"; };
+		0683FA731B2D9942002C694B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0683FA741B2D9942002C694B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0683FA781B2D9960002C694B /* TableExamplesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableExamplesViewController.h; sourceTree = "<group>"; };
+		0683FA791B2D9960002C694B /* TableExamplesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableExamplesViewController.m; sourceTree = "<group>"; };
+		0683FA7C1B2D99AD002C694B /* TableExamplesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableExamplesDataSource.h; sourceTree = "<group>"; };
+		0683FA7D1B2D99AD002C694B /* TableExamplesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableExamplesDataSource.m; sourceTree = "<group>"; };
+		0683FA841B2D9B9C002C694B /* TableExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableExampleViewController.h; sourceTree = "<group>"; };
+		0683FA851B2D9B9C002C694B /* TableExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableExampleViewController.m; sourceTree = "<group>"; };
+		0683FA881B2D9BE3002C694B /* TableExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableExample.h; sourceTree = "<group>"; };
+		0683FA891B2D9BE3002C694B /* TableExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableExample.m; sourceTree = "<group>"; };
+		0683FA8C1B2D9DC8002C694B /* TableExampleDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableExampleDataSource.h; sourceTree = "<group>"; };
+		0683FA8D1B2D9DC8002C694B /* TableExampleDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableExampleDataSource.m; sourceTree = "<group>"; };
 		15726E95C35402D1C5289608 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA921ACB481F431EC205FE74 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		C82181A8B8647E020A3326B7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA7C24DB43B53D479DF5BCCE /* Pods-MUKDataSourceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSourceTests/Pods-MUKDataSourceTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D8AFC8EF2A2C187BC2F095B2 /* Pods-MUKDataSourceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSourceTests/Pods-MUKDataSourceTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53573B1C29C682A3B1B27834 /* libPods-MUKDataSourceTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				0683FA421B285EEF002C694B /* App */,
-				0683FA5F1B285EEF002C694B /* MUKDataSourceTests */,
+				0683FA5F1B285EEF002C694B /* Tests */,
 				0683FA411B285EEF002C694B /* Products */,
 				1399B1FBCD64F5A7A447DFC0 /* Pods */,
 				EF4DD3EF43B7B60451AE6549 /* Frameworks */,
@@ -88,10 +107,7 @@
 		0683FA421B285EEF002C694B /* App */ = {
 			isa = PBXGroup;
 			children = (
-				0683FA471B285EEF002C694B /* AppDelegate.h */,
-				0683FA481B285EEF002C694B /* AppDelegate.m */,
-				0683FA6C1B2893BF002C694B /* TableViewController.h */,
-				0683FA6D1B2893BF002C694B /* TableViewController.m */,
+				0683FA711B2D9942002C694B /* Classes */,
 				0683FA501B285EEF002C694B /* Main.storyboard */,
 				0683FA531B285EEF002C694B /* Images.xcassets */,
 				0683FA551B285EEF002C694B /* LaunchScreen.xib */,
@@ -110,12 +126,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		0683FA5F1B285EEF002C694B /* MUKDataSourceTests */ = {
+		0683FA5F1B285EEF002C694B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				0683FA621B285EEF002C694B /* MUKDataSourceTests.m */,
+				0683FA6F1B2D7952002C694B /* MUKDataSourceTableUpdateTests.m */,
 				0683FA601B285EEF002C694B /* Supporting Files */,
 			);
+			name = Tests;
 			path = MUKDataSourceTests;
 			sourceTree = "<group>";
 		};
@@ -127,11 +145,88 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0683FA711B2D9942002C694B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA721B2D9942002C694B /* App Delegate */,
+				0683FA751B2D9942002C694B /* Table */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		0683FA721B2D9942002C694B /* App Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA731B2D9942002C694B /* AppDelegate.h */,
+				0683FA741B2D9942002C694B /* AppDelegate.m */,
+			);
+			path = "App Delegate";
+			sourceTree = "<group>";
+		};
+		0683FA751B2D9942002C694B /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA871B2D9BE3002C694B /* Model */,
+				0683FA761B2D9942002C694B /* List */,
+				0683FA831B2D9B80002C694B /* Example */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		0683FA761B2D9942002C694B /* List */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA7B1B2D9995002C694B /* Data Source */,
+				0683FA781B2D9960002C694B /* TableExamplesViewController.h */,
+				0683FA791B2D9960002C694B /* TableExamplesViewController.m */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		0683FA7B1B2D9995002C694B /* Data Source */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA7C1B2D99AD002C694B /* TableExamplesDataSource.h */,
+				0683FA7D1B2D99AD002C694B /* TableExamplesDataSource.m */,
+			);
+			path = "Data Source";
+			sourceTree = "<group>";
+		};
+		0683FA831B2D9B80002C694B /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA8B1B2D9DB6002C694B /* Data Source */,
+				0683FA841B2D9B9C002C694B /* TableExampleViewController.h */,
+				0683FA851B2D9B9C002C694B /* TableExampleViewController.m */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+		0683FA871B2D9BE3002C694B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA881B2D9BE3002C694B /* TableExample.h */,
+				0683FA891B2D9BE3002C694B /* TableExample.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0683FA8B1B2D9DB6002C694B /* Data Source */ = {
+			isa = PBXGroup;
+			children = (
+				0683FA8C1B2D9DC8002C694B /* TableExampleDataSource.h */,
+				0683FA8D1B2D9DC8002C694B /* TableExampleDataSource.m */,
+			);
+			path = "Data Source";
+			sourceTree = "<group>";
+		};
 		1399B1FBCD64F5A7A447DFC0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				AA921ACB481F431EC205FE74 /* Pods.debug.xcconfig */,
 				15726E95C35402D1C5289608 /* Pods.release.xcconfig */,
+				CA7C24DB43B53D479DF5BCCE /* Pods-MUKDataSourceTests.debug.xcconfig */,
+				D8AFC8EF2A2C187BC2F095B2 /* Pods-MUKDataSourceTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -140,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				C82181A8B8647E020A3326B7 /* libPods.a */,
+				9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -170,9 +266,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0683FA691B285EEF002C694B /* Build configuration list for PBXNativeTarget "MUKDataSourceTests" */;
 			buildPhases = (
+				2A20B84DED5547867D303931 /* Check Pods Manifest.lock */,
 				0683FA581B285EEF002C694B /* Sources */,
 				0683FA591B285EEF002C694B /* Frameworks */,
 				0683FA5A1B285EEF002C694B /* Resources */,
+				AB8A4F2AE82DB605C858FF4C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,6 +340,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2A20B84DED5547867D303931 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		7FA9EBC5D90168A8A647B2C1 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -255,6 +368,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB8A4F2AE82DB605C858FF4C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MUKDataSourceTests/Pods-MUKDataSourceTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E753BE73AF29445BCCB50AFC /* Check Pods Manifest.lock */ = {
@@ -279,9 +407,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0683FA491B285EEF002C694B /* AppDelegate.m in Sources */,
-				0683FA6E1B2893BF002C694B /* TableViewController.m in Sources */,
+				0683FA771B2D9942002C694B /* AppDelegate.m in Sources */,
 				0683FA461B285EEF002C694B /* main.m in Sources */,
+				0683FA7E1B2D99AD002C694B /* TableExamplesDataSource.m in Sources */,
+				0683FA7A1B2D9960002C694B /* TableExamplesViewController.m in Sources */,
+				0683FA8E1B2D9DC8002C694B /* TableExampleDataSource.m in Sources */,
+				0683FA861B2D9B9C002C694B /* TableExampleViewController.m in Sources */,
+				0683FA8A1B2D9BE3002C694B /* TableExample.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +421,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0683FA701B2D7952002C694B /* MUKDataSourceTableUpdateTests.m in Sources */,
 				0683FA631B285EEF002C694B /* MUKDataSourceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,6 +556,7 @@
 		};
 		0683FA6A1B285EEF002C694B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA7C24DB43B53D479DF5BCCE /* Pods-MUKDataSourceTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -442,6 +576,7 @@
 		};
 		0683FA6B1B285EEF002C694B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8AFC8EF2A2C187BC2F095B2 /* Pods-MUKDataSourceTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

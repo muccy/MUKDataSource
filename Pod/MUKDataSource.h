@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <MUKDataSource/MUKDataSourceTableSection.h>
+#import <MUKDataSource/MUKDataSourceTableUpdate.h>
 
 @interface MUKDataSource : NSObject
 @property (nonatomic, copy) id<NSObject, NSCopying> content;
 @end
 
 @interface MUKDataSource (SectionedContent)
-@property (nonatomic, copy) NSArray *sections;
+@property (nonatomic, readonly) NSArray *sections;
 - (id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx;
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -28,6 +29,7 @@
  - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
  */
 @interface MUKDataSource (TableViewSupport) <UITableViewDataSource>
+- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)tableSections;
 - (MUKDataSourceTableSection *)tableSectionAtIndex:(NSInteger)idx;
 - (id<MUKDataSourceIdentifiable>)tableRowItemAtIndexPath:(NSIndexPath *)indexPath;
 @end

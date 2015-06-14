@@ -30,6 +30,16 @@
             </FileRef>
          </Group>
          <Group
+            location = "group:Update"
+            name = "Update">
+            <FileRef
+               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Table View Support/Update/MUKDataSourceTableUpdate.h">
+            </FileRef>
+            <FileRef
+               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Table View Support/Update/MUKDataSourceTableUpdate.m">
+            </FileRef>
+         </Group>
+         <Group
             location = "group:View Controller"
             name = "View Controller">
             <FileRef

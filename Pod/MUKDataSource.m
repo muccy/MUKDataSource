@@ -24,12 +24,6 @@
     return nil;
 }
 
-- (void)setSections:(NSArray *)sections {
-    if (sections != _content) {
-        _content = [sections copy];
-    }
-}
-
 - (id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx {
     NSArray *const sections = self.sections;
     
@@ -58,6 +52,17 @@
 #pragma mark -
 
 @implementation MUKDataSource (TableViewSupport)
+
+- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)tableSections
+{
+    if (tableSections != _content) {
+        MUKDataSourceTableUpdate *const update = [[MUKDataSourceTableUpdate alloc] initWithSourceTableSections:self.sections destinationTableSections:tableSections];
+        _content = [tableSections copy];
+        return update;
+    }
+    
+    return nil;
+}
 
 - (MUKDataSourceTableSection *)tableSectionAtIndex:(NSInteger)idx {
     id<MUKDataSourceContentSection> const section = [self sectionAtIndex:idx];
