@@ -46,7 +46,9 @@
     [examples addObject:[self newSectionReloadExample]];
     [examples addObject:[self newSectionMovementsExample]];
     [examples addObject:[self newSectionComboInsertionDeletionExample]];
-    [examples addObject:[self newSectionComboInsertionMovementExample]];
+    [examples addObject:[self newSectionComboInsertionReloadExample]];
+    [examples addObject:[self newSectionComboInsertionMovementsExample]];
+    [examples addObject:[self newSectionComboDeletionReloadExample]];
     
     return [examples copy];
 }
@@ -91,11 +93,33 @@
     return example;
 }
 
-- (TableExample *)newSectionComboInsertionMovementExample {
+- (TableExample *)newSectionComboInsertionReloadExample {
+    // a, b
+    // c, d, a, e, b', f
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b" title:@"B"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"e"], [self newSectionWithIdentifier:@"b" title:@"B'"], [self newSectionWithIdentifier:@"f"] ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+reload" title:@"Insertion + Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newSectionComboInsertionMovementsExample {
+    // a, b, c, d
+    // e, c, b, d, f, a
     NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"d"] ];
     NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"e"], [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"f"], [self newSectionWithIdentifier:@"a"] ];
     
     TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+movements" title:@"Insertion + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newSectionComboDeletionReloadExample {
+    // a, b, c, d
+    // b, d'
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"d"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"d" title:@"D'"] ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+reload" title:@"Deletion + Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
     return example;
 }
 

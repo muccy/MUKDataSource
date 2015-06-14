@@ -148,6 +148,39 @@
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
+- (void)testSectionComboInsertionReload {
+    // a, b
+    // c, d, a, e, b', f
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b" title:@"B"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"e"], [self newSectionWithIdentifier:@"b" title:@"B'"], [self newSectionWithIdentifier:@"f"] ];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    NSMutableIndexSet *const insertedSections = [NSMutableIndexSet indexSet];
+    [insertedSections addIndex:0];
+    [insertedSections addIndex:1];
+    [insertedSections addIndex:3];
+    [insertedSections addIndex:5];
+    NSIndexSet *const reloadedSections = [NSIndexSet indexSetWithIndex:1];
+    
+    XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
+    XCTAssertEqual(update.deletedSectionIndexes.count, 0);
+    XCTAssertEqualObjects(update.reloadedSectionIndexes, reloadedSections);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.rowMovements.count, 0);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+}
+
 - (void)testSectionComboInsertionMovements {
     // a, b, c, d
     // e, c, b, d, f, a
@@ -170,6 +203,37 @@
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
     XCTAssertEqualObjects(update.sectionMovements, sectionMovements);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.rowMovements.count, 0);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+}
+
+- (void)testSectionComboDeletionReload {
+    // a, b, c, d
+    // b, d'
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"d"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"d" title:@"D'"] ];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    NSMutableIndexSet *const deletedSections = [NSMutableIndexSet indexSetWithIndex:0];
+    [deletedSections addIndex:2];
+
+    NSIndexSet *const reloadedSections = [NSIndexSet indexSetWithIndex:3];
+    
+    XCTAssertEqual(update.insertedSectionIndexes.count, 0);
+    XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
+    XCTAssertEqualObjects(update.reloadedSectionIndexes, reloadedSections);
+    XCTAssertEqual(update.sectionMovements.count, 0);
     
     XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
     XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
