@@ -307,6 +307,38 @@
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
+- (void)testSectionComboInsertionDeletionMovement {
+    // a, b, c
+    // b, d, a, e
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"e"] ];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    NSMutableIndexSet *const insertedSections = [NSMutableIndexSet indexSetWithIndex:1];
+    [insertedSections addIndex:3];
+    NSIndexSet *const deletedSections = [NSIndexSet indexSetWithIndex:2];
+   
+    NSSet *const movements = [NSSet setWithObjects:[[MUKDataSourceTableUpdateSectionMovement alloc] initWithSourceIndex:0 destinationIndex:2], nil];
+    
+    XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
+    XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
+    XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
+    XCTAssertEqualObjects(update.sectionMovements, movements);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.rowMovements.count, 0);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+}
+
 #pragma mark - Private
 
 - (MUKDataSourceTableSection *)newSectionWithIdentifier:(NSString *)identifier {
