@@ -56,7 +56,7 @@
 
 @implementation MUKDataSourceTableUpdateRowMovement
 
-- (instancetype)initWithSourceIndex:(NSIndexPath *)sourceIndexPath destinationIndex:(NSIndexPath *)destinationIndexPath
+- (instancetype)initWithSourceIndexPath:(NSIndexPath *)sourceIndexPath destinationIndexPath:(NSIndexPath *)destinationIndexPath
 {
     self = [super init];
     if (self) {
@@ -119,37 +119,52 @@
             
             return MUKArrayDeltaMatchTypeNone;
         }];
-        [self buildSectionUpdatesWithDelta:sectionsDelta];
         
-        // TODO
+        [self buildUpdateInfosWithDelta:sectionsDelta];
     }
     
     return self;
 }
 
 - (void)applyToTableView:(UITableView *)tableView animated:(BOOL)animated {
+    if (self.needsReloadData) {
+        [tableView reloadData];
+        return;
+    }
+    
     UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
     
     [tableView beginUpdates];
-    
-    [tableView insertSections:self.insertedSectionIndexes withRowAnimation:animation];
-    [tableView deleteSections:self.deletedSectionIndexes withRowAnimation:animation];
-    
-    for (MUKDataSourceTableUpdateSectionMovement *movement in self.sectionMovements)
     {
-        [tableView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
-    } // for
-    
+        [tableView insertSections:self.insertedSectionIndexes withRowAnimation:animation];
+        [tableView deleteSections:self.deletedSectionIndexes withRowAnimation:animation];
+        
+        for (MUKDataSourceTableUpdateSectionMovement *movement in self.sectionMovements)
+        {
+            [tableView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
+        } // for
+        
+        [tableView insertRowsAtIndexPaths:[self.insertedRowIndexPaths allObjects] withRowAnimation:animation];
+        [tableView deleteRowsAtIndexPaths:[self.deletedRowIndexPaths allObjects] withRowAnimation:animation];
+        
+        for (MUKDataSourceTableUpdateRowMovement *movement in self.rowMovements)
+        {
+            [tableView moveRowAtIndexPath:movement.sourceIndexPath toIndexPath:movement.destinationIndexPath];
+        } // for
+    }
     [tableView endUpdates];
     
     [tableView beginUpdates];
-    [tableView reloadSections:self.reloadedSectionIndexes withRowAnimation:animation];
+    {
+        [tableView reloadSections:self.reloadedSectionIndexes withRowAnimation:animation];
+        [tableView reloadRowsAtIndexPaths:[self.reloadedRowIndexPaths allObjects] withRowAnimation:animation];
+    }
     [tableView endUpdates];
 }
 
 #pragma mark - Private
 
-- (void)buildSectionUpdatesWithDelta:(MUKArrayDelta *)delta {
+- (void)buildUpdateInfosWithDelta:(MUKArrayDelta *)delta {
     _insertedSectionIndexes = delta.insertedIndexes;
     _deletedSectionIndexes = delta.deletedIndexes;
     
@@ -171,126 +186,191 @@
      1) insertion+deletion+move
      2) reload
      */
-    NSMutableIndexSet *reloadedSectionDestinationIndexes = [NSMutableIndexSet indexSet];
+    NSMutableIndexSet *const reloadedSectionDestinationIndexes = [NSMutableIndexSet indexSet];
+    NSMutableSet *const unresolvedSectionChanges = [NSMutableSet set];
+    
     for (MUKArrayDeltaMatch *match in delta.changes) {
-        [reloadedSectionDestinationIndexes addIndex:match.destinationIndex];
+        MUKDataSourceTableSection *const sourceSection = delta.sourceArray[match.sourceIndex];
+        MUKDataSourceTableSection *const destinationSection = delta.destinationArray[match.destinationIndex];
+        
+        if (![sourceSection.items isEqualToArray:destinationSection.items]) {
+            [unresolvedSectionChanges addObject:match];
+        }
+        
+        if ([[self class] shouldReloadWholeSection:destinationSection changedFromSection:sourceSection])
+        {
+            [reloadedSectionDestinationIndexes addIndex:match.destinationIndex];
+        }
     } // for
     _reloadedSectionIndexes = [reloadedSectionDestinationIndexes copy];
+    
+    // Now cycle through all not resolved changes looking for their deltas and
+    // compose rows update
+    NSMutableArray *insertedRowIndexPaths = [NSMutableArray array];
+    NSMutableArray *deletedRowIndexPaths = [NSMutableArray array];
+    NSMutableSet *reloadedRowIndexPaths = [NSMutableSet set];
+    NSMutableSet *rowMovements = [NSMutableSet set];
+    
+    MUKArrayDeltaMatchTest const itemsMatchTest = ^MUKArrayDeltaMatchType(id<MUKDataSourceIdentifiable> object1, id<MUKDataSourceIdentifiable> object2)
+    {
+        if ([object1 isEqual:object2]) {
+            return MUKArrayDeltaMatchTypeEqual;
+        }
+        else if ([object1 respondsToSelector:@selector(identifier)] &&
+                 [object2 respondsToSelector:@selector(identifier)] &&
+                 [object1.identifier isEqual:object2.identifier])
+        {
+            return MUKArrayDeltaMatchTypeChange;
+        }
+        
+        return MUKArrayDeltaMatchTypeNone;
+    };
+    
+    for (MUKArrayDeltaMatch *const sectionMatch in unresolvedSectionChanges) {
+        // Get involved sections
+        MUKDataSourceTableSection *const sourceSection = delta.sourceArray[sectionMatch.sourceIndex];
+        MUKDataSourceTableSection *const destinationSection = delta.destinationArray[sectionMatch.destinationIndex];
+        
+        // Get delta of this section change
+        MUKArrayDelta *const sectionDelta = [[MUKArrayDelta alloc] initWithSourceArray:sourceSection.items destinationArray:destinationSection.items matchTest:itemsMatchTest];
+        
+        // Get inserted index paths
+        [sectionDelta.insertedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop)
+        {
+            NSIndexPath *const indexPath = [NSIndexPath indexPathForRow:idx inSection:sectionMatch.destinationIndex];
+            [insertedRowIndexPaths addObject:indexPath];
+        }];
+        
+        // Get deleted index paths
+        [sectionDelta.deletedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop)
+         {
+             NSIndexPath *const indexPath = [NSIndexPath indexPathForRow:idx inSection:sectionMatch.sourceIndex];
+             [deletedRowIndexPaths addObject:indexPath];
+         }];
+        
+        // Get movements inside the section
+        [sectionDelta.movements enumerateObjectsUsingBlock:^(MUKArrayDeltaMatch *movement, BOOL *stop)
+        {
+            NSIndexPath *const sourceIndexPath = [NSIndexPath indexPathForRow:movement.sourceIndex inSection:sectionMatch.destinationIndex];
+            NSIndexPath *const destinationIndexPath = [NSIndexPath indexPathForRow:movement.destinationIndex inSection:sectionMatch.destinationIndex];
+            
+            MUKDataSourceTableUpdateRowMovement *const rowMovement = [[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:sourceIndexPath destinationIndexPath:destinationIndexPath];
+            [rowMovements addObject:rowMovement];
+        }];
+        
+        // Get reloaded index paths (I get destination index paths for the same
+        // reason I've got section destination indexes before)
+        [sectionDelta.changes enumerateObjectsUsingBlock:^(MUKArrayDeltaMatch *change, BOOL *stop)
+        {
+            NSIndexPath *const indexPath = [NSIndexPath indexPathForRow:change.destinationIndex inSection:sectionMatch.destinationIndex];
+            [reloadedRowIndexPaths addObject:indexPath];
+        }];
+    } // for
+    
+    // But it's not over because some rows could be moved between sections: in that
+    // case we would have detected false insertion-deletion
+    NSMutableIndexSet *validDeletedRowIndexPathIndexes = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, deletedRowIndexPaths.count)];
+    NSMutableIndexSet *validInsertedRowIndexPathIndexes = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, insertedRowIndexPaths.count)];
+    
+    [deletedRowIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *deletedIndexPath, NSUInteger deletedIndexPathIndex, BOOL *stop)
+    {
+        MUKDataSourceTableSection *const deletedItemSection = delta.sourceArray[deletedIndexPath.section];
+        id<MUKDataSourceIdentifiable> const deletedItem = deletedItemSection.items[deletedIndexPath.row];
+        
+        [insertedRowIndexPaths enumerateObjectsAtIndexes:validInsertedRowIndexPathIndexes options:0 usingBlock:^(NSIndexPath *insertedIndexPath, NSUInteger insertedIndexPathIndex, BOOL *stop)
+        {
+            MUKDataSourceTableSection *const insertedItemSection = delta.destinationArray[insertedIndexPath.section];
+            if ([insertedItemSection isEqualToDataSourceTableSection:deletedItemSection])
+            {
+                // Same section: do not inspect this case
+                return;
+            }
+            
+            // Test deleted and inserted items
+            id<MUKDataSourceIdentifiable> const insertedItem = insertedItemSection.items[insertedIndexPath.row];
+            MUKArrayDeltaMatchType const matchType = itemsMatchTest(deletedItem, insertedItem);
+            
+            if (matchType != MUKArrayDeltaMatchTypeNone) {
+                // If there is a match it means it's a movement
+                MUKDataSourceTableUpdateRowMovement *const rowMovement = [[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:deletedIndexPath destinationIndexPath:insertedIndexPath];
+                [rowMovements addObject:rowMovement];
+                
+                // If it's a change, row should be reloaded too
+                if (matchType == MUKArrayDeltaMatchTypeChange) {
+                    [reloadedRowIndexPaths addObject:insertedIndexPath];
+                }
+                
+                // Exclude those index paths
+                [validDeletedRowIndexPathIndexes removeIndex:deletedIndexPathIndex];
+                [validInsertedRowIndexPathIndexes removeIndex:insertedIndexPathIndex];
+            }
+        }]; // insertedRowIndexPaths enumerateObjectsAtIndexes:
+    }]; // deletedRowIndexPaths enumerateObjectsUsingBlock:
+    
+    // Store filtered values now
+    _insertedRowIndexPaths = [NSSet setWithArray:[insertedRowIndexPaths objectsAtIndexes:validInsertedRowIndexPathIndexes]];
+    _deletedRowIndexPaths = [NSSet setWithArray:[deletedRowIndexPaths objectsAtIndexes:validDeletedRowIndexPathIndexes]];
+    _reloadedRowIndexPaths = [reloadedRowIndexPaths copy];
+    _rowMovements = [rowMovements copy];
+    
+    // Unfortunately there are case when -reloadData is compulsory (also for
+    // some unresolved bugs in UITableView)
+    if ([self needsToForceReloadData]) {
+        _insertedSectionIndexes = _deletedSectionIndexes = _reloadedSectionIndexes = nil;
+        _sectionMovements = _insertedRowIndexPaths = _deletedRowIndexPaths = _reloadedRowIndexPaths = _rowMovements = nil;
+        _needsReloadData = YES;
+    }
 }
 
-/*
-- (BOOL)hasMultipleUpdatesToApply {
-    NSUInteger updateCount = 0;
++ (BOOL)shouldReloadWholeSection:(MUKDataSourceTableSection *)section changedFromSection:(MUKDataSourceTableSection *)originalSection
+{
+    BOOL const sameHeaderTitle = (!section.headerTitle && !section.headerTitle) || [section.headerTitle isEqualToString:originalSection.headerTitle];
+    BOOL const sameFooterTitle = (!section.footerTitle && !section.footerTitle) || [section.footerTitle isEqualToString:originalSection.footerTitle];
+    return !sameHeaderTitle || !sameFooterTitle;
+}
+
+- (BOOL)needsToForceReloadData {
+    for (NSIndexPath *indexPath in self.insertedRowIndexPaths) {
+        if (MovementWithDestinationIndex(indexPath.section, self.sectionMovements))
+        {
+            // Throws "-[__NSArrayM insertObject:atIndex:]: object cannot be nil"
+            // when you insert a row in a moved section
+            return YES;
+        } // if
+    } // for
     
-    updateCount += self.sectionsDelta.insertedIndexes.count + self.sectionsDelta.deletedIndexes.count + self.sectionsDelta.changedIndexes.count + self.sectionsDelta.movements.count;
-    
-    if (updateCount > 1) {
-        return YES;
-    }
-    
-    // TODO
+    for (NSIndexPath *indexPath in self.deletedRowIndexPaths) {
+        if (MovementWithSourceIndex(indexPath.section, self.sectionMovements))
+        {
+            // Throws "-[__NSArrayM insertObject:atIndex:]: object cannot be nil"
+            // when you delete a row in a moved section
+            return YES;
+        } // if
+    } // for
     
     return NO;
 }
-*/
-- (void)applySectionUpdatesToTableView:(UITableView *)tableView animated:(BOOL)animated
+
+static MUKDataSourceTableUpdateSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet *movements)
 {
-    /*
-    MUKArrayDelta *const delta = self.sectionsDelta;
-    UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
-    
-    [tableView beginUpdates];
-    [tableView insertSections:delta.insertedIndexes withRowAnimation:animation];
-    [tableView deleteSections:delta.deletedIndexes withRowAnimation:animation];
-    [tableView endUpdates];
-    
-    NSMutableIndexSet *changedIndexes = [NSMutableIndexSet indexSet];
-    NSArray *const orderedMovements = [[delta.movements allObjects] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(sourceIndex)) ascending:YES] ]];
-    
-    for (MUKArrayDeltaMatch *movement in orderedMovements) {
-        NSUInteger const sourceIndex = [delta intermediateDestinationIndexForMovement:movement];
-
-        if (movement.type == MUKArrayDeltaMatchTypeChange) {
-            [changedIndexes addIndex:sourceIndex];
-            [changedIndexes addIndex:movement.destinationIndex];
-        }
-        else {
-            [tableView moveSection:sourceIndex toSection:movement.destinationIndex];
+    for (MUKDataSourceTableUpdateSectionMovement *movement in movements) {
+        if (movement.destinationIndex == idx) {
+            return movement;
         }
     } // for
     
-    [tableView beginUpdates];
+    return nil;
+}
 
-    for (MUKArrayDeltaMatch *change in self.sectionsDelta.changes) {
-        [changedIndexes addIndex:change.destinationIndex];
-    } // for
-    
-    [tableView reloadSections:changedIndexes withRowAnimation:animation];
-    
-    [tableView endUpdates];
-    */
-
-                                                                                             
-    
-    /*
-    [tableView beginUpdates];
-    [tableView insertSections:self.sectionsDelta.insertedIndexes withRowAnimation:animation];
-    [tableView deleteSections:self.sectionsDelta.deletedIndexes withRowAnimation:animation];
-    [tableView endUpdates];
-    
-    [tableView beginUpdates];
-    for (MUKArrayDeltaMovement *movement in self.sectionsDelta.movements) {
-        NSUInteger const sourceIndex = movement.sourceIndex + [self.sectionsDelta.insertedIndexes countOfIndexesInRange:NSMakeRange(0, movement.sourceIndex)] - [self.sectionsDelta.deletedIndexes countOfIndexesInRange:NSMakeRange(0, movement.sourceIndex)];
-        NSUInteger const destinationIndex = movement.destinationIndex;
-        
-        [tableView moveSection:sourceIndex toSection:destinationIndex];
-    } // for
-    [tableView endUpdates];
-    
-    [tableView beginUpdates];
-    [self.sectionsDelta.changedIndexes enumerateIndexesUsingBlock:^(NSUInteger changedIndex, BOOL *stop)
-    {
-        NSUInteger const destinationIndex = changedIndex + [self.sectionsDelta.insertedIndexes countOfIndexesInRange:NSMakeRange(0, changedIndex)] - [self.sectionsDelta.deletedIndexes countOfIndexesInRange:NSMakeRange(0, changedIndex)];
-    }];
-    [tableView endUpdates];
-*/
-    
-    /*
-    NSMutableIndexSet *changedIndexes = [self.sectionsDelta.changedIndexes mutableCopy];
-
-    [tableView beginUpdates];
-    
-    for (MUKArrayDeltaMovement *movement in self.sectionsDelta.movements) {
-        BOOL movementAborted = NO;
-        
-        NSInteger const normalizedDestinationIndex = movement.destinationIndex - [self.sectionsDelta.insertedIndexes countOfIndexesInRange:NSMakeRange(0, movement.destinationIndex)] + [self.sectionsDelta.deletedIndexes countOfIndexesInRange:NSMakeRange(0, movement.destinationIndex)];
-        
-        if ([changedIndexes containsIndex:movement.sourceIndex] ||
-            [changedIndexes containsIndex:normalizedDestinationIndex])
-        {
-            movementAborted = YES;
-            [changedIndexes addIndex:movement.sourceIndex];
-            [changedIndexes addIndex:normalizedDestinationIndex];
-        }
-        
-        if (!movementAborted) {
-            [tableView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
+static MUKDataSourceTableUpdateSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet *movements)
+{
+    for (MUKDataSourceTableUpdateSectionMovement *movement in movements) {
+        if (movement.sourceIndex == idx) {
+            return movement;
         }
     } // for
     
-    
-    
-    
-    
-    [tableView insertSections:self.sectionsDelta.insertedIndexes withRowAnimation:animation];
-    [tableView deleteSections:self.sectionsDelta.deletedIndexes withRowAnimation:animation];
-    
-    [changedIndexes removeIndexes:self.sectionsDelta.insertedIndexes];
-    [changedIndexes removeIndexes:self.sectionsDelta.deletedIndexes];
-    [tableView reloadSections:changedIndexes withRowAnimation:animated];
-    
-    [tableView endUpdates];
-     */
+    return nil;
 }
 
 @end

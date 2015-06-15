@@ -19,7 +19,7 @@
 @interface MUKDataSourceTableUpdateRowMovement : NSObject
 @property (nonatomic, readonly) NSIndexPath *sourceIndexPath;
 @property (nonatomic, readonly) NSIndexPath *destinationIndexPath;
-- (instancetype)initWithSourceIndex:(NSIndexPath *)sourceIndexPath destinationIndex:(NSIndexPath *)destinationIndexPath;
+- (instancetype)initWithSourceIndexPath:(NSIndexPath *)sourceIndexPath destinationIndexPath:(NSIndexPath *)destinationIndexPath;
 - (BOOL)isEqualToTableUpdateRowMovement:(MUKDataSourceTableUpdateRowMovement *)movement;
 @end
 
@@ -32,10 +32,12 @@
 @property (nonatomic, readonly) NSIndexSet *reloadedSectionIndexes; // Indexes after insertion, deletion, movements
 @property (nonatomic, readonly) NSSet *sectionMovements;
 
-@property (nonatomic, readonly) NSArray *insertedRowIndexPaths;
-@property (nonatomic, readonly) NSArray *deletedRowIndexPaths;
-@property (nonatomic, readonly) NSArray *reloadedRowIndexPaths;
+@property (nonatomic, readonly) NSSet *insertedRowIndexPaths;
+@property (nonatomic, readonly) NSSet *deletedRowIndexPaths;
+@property (nonatomic, readonly) NSSet *reloadedRowIndexPaths;
 @property (nonatomic, readonly) NSSet *rowMovements;
+
+@property (nonatomic, readonly) BOOL needsReloadData;
 
 - (instancetype)initWithSourceTableSections:(NSArray *)sourceSections destinationTableSections:(NSArray *)destinationSections;
 - (void)applyToTableView:(UITableView *)tableView animated:(BOOL)animated;

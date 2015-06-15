@@ -28,7 +28,9 @@
     else if ([item respondsToSelector:@selector(stringValue)]) {
         itemStringValue = [(id)item stringValue];
     }
-    else if ([item.identifier isKindOfClass:[NSString class]]) {
+    else if ([item respondsToSelector:@selector(identifier)] &&
+             [item.identifier isKindOfClass:[NSString class]])
+    {
         itemStringValue = (NSString *)item.identifier;
     }
     else {

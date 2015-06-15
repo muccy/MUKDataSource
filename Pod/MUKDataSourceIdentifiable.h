@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @protocol MUKDataSourceIdentifiable <NSObject>
-@required
+@optional
 @property (nonatomic, copy, readonly) id<NSObject, NSCopying> identifier;
 @end

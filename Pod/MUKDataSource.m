@@ -75,13 +75,7 @@
 
 - (id<MUKDataSourceIdentifiable>)tableRowItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id const rowItem = [self itemAtIndexPath:indexPath];
-    if ([rowItem conformsToProtocol:@protocol(MUKDataSourceIdentifiable)])
-    {
-        return rowItem;
-    }
-    
-    return nil;
+    return [self itemAtIndexPath:indexPath];
 }
 
 #pragma mark <UITableViewDataSource>
