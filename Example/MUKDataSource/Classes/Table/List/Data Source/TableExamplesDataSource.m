@@ -8,6 +8,7 @@
 
 #import "TableExamplesDataSource.h"
 #import "TableExample.h"
+#import "TableExampleItem.h"
 
 @implementation TableExamplesDataSource
 
@@ -188,8 +189,13 @@
     
     [examples addObject:[self newRowInsertionExample]];
     [examples addObject:[self newRowInsertionWithSectionReloadExample]];
+    [examples addObject:[self newRowInsertionWithSectionMovementExample]];
     [examples addObject:[self newRowDeletionExample]];
     [examples addObject:[self newRowDeletionWithSectionReloadExample]];
+    [examples addObject:[self newRowDeletionWithSectionMovementExample]];
+    [examples addObject:[self newRowReloadExample]];
+    [examples addObject:[self newRowReloadWithSectionReloadExample]];
+    [examples addObject:[self newRowReloadWithSectionMovementExample]];
     
     return [examples copy];
 }
@@ -220,6 +226,19 @@
     return example;
 }
 
+- (TableExample *)newRowInsertionWithSectionMovementExample {
+    // a, b
+    // a, c, b
+    NSArray *const sourceItems = @[ @"a", @"b" ];
+    NSArray *const destinationItems = @[ @"a", @"c", @"b" ];
+    
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, sourceItems), TableSection(@"b", nil, nil)];
+    NSArray *const destinationSections = @[ TableSection(@"b", nil, nil), TableSection(@"a", nil, destinationItems) ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+section-movement" title:@"Insertion (with section movement)" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
 - (TableExample *)newRowDeletionExample {
     // a, b, c
     // a, c
@@ -243,6 +262,58 @@
     NSArray *const destinationSections = @[TableSection(@"a", @"A'", destinationItems)];
 
     TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+section-reload" title:@"Deletion (with section reload)" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowDeletionWithSectionMovementExample {
+    // a, b, c
+    // a, c
+    NSArray *const sourceItems = @[ @"a", @"b", @"c" ];
+    NSArray *const destinationItems = @[ @"a", @"c" ];
+    
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, sourceItems), TableSection(@"b", nil, nil)];
+    NSArray *const destinationSections = @[ TableSection(@"b", nil, nil), TableSection(@"a", nil, destinationItems) ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+section-movement" title:@"Deletion (with section movement)" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowReloadExample {
+    // a, b, c
+    // a, b', c
+    NSArray *const sourceItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b"], @"c" ];
+    NSArray *const destinationItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b'"], @"c" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"reload" title:@"Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowReloadWithSectionReloadExample {
+    // a, b, c
+    // a, b', c
+    NSArray *const sourceItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b"], @"c" ];
+    NSArray *const destinationItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b'"], @"c" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", @"A'", destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"reload+section-reload" title:@"Reload (with section reload)" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowReloadWithSectionMovementExample {
+    // a, b, c
+    // a, b', c
+    NSArray *const sourceItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b"], @"c" ];
+    NSArray *const destinationItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b'"], @"c" ];
+    
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, sourceItems), TableSection(@"b", nil, nil)];
+    NSArray *const destinationSections = @[ TableSection(@"b", nil, nil), TableSection(@"a", nil, destinationItems) ];;
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"reload+section-movement" title:@"Reload (with section movement)" sourceTableSections:sourceSections destinationTableSections:destinationSections];
     return example;
 }
 

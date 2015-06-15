@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		063D4CE41B2F0443003BE629 /* MUKDataSourceTableSupportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */; };
+		063D4CE81B2F295C003BE629 /* TableExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE71B2F295C003BE629 /* TableExampleItem.m */; };
 		0683FA461B285EEF002C694B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA451B285EEF002C694B /* main.m */; };
 		0683FA521B285EEF002C694B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA501B285EEF002C694B /* Main.storyboard */; };
 		0683FA541B285EEF002C694B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA531B285EEF002C694B /* Images.xcassets */; };
@@ -36,6 +37,8 @@
 
 /* Begin PBXFileReference section */
 		063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableSupportTests.m; sourceTree = "<group>"; };
+		063D4CE61B2F295C003BE629 /* TableExampleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableExampleItem.h; sourceTree = "<group>"; };
+		063D4CE71B2F295C003BE629 /* TableExampleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableExampleItem.m; sourceTree = "<group>"; };
 		0683FA401B285EEF002C694B /* MUKDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MUKDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0683FA441B285EEF002C694B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0683FA451B285EEF002C694B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -86,6 +89,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		063D4CE51B2F294E003BE629 /* Item Model */ = {
+			isa = PBXGroup;
+			children = (
+				063D4CE61B2F295C003BE629 /* TableExampleItem.h */,
+				063D4CE71B2F295C003BE629 /* TableExampleItem.m */,
+			);
+			path = "Item Model";
+			sourceTree = "<group>";
+		};
 		0683FA371B285EEF002C694B = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +210,7 @@
 		0683FA831B2D9B80002C694B /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				063D4CE51B2F294E003BE629 /* Item Model */,
 				0683FA8B1B2D9DB6002C694B /* Data Source */,
 				0683FA841B2D9B9C002C694B /* TableExampleViewController.h */,
 				0683FA851B2D9B9C002C694B /* TableExampleViewController.m */,
@@ -410,6 +423,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				063D4CE81B2F295C003BE629 /* TableExampleItem.m in Sources */,
 				0683FA771B2D9942002C694B /* AppDelegate.m in Sources */,
 				0683FA461B285EEF002C694B /* main.m in Sources */,
 				0683FA7E1B2D99AD002C694B /* TableExamplesDataSource.m in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import "TableExampleDataSource.h"
+#import "TableExampleItem.h"
 
 @implementation TableExampleDataSource
 
@@ -24,6 +25,10 @@
     
     if ([item isKindOfClass:[NSString class]]) {
         itemStringValue = (NSString *)item;
+    }
+    else if ([item isKindOfClass:[TableExampleItem class]]) {
+        TableExampleItem *const exampleItem = item;
+        itemStringValue = exampleItem.title;
     }
     else if ([item respondsToSelector:@selector(stringValue)]) {
         itemStringValue = [(id)item stringValue];
