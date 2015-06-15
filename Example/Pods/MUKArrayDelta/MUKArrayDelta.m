@@ -18,10 +18,6 @@
     return self.type == match.type && self.sourceIndex == match.sourceIndex && self.destinationIndex == match.destinationIndex;
 }
 
-- (instancetype)inverse {
-    return [[[self class] alloc] initWithType:self.type sourceIndex:self.destinationIndex destinationIndex:self.sourceIndex];
-}
-
 #pragma mark Overrides
 
 - (BOOL)isEqual:(id)object {
@@ -159,14 +155,8 @@
             NSUInteger const intermediateDestinationIndex = [[self class] intermediateDestinationIndexForMovement:match withInsertedIndexes:_insertedIndexes deletedIndexes:_deletedIndexes movements:movements calculatedOffset:&offset];
             
             if (match.destinationIndex != intermediateDestinationIndex) {
-                // Movement seems to matter
-                
-                // Check inverse movement
-                MUKArrayDeltaMatch *const inverseMovement = [[MUKArrayDeltaMatch alloc] initWithType:match.type sourceIndex:match.destinationIndex - offset destinationIndex:intermediateDestinationIndex];
-                
-                if (![movements containsObject:inverseMovement]) {
-                    [movements addObject:match];
-                }
+                // Movement matters
+                [movements addObject:match];
             }
         }]; // allMatches enumerateObjectsUsingBlock:
         
@@ -229,9 +219,7 @@
     
     NSInteger offset = insertionsBefore - deletionsBefore;
     for (MUKArrayDeltaMatch *movement in movements) {
-        if (![movement isEqualToArrayDeltaMatch:match] &&
-            ![movement isEqualToArrayDeltaMatch:[match inverse]])
-        {
+        if (![movement isEqualToArrayDeltaMatch:match]) {
             if (movement.sourceIndex < match.sourceIndex &&
                      movement.destinationIndex > match.destinationIndex)
             {

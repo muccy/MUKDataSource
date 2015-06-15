@@ -29,7 +29,7 @@
 
 @property (nonatomic, readonly) NSIndexSet *insertedSectionIndexes;
 @property (nonatomic, readonly) NSIndexSet *deletedSectionIndexes;
-@property (nonatomic, readonly) NSIndexSet *reloadedSectionIndexes;
+@property (nonatomic, readonly) NSIndexSet *reloadedSectionIndexes; // Indexes after insertion, deletion, movements
 @property (nonatomic, readonly) NSSet *sectionMovements;
 
 @property (nonatomic, readonly) NSArray *insertedRowIndexPaths;

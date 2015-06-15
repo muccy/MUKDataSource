@@ -50,8 +50,10 @@
     [examples addObject:[self newSectionComboInsertionMovementsExample]];
     [examples addObject:[self newSectionComboDeletionReloadExample]];
     [examples addObject:[self newSectionComboDeletionMovementsExample]];
+    [examples addObject:[self newSectionComboReloadMovementsExample]];
     [examples addObject:[self newSectionComboInsertionDeletionReloadExample]];
     [examples addObject:[self newSectionComboInsertionDeletionMovementsExample]];
+    [examples addObject:[self newSectionComboInsertionDeletionReloadMovementExample]];
     
     return [examples copy];
 }
@@ -126,6 +128,16 @@
     return example;
 }
 
+- (TableExample *)newSectionComboReloadMovementsExample {
+    // a, b, c
+    // c, b, a'
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"c"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"a" title:@"A'"] ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"reload+movements" title:@"Reload + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
 - (TableExample *)newSectionComboDeletionMovementsExample {
     // a, b, c, d, e
     // b, e, c
@@ -153,6 +165,16 @@
     NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"e"] ];
     
     TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+deletion+movements" title:@"Insertion + Deletion + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newSectionComboInsertionDeletionReloadMovementExample {
+    // a, b, c
+    // b, d, a', e
+    NSArray *const sourceSections = @[ [self newSectionWithIdentifier:@"a"], [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"c"] ];
+    NSArray *const destinationSections = @[ [self newSectionWithIdentifier:@"b"], [self newSectionWithIdentifier:@"d"], [self newSectionWithIdentifier:@"a" title:@"A'"], [self newSectionWithIdentifier:@"e"] ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+deletion+reload+movements" title:@"Insertion + Deletion + Reload + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
     return example;
 }
 

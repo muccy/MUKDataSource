@@ -134,13 +134,16 @@
     
     [tableView insertSections:self.insertedSectionIndexes withRowAnimation:animation];
     [tableView deleteSections:self.deletedSectionIndexes withRowAnimation:animation];
-    [tableView reloadSections:self.reloadedSectionIndexes withRowAnimation:animation];
     
     for (MUKDataSourceTableUpdateSectionMovement *movement in self.sectionMovements)
     {
         [tableView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
     } // for
     
+    [tableView endUpdates];
+    
+    [tableView beginUpdates];
+    [tableView reloadSections:self.reloadedSectionIndexes withRowAnimation:animation];
     [tableView endUpdates];
 }
 
@@ -149,12 +152,6 @@
 - (void)buildSectionUpdatesWithDelta:(MUKArrayDelta *)delta {
     _insertedSectionIndexes = delta.insertedIndexes;
     _deletedSectionIndexes = delta.deletedIndexes;
-
-    NSMutableIndexSet *reloadedSectionIndexes = [NSMutableIndexSet indexSet];
-    for (MUKArrayDeltaMatch *match in delta.changes) {
-        [reloadedSectionIndexes addIndex:match.sourceIndex];
-    } // for
-    _reloadedSectionIndexes = [reloadedSectionIndexes copy];
     
     NSMutableSet *sectionMovements = [NSMutableSet setWithCapacity:delta.movements.count];
     for (MUKArrayDeltaMatch *match in delta.movements) {
@@ -162,6 +159,23 @@
         [sectionMovements addObject:movement];
     } // for
     _sectionMovements = [sectionMovements copy];
+
+    /*
+     I reload destination indexes because table views don't like to move a section
+     which is reloaded.
+     If you reload a section index which is a source index of a movement, table
+     will throw a "attempt to perform a delete and a move from the same section".
+     If you reload a section index which is a destionation index of a movement, table
+     will throw a "attempt to perform an insert and a move to the same section".
+     To solve this problem I break update into two block of beginUpdates-endUpdates:
+     1) insertion+deletion+move
+     2) reload
+     */
+    NSMutableIndexSet *reloadedSectionDestinationIndexes = [NSMutableIndexSet indexSet];
+    for (MUKArrayDeltaMatch *match in delta.changes) {
+        [reloadedSectionDestinationIndexes addIndex:match.destinationIndex];
+    } // for
+    _reloadedSectionIndexes = [reloadedSectionDestinationIndexes copy];
 }
 
 /*

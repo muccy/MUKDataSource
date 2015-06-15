@@ -40,10 +40,6 @@ typedef NS_ENUM(NSInteger, MUKArrayDeltaMatchType) {
  */
 - (instancetype)initWithType:(MUKArrayDeltaMatchType)type sourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex;
 /**
- @returns A match with flipped sourceIndex and destinationIndex
- */
-- (instancetype)inverse;
-/**
  @returns YES when two movements are equal
  */
 - (BOOL)isEqualToArrayDeltaMatch:(MUKArrayDeltaMatch *)match;
@@ -105,7 +101,7 @@ typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id object1, id object2)
 - (BOOL)isEqualToArrayDelta:(MUKArrayDelta *)arrayDelta;
 /**
  @returns Projected source index to destination taking into account only insertions
- before, deletions before and movements happened so far (ignoring reverse movements)
+ before, deletions before and movements happened so far
  */
 - (NSUInteger)intermediateDestinationIndexForMovement:(MUKArrayDeltaMatch *)movement;
 @end
