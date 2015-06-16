@@ -33,6 +33,34 @@
     XCTAssertNoThrow([dataSource tableRowItemAtIndexPath:[NSIndexPath indexPathForRow:10 inSection:2]]);
 }
 
+- (void)testSectionEdit {
+    MUKDataSourceTableSection *const originalSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"identifier" items:@[@"a", @"b", @"c"] headerTitle:@"header" footerTitle:@"footer"];
+    
+    MUKDataSourceTableSection *section = [originalSection tableSectionWithItems:@[@"d"]];
+    XCTAssertEqualObjects(section.items, @[@"d"]);
+    XCTAssertEqualObjects(section.identifier, originalSection.identifier);
+    XCTAssertEqualObjects(section.headerTitle, originalSection.headerTitle);
+    XCTAssertEqualObjects(section.footerTitle, originalSection.footerTitle);
+
+    section = [originalSection tableSectionInsertingItem:@"x" atIndex:1];
+    XCTAssertEqualObjects(section.items, (@[@"a", @"x", @"b", @"c"]));
+    XCTAssertEqualObjects(section.identifier, originalSection.identifier);
+    XCTAssertEqualObjects(section.headerTitle, originalSection.headerTitle);
+    XCTAssertEqualObjects(section.footerTitle, originalSection.footerTitle);
+    
+    section = [originalSection tableSectionRemovingItemAtIndex:1];
+    XCTAssertEqualObjects(section.items, (@[@"a", @"c"]));
+    XCTAssertEqualObjects(section.identifier, originalSection.identifier);
+    XCTAssertEqualObjects(section.headerTitle, originalSection.headerTitle);
+    XCTAssertEqualObjects(section.footerTitle, originalSection.footerTitle);
+    
+    section = [originalSection tableSectionInsertingItem:@"x" atIndex:10];
+    XCTAssertEqualObjects(section, originalSection);
+    
+    section = [originalSection tableSectionRemovingItemAtIndex:10];
+    XCTAssertEqualObjects(section, originalSection);
+}
+
 #pragma mark - Private
 
 static inline MUKDataSourceTableSection *TableSection(NSString *identifier, NSString *title, NSArray *items)

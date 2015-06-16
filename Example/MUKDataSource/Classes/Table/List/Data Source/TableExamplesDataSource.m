@@ -9,15 +9,17 @@
 #import "TableExamplesDataSource.h"
 #import "TableExample.h"
 #import "TableExampleItem.h"
+#import "Playground.h"
 
 @implementation TableExamplesDataSource
 
 - (instancetype)init {
     self = [super init];
     if (self) {
+        MUKDataSourceTableSection *const playgroundSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"playground" items:@[[[Playground alloc] initWithIdentifier:@"playground" title:@"Playground"]] headerTitle:nil footerTitle:nil];
         MUKDataSourceTableSection *const sectionExamplesSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"section-examples" items:[self newSectionExamples] headerTitle:@"Section" footerTitle:nil];
         MUKDataSourceTableSection *const rowExamplesSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"row-examples" items:[self newRowExamples] headerTitle:@"Row" footerTitle:nil];
-        [self setTableSections:@[sectionExamplesSection, rowExamplesSection]];
+        [self setTableSections:@[playgroundSection, sectionExamplesSection, rowExamplesSection]];
     }
     
     return self;
@@ -32,8 +34,10 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    TableExample *const example = [self tableRowItemAtIndexPath:indexPath];
-    cell.textLabel.text = example.title;
+    id<MUKDataSourceIdentifiable> const item = [self tableRowItemAtIndexPath:indexPath];
+    if ([item respondsToSelector:@selector(title)]) {
+        cell.textLabel.text = [(id)item title];
+    }
     
     return cell;
 }

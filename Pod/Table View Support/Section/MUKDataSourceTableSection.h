@@ -15,4 +15,8 @@
 @property (nonatomic, copy, readonly) NSString *footerTitle;
 - (instancetype)initWithIdentifier:(id<NSCopying>)identifier items:(NSArray *)items headerTitle:(NSString *)headerTitle footerTitle:(NSString *)footerTitle;
 - (BOOL)isEqualToDataSourceTableSection:(MUKDataSourceTableSection *)tableSection;
+
+- (instancetype)tableSectionWithItems:(NSArray *)newItems;
+- (instancetype)tableSectionRemovingItemAtIndex:(NSUInteger)idx;
+- (instancetype)tableSectionInsertingItem:(id)item atIndex:(NSUInteger)idx;
 @end

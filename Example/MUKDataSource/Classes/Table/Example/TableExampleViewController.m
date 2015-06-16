@@ -24,7 +24,7 @@
     [self.KVOController observe:self keyPath:NSStringFromSelector(@selector(example)) options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(TableExampleViewController *observer, TableExampleViewController *object, NSDictionary *change)
     {
         observer.title = observer.example.title;
-        [observer.dataSource setTableSections:observer.example.sourceTableSections];
+        observer.dataSource.content = observer.example.sourceTableSections;
         [observer.tableView reloadData];
     }];
     

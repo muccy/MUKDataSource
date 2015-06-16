@@ -9,6 +9,7 @@
 #import "MUKDataSource.h"
 
 @implementation MUKDataSource
+
 @end
 
 #pragma mark -
@@ -45,6 +46,10 @@
     }
     
     return nil;
+}
+
++ (NSSet *)keyPathsForValuesAffectingSections {
+    return [NSSet setWithObjects:NSStringFromSelector(@selector(content)), nil];
 }
 
 @end
@@ -114,27 +119,47 @@
     return [self tableSectionAtIndex:section].footerTitle;
 }
 
-// Moving/reordering
-
-// Allows the reorder accessory view to optionally be shown for a particular row. By default, the reorder control will be shown only if the datasource implements -tableView:moveRowAtIndexPath:toIndexPath:
-//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath;
-
-
-
-// Data manipulation - insert and delete support
-
-// After a row has the minus or plus button invoked (based on the UITableViewCellEditingStyle for the cell), the dataSource must commit the change
-// Not called for edit actions using UITableViewRowAction - the action's handler will be invoked instead
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO
-}
+    switch (editingStyle) {
+        case UITableViewCellEditingStyleDelete: {
+            // Remove committed row
+            MUKDataSourceTableSection *const section = [self.sections[indexPath.section] tableSectionRemovingItemAtIndex:indexPath.row];
+            
+            // Recreate section
+            NSMutableArray *const sections = [self.sections mutableCopy];
+            [sections replaceObjectAtIndex:indexPath.section withObject:section];
 
-// Data manipulation - reorder / moving support
+            // Apply update
+            MUKDataSourceTableUpdate *const update = [self setTableSections:sections];
+            [update applyToTableView:tableView animated:YES];
+            
+            break;
+        }
+            
+        default:
+            // Do nothing
+            break;
+    }
+}
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    // TODO
+    id<MUKDataSourceIdentifiable> const movedItem = [self tableRowItemAtIndexPath:sourceIndexPath];
+    
+    // Remove moved item
+    MUKDataSourceTableSection *const sourceSection = self.sections[sourceIndexPath.section];
+    MUKDataSourceTableSection *const newSourceSection = [sourceSection tableSectionRemovingItemAtIndex:sourceIndexPath.row];
+
+    // Insert moved item
+    MUKDataSourceTableSection *const destinationSection = sourceIndexPath.section == destinationIndexPath.section ? newSourceSection : self.sections[destinationIndexPath.section];
+    MUKDataSourceTableSection *const newDestinationSection = [destinationSection tableSectionInsertingItem:movedItem atIndex:destinationIndexPath.row];
+
+    // Set new sections
+    NSMutableArray *const sections = [self.sections mutableCopy];
+    [sections replaceObjectAtIndex:sourceIndexPath.section withObject:newSourceSection];
+    [sections replaceObjectAtIndex:destinationIndexPath.section withObject:newDestinationSection];
+    self.content = sections;
 }
 
 @end

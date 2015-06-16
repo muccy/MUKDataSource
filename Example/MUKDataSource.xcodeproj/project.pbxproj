@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		063D4CE41B2F0443003BE629 /* MUKDataSourceTableSupportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */; };
 		063D4CE81B2F295C003BE629 /* TableExampleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE71B2F295C003BE629 /* TableExampleItem.m */; };
+		063D4CEB1B3067FA003BE629 /* Playground.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CEA1B3067FA003BE629 /* Playground.m */; };
+		063D4CEF1B306861003BE629 /* TablePlaygroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CEE1B306861003BE629 /* TablePlaygroundViewController.m */; };
+		063D4CF31B306891003BE629 /* TablePlaygroundDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CF21B306891003BE629 /* TablePlaygroundDataSource.m */; };
+		063D4CF71B306E92003BE629 /* TablePlaygroundCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CF61B306E92003BE629 /* TablePlaygroundCommand.m */; };
 		0683FA461B285EEF002C694B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA451B285EEF002C694B /* main.m */; };
 		0683FA521B285EEF002C694B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA501B285EEF002C694B /* Main.storyboard */; };
 		0683FA541B285EEF002C694B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA531B285EEF002C694B /* Images.xcassets */; };
@@ -39,6 +43,14 @@
 		063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableSupportTests.m; sourceTree = "<group>"; };
 		063D4CE61B2F295C003BE629 /* TableExampleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableExampleItem.h; sourceTree = "<group>"; };
 		063D4CE71B2F295C003BE629 /* TableExampleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableExampleItem.m; sourceTree = "<group>"; };
+		063D4CE91B3067FA003BE629 /* Playground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playground.h; sourceTree = "<group>"; };
+		063D4CEA1B3067FA003BE629 /* Playground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Playground.m; sourceTree = "<group>"; };
+		063D4CED1B306861003BE629 /* TablePlaygroundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TablePlaygroundViewController.h; sourceTree = "<group>"; };
+		063D4CEE1B306861003BE629 /* TablePlaygroundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TablePlaygroundViewController.m; sourceTree = "<group>"; };
+		063D4CF11B306891003BE629 /* TablePlaygroundDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TablePlaygroundDataSource.h; sourceTree = "<group>"; };
+		063D4CF21B306891003BE629 /* TablePlaygroundDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TablePlaygroundDataSource.m; sourceTree = "<group>"; };
+		063D4CF51B306E92003BE629 /* TablePlaygroundCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TablePlaygroundCommand.h; sourceTree = "<group>"; };
+		063D4CF61B306E92003BE629 /* TablePlaygroundCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TablePlaygroundCommand.m; sourceTree = "<group>"; };
 		0683FA401B285EEF002C694B /* MUKDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MUKDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0683FA441B285EEF002C694B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0683FA451B285EEF002C694B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -96,6 +108,35 @@
 				063D4CE71B2F295C003BE629 /* TableExampleItem.m */,
 			);
 			path = "Item Model";
+			sourceTree = "<group>";
+		};
+		063D4CEC1B30684D003BE629 /* Playground */ = {
+			isa = PBXGroup;
+			children = (
+				063D4CF41B306E85003BE629 /* Model */,
+				063D4CF01B306882003BE629 /* Data Source */,
+				063D4CED1B306861003BE629 /* TablePlaygroundViewController.h */,
+				063D4CEE1B306861003BE629 /* TablePlaygroundViewController.m */,
+			);
+			path = Playground;
+			sourceTree = "<group>";
+		};
+		063D4CF01B306882003BE629 /* Data Source */ = {
+			isa = PBXGroup;
+			children = (
+				063D4CF11B306891003BE629 /* TablePlaygroundDataSource.h */,
+				063D4CF21B306891003BE629 /* TablePlaygroundDataSource.m */,
+			);
+			path = "Data Source";
+			sourceTree = "<group>";
+		};
+		063D4CF41B306E85003BE629 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				063D4CF51B306E92003BE629 /* TablePlaygroundCommand.h */,
+				063D4CF61B306E92003BE629 /* TablePlaygroundCommand.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		0683FA371B285EEF002C694B = {
@@ -184,6 +225,7 @@
 				0683FA871B2D9BE3002C694B /* Model */,
 				0683FA761B2D9942002C694B /* List */,
 				0683FA831B2D9B80002C694B /* Example */,
+				063D4CEC1B30684D003BE629 /* Playground */,
 			);
 			path = Table;
 			sourceTree = "<group>";
@@ -223,6 +265,8 @@
 			children = (
 				0683FA881B2D9BE3002C694B /* TableExample.h */,
 				0683FA891B2D9BE3002C694B /* TableExample.m */,
+				063D4CE91B3067FA003BE629 /* Playground.h */,
+				063D4CEA1B3067FA003BE629 /* Playground.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -425,8 +469,12 @@
 			files = (
 				063D4CE81B2F295C003BE629 /* TableExampleItem.m in Sources */,
 				0683FA771B2D9942002C694B /* AppDelegate.m in Sources */,
+				063D4CEF1B306861003BE629 /* TablePlaygroundViewController.m in Sources */,
 				0683FA461B285EEF002C694B /* main.m in Sources */,
 				0683FA7E1B2D99AD002C694B /* TableExamplesDataSource.m in Sources */,
+				063D4CEB1B3067FA003BE629 /* Playground.m in Sources */,
+				063D4CF31B306891003BE629 /* TablePlaygroundDataSource.m in Sources */,
+				063D4CF71B306E92003BE629 /* TablePlaygroundCommand.m in Sources */,
 				0683FA7A1B2D9960002C694B /* TableExamplesViewController.m in Sources */,
 				0683FA8E1B2D9DC8002C694B /* TableExampleDataSource.m in Sources */,
 				0683FA861B2D9B9C002C694B /* TableExampleViewController.m in Sources */,

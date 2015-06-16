@@ -38,17 +38,36 @@
                     <navigationItem key="navigationItem" title="Table View Examples" id="GOG-YQ-xSt"/>
                     <connections>
                         <segue destination="uGH-f2-Hnl" kind="show" identifier="Show Example" id="Vwm-gN-3Dp"/>
+                        <segue destination="XZb-ld-ZPF" kind="show" identifier="Show Playground" id="uc8-Ml-WgR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dUv-9b-WOZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1547" y="-366"/>
         </scene>
+        <!--Table Playground View Controller-->
+        <scene sceneID="GEm-yb-QAd">
+            <objects>
+                <tableViewController id="XZb-ld-ZPF" customClass="TablePlaygroundViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="5Wf-yN-FXF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="XZb-ld-ZPF" id="udo-mF-DSF"/>
+                            <outlet property="delegate" destination="XZb-ld-ZPF" id="G51-uX-iZy"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fon-VM-3tk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2259" y="-1041"/>
+        </scene>
         <!--Table Example View Controller-->
         <scene sceneID="b8D-7d-m1X">
             <objects>
                 <tableViewController id="uGH-f2-Hnl" customClass="TableExampleViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="m0V-fi-Y6v">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="m0V-fi-Y6v">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

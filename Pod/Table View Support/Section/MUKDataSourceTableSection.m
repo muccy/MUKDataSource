@@ -35,6 +35,33 @@
     return sameIdentifier && sameItems && sameHeaderTitle && sameFooterTitle;
 }
 
+- (instancetype)tableSectionWithItems:(NSArray *)newItems {
+    return [[[self class] alloc] initWithIdentifier:self.identifier items:newItems headerTitle:self.headerTitle footerTitle:self.footerTitle];
+}
+
+- (instancetype)tableSectionRemovingItemAtIndex:(NSUInteger)idx {
+    if (idx >= self.items.count) {
+        return self;
+    }
+    
+    NSMutableArray *const items = [self.items mutableCopy];
+    [items removeObjectAtIndex:idx];
+    
+    return [self tableSectionWithItems:items];
+}
+
+- (instancetype)tableSectionInsertingItem:(id)item atIndex:(NSUInteger)idx
+{
+    if (!item || idx > self.items.count) {
+        return self;
+    }
+    
+    NSMutableArray *const items = [self.items mutableCopy];
+    [items insertObject:item atIndex:idx];
+    
+    return [self tableSectionWithItems:items];
+}
+
 #pragma mark - Overrides
 
 - (BOOL)isEqual:(id)object {
