@@ -55,6 +55,7 @@
     [examples addObject:[self newSectionComboReloadMovementsExample]];
     [examples addObject:[self newSectionComboInsertionDeletionReloadExample]];
     [examples addObject:[self newSectionComboInsertionDeletionMovementsExample]];
+    [examples addObject:[self newSectionComboDeletionReloadMovementsExample]];
     [examples addObject:[self newSectionComboInsertionDeletionReloadMovementExample]];
     
     return [examples copy];
@@ -172,6 +173,16 @@
     return example;
 }
 
+- (TableExample *)newSectionComboDeletionReloadMovementsExample {
+    // a, b, c, d
+    // b, a', d
+    NSArray *const sourceSections = @[ TableSection(@"a", @"a", nil), TableSection(@"b", nil, nil), TableSection(@"c", nil, nil), TableSection(@"d", nil, nil) ];
+    NSArray *const destinationSections = @[ TableSection(@"b", nil, nil), TableSection(@"a", @"a'", nil), TableSection(@"d", nil, nil) ];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+reload+movements" title:@"Deletion + Reload + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
 - (TableExample *)newSectionComboInsertionDeletionReloadMovementExample {
     // a, b, c
     // b, d, a', e
@@ -202,6 +213,16 @@
     [examples addObject:[self newRowMovementsWithSectionMovementExample]];
     [examples addObject:[self newRowMovementsToInsertedSectionExample]];
     [examples addObject:[self newRowMovementsFromDeletedSectionExample]];
+    [examples addObject:[self newRowComboInsertionDeletionExample]];
+    [examples addObject:[self newRowComboInsertionReloadExample]];
+    [examples addObject:[self newRowComboInsertionMovementsExample]];
+    [examples addObject:[self newRowComboDeletionReloadExample]];
+    [examples addObject:[self newRowComboDeletionMovementsExample]];
+    [examples addObject:[self newRowComboReloadMovementsExample]];
+    [examples addObject:[self newRowComboInsertionDeletionReloadExample]];
+    [examples addObject:[self newRowComboInsertionDeletionMovementExample]];
+    [examples addObject:[self newRowComboDeletionReloadMovementsExample]];
+    [examples addObject:[self newRowComboInsertionDeletionReloadMovementExample]];
     
     return [examples copy];
 }
@@ -402,6 +423,136 @@
     NSArray *const destinationSections = @[ TableSection(@"b", nil, destinationItemsB) ];
     
     TableExample *const example = [[TableExample alloc] initWithIdentifier:@"movements-from-deleted-section" title:@"Movement from deleted section" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboInsertionDeletionExample {
+    // a, b
+    // c, b
+    NSArray *const sourceItems = @[ @"a", @"b" ];
+    NSArray *const destinationItems = @[ @"c", @"b" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+deletion" title:@"Insertion + Deletion" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboInsertionReloadExample {
+    // a, b
+    // c, d, a, e, b', f
+    NSArray *const sourceItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b"] ];
+    NSArray *const destinationItems = @[ @"c", @"d", @"a", @"e", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b'"], @"f" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+reload" title:@"Insertion + Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboInsertionMovementsExample {
+    // a, b, c, d
+    // e, c, b, d, f, a
+    NSArray *const sourceItems = @[ @"a", @"b", @"c", @"d" ];
+    NSArray *const destinationItems = @[ @"e", @"c", @"b", @"d", @"f", @"a" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+movements" title:@"Insertion + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboDeletionReloadExample {
+    // a, b, c, d
+    // b, d'
+    NSArray *const sourceItems = @[ @"a", @"b", @"c", [[TableExampleItem alloc] initWithIdentifier:@"d" title:@"d"] ];
+    NSArray *const destinationItems = @[ @"b", [[TableExampleItem alloc] initWithIdentifier:@"d" title:@"d'"] ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+reload" title:@"Deletion + Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboDeletionMovementsExample {
+    // a, b, c, d, e
+    // b, e, c
+    NSArray *const sourceItems = @[ @"a", @"b", @"c", @"d", @"e" ];
+    NSArray *const destinationItems = @[ @"b", @"e", @"c" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+movements" title:@"Deletion + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboReloadMovementsExample {
+    // a, b, c
+    // c, b, a'
+    NSArray *const sourceItems = @[ [[TableExampleItem alloc] initWithIdentifier:@"a" title:@"a"], @"b", @"c" ];
+    NSArray *const destinationItems = @[ @"c", @"b", [[TableExampleItem alloc] initWithIdentifier:@"a" title:@"a'"] ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"reload+movements" title:@"Reload + Movements" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboInsertionDeletionReloadExample {
+    // a, b, c
+    // a, d, b', e
+    NSArray *const sourceItems = @[ @"a", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b"], @"c" ];
+    NSArray *const destinationItems = @[ @"a", @"d", [[TableExampleItem alloc] initWithIdentifier:@"b" title:@"b'"], @"e" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+deletion+reload" title:@"Insertion + Deletion + Reload" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboInsertionDeletionMovementExample {
+    // a, b, c
+    // b, d, a, e
+    NSArray *const sourceItems = @[ @"a", @"b", @"c" ];
+    NSArray *const destinationItems = @[ @"b", @"d", @"a", @"e" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+deletion+movement" title:@"Insertion + Deletion + Movement" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboDeletionReloadMovementsExample {
+    // a, b, c, d
+    // b, a', d
+    NSArray *const sourceItems = @[ [[TableExampleItem alloc] initWithIdentifier:@"a" title:@"a"], @"b", @"c", @"d" ];
+    NSArray *const destinationItems = @[ @"b", [[TableExampleItem alloc] initWithIdentifier:@"a" title:@"a'"], @"d" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"deletion+reload+movement" title:@"Deletion + Reload + Movement" sourceTableSections:sourceSections destinationTableSections:destinationSections];
+    return example;
+}
+
+- (TableExample *)newRowComboInsertionDeletionReloadMovementExample {
+    // a, b, c
+    // b, d, a', e
+    NSArray *const sourceItems = @[ [[TableExampleItem alloc] initWithIdentifier:@"a" title:@"a"], @"b", @"c" ];
+    NSArray *const destinationItems = @[ @"b", @"d", [[TableExampleItem alloc] initWithIdentifier:@"a" title:@"a'"], @"e" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    TableExample *const example = [[TableExample alloc] initWithIdentifier:@"insertion+deletion+reload+movement" title:@"Insertion + Deletion + Reload + Movement" sourceTableSections:sourceSections destinationTableSections:destinationSections];
     return example;
 }
 

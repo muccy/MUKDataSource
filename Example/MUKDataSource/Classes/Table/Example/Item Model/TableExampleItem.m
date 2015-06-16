@@ -32,7 +32,7 @@
         return [self.identifier isEqual:item.identifier] && [self.title isEqualToString:item.title];
     }
     
-    return self;
+    return NO;
 }
 
 - (NSUInteger)hash {
