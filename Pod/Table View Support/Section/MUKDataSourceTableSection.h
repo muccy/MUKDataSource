@@ -10,7 +10,7 @@
 #import <MUKDataSource/MUKDataSourceContentSection.h>
 #import <MUKDataSource/MUKDataSourceIdentifiable.h>
 
-@interface MUKDataSourceTableSection : NSObject <MUKDataSourceContentSection, MUKDataSourceIdentifiable>
+@interface MUKDataSourceTableSection : NSObject <MUKDataSourceContentSection>
 @property (nonatomic, copy, readonly) NSString *headerTitle;
 @property (nonatomic, copy, readonly) NSString *footerTitle;
 - (instancetype)initWithIdentifier:(id<NSCopying>)identifier items:(NSArray *)items headerTitle:(NSString *)headerTitle footerTitle:(NSString *)footerTitle;

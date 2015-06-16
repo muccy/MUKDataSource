@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1B41D30D00285C0F4F23CD5A"
+               BlueprintIdentifier = "799BD8DA909ECFDF4C370CED"
                BuildableName = "libPods-MUKDataSourceTests-MUKDataSource.a"
                BlueprintName = "Pods-MUKDataSourceTests-MUKDataSource"
                ReferencedContainer = "container:Pods.xcodeproj">

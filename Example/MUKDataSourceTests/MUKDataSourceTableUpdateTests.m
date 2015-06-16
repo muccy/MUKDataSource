@@ -49,11 +49,11 @@
 
 #pragma mark -
 
-@interface MUKDataSourceTableUpdateTests : XCTestCase
+@interface MUKDataSourceSectionedContentUpdateTests : XCTestCase
 
 @end
 
-@implementation MUKDataSourceTableUpdateTests
+@implementation MUKDataSourceSectionedContentUpdateTests
 
 - (void)testSectionInsertion {
     NSArray *const sourceSections = @[ TableSection(@"a", nil, nil), TableSection(@"b", nil, nil) ];

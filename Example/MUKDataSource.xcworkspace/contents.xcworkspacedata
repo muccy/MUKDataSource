@@ -13,9 +13,23 @@
       <FileRef
          location = "group:MUKDataSourceIdentifiable.h">
       </FileRef>
-      <FileRef
-         location = "group:MUKDataSourceContentSection.h">
-      </FileRef>
+      <Group
+         location = "group:Sectioned Content"
+         name = "Sectioned Content">
+         <FileRef
+            location = "group:MUKDataSourceContentSection.h">
+         </FileRef>
+         <Group
+            location = "group:Update"
+            name = "Update">
+            <FileRef
+               location = "group:MUKDataSourceSectionedContentUpdate.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceSectionedContentUpdate.m">
+            </FileRef>
+         </Group>
+      </Group>
       <Group
          location = "group:Table View Support"
          name = "Table View Support">

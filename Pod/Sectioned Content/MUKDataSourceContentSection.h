@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MUKDataSource/MUKDataSourceIdentifiable.h>
 
-@protocol MUKDataSourceContentSection <NSObject>
+@protocol MUKDataSourceContentSection <MUKDataSourceIdentifiable>
 @required
 @property (nonatomic, copy, readonly) NSArray *items;
 @end
