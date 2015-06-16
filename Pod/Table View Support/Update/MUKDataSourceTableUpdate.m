@@ -10,6 +10,34 @@
 #import "MUKDataSourceTableSection.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 
+static MUKDataSourceTableUpdateSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet *movements)
+{
+    for (MUKDataSourceTableUpdateSectionMovement *movement in movements) {
+        if (movement.destinationIndex == idx) {
+            return movement;
+        }
+    } // for
+    
+    return nil;
+}
+
+static MUKDataSourceTableUpdateSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet *movements)
+{
+    for (MUKDataSourceTableUpdateSectionMovement *movement in movements) {
+        if (movement.sourceIndex == idx) {
+            return movement;
+        }
+    } // for
+    
+    return nil;
+}
+
+static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
+    return [NSString stringWithFormat:@"(%lu, %lu)", (unsigned long)indexPath.section, (unsigned long)indexPath.row];
+}
+
+#pragma mark -
+
 @implementation MUKDataSourceTableUpdateSectionMovement
 
 - (instancetype)initWithSourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex
@@ -47,7 +75,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ – %lu -> %lu", [super description], (unsigned long)self.sourceIndex, (unsigned long)self.destinationIndex];
+    return [NSString stringWithFormat:@"%@ %lu -> %lu", [super description], (unsigned long)self.sourceIndex, (unsigned long)self.destinationIndex];
 }
 
 @end
@@ -88,6 +116,10 @@
 
 - (NSUInteger)hash {
     return 903 ^ [self.sourceIndexPath hash] ^ [self.destinationIndexPath hash];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ %@ -> %@", [super description], IndexPathDescription(self.sourceIndexPath), IndexPathDescription(self.destinationIndexPath)];
 }
 
 @end
@@ -162,7 +194,7 @@
     [tableView endUpdates];
 }
 
-#pragma mark - Private
+#pragma mark Private
 
 - (void)buildUpdateInfosWithDelta:(MUKArrayDelta *)delta {
     _insertedSectionIndexes = delta.insertedIndexes;
@@ -280,7 +312,7 @@
         [insertedRowIndexPaths enumerateObjectsAtIndexes:validInsertedRowIndexPathIndexes options:0 usingBlock:^(NSIndexPath *insertedIndexPath, NSUInteger insertedIndexPathIndex, BOOL *stop)
         {
             MUKDataSourceTableSection *const insertedItemSection = delta.destinationArray[insertedIndexPath.section];
-            if ([insertedItemSection isEqualToDataSourceTableSection:deletedItemSection])
+            if ([insertedItemSection.identifier isEqual:deletedItemSection.identifier])
             {
                 // Same section: do not inspect this case
                 return;
@@ -303,6 +335,9 @@
                 // Exclude those index paths
                 [validDeletedRowIndexPathIndexes removeIndex:deletedIndexPathIndex];
                 [validInsertedRowIndexPathIndexes removeIndex:insertedIndexPathIndex];
+                
+                // We are done with this deleted item
+                *stop = YES;
             }
         }]; // insertedRowIndexPaths enumerateObjectsAtIndexes:
     }]; // deletedRowIndexPaths enumerateObjectsUsingBlock:
@@ -348,29 +383,20 @@
         } // if
     } // for
     
+    for (MUKDataSourceTableUpdateRowMovement *rowMovement in self.rowMovements) {
+        if (MovementWithDestinationIndex(rowMovement.destinationIndexPath.section, self.sectionMovements))
+        {
+            // Throws "-[__NSArrayM insertObject:atIndex:]: object cannot be nil"
+            // when you move a row to a moved section
+            return YES;
+        }
+    } // for
+    
+    // There other errors managed in code, like:
+    // - moving a row to newly inserted section
+    // - moving a row from a deleted section
+    
     return NO;
-}
-
-static MUKDataSourceTableUpdateSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet *movements)
-{
-    for (MUKDataSourceTableUpdateSectionMovement *movement in movements) {
-        if (movement.destinationIndex == idx) {
-            return movement;
-        }
-    } // for
-    
-    return nil;
-}
-
-static MUKDataSourceTableUpdateSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet *movements)
-{
-    for (MUKDataSourceTableUpdateSectionMovement *movement in movements) {
-        if (movement.sourceIndex == idx) {
-            return movement;
-        }
-    } // for
-    
-    return nil;
 }
 
 @end

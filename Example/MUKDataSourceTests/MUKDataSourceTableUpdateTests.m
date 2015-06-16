@@ -796,6 +796,236 @@
     XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItems.count);
 }
 
+- (void)testRowMovements {
+    // a, b, c, d
+    // c, a, d, b
+    NSArray *const sourceItems = @[ @"a", @"b", @"c", @"d" ];
+    NSArray *const destinationItems = @[ @"c", @"a", @"d", @"b" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", nil, sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", nil, destinationItems)];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], sourceItems.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    // 0->1, 1->3
+    NSSet *const rowMovements = [NSSet setWithObjects:[[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] destinationIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]], [[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] destinationIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]], nil];
+    
+    XCTAssertEqual(update.insertedSectionIndexes.count, 0);
+    XCTAssertEqual(update.deletedSectionIndexes.count, 0);
+    XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqualObjects(update.rowMovements, rowMovements);
+    
+    XCTAssertFalse(update.needsReloadData);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
+}
+
+- (void)testRowMovementBetweenSections {
+    NSArray *const sourceItemsA = @[ @"a", @"b" ];
+    NSArray *const sourceItemsB = @[ @"c", @"d", @"e", @"f" ];
+
+    NSArray *const destinationItemsA = @[ @"c", @"b", @"f", @"d" ];
+    NSArray *const destinationItemsB = @[ @"a", @"e" ];
+    
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, sourceItemsA), TableSection(@"b", nil, sourceItemsB) ];
+    NSArray *const destinationSections = @[ TableSection(@"a", nil, destinationItemsA), TableSection(@"b", nil, destinationItemsB) ];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], sourceItemsA.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:1], sourceItemsB.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    // a: (0, 0) -> (1, 0)
+    // b: -
+    // c: (1, 0) -> (0, 0)
+    // d: (1, 1) -> (0, 3)
+    // e: -
+    // f: (1, 3) -> (0, 2)
+    NSSet *const rowMovements = [NSSet setWithObjects:[[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] destinationIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]], [[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] destinationIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]], [[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:1 inSection:1] destinationIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]], [[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:3 inSection:1] destinationIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]], nil];
+    
+    XCTAssertEqual(update.insertedSectionIndexes.count, 0);
+    XCTAssertEqual(update.deletedSectionIndexes.count, 0);
+    XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqualObjects(update.rowMovements, rowMovements);
+    
+    XCTAssertFalse(update.needsReloadData);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsA.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItemsB.count);
+}
+
+- (void)testRowMovementsWithSectionReload {
+    // a, b, c, d
+    // c, a, d, b
+    NSArray *const sourceItems = @[ @"a", @"b", @"c", @"d" ];
+    NSArray *const destinationItems = @[ @"c", @"a", @"d", @"b" ];
+    
+    NSArray *const sourceSections = @[TableSection(@"a", @"A", sourceItems)];
+    NSArray *const destinationSections = @[TableSection(@"a", @"A'", destinationItems)];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], sourceItems.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    // 0->1, 1->3
+    NSSet *const rowMovements = [NSSet setWithObjects:[[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] destinationIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]], [[MUKDataSourceTableUpdateRowMovement alloc] initWithSourceIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] destinationIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]], nil];
+    NSIndexSet *const reloadedSections = [NSIndexSet indexSetWithIndex:0];
+    
+    XCTAssertEqual(update.insertedSectionIndexes.count, 0);
+    XCTAssertEqual(update.deletedSectionIndexes.count, 0);
+    XCTAssertEqualObjects(update.reloadedSectionIndexes, reloadedSections);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqualObjects(update.rowMovements, rowMovements);
+    
+    XCTAssertFalse(update.needsReloadData);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
+}
+
+- (void)testRowMovementWithSectionMovement {
+    NSArray *const sourceItemsA = @[ @"a", @"b" ];
+    NSArray *const sourceItemsB = @[ @"c", @"d" ];
+    NSArray *const sourceItemsC = @[ @"e", @"f" ];
+    
+    NSArray *const destinationItemsA = @[ @"b" ];
+    NSArray *const destinationItemsC = @[ @"e", @"f" ];
+    NSArray *const destinationItemsB = @[ @"c", @"a", @"d" ];
+    
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, sourceItemsA), TableSection(@"b", nil, sourceItemsB), TableSection(@"c", nil, sourceItemsC) ];
+    NSArray *const destinationSections = @[ TableSection(@"a", nil, destinationItemsA), TableSection(@"c", nil, destinationItemsC), TableSection(@"b", nil, destinationItemsB) ];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], sourceItemsA.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:1], sourceItemsB.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:2], sourceItemsC.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+
+    XCTAssertEqual(update.insertedSectionIndexes.count, 0);
+    XCTAssertEqual(update.deletedSectionIndexes.count, 0);
+    XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.rowMovements.count, 0);
+    
+    XCTAssert(update.needsReloadData);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsA.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItemsC.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:2], destinationItemsB.count);
+}
+
+- (void)testRowMovementToInsertedSection {
+    NSArray *const sourceItemsA = @[ @"a", @"b" ];
+    
+    NSArray *const destinationItemsA = @[ @"b" ];
+    NSArray *const destinationItemsB = @[ @"c", @"a" ];
+    
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, sourceItemsA) ];
+    NSArray *const destinationSections = @[ TableSection(@"a", nil, destinationItemsA), TableSection(@"b", nil, destinationItemsB) ];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], sourceItemsA.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    NSIndexSet *const insertedSections = [NSIndexSet indexSetWithIndex:1];
+    NSSet *const deletedRowIndexPaths = [NSSet setWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil];
+    
+    XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
+    XCTAssertEqual(update.deletedSectionIndexes.count, 0);
+    XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqual(update.insertedRowIndexPaths.count, 0);
+    XCTAssertEqualObjects(update.deletedRowIndexPaths, deletedRowIndexPaths);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.rowMovements.count, 0);
+    
+    XCTAssertFalse(update.needsReloadData);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsA.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItemsB.count);
+}
+
+- (void)testRowMovementFromDeletedSection {
+    NSArray *const sourceItemsA = @[ @"a", @"b" ];
+    NSArray *const sourceItemsB = @[ @"c" ];
+
+    NSArray *const destinationItemsB = @[ @"c", @"a" ];
+    
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, sourceItemsA), TableSection(@"b", nil, sourceItemsB) ];
+    NSArray *const destinationSections = @[ TableSection(@"b", nil, destinationItemsB) ];
+    
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    UITableView *const tableView = [self newTableViewWithSections:sourceSections dataSource:dataSource];
+    XCTAssertEqual([tableView numberOfSections], sourceSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], sourceItemsA.count);
+    
+    MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
+    
+    NSIndexSet *const deletedSections = [NSIndexSet indexSetWithIndex:0];
+    NSSet *const insertedRowIndexPaths = [NSSet setWithObjects:[NSIndexPath indexPathForRow:1 inSection:0], nil];
+    
+    XCTAssertEqual(update.insertedSectionIndexes.count, 0);
+    XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
+    XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqualObjects(update.insertedRowIndexPaths, insertedRowIndexPaths);
+    XCTAssertEqual(update.deletedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedRowIndexPaths.count, 0);
+    XCTAssertEqual(update.rowMovements.count, 0);
+    
+    XCTAssertFalse(update.needsReloadData);
+    
+    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertEqual([tableView numberOfSections], destinationSections.count);
+    XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsB.count);
+}
+
 #pragma mark - Private
 
 - (UITableView *)newTableViewWithSections:(NSArray *)sections dataSource:(MUKDataSource *)dataSource
