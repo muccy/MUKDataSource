@@ -83,7 +83,13 @@
     return [[MUKDataSourceTableUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
 
+- (void)registerReusableViewsForTableView:(UITableView *)tableView {
+    //
+}
+
 @end
+
+#pragma mark - 
 
 @implementation MUKDataSource (CollectionViewSupport)
 
@@ -109,6 +115,11 @@
 - (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections
 {
     return [[MUKDataSourceCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
+}
+
+- (void)registerReusableViewsForCollectionView:(UICollectionView *)collectionView
+{
+    //
 }
 
 @end

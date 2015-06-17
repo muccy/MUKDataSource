@@ -27,6 +27,7 @@
 - (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)tableSections;
 - (MUKDataSourceTableSection *)tableSectionAtIndex:(NSInteger)idx;
 - (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections;
+- (void)registerReusableViewsForTableView:(UITableView *)tableView;
 @end
 
 @interface MUKDataSource (UITableViewDataSourceImplementedMethods) <UITableViewDataSource>
@@ -42,6 +43,7 @@
 - (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *)sections;
 - (MUKDataSourceCollectionSection *)collectionSectionAtIndex:(NSInteger)idx;
 - (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections;
+- (void)registerReusableViewsForCollectionView:(UICollectionView *)collectionView;
 @end
 
 @interface MUKDataSource (UICollectionViewDataSourceImplementedMethods) <UICollectionViewDataSource>

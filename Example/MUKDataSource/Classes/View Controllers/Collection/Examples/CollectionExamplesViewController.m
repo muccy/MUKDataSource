@@ -1,32 +1,31 @@
 //
-//  TableExamplesViewController.m
+//  CollectionExamplesViewController.m
 //  MUKDataSource
 //
 //  Created by Marco on 17/06/15.
 //  Copyright (c) 2015 MUKit. All rights reserved.
 //
 
-#import "TableExamplesViewController.h"
-#import "TableExamplesDataSource.h"
+#import "CollectionExamplesViewController.h"
+#import "CollectionExamplesDataSource.h"
 #import "SectionedContentExample.h"
-#import "TablePlayground.h"
 
-@implementation TableExamplesViewController
+@interface CollectionExamplesViewController ()
+@end
+
+@implementation CollectionExamplesViewController
 
 #pragma mark - Overrides
 
 - (SectionedContentExamplesDataSource *)newDataSource {
-    return [[TableExamplesDataSource alloc] init];
+    return [[CollectionExamplesDataSource alloc] init];
 }
 
 - (NSString *)segueIdentifierForSelectedExample:(Example *)example {
     if ([example isKindOfClass:[SectionedContentExample class]]) {
         return @"Show Example";
     }
-    else if ([example isKindOfClass:[TablePlayground class]]) {
-        return @"Show Playground";
-    }
-    
+
     return nil;
 }
 

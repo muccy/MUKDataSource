@@ -87,6 +87,16 @@
                location = "group:MUKDataSourceCollectionUpdate.m">
             </FileRef>
          </Group>
+         <Group
+            location = "group:View Controller"
+            name = "View Controller">
+            <FileRef
+               location = "group:MUKCollectionViewController.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKCollectionViewController.m">
+            </FileRef>
+         </Group>
       </Group>
    </Group>
    <FileRef

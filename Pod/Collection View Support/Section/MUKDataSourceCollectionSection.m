@@ -23,4 +23,30 @@
     return self;
 }
 
+- (BOOL)isEqualToDataSourceCollectionSection:(MUKDataSourceCollectionSection *)collectionSection
+{
+    BOOL const sameIdentifier = (!self.identifier && !collectionSection.identifier) || [self.identifier isEqual:collectionSection.identifier];
+    BOOL const sameItems = (!self.items && !collectionSection.items) || [self.items isEqualToArray:collectionSection.items];
+   
+    return sameIdentifier && sameItems;
+}
+
+#pragma mark - Overrides
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    
+    if ([object isKindOfClass:[self class]]) {
+        return [self isEqualToDataSourceCollectionSection:object];
+    }
+    
+    return NO;
+}
+
+- (NSUInteger)hash {
+    return 634289 ^ [self.identifier hash] ^ [self.items hash];
+}
+
 @end

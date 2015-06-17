@@ -46,32 +46,6 @@
             </objects>
             <point key="canvasLocation" x="1547" y="-366"/>
         </scene>
-        <!--Collection View Example-->
-        <scene sceneID="v3e-iR-fHh">
-            <objects>
-                <collectionViewController id="6rq-eH-WVo" customClass="CollectionExampleViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="3SN-Ky-6Mj">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cjT-y5-fU7">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="6rq-eH-WVo" id="lmp-Dj-V5B"/>
-                            <outlet property="delegate" destination="6rq-eH-WVo" id="dJm-Dk-X52"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" title="Collection View Example" id="fQT-Yh-cwD"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xT8-lH-6C1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1547" y="338"/>
-        </scene>
         <!--Table Playground View Controller-->
         <scene sceneID="GEm-yb-QAd">
             <objects>
@@ -139,12 +113,77 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="6rq-eH-WVo" kind="relationship" relationship="rootViewController" id="7JH-1i-bj4"/>
+                        <segue destination="cTm-ym-Vjq" kind="relationship" relationship="rootViewController" id="kd9-ie-9JS"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zlq-vs-ZsM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="735" y="338"/>
+        </scene>
+        <!--Collection View Examples-->
+        <scene sceneID="DEU-jY-hcN">
+            <objects>
+                <tableViewController id="cTm-ym-Vjq" customClass="CollectionExamplesViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="9Hr-cF-i3Q">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="cTm-ym-Vjq" id="bKM-NQ-yeB"/>
+                            <outlet property="delegate" destination="cTm-ym-Vjq" id="oHX-xb-VrJ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Collection View Examples" id="w4y-2V-dfy"/>
+                    <connections>
+                        <segue destination="H7d-TD-a7L" kind="show" identifier="Show Example" id="gma-mP-SCq"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XmM-uo-ZrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1547" y="338"/>
+        </scene>
+        <!--Collection Example View Controller-->
+        <scene sceneID="Iuc-SH-5HJ">
+            <objects>
+                <collectionViewController id="H7d-TD-a7L" customClass="CollectionExampleViewController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="A07-ct-bmv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dN8-Gi-AG9">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells/>
+                        <connections>
+                            <outlet property="dataSource" destination="H7d-TD-a7L" id="teu-23-mMA"/>
+                            <outlet property="delegate" destination="H7d-TD-a7L" id="UzM-27-lGf"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xtw-CH-jX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2252" y="340"/>
+        </scene>
+        <!--Table Example View Controller-->
+        <scene sceneID="i61-4O-CzI">
+            <objects>
+                <tableViewController id="3Fi-QQ-nQZ" customClass="TableExampleViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="JIl-FD-GGQ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="3Fi-QQ-nQZ" id="hyj-Nh-aej"/>
+                            <outlet property="delegate" destination="3Fi-QQ-nQZ" id="Ufg-uP-uqf"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7oK-16-FhV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2259" y="-366"/>
         </scene>
     </scenes>
 </document>

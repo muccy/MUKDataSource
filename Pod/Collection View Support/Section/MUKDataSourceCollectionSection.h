@@ -11,4 +11,5 @@
 
 @interface MUKDataSourceCollectionSection : NSObject <MUKDataSourceContentSection>
 - (instancetype)initWithIdentifier:(id<NSCopying>)identifier items:(NSArray *)items;
+- (BOOL)isEqualToDataSourceCollectionSection:(MUKDataSourceCollectionSection *)collectionSection;
 @end
