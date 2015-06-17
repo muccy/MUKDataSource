@@ -64,6 +64,30 @@
             </FileRef>
          </Group>
       </Group>
+      <Group
+         location = "group:Collection View Support"
+         name = "Collection View Support">
+         <Group
+            location = "group:Section"
+            name = "Section">
+            <FileRef
+               location = "group:MUKDataSourceCollectionSection.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceCollectionSection.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Update"
+            name = "Update">
+            <FileRef
+               location = "group:MUKDataSourceCollectionUpdate.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceCollectionUpdate.m">
+            </FileRef>
+         </Group>
+      </Group>
    </Group>
    <FileRef
       location = "group:MUKDataSource.xcodeproj">
