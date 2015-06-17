@@ -107,7 +107,15 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
 #pragma mark - Private
 
 - (BOOL)needsToForceReloadData {
-    // Delete an item in a moved section
+    // Insert an item in a moved section (wrong update)
+    for (NSIndexPath *indexPath in self.insertedItemIndexPaths) {
+        if (MovementWithDestinationIndex(indexPath.section, self.sectionMovements))
+        {
+            return YES;
+        } // if
+    } // for
+    
+    // Delete an item in a moved section (collection view freezes)
     for (NSIndexPath *indexPath in self.deletedItemIndexPaths) {
         if (MovementWithSourceIndex(indexPath.section, self.sectionMovements))
         {

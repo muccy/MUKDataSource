@@ -631,7 +631,7 @@ static NSTimeInterval const kUpdateTimeout = 1.0;
     }]);
     [self waitForExpectationsWithTimeout:kUpdateTimeout handler:nil];
     
-    XCTAssertFalse(update.needsReloadData);
+    XCTAssert(update.needsReloadData);
     XCTAssertEqual([collectionView numberOfSections], destinationSections.count);
     XCTAssertEqual([collectionView numberOfItemsInSection:1], destinationItems.count);
 }

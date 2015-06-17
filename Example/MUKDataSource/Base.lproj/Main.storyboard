@@ -167,23 +167,5 @@
             </objects>
             <point key="canvasLocation" x="2252" y="340"/>
         </scene>
-        <!--Table Example View Controller-->
-        <scene sceneID="i61-4O-CzI">
-            <objects>
-                <tableViewController id="3Fi-QQ-nQZ" customClass="TableExampleViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="JIl-FD-GGQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="3Fi-QQ-nQZ" id="hyj-Nh-aej"/>
-                            <outlet property="delegate" destination="3Fi-QQ-nQZ" id="Ufg-uP-uqf"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7oK-16-FhV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2259" y="-366"/>
-        </scene>
     </scenes>
 </document>
