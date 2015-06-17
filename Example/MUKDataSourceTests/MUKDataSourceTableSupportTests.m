@@ -27,10 +27,10 @@
     XCTAssertNil([dataSource tableSectionAtIndex:3]);
     XCTAssertNoThrow([dataSource tableSectionAtIndex:3]);
     
-    XCTAssertEqualObjects([dataSource tableRowItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]], [sections[0] items][0]);
-    XCTAssertEqualObjects([dataSource tableRowItemAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]], [sections[2] items][1]);
-    XCTAssertNil([dataSource tableRowItemAtIndexPath:[NSIndexPath indexPathForRow:10 inSection:2]]);
-    XCTAssertNoThrow([dataSource tableRowItemAtIndexPath:[NSIndexPath indexPathForRow:10 inSection:2]]);
+    XCTAssertEqualObjects([dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]], [sections[0] items][0]);
+    XCTAssertEqualObjects([dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]], [sections[2] items][1]);
+    XCTAssertNil([dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:10 inSection:2]]);
+    XCTAssertNoThrow([dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:10 inSection:2]]);
 }
 
 - (void)testSectionEdit {

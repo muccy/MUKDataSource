@@ -7,636 +7,663 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		015439DF9BB69C8539DC2173 /* Pods-MUKDataSourceTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 58140F1AE1C1982260E0981B /* Pods-MUKDataSourceTests-dummy.m */; };
-		062EB39E3378E3A247FB4758 /* MUKArrayDelta.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CCB11EF0689749D80C2318B /* MUKArrayDelta.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		0A8283137EDFF654D6E024AD /* MUKDataSourceContentSection.h in Headers */ = {isa = PBXBuildFile; fileRef = EC8C5D72B3C3B7D2A9C83C5D /* MUKDataSourceContentSection.h */; };
-		0D79C7504AA8573F9C6DC68F /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B9C44444B7FCB29CBF0AF15B /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m */; };
-		11C9B53F26E10D4D4031260C /* FBKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9C5F01B657B8A5AED67A858 /* FBKVOController.m */; };
-		19526C7FA0A04C6223D9B8BA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		29F5C15A5E42802152941E9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		2A9EC6C5251E0DD2A4A1FDA0 /* MUKTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BDEDBD5F869C05F37EFA183D /* MUKTableViewController.h */; };
-		342293EB943E3D3086561313 /* MUKDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BD62BF617904C976BE827819 /* MUKDataSource.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		34428DE8D8BD34FD72075E64 /* MUKTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BDEDBD5F869C05F37EFA183D /* MUKTableViewController.h */; };
-		36E15A5A78945028B1D6FE31 /* MUKDataSourceIdentifiable.h in Headers */ = {isa = PBXBuildFile; fileRef = AD6E34E40B1600F2C71BC30F /* MUKDataSourceIdentifiable.h */; };
-		41FE0F5C81F688F185996AA9 /* MUKDataSourceTableUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBFC2FC25D88FDA3B67762 /* MUKDataSourceTableUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		4507AF614F122D82B39EA324 /* MUKDataSourceContentSection.h in Headers */ = {isa = PBXBuildFile; fileRef = EC8C5D72B3C3B7D2A9C83C5D /* MUKDataSourceContentSection.h */; };
-		4DD445A075B626F565F8513E /* MUKDataSourceSectionedContentUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 391CED32AE342863E5D0C07C /* MUKDataSourceSectionedContentUpdate.h */; };
-		594E747A84A3E5810792030E /* MUKDataSourceSectionedContentUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0928832C923D722C7E2FB4C9 /* MUKDataSourceSectionedContentUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		5C0D98799D68BE860E7A0544 /* Pods-MUKArrayDelta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0DD13BF9481124B98A3CFF /* Pods-MUKArrayDelta-dummy.m */; };
-		5CECAEEEFD49507D629FBA26 /* MUKDataSourceTableUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B8F35D93316152C528371D0 /* MUKDataSourceTableUpdate.h */; };
-		62B0005AA9092043FD6A31AE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		6AB38680B932D29560DFF03F /* MUKDataSourceIdentifiable.h in Headers */ = {isa = PBXBuildFile; fileRef = AD6E34E40B1600F2C71BC30F /* MUKDataSourceIdentifiable.h */; };
-		707222A59A3A514E4CBD6A1C /* MUKDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BD62BF617904C976BE827819 /* MUKDataSource.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		70CDB60A662D546AB6870530 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		72A2E0E4FBE2FA5C30ED603E /* MUKDataSourceTableSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 913E315CFBC55E6121462CF7 /* MUKDataSourceTableSection.h */; };
-		72F47B6EEFDAB6FBEE3C1022 /* MUKDataSourceTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = F1143F0CB9EBBBB41AEEC646 /* MUKDataSourceTableSection.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		7763630BABC48808A3083DF4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		79DCEC791352D2B46405889C /* MUKArrayDelta.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CCB11EF0689749D80C2318B /* MUKArrayDelta.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		7CDDA552432ECB889B28E56A /* Pods-KVOController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2224D896EBEF81D1377BBB40 /* Pods-KVOController-dummy.m */; };
-		7E8662842EFC9723EB87C282 /* MUKDataSourceTableUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFBFC2FC25D88FDA3B67762 /* MUKDataSourceTableUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		8656458858E8707D18275173 /* FBKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9C5F01B657B8A5AED67A858 /* FBKVOController.m */; };
-		8A6C785DA1ACFE4FB3237B3E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		9992C8E3FDE778B6558D08C3 /* MUKArrayDelta.h in Headers */ = {isa = PBXBuildFile; fileRef = E8264CF63EC003934632BE58 /* MUKArrayDelta.h */; };
-		99B274AFBB33B1733DF28527 /* Pods-MUKDataSourceTests-KVOController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC66389BC83019CC0C0678D /* Pods-MUKDataSourceTests-KVOController-dummy.m */; };
-		9FDCB7BDE2657EB5BEAC8541 /* MUKDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = BD9C31C4C3388BD14DBDE2AB /* MUKDataSource.h */; };
-		A312BBDAC45EB38ABF1848C1 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE57EBE199B0CE5F5FAAF65 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m */; };
-		A48C018B91A18FFE69910A84 /* MUKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F061D9BD5A5D52E74F6A625A /* MUKTableViewController.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		A769038E09DE7D5C230C6E69 /* MUKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F061D9BD5A5D52E74F6A625A /* MUKTableViewController.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		A9F80B08B460FA6FBDFBA7C6 /* MUKDataSourceSectionedContentUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0928832C923D722C7E2FB4C9 /* MUKDataSourceSectionedContentUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		AF8A0DCDCAD1ACA03EBEE6CA /* MUKDataSourceSectionedContentUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 391CED32AE342863E5D0C07C /* MUKDataSourceSectionedContentUpdate.h */; };
-		B5B6A9B9F3999C6C4CC33FED /* MUKArrayDelta.h in Headers */ = {isa = PBXBuildFile; fileRef = E8264CF63EC003934632BE58 /* MUKArrayDelta.h */; };
-		C8B26897199996C1557BBD82 /* MUKDataSourceTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = F1143F0CB9EBBBB41AEEC646 /* MUKDataSourceTableSection.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
-		D9B88E337187BDB583726F21 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		DC9940E8C485134420341CD2 /* Pods-MUKDataSource-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1345CC6C085A05F9CAE065 /* Pods-MUKDataSource-dummy.m */; };
-		DD308622FD19DC015117524F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75452BF09651D6A3BB7980E /* Foundation.framework */; };
-		DDA65181AAF68DBE54FF1522 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB792EB7075E36522D8DCA7 /* Pods-dummy.m */; };
-		E262BDC2E7A40CC8C25A3BFE /* FBKVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = BA33389D8EF051C5D260DA61 /* FBKVOController.h */; };
-		EC140CBA7A870C40BDAF6D05 /* MUKDataSourceTableUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B8F35D93316152C528371D0 /* MUKDataSourceTableUpdate.h */; };
-		F2C657C7D267DC878912E476 /* MUKDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = BD9C31C4C3388BD14DBDE2AB /* MUKDataSource.h */; };
-		F8AAFD182D2CDBC7665AA2EE /* MUKDataSourceTableSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 913E315CFBC55E6121462CF7 /* MUKDataSourceTableSection.h */; };
-		F946ED46608B1E95F3EEC094 /* FBKVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = BA33389D8EF051C5D260DA61 /* FBKVOController.h */; };
+		04E023E4A4DEE226FB0DD2B5 /* MUKDataSourceSectionedContentUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = EB901B8A4C610A2BE39CEBF0 /* MUKDataSourceSectionedContentUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		0931D4AC549A7F7CD8715812 /* MUKTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DE2C470F868D7661D265BEA7 /* MUKTableViewController.h */; };
+		1333B0EB1545B56BE6609971 /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F2B5FB04ABCAED9536921 /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m */; };
+		136060EC347888AF61655CA1 /* MUKDataSourceIdentifiable.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D556A6590B025C473131E54 /* MUKDataSourceIdentifiable.h */; };
+		1623E88908B888CF23086276 /* MUKDataSourceCollectionUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C4E2B3D0478880239A0DA80 /* MUKDataSourceCollectionUpdate.h */; };
+		185AE00BFD3D012662B3447B /* MUKDataSourceCollectionSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F83580B953D8E3E73A3B60 /* MUKDataSourceCollectionSection.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		1949819F4DF9D76D2A855BA2 /* MUKDataSourceSectionedContentUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = A279FD912C4C414F1AC3803A /* MUKDataSourceSectionedContentUpdate.h */; };
+		1C209674751C94A894711406 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		1F43467157A81BFC9743AB93 /* MUKDataSourceTableUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C206EB979D81989C9CA859 /* MUKDataSourceTableUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		20F3474923C12374DBB695CC /* MUKDataSourceCollectionUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C4E2B3D0478880239A0DA80 /* MUKDataSourceCollectionUpdate.h */; };
+		237082D26BD29A9B78A4CA88 /* MUKDataSourceTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA81D42A1E38F005A1E136C /* MUKDataSourceTableSection.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		24E2647027A06BE5AF79113B /* MUKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6827D8CCCFFE3E603A488BB /* MUKTableViewController.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		24F46BFA0EAFC29A2E114BE3 /* MUKDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D63693C35ED91C3F7753ABA /* MUKDataSource.h */; };
+		25C4758D13A1D7582B01465A /* MUKDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D63693C35ED91C3F7753ABA /* MUKDataSource.h */; };
+		27C17C8C0BDE4E7A76B74ED9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		2985DF13FDC7A3683361BF39 /* MUKArrayDelta.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C534D56FB67BC9F53A0284 /* MUKArrayDelta.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		29DD67C4885B3288D0679E66 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A034EA25A198C094465582 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m */; };
+		324F1F1A9B48D58F47ADF01D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		34CD731ED11C7BC46B271501 /* MUKDataSourceCollectionUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 36D9F1EB29C6EF83B3D1F6CB /* MUKDataSourceCollectionUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		3779984D1BEADFD3665988E9 /* MUKDataSourceTableUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3648ABEF6CF058909B966497 /* MUKDataSourceTableUpdate.h */; };
+		3804B929E1653184EF11A53F /* MUKDataSourceCollectionUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 36D9F1EB29C6EF83B3D1F6CB /* MUKDataSourceCollectionUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		39B2EC15CFDA8DED9703EE87 /* MUKDataSourceCollectionSection.h in Headers */ = {isa = PBXBuildFile; fileRef = DF848AE323028F7D8E4F7BCD /* MUKDataSourceCollectionSection.h */; };
+		422FED3036F543661A35CBEC /* Pods-MUKDataSourceTests-KVOController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D1F911FE56231B6E880CDC7 /* Pods-MUKDataSourceTests-KVOController-dummy.m */; };
+		434154C807DFD89F18753EEE /* MUKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6827D8CCCFFE3E603A488BB /* MUKTableViewController.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		4673A01D01E455169CFF781D /* MUKDataSourceTableUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C206EB979D81989C9CA859 /* MUKDataSourceTableUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		4712B3E23023CE94A70646B5 /* FBKVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = 48679D60D7DBF62520C98682 /* FBKVOController.h */; };
+		4D957DB292B520A426DA202F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		572BCB9B7E5385BDA05E8C2F /* FBKVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = 48679D60D7DBF62520C98682 /* FBKVOController.h */; };
+		591ACF47ED389BFF1F159D8A /* MUKDataSourceTableSection.h in Headers */ = {isa = PBXBuildFile; fileRef = F3D7D2506977BD7891BA693E /* MUKDataSourceTableSection.h */; };
+		5E4B2F1991969D0ED3DC8BD1 /* MUKDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3C174F3160A4DCDE85D243 /* MUKDataSource.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		654ADFDC3431ED3C20AB0059 /* MUKDataSourceContentSection.h in Headers */ = {isa = PBXBuildFile; fileRef = CC45C9CC0C6EF5BE594DCAB4 /* MUKDataSourceContentSection.h */; };
+		697D760FD28B1685E3780F1E /* MUKArrayDelta.h in Headers */ = {isa = PBXBuildFile; fileRef = DA599CB98E62D1124BD0AA68 /* MUKArrayDelta.h */; };
+		6B218C79E50F5F9537C2E49F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		6E43896E65FF4CC3A3EBF51B /* Pods-MUKDataSource-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF09E5C2FFEE3DF80B096B /* Pods-MUKDataSource-dummy.m */; };
+		7F43E5789D0E9F8A01D3A906 /* Pods-MUKArrayDelta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B44B4B3EC9597D1278535F /* Pods-MUKArrayDelta-dummy.m */; };
+		7F72DA9075EB21A5D3F654F8 /* MUKDataSourceTableSection.h in Headers */ = {isa = PBXBuildFile; fileRef = F3D7D2506977BD7891BA693E /* MUKDataSourceTableSection.h */; };
+		88F78D436E1BEB5ACE93F831 /* MUKDataSourceIdentifiable.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D556A6590B025C473131E54 /* MUKDataSourceIdentifiable.h */; };
+		8C62726D52B5CC35B01822F6 /* MUKArrayDelta.h in Headers */ = {isa = PBXBuildFile; fileRef = DA599CB98E62D1124BD0AA68 /* MUKArrayDelta.h */; };
+		8CB3B6E3FF9416EAFEC83744 /* MUKDataSourceSectionedContentUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = A279FD912C4C414F1AC3803A /* MUKDataSourceSectionedContentUpdate.h */; };
+		8DE375942BD458533380785F /* Pods-KVOController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C1003466699715085E297174 /* Pods-KVOController-dummy.m */; };
+		9360359A2213FF8A5A6C57F6 /* MUKArrayDelta.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C534D56FB67BC9F53A0284 /* MUKArrayDelta.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		9422997412431C46F3294D6C /* MUKDataSourceContentSection.h in Headers */ = {isa = PBXBuildFile; fileRef = CC45C9CC0C6EF5BE594DCAB4 /* MUKDataSourceContentSection.h */; };
+		9AB8CBA3886988BF3B7ECCB1 /* Pods-MUKDataSourceTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF53922D734B5CFD41528F4 /* Pods-MUKDataSourceTests-dummy.m */; };
+		9AE4CEB44448A697FE15AF96 /* FBKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9572A89051B7B618887522B /* FBKVOController.m */; };
+		A4DDED889AB88CF4B8983841 /* MUKDataSourceTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA81D42A1E38F005A1E136C /* MUKDataSourceTableSection.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		B158F6BA989ACC3007E104EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		B2961663F621BAE0A1836D95 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		C0FBDEE364B06EA61B885A69 /* MUKDataSourceCollectionSection.h in Headers */ = {isa = PBXBuildFile; fileRef = DF848AE323028F7D8E4F7BCD /* MUKDataSourceCollectionSection.h */; };
+		CECED62584A4269A193B2785 /* MUKDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AE3C174F3160A4DCDE85D243 /* MUKDataSource.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		D2A306A2CA44FEF2AD000F5E /* MUKDataSourceCollectionSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F83580B953D8E3E73A3B60 /* MUKDataSourceCollectionSection.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
+		E4FA722F27208B509C257279 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A8611A1A417C0C9723E1CD /* Pods-dummy.m */; };
+		EB256A14D13FC161136E5D5F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749E13CE2D12A0D7C440177C /* Foundation.framework */; };
+		EC48A08CA985C200EF5ADDA4 /* FBKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9572A89051B7B618887522B /* FBKVOController.m */; };
+		ECDB244FD8EDE6E693C6D9F3 /* MUKDataSourceTableUpdate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3648ABEF6CF058909B966497 /* MUKDataSourceTableUpdate.h */; };
+		F3753D3B570BC9F372A98DB2 /* MUKTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DE2C470F868D7661D265BEA7 /* MUKTableViewController.h */; };
+		FE811E60CF0CAE42D902A057 /* MUKDataSourceSectionedContentUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = EB901B8A4C610A2BE39CEBF0 /* MUKDataSourceSectionedContentUpdate.m */; settings = {COMPILER_FLAGS = "-Wdocumentation"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		08463078180ACF1DAF1378F1 /* PBXContainerItemProxy */ = {
+		08D595EEBB9A659A450FAA0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 16CB8B67EDF1D5FC59107DCF;
+			remoteGlobalIDString = 68A755FDF338EEF34621DCEA;
 			remoteInfo = "Pods-MUKDataSourceTests-MUKArrayDelta";
 		};
-		0FBD0CDB83E0CC97D6DF05F5 /* PBXContainerItemProxy */ = {
+		25616E74901250BB13C32A67 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D87226B04B15DFAB476E469A;
+			remoteGlobalIDString = 51BB66EA4962EF28DAE9266A;
 			remoteInfo = "Pods-MUKDataSourceTests-KVOController";
 		};
-		3BF452A4079401C208F559EE /* PBXContainerItemProxy */ = {
+		50874CE63735786E7F425F8C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 799BD8DA909ECFDF4C370CED;
+			remoteGlobalIDString = 5DC7CBE05778928F1955C6E0;
+			remoteInfo = "Pods-KVOController";
+		};
+		63226F72FD35C4AAB703829E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DC7CBE05778928F1955C6E0;
+			remoteInfo = "Pods-KVOController";
+		};
+		67D7BBD3961867B242BDC3F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 340433F60EDF462DEAF515AC;
 			remoteInfo = "Pods-MUKDataSourceTests-MUKDataSource";
 		};
-		55C707B4C27723CF9E6512DD /* PBXContainerItemProxy */ = {
+		7442083FBEC2C969CEBF1F65 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2D1E66FBDEF6421CD708472E;
+			remoteGlobalIDString = 3C8D988672041AE78C4E4D3B;
 			remoteInfo = "Pods-MUKArrayDelta";
 		};
-		77D01E58BA594A04FCEAD543 /* PBXContainerItemProxy */ = {
+		87AFCD02A6D5527B74565372 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 16CB8B67EDF1D5FC59107DCF;
+			remoteGlobalIDString = 68A755FDF338EEF34621DCEA;
 			remoteInfo = "Pods-MUKDataSourceTests-MUKArrayDelta";
 		};
-		7A11C74E5BD7097030803DE5 /* PBXContainerItemProxy */ = {
+		B55656E319705CF62E8F7CFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D87226B04B15DFAB476E469A;
-			remoteInfo = "Pods-MUKDataSourceTests-KVOController";
-		};
-		856B40E4D61BABD6E07A96FC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 262420E2AA621E5226B7BDC1;
+			remoteGlobalIDString = 6FF6FE3EB637C084F7336C25;
 			remoteInfo = "Pods-MUKDataSource";
 		};
-		E91ACB8CD2C65383BEF5D150 /* PBXContainerItemProxy */ = {
+		C05088814805039CBE9D331F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5DFB7E4A428EBECD315BB1DD;
-			remoteInfo = "Pods-KVOController";
+			remoteGlobalIDString = 51BB66EA4962EF28DAE9266A;
+			remoteInfo = "Pods-MUKDataSourceTests-KVOController";
 		};
-		E985A5732FCBE90741D1AF3B /* PBXContainerItemProxy */ = {
+		E8596844CE373C0401EBE94C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
+			containerPortal = FD430E05157A39CD235813B7 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5DFB7E4A428EBECD315BB1DD;
-			remoteInfo = "Pods-KVOController";
-		};
-		FAC1D8CE2A71D451CAF65FB1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C515C016EF651D49B2B489C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2D1E66FBDEF6421CD708472E;
+			remoteGlobalIDString = 3C8D988672041AE78C4E4D3B;
 			remoteInfo = "Pods-MUKArrayDelta";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		02C598AAA2B68B43DE9834D2 /* libPods-MUKDataSourceTests-KVOController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests-KVOController.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		059D451659F56563999094A6 /* libPods-MUKDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		06C2AC8456094A169DC06CE7 /* Pods-KVOController-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-KVOController-Private.xcconfig"; sourceTree = "<group>"; };
-		0859E3FE2EA13DED9CA551F4 /* Pods-KVOController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-KVOController-prefix.pch"; sourceTree = "<group>"; };
-		0928832C923D722C7E2FB4C9 /* MUKDataSourceSectionedContentUpdate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceSectionedContentUpdate.m; sourceTree = "<group>"; };
-		120F1F7328A36A1F641797D1 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
-		147DFA2C3D13AEA7D86B73EA /* Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig"; sourceTree = "<group>"; };
-		1B6C89DF95EB2A1BF8B706C4 /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-KVOController-Private.xcconfig"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-Private.xcconfig"; sourceTree = "<group>"; };
-		1CCB11EF0689749D80C2318B /* MUKArrayDelta.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKArrayDelta.m; sourceTree = "<group>"; };
-		2224D896EBEF81D1377BBB40 /* Pods-KVOController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-KVOController-dummy.m"; sourceTree = "<group>"; };
-		2725C3F3463510B1C6911FED /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig"; sourceTree = "<group>"; };
-		2B0B0A7FFACDB2D22BCED293 /* Pods-MUKDataSource-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSource-Private.xcconfig"; sourceTree = "<group>"; };
-		2B1345CC6C085A05F9CAE065 /* Pods-MUKDataSource-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MUKDataSource-dummy.m"; sourceTree = "<group>"; };
-		2B8F35D93316152C528371D0 /* MUKDataSourceTableUpdate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceTableUpdate.h; sourceTree = "<group>"; };
-		30906D2AF5EB11145170B5FB /* Pods-MUKDataSourceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSourceTests.debug.xcconfig"; sourceTree = "<group>"; };
-		391CED32AE342863E5D0C07C /* MUKDataSourceSectionedContentUpdate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceSectionedContentUpdate.h; sourceTree = "<group>"; };
-		48952306F36F74791453F449 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		491728A116C55FF0D0C0A8CD /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		516C3D3CBEAB0A88B2892C01 /* libPods-MUKDataSourceTests-MUKDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests-MUKDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		58140F1AE1C1982260E0981B /* Pods-MUKDataSourceTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MUKDataSourceTests-dummy.m"; sourceTree = "<group>"; };
-		581E4529E64FEA66CBD39D70 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
-		598823198BD385911C353DF2 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig"; sourceTree = "<group>"; };
-		6712CC361E71D3C50E294984 /* Pods-MUKDataSourceTests-MUKDataSource.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKDataSource.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource.xcconfig"; sourceTree = "<group>"; };
-		7152FB7C88372D637024ADB4 /* Pods-MUKDataSourceTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MUKDataSourceTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		735247977647296AEBB97C7D /* libPods-KVOController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KVOController.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E2BD919FED17F54AA93CC22 /* Pods-MUKDataSourceTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MUKDataSourceTests-resources.sh"; sourceTree = "<group>"; };
-		8BDC9FBFA8997FC01BE1E01C /* libPods-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		913E315CFBC55E6121462CF7 /* MUKDataSourceTableSection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceTableSection.h; sourceTree = "<group>"; };
-		91BA92325642AB04CBBEEC20 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
-		937289AA72894E2E2511F03F /* Pods-MUKDataSourceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSourceTests.release.xcconfig"; sourceTree = "<group>"; };
-		953ABB1F661A95DA66D2F9A9 /* Pods-MUKArrayDelta-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MUKArrayDelta-prefix.pch"; sourceTree = "<group>"; };
-		98D74B58F3A17F681DDEFED6 /* Pods-MUKDataSourceTests-KVOController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-KVOController.xcconfig"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController.xcconfig"; sourceTree = "<group>"; };
-		9CFBFC2FC25D88FDA3B67762 /* MUKDataSourceTableUpdate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableUpdate.m; sourceTree = "<group>"; };
-		A48904CA109E2902B393E2CC /* Pods-MUKDataSourceTests-KVOController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-MUKDataSourceTests-KVOController-prefix.pch"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-prefix.pch"; sourceTree = "<group>"; };
-		AD6E34E40B1600F2C71BC30F /* MUKDataSourceIdentifiable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceIdentifiable.h; sourceTree = "<group>"; };
-		B222373A2554ABA1765AF409 /* Pods-MUKArrayDelta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKArrayDelta.xcconfig"; sourceTree = "<group>"; };
-		B46E4DCD8CCC566D55B5C423 /* Pods-MUKDataSource.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSource.xcconfig"; sourceTree = "<group>"; };
-		B9C44444B7FCB29CBF0AF15B /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m"; sourceTree = "<group>"; };
-		BA33389D8EF051C5D260DA61 /* FBKVOController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBKVOController.h; path = FBKVOController/FBKVOController.h; sourceTree = "<group>"; };
-		BBE57EBE199B0CE5F5FAAF65 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-MUKDataSourceTests-MUKDataSource-dummy.m"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-dummy.m"; sourceTree = "<group>"; };
-		BCB792EB7075E36522D8DCA7 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		BD4D0C63ED6A65F683F80D8F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
-		BD62BF617904C976BE827819 /* MUKDataSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSource.m; sourceTree = "<group>"; };
-		BD9C31C4C3388BD14DBDE2AB /* MUKDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSource.h; sourceTree = "<group>"; };
-		BDEDBD5F869C05F37EFA183D /* MUKTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKTableViewController.h; sourceTree = "<group>"; };
-		BEA1EB404EBEF3E0A42D8E60 /* Pods-MUKDataSourceTests-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MUKDataSourceTests-environment.h"; sourceTree = "<group>"; };
-		BF5891D3CF7104EF363A024A /* Pods-MUKArrayDelta-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKArrayDelta-Private.xcconfig"; sourceTree = "<group>"; };
-		CA0DD13BF9481124B98A3CFF /* Pods-MUKArrayDelta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MUKArrayDelta-dummy.m"; sourceTree = "<group>"; };
-		D0A43931B9EA8A6AE7AA1DDF /* Pods-MUKDataSourceTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MUKDataSourceTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		D6C1B168CE2397DBAE0B28BC /* libPods-MUKDataSourceTests-MUKArrayDelta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests-MUKArrayDelta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D93808627FB4E0F92F8B677F /* Pods-MUKDataSourceTests-MUKDataSource-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-MUKDataSourceTests-MUKDataSource-prefix.pch"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-prefix.pch"; sourceTree = "<group>"; };
-		DAF19A25E5998AA09C03659D /* Pods-KVOController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-KVOController.xcconfig"; sourceTree = "<group>"; };
-		DB53F69B8C666BD02C1D46EF /* libPods-MUKArrayDelta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKArrayDelta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DE59CFD6A074155A311E807E /* Pods-MUKDataSource-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MUKDataSource-prefix.pch"; sourceTree = "<group>"; };
-		E013187563BEFFDB4A0E2D23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E76B19300C19331EAD045AA1 /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
-		E8264CF63EC003934632BE58 /* MUKArrayDelta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKArrayDelta.h; sourceTree = "<group>"; };
-		E9C5F01B657B8A5AED67A858 /* FBKVOController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBKVOController.m; path = FBKVOController/FBKVOController.m; sourceTree = "<group>"; };
-		EC8C5D72B3C3B7D2A9C83C5D /* MUKDataSourceContentSection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentSection.h; sourceTree = "<group>"; };
-		ED29AAF668B983744CADCC50 /* Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch"; sourceTree = "<group>"; };
-		F061D9BD5A5D52E74F6A625A /* MUKTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKTableViewController.m; sourceTree = "<group>"; };
-		F1143F0CB9EBBBB41AEEC646 /* MUKDataSourceTableSection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableSection.m; sourceTree = "<group>"; };
-		F75452BF09651D6A3BB7980E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		FBC66389BC83019CC0C0678D /* Pods-MUKDataSourceTests-KVOController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-MUKDataSourceTests-KVOController-dummy.m"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-dummy.m"; sourceTree = "<group>"; };
+		011B129949BCD05C9F9AC77C /* Pods-KVOController-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-KVOController-Private.xcconfig"; sourceTree = "<group>"; };
+		040812B19E5F1E1AC8C6DE74 /* Pods-MUKDataSourceTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MUKDataSourceTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		0E36786EEC1335F8B4A56B36 /* Pods-KVOController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-KVOController.xcconfig"; sourceTree = "<group>"; };
+		1432274AFAF57A32A0330A50 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
+		17696A84474634580CF137C1 /* libPods-MUKDataSourceTests-KVOController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests-KVOController.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D556A6590B025C473131E54 /* MUKDataSourceIdentifiable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceIdentifiable.h; sourceTree = "<group>"; };
+		1D63693C35ED91C3F7753ABA /* MUKDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSource.h; sourceTree = "<group>"; };
+		22BCBDE36C1F6A9F207EAB8D /* libPods-KVOController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KVOController.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		25C534D56FB67BC9F53A0284 /* MUKArrayDelta.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKArrayDelta.m; sourceTree = "<group>"; };
+		26B52EB2BE4B5BD0617629B9 /* Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch"; sourceTree = "<group>"; };
+		2BA81D42A1E38F005A1E136C /* MUKDataSourceTableSection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableSection.m; sourceTree = "<group>"; };
+		2D1F911FE56231B6E880CDC7 /* Pods-MUKDataSourceTests-KVOController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-MUKDataSourceTests-KVOController-dummy.m"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-dummy.m"; sourceTree = "<group>"; };
+		30A13ED141987261E9699C59 /* Pods-MUKDataSourceTests-MUKDataSource-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-MUKDataSourceTests-MUKDataSource-prefix.pch"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-prefix.pch"; sourceTree = "<group>"; };
+		3648ABEF6CF058909B966497 /* MUKDataSourceTableUpdate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceTableUpdate.h; sourceTree = "<group>"; };
+		36D9F1EB29C6EF83B3D1F6CB /* MUKDataSourceCollectionUpdate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceCollectionUpdate.m; sourceTree = "<group>"; };
+		40B44B4B3EC9597D1278535F /* Pods-MUKArrayDelta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MUKArrayDelta-dummy.m"; sourceTree = "<group>"; };
+		40F536FC843553F48155B15E /* libPods-MUKDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		415FD5D9D61C40397359E169 /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig"; sourceTree = "<group>"; };
+		44BEE4DFCDD5ADF65C4E1D0C /* Pods-MUKDataSourceTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MUKDataSourceTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		48679D60D7DBF62520C98682 /* FBKVOController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBKVOController.h; path = FBKVOController/FBKVOController.h; sourceTree = "<group>"; };
+		498C52F74223071FAF768E6C /* Pods-MUKDataSource-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MUKDataSource-prefix.pch"; sourceTree = "<group>"; };
+		57950EE83D0DD8B132D750D1 /* Pods-MUKArrayDelta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKArrayDelta.xcconfig"; sourceTree = "<group>"; };
+		5D9C1682A7BEF944D41911C3 /* Pods-KVOController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-KVOController-prefix.pch"; sourceTree = "<group>"; };
+		5DD288435CC13F4FF415D21B /* Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig"; sourceTree = "<group>"; };
+		5EFF09E5C2FFEE3DF80B096B /* Pods-MUKDataSource-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MUKDataSource-dummy.m"; sourceTree = "<group>"; };
+		62A034EA25A198C094465582 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-MUKDataSourceTests-MUKDataSource-dummy.m"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-dummy.m"; sourceTree = "<group>"; };
+		68C206EB979D81989C9CA859 /* MUKDataSourceTableUpdate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableUpdate.m; sourceTree = "<group>"; };
+		6B63FDF81D2427D0455E5E91 /* libPods-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E0B8FBCBB5B69EBE830E4DB /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
+		749E13CE2D12A0D7C440177C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		787F2B5FB04ABCAED9536921 /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m"; path = "../Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m"; sourceTree = "<group>"; };
+		7C4E2B3D0478880239A0DA80 /* MUKDataSourceCollectionUpdate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceCollectionUpdate.h; sourceTree = "<group>"; };
+		7F9594F3F4704952B86A3BA0 /* Pods-MUKDataSourceTests-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MUKDataSourceTests-environment.h"; sourceTree = "<group>"; };
+		7FB96FA77DFEA64B75E9123C /* Pods-MUKDataSourceTests-KVOController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-MUKDataSourceTests-KVOController-prefix.pch"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-prefix.pch"; sourceTree = "<group>"; };
+		840F19F4052D5753143D2540 /* Pods-MUKArrayDelta-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MUKArrayDelta-prefix.pch"; sourceTree = "<group>"; };
+		85F83580B953D8E3E73A3B60 /* MUKDataSourceCollectionSection.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceCollectionSection.m; sourceTree = "<group>"; };
+		944992F172610417E2FE5D06 /* Pods-MUKDataSourceTests-MUKDataSource.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKDataSource.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource.xcconfig"; sourceTree = "<group>"; };
+		95177F0D4A12D5207438BCB7 /* Pods-MUKDataSourceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSourceTests.release.xcconfig"; sourceTree = "<group>"; };
+		9610CFFD61B762733874516B /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-KVOController-Private.xcconfig"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-Private.xcconfig"; sourceTree = "<group>"; };
+		9D96B53B209DCC35876A5650 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9E1F5227B1D82095912FF86B /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		A279FD912C4C414F1AC3803A /* MUKDataSourceSectionedContentUpdate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceSectionedContentUpdate.h; sourceTree = "<group>"; };
+		A2A8611A1A417C0C9723E1CD /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		AC88975A6B25EE7AAB2CE8FC /* libPods-MUKDataSourceTests-MUKArrayDelta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests-MUKArrayDelta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD29EF7590EA4E977A5EA9E6 /* Pods-MUKDataSource-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSource-Private.xcconfig"; sourceTree = "<group>"; };
+		AE3C174F3160A4DCDE85D243 /* MUKDataSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSource.m; sourceTree = "<group>"; };
+		B6C6B43790D2A37CA07C184F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
+		C1003466699715085E297174 /* Pods-KVOController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-KVOController-dummy.m"; sourceTree = "<group>"; };
+		CC45C9CC0C6EF5BE594DCAB4 /* MUKDataSourceContentSection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceContentSection.h; sourceTree = "<group>"; };
+		CDF53922D734B5CFD41528F4 /* Pods-MUKDataSourceTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MUKDataSourceTests-dummy.m"; sourceTree = "<group>"; };
+		CE7C976A9905CA598796AAC6 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		D591E23379E49660CE8F2358 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig"; path = "../Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig"; sourceTree = "<group>"; };
+		D67AA6AE64E8A56EB353859B /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
+		D8C2C04EC2550E1DA54704ED /* Pods-MUKArrayDelta-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKArrayDelta-Private.xcconfig"; sourceTree = "<group>"; };
+		DA599CB98E62D1124BD0AA68 /* MUKArrayDelta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKArrayDelta.h; sourceTree = "<group>"; };
+		DE2C470F868D7661D265BEA7 /* MUKTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKTableViewController.h; sourceTree = "<group>"; };
+		DF848AE323028F7D8E4F7BCD /* MUKDataSourceCollectionSection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceCollectionSection.h; sourceTree = "<group>"; };
+		E4112E916414147CE1EDC7E7 /* Pods-MUKDataSourceTests-KVOController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSourceTests-KVOController.xcconfig"; path = "../Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController.xcconfig"; sourceTree = "<group>"; };
+		E5CB3A0A81EDD2AA1C738742 /* Pods-MUKDataSourceTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MUKDataSourceTests-resources.sh"; sourceTree = "<group>"; };
+		E6827D8CCCFFE3E603A488BB /* MUKTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKTableViewController.m; sourceTree = "<group>"; };
+		E9572A89051B7B618887522B /* FBKVOController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBKVOController.m; path = FBKVOController/FBKVOController.m; sourceTree = "<group>"; };
+		E9D9886E5A9022CFF792F19C /* libPods-MUKArrayDelta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKArrayDelta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAEA6CBF1469E83B123A6161 /* Pods-MUKDataSourceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSourceTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EB901B8A4C610A2BE39CEBF0 /* MUKDataSourceSectionedContentUpdate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceSectionedContentUpdate.m; sourceTree = "<group>"; };
+		F3D7D2506977BD7891BA693E /* MUKDataSourceTableSection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MUKDataSourceTableSection.h; sourceTree = "<group>"; };
+		F729227A1F342BA311DF3621 /* Pods-MUKDataSource.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MUKDataSource.xcconfig"; sourceTree = "<group>"; };
+		F7ECCA24F69D9C33A2F1D6E8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE5E7AB5E09114CE98D63AE1 /* libPods-MUKDataSourceTests-MUKDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests-MUKDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2355726D13723A8A86EB71F9 /* Frameworks */ = {
+		97883486AC0F62634756986B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A6C785DA1ACFE4FB3237B3E /* Foundation.framework in Frameworks */,
+				B158F6BA989ACC3007E104EB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6EFDED4F49F991F1001F4127 /* Frameworks */ = {
+		97D16525C5EB1AE9AE1F1C5D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD308622FD19DC015117524F /* Foundation.framework in Frameworks */,
+				27C17C8C0BDE4E7A76B74ED9 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		710B9FB3BD2E0B32D20C5675 /* Frameworks */ = {
+		9E33A86C95231F0BB4250A6E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19526C7FA0A04C6223D9B8BA /* Foundation.framework in Frameworks */,
+				B2961663F621BAE0A1836D95 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7592DB451996938831C04181 /* Frameworks */ = {
+		B198E24972A6D007E14B02DB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7763630BABC48808A3083DF4 /* Foundation.framework in Frameworks */,
+				EB256A14D13FC161136E5D5F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8CFD39564A34A293FE7CE4F8 /* Frameworks */ = {
+		DBFE6B239B76E81A7B81303C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29F5C15A5E42802152941E9E /* Foundation.framework in Frameworks */,
+				4D957DB292B520A426DA202F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A23C56D95571F55DD4EFE89E /* Frameworks */ = {
+		E43F95FF4131F5D1429D92FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62B0005AA9092043FD6A31AE /* Foundation.framework in Frameworks */,
+				1C209674751C94A894711406 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AA5038744F39CF99ED3635CA /* Frameworks */ = {
+		EA2CFAAA5B7FF0878D2CC185 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9B88E337187BDB583726F21 /* Foundation.framework in Frameworks */,
+				324F1F1A9B48D58F47ADF01D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BC43282E172B194FB09D81BF /* Frameworks */ = {
+		FD1432453EF79BC84E00A1FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70CDB60A662D546AB6870530 /* Foundation.framework in Frameworks */,
+				6B218C79E50F5F9537C2E49F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2C2D4C795E2EB0AF2981F875 /* Sectioned Content */ = {
+		01D34B300ABBBC3000AE733C /* Sectioned Content */ = {
 			isa = PBXGroup;
 			children = (
-				EC8C5D72B3C3B7D2A9C83C5D /* MUKDataSourceContentSection.h */,
-				6BBD86102021B23977B64C4D /* Update */,
+				CC45C9CC0C6EF5BE594DCAB4 /* MUKDataSourceContentSection.h */,
+				6B231A654C81DA05F0B11D54 /* Update */,
 			);
 			path = "Sectioned Content";
 			sourceTree = "<group>";
 		};
-		30C5B924BDF6E8C49CA97A43 /* Pods */ = {
+		0A2B7361276B9F8DAF923E9A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				120F1F7328A36A1F641797D1 /* Pods-acknowledgements.markdown */,
-				581E4529E64FEA66CBD39D70 /* Pods-acknowledgements.plist */,
-				BCB792EB7075E36522D8DCA7 /* Pods-dummy.m */,
-				E76B19300C19331EAD045AA1 /* Pods-environment.h */,
-				48952306F36F74791453F449 /* Pods-resources.sh */,
-				91BA92325642AB04CBBEEC20 /* Pods.debug.xcconfig */,
-				BD4D0C63ED6A65F683F80D8F /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			path = "Target Support Files/Pods";
-			sourceTree = "<group>";
-		};
-		341C573C8F7C73C687FBFC9C = {
-			isa = PBXGroup;
-			children = (
-				491728A116C55FF0D0C0A8CD /* Podfile */,
-				F434C88168CF3922F845F880 /* Development Pods */,
-				FF1376FD8D0E4B9CDFE5FDB6 /* Frameworks */,
-				EB307F6D3C84C748F7ACEFBE /* Pods */,
-				4DFE9ECBC221E53BE009E3C6 /* Products */,
-				4DA8E60D36F7EBC63CF605F9 /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		3C25E854CBB3A8D3255D00C1 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				BD9C31C4C3388BD14DBDE2AB /* MUKDataSource.h */,
-				BD62BF617904C976BE827819 /* MUKDataSource.m */,
-				AD6E34E40B1600F2C71BC30F /* MUKDataSourceIdentifiable.h */,
-				2C2D4C795E2EB0AF2981F875 /* Sectioned Content */,
-				77D16FD93ACEBAD489F7EDFB /* Table View Support */,
-			);
-			path = Pod;
-			sourceTree = "<group>";
-		};
-		45499DDBB70D628EE37AD8B7 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				DAF19A25E5998AA09C03659D /* Pods-KVOController.xcconfig */,
-				06C2AC8456094A169DC06CE7 /* Pods-KVOController-Private.xcconfig */,
-				2224D896EBEF81D1377BBB40 /* Pods-KVOController-dummy.m */,
-				0859E3FE2EA13DED9CA551F4 /* Pods-KVOController-prefix.pch */,
-				98D74B58F3A17F681DDEFED6 /* Pods-MUKDataSourceTests-KVOController.xcconfig */,
-				1B6C89DF95EB2A1BF8B706C4 /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */,
-				FBC66389BC83019CC0C0678D /* Pods-MUKDataSourceTests-KVOController-dummy.m */,
-				A48904CA109E2902B393E2CC /* Pods-MUKDataSourceTests-KVOController-prefix.pch */,
+				0E36786EEC1335F8B4A56B36 /* Pods-KVOController.xcconfig */,
+				011B129949BCD05C9F9AC77C /* Pods-KVOController-Private.xcconfig */,
+				C1003466699715085E297174 /* Pods-KVOController-dummy.m */,
+				5D9C1682A7BEF944D41911C3 /* Pods-KVOController-prefix.pch */,
+				E4112E916414147CE1EDC7E7 /* Pods-MUKDataSourceTests-KVOController.xcconfig */,
+				9610CFFD61B762733874516B /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */,
+				2D1F911FE56231B6E880CDC7 /* Pods-MUKDataSourceTests-KVOController-dummy.m */,
+				7FB96FA77DFEA64B75E9123C /* Pods-MUKDataSourceTests-KVOController-prefix.pch */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/Pods-KVOController";
 			sourceTree = "<group>";
 		};
-		458AE1B09E341794488A7C2F /* MUKDataSource */ = {
+		1D9264360D253B9FCAF88F50 = {
 			isa = PBXGroup;
 			children = (
-				3C25E854CBB3A8D3255D00C1 /* Pod */,
-				EA425C2822E0854793FF4EF1 /* Support Files */,
+				9D96B53B209DCC35876A5650 /* Podfile */,
+				930334A444C3A04E984D9B4B /* Development Pods */,
+				744CCC3FC8B7A82FC371BC40 /* Frameworks */,
+				FC63A3627548CC42C2BE637C /* Pods */,
+				F61461D36CED348D9EBB998D /* Products */,
+				91362B1D7B0B2749753C1F9C /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		1F8B8908B340AED970442E20 /* Section */ = {
+			isa = PBXGroup;
+			children = (
+				DF848AE323028F7D8E4F7BCD /* MUKDataSourceCollectionSection.h */,
+				85F83580B953D8E3E73A3B60 /* MUKDataSourceCollectionSection.m */,
+			);
+			path = Section;
+			sourceTree = "<group>";
+		};
+		26BF7104D7966AE8C6D0476F /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DE2C470F868D7661D265BEA7 /* MUKTableViewController.h */,
+				E6827D8CCCFFE3E603A488BB /* MUKTableViewController.m */,
+			);
+			path = "View Controller";
+			sourceTree = "<group>";
+		};
+		30F3C135DAC3117F49BB82E8 /* MUKDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				4B42C4E9CFECDF64C83F9C73 /* Pod */,
+				5C81E6A8BA0A66C54D634F82 /* Support Files */,
 			);
 			name = MUKDataSource;
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		4DA8E60D36F7EBC63CF605F9 /* Targets Support Files */ = {
+		32B53AF1AB9B1D34EED4B5FC /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				30C5B924BDF6E8C49CA97A43 /* Pods */,
-				B505A6D57DE4190716C314D6 /* Pods-MUKDataSourceTests */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		4DFE9ECBC221E53BE009E3C6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E013187563BEFFDB4A0E2D23 /* libPods.a */,
-				735247977647296AEBB97C7D /* libPods-KVOController.a */,
-				DB53F69B8C666BD02C1D46EF /* libPods-MUKArrayDelta.a */,
-				059D451659F56563999094A6 /* libPods-MUKDataSource.a */,
-				8BDC9FBFA8997FC01BE1E01C /* libPods-MUKDataSourceTests.a */,
-				02C598AAA2B68B43DE9834D2 /* libPods-MUKDataSourceTests-KVOController.a */,
-				D6C1B168CE2397DBAE0B28BC /* libPods-MUKDataSourceTests-MUKArrayDelta.a */,
-				516C3D3CBEAB0A88B2892C01 /* libPods-MUKDataSourceTests-MUKDataSource.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		5D626C7A1AC966D8DD57645B /* Section */ = {
-			isa = PBXGroup;
-			children = (
-				913E315CFBC55E6121462CF7 /* MUKDataSourceTableSection.h */,
-				F1143F0CB9EBBBB41AEEC646 /* MUKDataSourceTableSection.m */,
-			);
-			path = Section;
-			sourceTree = "<group>";
-		};
-		5FC4529C354392EB5B5FAE0F /* KVOController */ = {
-			isa = PBXGroup;
-			children = (
-				BA33389D8EF051C5D260DA61 /* FBKVOController.h */,
-				E9C5F01B657B8A5AED67A858 /* FBKVOController.m */,
-				45499DDBB70D628EE37AD8B7 /* Support Files */,
-			);
-			path = KVOController;
-			sourceTree = "<group>";
-		};
-		6BBD86102021B23977B64C4D /* Update */ = {
-			isa = PBXGroup;
-			children = (
-				391CED32AE342863E5D0C07C /* MUKDataSourceSectionedContentUpdate.h */,
-				0928832C923D722C7E2FB4C9 /* MUKDataSourceSectionedContentUpdate.m */,
-			);
-			path = Update;
-			sourceTree = "<group>";
-		};
-		77D16FD93ACEBAD489F7EDFB /* Table View Support */ = {
-			isa = PBXGroup;
-			children = (
-				5D626C7A1AC966D8DD57645B /* Section */,
-				ABBB2B8F6076ADCEE1660EFE /* Update */,
-				F1DAB7EE1A8F7B9D095D84DC /* View Controller */,
-			);
-			path = "Table View Support";
-			sourceTree = "<group>";
-		};
-		A13330D43252F4B42387F6E9 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				F75452BF09651D6A3BB7980E /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		ABBB2B8F6076ADCEE1660EFE /* Update */ = {
-			isa = PBXGroup;
-			children = (
-				2B8F35D93316152C528371D0 /* MUKDataSourceTableUpdate.h */,
-				9CFBFC2FC25D88FDA3B67762 /* MUKDataSourceTableUpdate.m */,
-			);
-			path = Update;
-			sourceTree = "<group>";
-		};
-		B29E32D2432E2F7E4CA07807 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				B222373A2554ABA1765AF409 /* Pods-MUKArrayDelta.xcconfig */,
-				BF5891D3CF7104EF363A024A /* Pods-MUKArrayDelta-Private.xcconfig */,
-				CA0DD13BF9481124B98A3CFF /* Pods-MUKArrayDelta-dummy.m */,
-				953ABB1F661A95DA66D2F9A9 /* Pods-MUKArrayDelta-prefix.pch */,
-				147DFA2C3D13AEA7D86B73EA /* Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig */,
-				2725C3F3463510B1C6911FED /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */,
-				B9C44444B7FCB29CBF0AF15B /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m */,
-				ED29AAF668B983744CADCC50 /* Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch */,
+				57950EE83D0DD8B132D750D1 /* Pods-MUKArrayDelta.xcconfig */,
+				D8C2C04EC2550E1DA54704ED /* Pods-MUKArrayDelta-Private.xcconfig */,
+				40B44B4B3EC9597D1278535F /* Pods-MUKArrayDelta-dummy.m */,
+				840F19F4052D5753143D2540 /* Pods-MUKArrayDelta-prefix.pch */,
+				5DD288435CC13F4FF415D21B /* Pods-MUKDataSourceTests-MUKArrayDelta.xcconfig */,
+				415FD5D9D61C40397359E169 /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */,
+				787F2B5FB04ABCAED9536921 /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m */,
+				26B52EB2BE4B5BD0617629B9 /* Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/Pods-MUKArrayDelta";
 			sourceTree = "<group>";
 		};
-		B505A6D57DE4190716C314D6 /* Pods-MUKDataSourceTests */ = {
+		34D4D58F39F9739AC52DE468 /* Update */ = {
 			isa = PBXGroup;
 			children = (
-				D0A43931B9EA8A6AE7AA1DDF /* Pods-MUKDataSourceTests-acknowledgements.markdown */,
-				7152FB7C88372D637024ADB4 /* Pods-MUKDataSourceTests-acknowledgements.plist */,
-				58140F1AE1C1982260E0981B /* Pods-MUKDataSourceTests-dummy.m */,
-				BEA1EB404EBEF3E0A42D8E60 /* Pods-MUKDataSourceTests-environment.h */,
-				7E2BD919FED17F54AA93CC22 /* Pods-MUKDataSourceTests-resources.sh */,
-				30906D2AF5EB11145170B5FB /* Pods-MUKDataSourceTests.debug.xcconfig */,
-				937289AA72894E2E2511F03F /* Pods-MUKDataSourceTests.release.xcconfig */,
+				7C4E2B3D0478880239A0DA80 /* MUKDataSourceCollectionUpdate.h */,
+				36D9F1EB29C6EF83B3D1F6CB /* MUKDataSourceCollectionUpdate.m */,
 			);
-			name = "Pods-MUKDataSourceTests";
-			path = "Target Support Files/Pods-MUKDataSourceTests";
+			path = Update;
 			sourceTree = "<group>";
 		};
-		C2386FC08829ED0E716BC4F2 /* MUKArrayDelta */ = {
+		4B42C4E9CFECDF64C83F9C73 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				E8264CF63EC003934632BE58 /* MUKArrayDelta.h */,
-				1CCB11EF0689749D80C2318B /* MUKArrayDelta.m */,
-				B29E32D2432E2F7E4CA07807 /* Support Files */,
+				1D63693C35ED91C3F7753ABA /* MUKDataSource.h */,
+				AE3C174F3160A4DCDE85D243 /* MUKDataSource.m */,
+				1D556A6590B025C473131E54 /* MUKDataSourceIdentifiable.h */,
+				B2A685282EF4DD3FE5C71D8D /* Collection View Support */,
+				01D34B300ABBBC3000AE733C /* Sectioned Content */,
+				A3B512E6A5F6648B47E8737C /* Table View Support */,
 			);
-			path = MUKArrayDelta;
+			path = Pod;
 			sourceTree = "<group>";
 		};
-		EA425C2822E0854793FF4EF1 /* Support Files */ = {
+		5C81E6A8BA0A66C54D634F82 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				B46E4DCD8CCC566D55B5C423 /* Pods-MUKDataSource.xcconfig */,
-				2B0B0A7FFACDB2D22BCED293 /* Pods-MUKDataSource-Private.xcconfig */,
-				2B1345CC6C085A05F9CAE065 /* Pods-MUKDataSource-dummy.m */,
-				DE59CFD6A074155A311E807E /* Pods-MUKDataSource-prefix.pch */,
-				6712CC361E71D3C50E294984 /* Pods-MUKDataSourceTests-MUKDataSource.xcconfig */,
-				598823198BD385911C353DF2 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */,
-				BBE57EBE199B0CE5F5FAAF65 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m */,
-				D93808627FB4E0F92F8B677F /* Pods-MUKDataSourceTests-MUKDataSource-prefix.pch */,
+				F729227A1F342BA311DF3621 /* Pods-MUKDataSource.xcconfig */,
+				AD29EF7590EA4E977A5EA9E6 /* Pods-MUKDataSource-Private.xcconfig */,
+				5EFF09E5C2FFEE3DF80B096B /* Pods-MUKDataSource-dummy.m */,
+				498C52F74223071FAF768E6C /* Pods-MUKDataSource-prefix.pch */,
+				944992F172610417E2FE5D06 /* Pods-MUKDataSourceTests-MUKDataSource.xcconfig */,
+				D591E23379E49660CE8F2358 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */,
+				62A034EA25A198C094465582 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m */,
+				30A13ED141987261E9699C59 /* Pods-MUKDataSourceTests-MUKDataSource-prefix.pch */,
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/Pods-MUKDataSource";
 			sourceTree = "<group>";
 		};
-		EB307F6D3C84C748F7ACEFBE /* Pods */ = {
+		60C09D69B590FB69D7E534F7 /* Section */ = {
 			isa = PBXGroup;
 			children = (
-				5FC4529C354392EB5B5FAE0F /* KVOController */,
-				C2386FC08829ED0E716BC4F2 /* MUKArrayDelta */,
+				F3D7D2506977BD7891BA693E /* MUKDataSourceTableSection.h */,
+				2BA81D42A1E38F005A1E136C /* MUKDataSourceTableSection.m */,
+			);
+			path = Section;
+			sourceTree = "<group>";
+		};
+		6B231A654C81DA05F0B11D54 /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				A279FD912C4C414F1AC3803A /* MUKDataSourceSectionedContentUpdate.h */,
+				EB901B8A4C610A2BE39CEBF0 /* MUKDataSourceSectionedContentUpdate.m */,
+			);
+			path = Update;
+			sourceTree = "<group>";
+		};
+		720E46ED81FD17594EDC5177 /* MUKArrayDelta */ = {
+			isa = PBXGroup;
+			children = (
+				DA599CB98E62D1124BD0AA68 /* MUKArrayDelta.h */,
+				25C534D56FB67BC9F53A0284 /* MUKArrayDelta.m */,
+				32B53AF1AB9B1D34EED4B5FC /* Support Files */,
+			);
+			path = MUKArrayDelta;
+			sourceTree = "<group>";
+		};
+		744CCC3FC8B7A82FC371BC40 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F0140B440ED618F868623557 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		75954C85564E0BC62F185D80 /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				3648ABEF6CF058909B966497 /* MUKDataSourceTableUpdate.h */,
+				68C206EB979D81989C9CA859 /* MUKDataSourceTableUpdate.m */,
+			);
+			path = Update;
+			sourceTree = "<group>";
+		};
+		771732D0DC73497F805411F6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9E1F5227B1D82095912FF86B /* Pods-acknowledgements.markdown */,
+				CE7C976A9905CA598796AAC6 /* Pods-acknowledgements.plist */,
+				A2A8611A1A417C0C9723E1CD /* Pods-dummy.m */,
+				6E0B8FBCBB5B69EBE830E4DB /* Pods-environment.h */,
+				D67AA6AE64E8A56EB353859B /* Pods-resources.sh */,
+				1432274AFAF57A32A0330A50 /* Pods.debug.xcconfig */,
+				B6C6B43790D2A37CA07C184F /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			path = "Target Support Files/Pods";
 			sourceTree = "<group>";
 		};
-		F1DAB7EE1A8F7B9D095D84DC /* View Controller */ = {
+		8D76217C3792467B7EA2D58C /* KVOController */ = {
 			isa = PBXGroup;
 			children = (
-				BDEDBD5F869C05F37EFA183D /* MUKTableViewController.h */,
-				F061D9BD5A5D52E74F6A625A /* MUKTableViewController.m */,
+				48679D60D7DBF62520C98682 /* FBKVOController.h */,
+				E9572A89051B7B618887522B /* FBKVOController.m */,
+				0A2B7361276B9F8DAF923E9A /* Support Files */,
 			);
-			path = "View Controller";
+			path = KVOController;
 			sourceTree = "<group>";
 		};
-		F434C88168CF3922F845F880 /* Development Pods */ = {
+		91362B1D7B0B2749753C1F9C /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				458AE1B09E341794488A7C2F /* MUKDataSource */,
+				771732D0DC73497F805411F6 /* Pods */,
+				ADC18791BF6342FD253078D3 /* Pods-MUKDataSourceTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		930334A444C3A04E984D9B4B /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				30F3C135DAC3117F49BB82E8 /* MUKDataSource */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		FF1376FD8D0E4B9CDFE5FDB6 /* Frameworks */ = {
+		A3B512E6A5F6648B47E8737C /* Table View Support */ = {
 			isa = PBXGroup;
 			children = (
-				A13330D43252F4B42387F6E9 /* iOS */,
+				60C09D69B590FB69D7E534F7 /* Section */,
+				75954C85564E0BC62F185D80 /* Update */,
+				26BF7104D7966AE8C6D0476F /* View Controller */,
 			);
-			name = Frameworks;
+			path = "Table View Support";
+			sourceTree = "<group>";
+		};
+		ADC18791BF6342FD253078D3 /* Pods-MUKDataSourceTests */ = {
+			isa = PBXGroup;
+			children = (
+				040812B19E5F1E1AC8C6DE74 /* Pods-MUKDataSourceTests-acknowledgements.markdown */,
+				44BEE4DFCDD5ADF65C4E1D0C /* Pods-MUKDataSourceTests-acknowledgements.plist */,
+				CDF53922D734B5CFD41528F4 /* Pods-MUKDataSourceTests-dummy.m */,
+				7F9594F3F4704952B86A3BA0 /* Pods-MUKDataSourceTests-environment.h */,
+				E5CB3A0A81EDD2AA1C738742 /* Pods-MUKDataSourceTests-resources.sh */,
+				EAEA6CBF1469E83B123A6161 /* Pods-MUKDataSourceTests.debug.xcconfig */,
+				95177F0D4A12D5207438BCB7 /* Pods-MUKDataSourceTests.release.xcconfig */,
+			);
+			name = "Pods-MUKDataSourceTests";
+			path = "Target Support Files/Pods-MUKDataSourceTests";
+			sourceTree = "<group>";
+		};
+		B2A685282EF4DD3FE5C71D8D /* Collection View Support */ = {
+			isa = PBXGroup;
+			children = (
+				1F8B8908B340AED970442E20 /* Section */,
+				34D4D58F39F9739AC52DE468 /* Update */,
+			);
+			path = "Collection View Support";
+			sourceTree = "<group>";
+		};
+		F0140B440ED618F868623557 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				749E13CE2D12A0D7C440177C /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		F61461D36CED348D9EBB998D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F7ECCA24F69D9C33A2F1D6E8 /* libPods.a */,
+				22BCBDE36C1F6A9F207EAB8D /* libPods-KVOController.a */,
+				E9D9886E5A9022CFF792F19C /* libPods-MUKArrayDelta.a */,
+				40F536FC843553F48155B15E /* libPods-MUKDataSource.a */,
+				6B63FDF81D2427D0455E5E91 /* libPods-MUKDataSourceTests.a */,
+				17696A84474634580CF137C1 /* libPods-MUKDataSourceTests-KVOController.a */,
+				AC88975A6B25EE7AAB2CE8FC /* libPods-MUKDataSourceTests-MUKArrayDelta.a */,
+				FE5E7AB5E09114CE98D63AE1 /* libPods-MUKDataSourceTests-MUKDataSource.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FC63A3627548CC42C2BE637C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8D76217C3792467B7EA2D58C /* KVOController */,
+				720E46ED81FD17594EDC5177 /* MUKArrayDelta */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		0E0D5B8D9B1CD6444EF5C9EA /* Headers */ = {
+		0C2FFE689A9E6E2C29B22FF9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E262BDC2E7A40CC8C25A3BFE /* FBKVOController.h in Headers */,
+				25C4758D13A1D7582B01465A /* MUKDataSource.h in Headers */,
+				39B2EC15CFDA8DED9703EE87 /* MUKDataSourceCollectionSection.h in Headers */,
+				1623E88908B888CF23086276 /* MUKDataSourceCollectionUpdate.h in Headers */,
+				654ADFDC3431ED3C20AB0059 /* MUKDataSourceContentSection.h in Headers */,
+				88F78D436E1BEB5ACE93F831 /* MUKDataSourceIdentifiable.h in Headers */,
+				8CB3B6E3FF9416EAFEC83744 /* MUKDataSourceSectionedContentUpdate.h in Headers */,
+				591ACF47ED389BFF1F159D8A /* MUKDataSourceTableSection.h in Headers */,
+				ECDB244FD8EDE6E693C6D9F3 /* MUKDataSourceTableUpdate.h in Headers */,
+				F3753D3B570BC9F372A98DB2 /* MUKTableViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3A7B9B1EB5BFD10D9683703A /* Headers */ = {
+		21EE7427EA9A9D246A71254C /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FDCB7BDE2657EB5BEAC8541 /* MUKDataSource.h in Headers */,
-				4507AF614F122D82B39EA324 /* MUKDataSourceContentSection.h in Headers */,
-				6AB38680B932D29560DFF03F /* MUKDataSourceIdentifiable.h in Headers */,
-				AF8A0DCDCAD1ACA03EBEE6CA /* MUKDataSourceSectionedContentUpdate.h in Headers */,
-				72A2E0E4FBE2FA5C30ED603E /* MUKDataSourceTableSection.h in Headers */,
-				5CECAEEEFD49507D629FBA26 /* MUKDataSourceTableUpdate.h in Headers */,
-				2A9EC6C5251E0DD2A4A1FDA0 /* MUKTableViewController.h in Headers */,
+				24F46BFA0EAFC29A2E114BE3 /* MUKDataSource.h in Headers */,
+				C0FBDEE364B06EA61B885A69 /* MUKDataSourceCollectionSection.h in Headers */,
+				20F3474923C12374DBB695CC /* MUKDataSourceCollectionUpdate.h in Headers */,
+				9422997412431C46F3294D6C /* MUKDataSourceContentSection.h in Headers */,
+				136060EC347888AF61655CA1 /* MUKDataSourceIdentifiable.h in Headers */,
+				1949819F4DF9D76D2A855BA2 /* MUKDataSourceSectionedContentUpdate.h in Headers */,
+				7F72DA9075EB21A5D3F654F8 /* MUKDataSourceTableSection.h in Headers */,
+				3779984D1BEADFD3665988E9 /* MUKDataSourceTableUpdate.h in Headers */,
+				0931D4AC549A7F7CD8715812 /* MUKTableViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		554E5488569EEAD69CCCE81F /* Headers */ = {
+		31ECF902CA3E3384D186B551 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F946ED46608B1E95F3EEC094 /* FBKVOController.h in Headers */,
+				4712B3E23023CE94A70646B5 /* FBKVOController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8F1EA9CEDF9F99FAEE81E39F /* Headers */ = {
+		5C493928A80EB6A574F7167E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2C657C7D267DC878912E476 /* MUKDataSource.h in Headers */,
-				0A8283137EDFF654D6E024AD /* MUKDataSourceContentSection.h in Headers */,
-				36E15A5A78945028B1D6FE31 /* MUKDataSourceIdentifiable.h in Headers */,
-				4DD445A075B626F565F8513E /* MUKDataSourceSectionedContentUpdate.h in Headers */,
-				F8AAFD182D2CDBC7665AA2EE /* MUKDataSourceTableSection.h in Headers */,
-				EC140CBA7A870C40BDAF6D05 /* MUKDataSourceTableUpdate.h in Headers */,
-				34428DE8D8BD34FD72075E64 /* MUKTableViewController.h in Headers */,
+				697D760FD28B1685E3780F1E /* MUKArrayDelta.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B92F731BC7E7C07EA7001041 /* Headers */ = {
+		681876A73E9E67D0443B02B8 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9992C8E3FDE778B6558D08C3 /* MUKArrayDelta.h in Headers */,
+				572BCB9B7E5385BDA05E8C2F /* FBKVOController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BE8F3E07BF126865B0F14DA9 /* Headers */ = {
+		74DF2C0165228B44B78E1F0F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5B6A9B9F3999C6C4CC33FED /* MUKArrayDelta.h in Headers */,
+				8C62726D52B5CC35B01822F6 /* MUKArrayDelta.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		016AB48F072AFB29B50072BE /* Pods-MUKDataSourceTests */ = {
+		18CB1A1DCE07644C9E9AE2AD /* Pods-MUKDataSourceTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8CA463710C01237BE9FC38B0 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests" */;
+			buildConfigurationList = D51E06AFFA30D0636FB859ED /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests" */;
 			buildPhases = (
-				286EE16836C4524B06BB16A9 /* Sources */,
-				710B9FB3BD2E0B32D20C5675 /* Frameworks */,
+				D3E45047801CB9450C2D3B4F /* Sources */,
+				DBFE6B239B76E81A7B81303C /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				9D045B7D0ADC17B0E6C3BB46 /* PBXTargetDependency */,
-				2B2E0E999729639F3A640C4A /* PBXTargetDependency */,
-				D6B544DEAECE330F74EFA6EE /* PBXTargetDependency */,
+				0AA7BD59E0052FA44712AFAD /* PBXTargetDependency */,
+				4804503067B781463CF6B1CC /* PBXTargetDependency */,
+				1AD18358FD4D6A3CCA2F8F71 /* PBXTargetDependency */,
 			);
 			name = "Pods-MUKDataSourceTests";
 			productName = "Pods-MUKDataSourceTests";
-			productReference = 8BDC9FBFA8997FC01BE1E01C /* libPods-MUKDataSourceTests.a */;
+			productReference = 6B63FDF81D2427D0455E5E91 /* libPods-MUKDataSourceTests.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		16CB8B67EDF1D5FC59107DCF /* Pods-MUKDataSourceTests-MUKArrayDelta */ = {
+		340433F60EDF462DEAF515AC /* Pods-MUKDataSourceTests-MUKDataSource */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A139A6CF90AE00CC35897F28 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKArrayDelta" */;
+			buildConfigurationList = F0E18E8FB4A33E45CC64BCB6 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKDataSource" */;
 			buildPhases = (
-				3EC8E7BA42AEBBB46D7F5B6B /* Sources */,
-				AA5038744F39CF99ED3635CA /* Frameworks */,
-				B92F731BC7E7C07EA7001041 /* Headers */,
+				6BC9BA13BD73A9610C5BECE9 /* Sources */,
+				E43F95FF4131F5D1429D92FB /* Frameworks */,
+				21EE7427EA9A9D246A71254C /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E0D2EB82A35EB05C79326C59 /* PBXTargetDependency */,
+				B3ADCE72B2ECB24CD356B6D3 /* PBXTargetDependency */,
 			);
-			name = "Pods-MUKDataSourceTests-MUKArrayDelta";
-			productName = "Pods-MUKDataSourceTests-MUKArrayDelta";
-			productReference = D6C1B168CE2397DBAE0B28BC /* libPods-MUKDataSourceTests-MUKArrayDelta.a */;
+			name = "Pods-MUKDataSourceTests-MUKDataSource";
+			productName = "Pods-MUKDataSourceTests-MUKDataSource";
+			productReference = FE5E7AB5E09114CE98D63AE1 /* libPods-MUKDataSourceTests-MUKDataSource.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		262420E2AA621E5226B7BDC1 /* Pods-MUKDataSource */ = {
+		3C8D988672041AE78C4E4D3B /* Pods-MUKArrayDelta */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C2394802A6E28FCCECADEB97 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSource" */;
+			buildConfigurationList = 3A04A9EB612CDAA65F604C8E /* Build configuration list for PBXNativeTarget "Pods-MUKArrayDelta" */;
 			buildPhases = (
-				B56B671A9AB6AC40A1A03ED3 /* Sources */,
-				7592DB451996938831C04181 /* Frameworks */,
-				8F1EA9CEDF9F99FAEE81E39F /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				75794C51C31A4FF7272E90CC /* PBXTargetDependency */,
-				DA93F9B0B431551DEE837BA0 /* PBXTargetDependency */,
-			);
-			name = "Pods-MUKDataSource";
-			productName = "Pods-MUKDataSource";
-			productReference = 059D451659F56563999094A6 /* libPods-MUKDataSource.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		2D1E66FBDEF6421CD708472E /* Pods-MUKArrayDelta */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 58D95EC1443BFB01766586B2 /* Build configuration list for PBXNativeTarget "Pods-MUKArrayDelta" */;
-			buildPhases = (
-				A24268437B02AA45F15332FC /* Sources */,
-				2355726D13723A8A86EB71F9 /* Frameworks */,
-				BE8F3E07BF126865B0F14DA9 /* Headers */,
+				E846F7334F8583F9FAEE05F4 /* Sources */,
+				B198E24972A6D007E14B02DB /* Frameworks */,
+				5C493928A80EB6A574F7167E /* Headers */,
 			);
 			buildRules = (
 			);
@@ -644,71 +671,16 @@
 			);
 			name = "Pods-MUKArrayDelta";
 			productName = "Pods-MUKArrayDelta";
-			productReference = DB53F69B8C666BD02C1D46EF /* libPods-MUKArrayDelta.a */;
+			productReference = E9D9886E5A9022CFF792F19C /* libPods-MUKArrayDelta.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		47CA26ADA01F9642AA27DF90 /* Pods */ = {
+		51BB66EA4962EF28DAE9266A /* Pods-MUKDataSourceTests-KVOController */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4434693AE93CBF9E1029331B /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildConfigurationList = 9D5C6274A50CD8E452FA1B03 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-KVOController" */;
 			buildPhases = (
-				3EE898AC900BDDAAC7A60BF4 /* Sources */,
-				A23C56D95571F55DD4EFE89E /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				041B5B5619BFAAA4ACF40BAA /* PBXTargetDependency */,
-				F4F75C9A75C14EA5EA703016 /* PBXTargetDependency */,
-				6DB456643189BB156D408F3D /* PBXTargetDependency */,
-			);
-			name = Pods;
-			productName = Pods;
-			productReference = E013187563BEFFDB4A0E2D23 /* libPods.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		5DFB7E4A428EBECD315BB1DD /* Pods-KVOController */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6454FCF7EBBAA845B1E1A747 /* Build configuration list for PBXNativeTarget "Pods-KVOController" */;
-			buildPhases = (
-				3741B06509E63949FE00792D /* Sources */,
-				8CFD39564A34A293FE7CE4F8 /* Frameworks */,
-				0E0D5B8D9B1CD6444EF5C9EA /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-KVOController";
-			productName = "Pods-KVOController";
-			productReference = 735247977647296AEBB97C7D /* libPods-KVOController.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		799BD8DA909ECFDF4C370CED /* Pods-MUKDataSourceTests-MUKDataSource */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 08C246F220F2AFD41690026E /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKDataSource" */;
-			buildPhases = (
-				CE1423565464F705E03B1426 /* Sources */,
-				BC43282E172B194FB09D81BF /* Frameworks */,
-				3A7B9B1EB5BFD10D9683703A /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3FA519A7E4591B5DCD6E2D49 /* PBXTargetDependency */,
-				430B0987933EACD1D3175129 /* PBXTargetDependency */,
-			);
-			name = "Pods-MUKDataSourceTests-MUKDataSource";
-			productName = "Pods-MUKDataSourceTests-MUKDataSource";
-			productReference = 516C3D3CBEAB0A88B2892C01 /* libPods-MUKDataSourceTests-MUKDataSource.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		D87226B04B15DFAB476E469A /* Pods-MUKDataSourceTests-KVOController */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C32EA4C93225B69F9747129C /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-KVOController" */;
-			buildPhases = (
-				B36F96BC6E8CF9FC0C05E7C0 /* Sources */,
-				6EFDED4F49F991F1001F4127 /* Frameworks */,
-				554E5488569EEAD69CCCE81F /* Headers */,
+				D4DF665F647599015530A36F /* Sources */,
+				9E33A86C95231F0BB4250A6E /* Frameworks */,
+				31ECF902CA3E3384D186B551 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -716,189 +688,281 @@
 			);
 			name = "Pods-MUKDataSourceTests-KVOController";
 			productName = "Pods-MUKDataSourceTests-KVOController";
-			productReference = 02C598AAA2B68B43DE9834D2 /* libPods-MUKDataSourceTests-KVOController.a */;
+			productReference = 17696A84474634580CF137C1 /* libPods-MUKDataSourceTests-KVOController.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		5DC7CBE05778928F1955C6E0 /* Pods-KVOController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1112359132D983552615BC35 /* Build configuration list for PBXNativeTarget "Pods-KVOController" */;
+			buildPhases = (
+				A28FA9E57967AB3D497364E0 /* Sources */,
+				FD1432453EF79BC84E00A1FB /* Frameworks */,
+				681876A73E9E67D0443B02B8 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-KVOController";
+			productName = "Pods-KVOController";
+			productReference = 22BCBDE36C1F6A9F207EAB8D /* libPods-KVOController.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		68A755FDF338EEF34621DCEA /* Pods-MUKDataSourceTests-MUKArrayDelta */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C98F3028BE4A3BA70B3A0653 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKArrayDelta" */;
+			buildPhases = (
+				E5EFF6ECA2F8F9F482C20086 /* Sources */,
+				EA2CFAAA5B7FF0878D2CC185 /* Frameworks */,
+				74DF2C0165228B44B78E1F0F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-MUKDataSourceTests-MUKArrayDelta";
+			productName = "Pods-MUKDataSourceTests-MUKArrayDelta";
+			productReference = AC88975A6B25EE7AAB2CE8FC /* libPods-MUKDataSourceTests-MUKArrayDelta.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		6FF6FE3EB637C084F7336C25 /* Pods-MUKDataSource */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 10548A52618985D8A330C4AD /* Build configuration list for PBXNativeTarget "Pods-MUKDataSource" */;
+			buildPhases = (
+				38FA527C95C971C276CDB514 /* Sources */,
+				97883486AC0F62634756986B /* Frameworks */,
+				0C2FFE689A9E6E2C29B22FF9 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				812184D7854282F9B75A1D0B /* PBXTargetDependency */,
+				566966C44EE8CB3A08BAFF4D /* PBXTargetDependency */,
+			);
+			name = "Pods-MUKDataSource";
+			productName = "Pods-MUKDataSource";
+			productReference = 40F536FC843553F48155B15E /* libPods-MUKDataSource.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		7B5644356352FD7E7F1F7252 /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A6922D41D024BF4AC4A5F94 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				5A6C54DB48CD216E9C8F9E2E /* Sources */,
+				97D16525C5EB1AE9AE1F1C5D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				246A3A2DD2468F33B1B2A32A /* PBXTargetDependency */,
+				8335C0DD41EC73B609E9AD8C /* PBXTargetDependency */,
+				D6BF141660517558FED6CC03 /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = F7ECCA24F69D9C33A2F1D6E8 /* libPods.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		4C515C016EF651D49B2B489C /* Project object */ = {
+		FD430E05157A39CD235813B7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0640;
 			};
-			buildConfigurationList = 2A2BFB624496534CAC69031F /* Build configuration list for PBXProject "Pods" */;
+			buildConfigurationList = F64C842175540E2BE039FA9D /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 341C573C8F7C73C687FBFC9C;
-			productRefGroup = 4DFE9ECBC221E53BE009E3C6 /* Products */;
+			mainGroup = 1D9264360D253B9FCAF88F50;
+			productRefGroup = F61461D36CED348D9EBB998D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				47CA26ADA01F9642AA27DF90 /* Pods */,
-				5DFB7E4A428EBECD315BB1DD /* Pods-KVOController */,
-				2D1E66FBDEF6421CD708472E /* Pods-MUKArrayDelta */,
-				262420E2AA621E5226B7BDC1 /* Pods-MUKDataSource */,
-				016AB48F072AFB29B50072BE /* Pods-MUKDataSourceTests */,
-				D87226B04B15DFAB476E469A /* Pods-MUKDataSourceTests-KVOController */,
-				16CB8B67EDF1D5FC59107DCF /* Pods-MUKDataSourceTests-MUKArrayDelta */,
-				799BD8DA909ECFDF4C370CED /* Pods-MUKDataSourceTests-MUKDataSource */,
+				7B5644356352FD7E7F1F7252 /* Pods */,
+				5DC7CBE05778928F1955C6E0 /* Pods-KVOController */,
+				3C8D988672041AE78C4E4D3B /* Pods-MUKArrayDelta */,
+				6FF6FE3EB637C084F7336C25 /* Pods-MUKDataSource */,
+				18CB1A1DCE07644C9E9AE2AD /* Pods-MUKDataSourceTests */,
+				51BB66EA4962EF28DAE9266A /* Pods-MUKDataSourceTests-KVOController */,
+				68A755FDF338EEF34621DCEA /* Pods-MUKDataSourceTests-MUKArrayDelta */,
+				340433F60EDF462DEAF515AC /* Pods-MUKDataSourceTests-MUKDataSource */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		286EE16836C4524B06BB16A9 /* Sources */ = {
+		38FA527C95C971C276CDB514 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				015439DF9BB69C8539DC2173 /* Pods-MUKDataSourceTests-dummy.m in Sources */,
+				CECED62584A4269A193B2785 /* MUKDataSource.m in Sources */,
+				185AE00BFD3D012662B3447B /* MUKDataSourceCollectionSection.m in Sources */,
+				3804B929E1653184EF11A53F /* MUKDataSourceCollectionUpdate.m in Sources */,
+				FE811E60CF0CAE42D902A057 /* MUKDataSourceSectionedContentUpdate.m in Sources */,
+				A4DDED889AB88CF4B8983841 /* MUKDataSourceTableSection.m in Sources */,
+				4673A01D01E455169CFF781D /* MUKDataSourceTableUpdate.m in Sources */,
+				434154C807DFD89F18753EEE /* MUKTableViewController.m in Sources */,
+				6E43896E65FF4CC3A3EBF51B /* Pods-MUKDataSource-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3741B06509E63949FE00792D /* Sources */ = {
+		5A6C54DB48CD216E9C8F9E2E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8656458858E8707D18275173 /* FBKVOController.m in Sources */,
-				7CDDA552432ECB889B28E56A /* Pods-KVOController-dummy.m in Sources */,
+				E4FA722F27208B509C257279 /* Pods-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3EC8E7BA42AEBBB46D7F5B6B /* Sources */ = {
+		6BC9BA13BD73A9610C5BECE9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				062EB39E3378E3A247FB4758 /* MUKArrayDelta.m in Sources */,
-				0D79C7504AA8573F9C6DC68F /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m in Sources */,
+				5E4B2F1991969D0ED3DC8BD1 /* MUKDataSource.m in Sources */,
+				D2A306A2CA44FEF2AD000F5E /* MUKDataSourceCollectionSection.m in Sources */,
+				34CD731ED11C7BC46B271501 /* MUKDataSourceCollectionUpdate.m in Sources */,
+				04E023E4A4DEE226FB0DD2B5 /* MUKDataSourceSectionedContentUpdate.m in Sources */,
+				237082D26BD29A9B78A4CA88 /* MUKDataSourceTableSection.m in Sources */,
+				1F43467157A81BFC9743AB93 /* MUKDataSourceTableUpdate.m in Sources */,
+				24E2647027A06BE5AF79113B /* MUKTableViewController.m in Sources */,
+				29DD67C4885B3288D0679E66 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3EE898AC900BDDAAC7A60BF4 /* Sources */ = {
+		A28FA9E57967AB3D497364E0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDA65181AAF68DBE54FF1522 /* Pods-dummy.m in Sources */,
+				9AE4CEB44448A697FE15AF96 /* FBKVOController.m in Sources */,
+				8DE375942BD458533380785F /* Pods-KVOController-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A24268437B02AA45F15332FC /* Sources */ = {
+		D3E45047801CB9450C2D3B4F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79DCEC791352D2B46405889C /* MUKArrayDelta.m in Sources */,
-				5C0D98799D68BE860E7A0544 /* Pods-MUKArrayDelta-dummy.m in Sources */,
+				9AB8CBA3886988BF3B7ECCB1 /* Pods-MUKDataSourceTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B36F96BC6E8CF9FC0C05E7C0 /* Sources */ = {
+		D4DF665F647599015530A36F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11C9B53F26E10D4D4031260C /* FBKVOController.m in Sources */,
-				99B274AFBB33B1733DF28527 /* Pods-MUKDataSourceTests-KVOController-dummy.m in Sources */,
+				EC48A08CA985C200EF5ADDA4 /* FBKVOController.m in Sources */,
+				422FED3036F543661A35CBEC /* Pods-MUKDataSourceTests-KVOController-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B56B671A9AB6AC40A1A03ED3 /* Sources */ = {
+		E5EFF6ECA2F8F9F482C20086 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				342293EB943E3D3086561313 /* MUKDataSource.m in Sources */,
-				594E747A84A3E5810792030E /* MUKDataSourceSectionedContentUpdate.m in Sources */,
-				C8B26897199996C1557BBD82 /* MUKDataSourceTableSection.m in Sources */,
-				7E8662842EFC9723EB87C282 /* MUKDataSourceTableUpdate.m in Sources */,
-				A48C018B91A18FFE69910A84 /* MUKTableViewController.m in Sources */,
-				DC9940E8C485134420341CD2 /* Pods-MUKDataSource-dummy.m in Sources */,
+				2985DF13FDC7A3683361BF39 /* MUKArrayDelta.m in Sources */,
+				1333B0EB1545B56BE6609971 /* Pods-MUKDataSourceTests-MUKArrayDelta-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CE1423565464F705E03B1426 /* Sources */ = {
+		E846F7334F8583F9FAEE05F4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				707222A59A3A514E4CBD6A1C /* MUKDataSource.m in Sources */,
-				A9F80B08B460FA6FBDFBA7C6 /* MUKDataSourceSectionedContentUpdate.m in Sources */,
-				72F47B6EEFDAB6FBEE3C1022 /* MUKDataSourceTableSection.m in Sources */,
-				41FE0F5C81F688F185996AA9 /* MUKDataSourceTableUpdate.m in Sources */,
-				A769038E09DE7D5C230C6E69 /* MUKTableViewController.m in Sources */,
-				A312BBDAC45EB38ABF1848C1 /* Pods-MUKDataSourceTests-MUKDataSource-dummy.m in Sources */,
+				9360359A2213FF8A5A6C57F6 /* MUKArrayDelta.m in Sources */,
+				7F43E5789D0E9F8A01D3A906 /* Pods-MUKArrayDelta-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		041B5B5619BFAAA4ACF40BAA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-KVOController";
-			target = 5DFB7E4A428EBECD315BB1DD /* Pods-KVOController */;
-			targetProxy = E985A5732FCBE90741D1AF3B /* PBXContainerItemProxy */;
-		};
-		2B2E0E999729639F3A640C4A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-MUKDataSourceTests-MUKArrayDelta";
-			target = 16CB8B67EDF1D5FC59107DCF /* Pods-MUKDataSourceTests-MUKArrayDelta */;
-			targetProxy = 08463078180ACF1DAF1378F1 /* PBXContainerItemProxy */;
-		};
-		3FA519A7E4591B5DCD6E2D49 /* PBXTargetDependency */ = {
+		0AA7BD59E0052FA44712AFAD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-MUKDataSourceTests-KVOController";
-			target = D87226B04B15DFAB476E469A /* Pods-MUKDataSourceTests-KVOController */;
-			targetProxy = 0FBD0CDB83E0CC97D6DF05F5 /* PBXContainerItemProxy */;
+			target = 51BB66EA4962EF28DAE9266A /* Pods-MUKDataSourceTests-KVOController */;
+			targetProxy = 25616E74901250BB13C32A67 /* PBXContainerItemProxy */;
 		};
-		430B0987933EACD1D3175129 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-MUKDataSourceTests-MUKArrayDelta";
-			target = 16CB8B67EDF1D5FC59107DCF /* Pods-MUKDataSourceTests-MUKArrayDelta */;
-			targetProxy = 77D01E58BA594A04FCEAD543 /* PBXContainerItemProxy */;
-		};
-		6DB456643189BB156D408F3D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-MUKDataSource";
-			target = 262420E2AA621E5226B7BDC1 /* Pods-MUKDataSource */;
-			targetProxy = 856B40E4D61BABD6E07A96FC /* PBXContainerItemProxy */;
-		};
-		75794C51C31A4FF7272E90CC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-KVOController";
-			target = 5DFB7E4A428EBECD315BB1DD /* Pods-KVOController */;
-			targetProxy = E91ACB8CD2C65383BEF5D150 /* PBXContainerItemProxy */;
-		};
-		9D045B7D0ADC17B0E6C3BB46 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-MUKDataSourceTests-KVOController";
-			target = D87226B04B15DFAB476E469A /* Pods-MUKDataSourceTests-KVOController */;
-			targetProxy = 7A11C74E5BD7097030803DE5 /* PBXContainerItemProxy */;
-		};
-		D6B544DEAECE330F74EFA6EE /* PBXTargetDependency */ = {
+		1AD18358FD4D6A3CCA2F8F71 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-MUKDataSourceTests-MUKDataSource";
-			target = 799BD8DA909ECFDF4C370CED /* Pods-MUKDataSourceTests-MUKDataSource */;
-			targetProxy = 3BF452A4079401C208F559EE /* PBXContainerItemProxy */;
+			target = 340433F60EDF462DEAF515AC /* Pods-MUKDataSourceTests-MUKDataSource */;
+			targetProxy = 67D7BBD3961867B242BDC3F1 /* PBXContainerItemProxy */;
 		};
-		DA93F9B0B431551DEE837BA0 /* PBXTargetDependency */ = {
+		246A3A2DD2468F33B1B2A32A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-KVOController";
+			target = 5DC7CBE05778928F1955C6E0 /* Pods-KVOController */;
+			targetProxy = 63226F72FD35C4AAB703829E /* PBXContainerItemProxy */;
+		};
+		4804503067B781463CF6B1CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-MUKDataSourceTests-MUKArrayDelta";
+			target = 68A755FDF338EEF34621DCEA /* Pods-MUKDataSourceTests-MUKArrayDelta */;
+			targetProxy = 87AFCD02A6D5527B74565372 /* PBXContainerItemProxy */;
+		};
+		566966C44EE8CB3A08BAFF4D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-MUKArrayDelta";
-			target = 2D1E66FBDEF6421CD708472E /* Pods-MUKArrayDelta */;
-			targetProxy = 55C707B4C27723CF9E6512DD /* PBXContainerItemProxy */;
+			target = 3C8D988672041AE78C4E4D3B /* Pods-MUKArrayDelta */;
+			targetProxy = E8596844CE373C0401EBE94C /* PBXContainerItemProxy */;
 		};
-		F4F75C9A75C14EA5EA703016 /* PBXTargetDependency */ = {
+		812184D7854282F9B75A1D0B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-KVOController";
+			target = 5DC7CBE05778928F1955C6E0 /* Pods-KVOController */;
+			targetProxy = 50874CE63735786E7F425F8C /* PBXContainerItemProxy */;
+		};
+		8335C0DD41EC73B609E9AD8C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-MUKArrayDelta";
-			target = 2D1E66FBDEF6421CD708472E /* Pods-MUKArrayDelta */;
-			targetProxy = FAC1D8CE2A71D451CAF65FB1 /* PBXContainerItemProxy */;
+			target = 3C8D988672041AE78C4E4D3B /* Pods-MUKArrayDelta */;
+			targetProxy = 7442083FBEC2C969CEBF1F65 /* PBXContainerItemProxy */;
+		};
+		B3ADCE72B2ECB24CD356B6D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-MUKDataSourceTests-MUKArrayDelta";
+			target = 68A755FDF338EEF34621DCEA /* Pods-MUKDataSourceTests-MUKArrayDelta */;
+			targetProxy = 08D595EEBB9A659A450FAA0F /* PBXContainerItemProxy */;
+		};
+		D6BF141660517558FED6CC03 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-MUKDataSource";
+			target = 6FF6FE3EB637C084F7336C25 /* Pods-MUKDataSource */;
+			targetProxy = B55656E319705CF62E8F7CFF /* PBXContainerItemProxy */;
+		};
+		E0D2EB82A35EB05C79326C59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-MUKDataSourceTests-KVOController";
+			target = 51BB66EA4962EF28DAE9266A /* Pods-MUKDataSourceTests-KVOController */;
+			targetProxy = C05088814805039CBE9D331F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		027C1537A2A69B1CA5D3263E /* Release */ = {
+		006F386C15F939189F4DDADE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B6C89DF95EB2A1BF8B706C4 /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */;
+			baseConfigurationReference = AD29EF7590EA4E977A5EA9E6 /* Pods-MUKDataSource-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		016A2CFDB29664F362903B93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9610CFFD61B762733874516B /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-prefix.pch";
@@ -912,103 +976,7 @@
 			};
 			name = Release;
 		};
-		0578062B1D0F43926EE05462 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 937289AA72894E2E2511F03F /* Pods-MUKDataSourceTests.release.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		070A02CB4E34C4F0176592F1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2725C3F3463510B1C6911FED /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		0E2BB4369E38E2A49CD995FD /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 598823198BD385911C353DF2 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		1DDD034EC4681388744874C3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06C2AC8456094A169DC06CE7 /* Pods-KVOController-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-KVOController/Pods-KVOController-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		1E5BE5D47A78EEED674FFA63 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B0B0A7FFACDB2D22BCED293 /* Pods-MUKDataSource-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		33B7DC0976D17484CE6DD0AF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06C2AC8456094A169DC06CE7 /* Pods-KVOController-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-KVOController/Pods-KVOController-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		379F3C0A737F42441FB9EA3E /* Debug */ = {
+		0E3CC2DB7607A66C9B5C28C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1047,25 +1015,25 @@
 			};
 			name = Debug;
 		};
-		3E04B6E0E673227CAB839245 /* Debug */ = {
+		1B90BFAA7DD22ADAB776554F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30906D2AF5EB11145170B5FB /* Pods-MUKDataSourceTests.debug.xcconfig */;
+			baseConfigurationReference = AD29EF7590EA4E977A5EA9E6 /* Pods-MUKDataSource-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		58D906E9AD2B16D7976754B4 /* Debug */ = {
+		29567D600DDC621415C8B379 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 598823198BD385911C353DF2 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */;
+			baseConfigurationReference = D591E23379E49660CE8F2358 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-prefix.pch";
@@ -1079,25 +1047,9 @@
 			};
 			name = Debug;
 		};
-		5E29A3DC3B010D1C7470201A /* Debug */ = {
+		3F596403C10A90B2834762B3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF5891D3CF7104EF363A024A /* Pods-MUKArrayDelta-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKArrayDelta/Pods-MUKArrayDelta-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		63558FE953E9F4328145450C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD4D0C63ED6A65F683F80D8F /* Pods.release.xcconfig */;
+			baseConfigurationReference = B6C6B43790D2A37CA07C184F /* Pods.release.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
@@ -1111,7 +1063,119 @@
 			};
 			name = Release;
 		};
-		7BAA44C8A0AAF458579B17B1 /* Release */ = {
+		7207F3C9544C0920F55A40D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 415FD5D9D61C40397359E169 /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8432D7E8E5EA0F38DCD22AFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 011B129949BCD05C9F9AC77C /* Pods-KVOController-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-KVOController/Pods-KVOController-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		86500F2EB56FEBE4DACBB6B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EAEA6CBF1469E83B123A6161 /* Pods-MUKDataSourceTests.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8AEC17118819DE5D77E553F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 011B129949BCD05C9F9AC77C /* Pods-KVOController-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-KVOController/Pods-KVOController-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		90C7FADACB89E5B69A33143E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8C2C04EC2550E1DA54704ED /* Pods-MUKArrayDelta-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKArrayDelta/Pods-MUKArrayDelta-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		A3CB443757DCAB37606FF03D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D591E23379E49660CE8F2358 /* Pods-MUKDataSourceTests-MUKDataSource-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-MUKDataSource/Pods-MUKDataSourceTests-MUKDataSource-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		AC9600F6246444FD729DB02F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1432274AFAF57A32A0330A50 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		AF21D754CFDC5AD92BDF609B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1145,25 +1209,9 @@
 			};
 			name = Release;
 		};
-		8CA63983C0B524DB26D36ED6 /* Release */ = {
+		AF5A19CC5A454FD8FF80321D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF5891D3CF7104EF363A024A /* Pods-MUKArrayDelta-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKArrayDelta/Pods-MUKArrayDelta-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		A859EFEB39802B52ECA1A774 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B6C89DF95EB2A1BF8B706C4 /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */;
+			baseConfigurationReference = 9610CFFD61B762733874516B /* Pods-MUKDataSourceTests-KVOController-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-KVOController/Pods-MUKDataSourceTests-KVOController-prefix.pch";
@@ -1177,13 +1225,13 @@
 			};
 			name = Debug;
 		};
-		CC8B424FE9B6CFDBC45FED71 /* Debug */ = {
+		E0FA99ACAA66103460F1A9C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91BA92325642AB04CBBEEC20 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 95177F0D4A12D5207438BCB7 /* Pods-MUKDataSourceTests.release.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1191,11 +1239,27 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
+			name = Release;
+		};
+		FB4FAEBA2E5A92CDDA5EB181 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8C2C04EC2550E1DA54704ED /* Pods-MUKArrayDelta-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKArrayDelta/Pods-MUKArrayDelta-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
 			name = Debug;
 		};
-		EA66AED4FFF073F02BAB4124 /* Release */ = {
+		FEF54106DD3892CA3F1C445C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2725C3F3463510B1C6911FED /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */;
+			baseConfigurationReference = 415FD5D9D61C40397359E169 /* Pods-MUKDataSourceTests-MUKArrayDelta-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSourceTests-MUKArrayDelta/Pods-MUKDataSourceTests-MUKArrayDelta-prefix.pch";
@@ -1209,107 +1273,91 @@
 			};
 			name = Release;
 		};
-		F4C6F9BC1DBC126EB9444BE0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B0B0A7FFACDB2D22BCED293 /* Pods-MUKDataSource-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		08C246F220F2AFD41690026E /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKDataSource" */ = {
+		10548A52618985D8A330C4AD /* Build configuration list for PBXNativeTarget "Pods-MUKDataSource" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				58D906E9AD2B16D7976754B4 /* Debug */,
-				0E2BB4369E38E2A49CD995FD /* Release */,
+				1B90BFAA7DD22ADAB776554F /* Debug */,
+				006F386C15F939189F4DDADE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2A2BFB624496534CAC69031F /* Build configuration list for PBXProject "Pods" */ = {
+		1112359132D983552615BC35 /* Build configuration list for PBXNativeTarget "Pods-KVOController" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				379F3C0A737F42441FB9EA3E /* Debug */,
-				7BAA44C8A0AAF458579B17B1 /* Release */,
+				8AEC17118819DE5D77E553F6 /* Debug */,
+				8432D7E8E5EA0F38DCD22AFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4434693AE93CBF9E1029331B /* Build configuration list for PBXNativeTarget "Pods" */ = {
+		3A04A9EB612CDAA65F604C8E /* Build configuration list for PBXNativeTarget "Pods-MUKArrayDelta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CC8B424FE9B6CFDBC45FED71 /* Debug */,
-				63558FE953E9F4328145450C /* Release */,
+				FB4FAEBA2E5A92CDDA5EB181 /* Debug */,
+				90C7FADACB89E5B69A33143E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58D95EC1443BFB01766586B2 /* Build configuration list for PBXNativeTarget "Pods-MUKArrayDelta" */ = {
+		4A6922D41D024BF4AC4A5F94 /* Build configuration list for PBXNativeTarget "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5E29A3DC3B010D1C7470201A /* Debug */,
-				8CA63983C0B524DB26D36ED6 /* Release */,
+				AC9600F6246444FD729DB02F /* Debug */,
+				3F596403C10A90B2834762B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6454FCF7EBBAA845B1E1A747 /* Build configuration list for PBXNativeTarget "Pods-KVOController" */ = {
+		9D5C6274A50CD8E452FA1B03 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-KVOController" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33B7DC0976D17484CE6DD0AF /* Debug */,
-				1DDD034EC4681388744874C3 /* Release */,
+				AF5A19CC5A454FD8FF80321D /* Debug */,
+				016A2CFDB29664F362903B93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8CA463710C01237BE9FC38B0 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests" */ = {
+		C98F3028BE4A3BA70B3A0653 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKArrayDelta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3E04B6E0E673227CAB839245 /* Debug */,
-				0578062B1D0F43926EE05462 /* Release */,
+				7207F3C9544C0920F55A40D2 /* Debug */,
+				FEF54106DD3892CA3F1C445C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A139A6CF90AE00CC35897F28 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKArrayDelta" */ = {
+		D51E06AFFA30D0636FB859ED /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				070A02CB4E34C4F0176592F1 /* Debug */,
-				EA66AED4FFF073F02BAB4124 /* Release */,
+				86500F2EB56FEBE4DACBB6B2 /* Debug */,
+				E0FA99ACAA66103460F1A9C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C2394802A6E28FCCECADEB97 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSource" */ = {
+		F0E18E8FB4A33E45CC64BCB6 /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-MUKDataSource" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1E5BE5D47A78EEED674FFA63 /* Debug */,
-				F4C6F9BC1DBC126EB9444BE0 /* Release */,
+				29567D600DDC621415C8B379 /* Debug */,
+				A3CB443757DCAB37606FF03D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C32EA4C93225B69F9747129C /* Build configuration list for PBXNativeTarget "Pods-MUKDataSourceTests-KVOController" */ = {
+		F64C842175540E2BE039FA9D /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A859EFEB39802B52ECA1A774 /* Debug */,
-				027C1537A2A69B1CA5D3263E /* Release */,
+				0E3CC2DB7607A66C9B5C28C7 /* Debug */,
+				AF21D754CFDC5AD92BDF609B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 4C515C016EF651D49B2B489C /* Project object */;
+	rootObject = FD430E05157A39CD235813B7 /* Project object */;
 }

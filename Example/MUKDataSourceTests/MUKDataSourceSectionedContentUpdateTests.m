@@ -34,8 +34,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionDeletion {
@@ -55,8 +53,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionReload {
@@ -77,8 +73,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionMovements {
@@ -99,8 +93,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboInsertionDeletion {
@@ -121,8 +113,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboInsertionReload {
@@ -149,8 +139,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboInsertionMovements {
@@ -176,8 +164,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboDeletionReload {
@@ -201,8 +187,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboDeletionMovements {
@@ -228,8 +212,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboReloadMovements {
@@ -253,8 +235,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboInsertionDeletionReload {
@@ -279,8 +259,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboInsertionDeletionMovement {
@@ -306,8 +284,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboDeletionReloadMovement {
@@ -332,8 +308,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testSectionComboInsertionDeletionReloadMovement {
@@ -360,8 +334,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemInsertion {
@@ -386,8 +358,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 /*
 - (void)testItemInsertionWithSectionMovement {
@@ -436,8 +406,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 /*
 - (void)testItemDeletionWithSectionMovement {
@@ -486,8 +454,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 - (void)testItemReloadWithSectionMovement {
     // a, b, c
@@ -501,7 +467,7 @@
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
     NSSet *const sectionMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:1], nil];
-    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPath(1, 1), nil];
+    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPath(0, 1), nil];
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -512,8 +478,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemMovements {
@@ -539,8 +503,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemMovementBetweenSections {
@@ -572,8 +534,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 /*
 - (void)testItemMovementWithSectionMovement {
@@ -626,8 +586,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemMovementFromDeletedSection {
@@ -653,8 +611,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboInsertionDeletion {
@@ -680,8 +636,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboInsertionReload {
@@ -696,7 +650,7 @@
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), IndexPathWithItem(1), IndexPathWithItem(3), IndexPathWithItem(5), nil];
-    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(4), nil];
+    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -707,8 +661,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboInsertionMovements {
@@ -734,8 +686,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboDeletionReload {
@@ -750,7 +700,7 @@
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), IndexPathWithItem(2), nil];
-    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
+    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(3), nil];
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -761,8 +711,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboDeletionMovements {
@@ -788,8 +736,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboReloadMovements {
@@ -803,7 +749,7 @@
     
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
-    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
+    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(2)], [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(2) destinationIndexPath:IndexPathWithItem(0)], nil];
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
@@ -815,8 +761,6 @@
     XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboInsertionDeletionReload {
@@ -832,7 +776,7 @@
     
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), IndexPathWithItem(3), nil];
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
-    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
+    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -843,8 +787,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqual(update.itemMovements.count, 0);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboInsertionDeletionMovement {
@@ -871,8 +813,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboDeletionReloadMovement {
@@ -887,7 +827,7 @@
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
-    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
+    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(1)], nil];
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
@@ -899,8 +839,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 - (void)testItemComboInsertionDeletionReloadMovement {
@@ -916,7 +854,7 @@
     
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), IndexPathWithItem(3), nil];
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
-    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
+    NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(2)], nil];
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
@@ -928,8 +866,6 @@
     XCTAssertEqualObjects(update.deletedItemIndexPaths, deletedItemIndexPaths);
     XCTAssertEqualObjects(update.reloadedItemIndexPaths, reloadedItemIndexPaths);
     XCTAssertEqualObjects(update.itemMovements, ItemMovements);
-    
-//    XCTAssertFalse(update.needsReloadData);
 }
 
 #pragma mark - Private
