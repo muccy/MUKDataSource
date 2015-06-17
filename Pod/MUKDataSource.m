@@ -61,8 +61,8 @@
 - (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)tableSections
 {
     if (tableSections != _content) {
-        MUKDataSourceTableUpdate *const update = [[MUKDataSourceTableUpdate alloc] initWithSourceTableSections:self.sections destinationTableSections:tableSections];
-        _content = [tableSections copy];
+        MUKDataSourceTableUpdate *const update = [self newTableUpdateFromSections:self.sections toSections:tableSections];
+        self.content = tableSections;
         return update;
     }
     
@@ -78,12 +78,44 @@
     return nil;
 }
 
-- (id<MUKDataSourceIdentifiable>)tableRowItemAtIndexPath:(NSIndexPath *)indexPath
+- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections
 {
-    return [self itemAtIndexPath:indexPath];
+    return [[MUKDataSourceTableUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
 
-#pragma mark <UITableViewDataSource>
+@end
+
+@implementation MUKDataSource (CollectionViewSupport)
+
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *)sections {
+    if (sections != _content) {
+        MUKDataSourceCollectionUpdate *const update = [self newCollectionUpdateFromSections:self.sections toSections:sections];
+        self.content = sections;
+        return update;
+    }
+    
+    return nil;
+}
+
+- (MUKDataSourceCollectionSection *)collectionSectionAtIndex:(NSInteger)idx {
+    id<MUKDataSourceContentSection> const section = [self sectionAtIndex:idx];
+    if ([section isKindOfClass:[MUKDataSourceCollectionSection class]]) {
+        return (MUKDataSourceCollectionSection *)section;
+    }
+    
+    return nil;
+}
+
+- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections
+{
+    return [[MUKDataSourceCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
+}
+
+@end
+
+#pragma mark -
+
+@implementation MUKDataSource (UITableViewDataSourceImplementedMethods)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)idx
 {
@@ -93,16 +125,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    }
-    
-    NSString *const text = [NSString stringWithFormat:@"(%lu, %lu): %@", (unsigned long)indexPath.section, (unsigned long)indexPath.row, [self tableRowItemAtIndexPath:indexPath]];
-    cell.textLabel.text = text;
-    
-    return cell;
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -145,7 +168,7 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    id<MUKDataSourceIdentifiable> const movedItem = [self tableRowItemAtIndexPath:sourceIndexPath];
+    id<MUKDataSourceIdentifiable> const movedItem = [self itemAtIndexPath:sourceIndexPath];
     
     // Remove moved item
     MUKDataSourceTableSection *const sourceSection = self.sections[sourceIndexPath.section];
@@ -160,6 +183,27 @@
     [sections replaceObjectAtIndex:sourceIndexPath.section withObject:newSourceSection];
     [sections replaceObjectAtIndex:destinationIndexPath.section withObject:newDestinationSection];
     self.content = sections;
+}
+
+@end
+
+#pragma mark - 
+
+@implementation MUKDataSource (UICollectionViewDataSourceImplementedMethods)
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [self sectionAtIndex:section].items.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return self.sections.count;
 }
 
 @end

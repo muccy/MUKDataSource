@@ -139,30 +139,64 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     return NO;
 }
 
+#pragma mark Build
+
+- (NSIndexSet *)insertedSectionIndexesFromDelta:(MUKArrayDelta *)delta {
+    return delta.insertedIndexes;
+}
+
+- (NSIndexSet *)deletedSectionIndexesFromDelta:(MUKArrayDelta *)delta {
+    return delta.deletedIndexes;
+}
+
+- (MUKDataSourceContentSectionMovement *)sectionMovementForDelta:(MUKArrayDelta *)delta movement:(MUKArrayDeltaMatch *)movement
+{
+    return [[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:movement.sourceIndex destinationIndex:movement.destinationIndex];
+}
+
+- (NSUInteger)reloadedSectionIndexForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change
+{
+    return NSNotFound;
+}
+
+- (NSIndexPath *)insertedItemIndexPathForDelta:(MUKArrayDelta *)delta insertedIndex:(NSUInteger)idx sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
+{
+    return [NSIndexPath indexPathForRow:idx inSection:sectionMatch.destinationIndex];
+}
+
+- (NSIndexPath *)deletedItemIndexPathForDelta:(MUKArrayDelta *)delta deletedIndex:(NSUInteger)idx sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
+{
+    return [NSIndexPath indexPathForRow:idx inSection:sectionMatch.sourceIndex];
+}
+
+- (MUKDataSourceContentSectionItemMovement *)itemMovementForDelta:(MUKArrayDelta *)delta movement:(MUKArrayDeltaMatch *)movement sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
+{
+    NSIndexPath *const sourceIndexPath = [NSIndexPath indexPathForRow:movement.sourceIndex inSection:sectionMatch.sourceIndex];
+    NSIndexPath *const destinationIndexPath = [NSIndexPath indexPathForRow:movement.destinationIndex inSection:sectionMatch.destinationIndex];
+    
+    return [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:sourceIndexPath destinationIndexPath:destinationIndexPath];
+}
+
+- (NSIndexPath *)reloadedItemIndexPathForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
+{
+    return [NSIndexPath indexPathForRow:change.sourceIndex inSection:sectionMatch.sourceIndex];
+}
+
 #pragma mark Private
 
 - (void)buildUpdateInfosWithDelta:(MUKArrayDelta *)delta {
-    _insertedSectionIndexes = delta.insertedIndexes;
-    _deletedSectionIndexes = delta.deletedIndexes;
+    _insertedSectionIndexes = [self insertedSectionIndexesFromDelta:delta];
+    _deletedSectionIndexes = [self deletedSectionIndexesFromDelta:delta];
     
     NSMutableSet *sectionMovements = [NSMutableSet setWithCapacity:delta.movements.count];
     for (MUKArrayDeltaMatch *match in delta.movements) {
-        MUKDataSourceContentSectionMovement *const movement = [[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:match.sourceIndex destinationIndex:match.destinationIndex];
-        [sectionMovements addObject:movement];
+        MUKDataSourceContentSectionMovement *const movement = [self sectionMovementForDelta:delta movement:match];
+        if (movement) {
+            [sectionMovements addObject:movement];
+        }
     } // for
     _sectionMovements = [sectionMovements copy];
     
-    /*
-     I reload destination indexes because table/collection views don't like to move 
-     a section which is reloaded.
-     If you reload a section index which is a source index of a movement, table
-     will throw a "attempt to perform a delete and a move from the same section".
-     If you reload a section index which is a destionation index of a movement, table
-     will throw a "attempt to perform an insert and a move to the same section".
-     To solve this problem I break update into two block of updates:
-     1) insertion+deletion+move
-     2) reload
-     */
     NSMutableIndexSet *const reloadedSectionDestinationIndexes = [NSMutableIndexSet indexSet];
     NSMutableSet *const unresolvedSectionChanges = [NSMutableSet set];
     
@@ -174,9 +208,9 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
             [unresolvedSectionChanges addObject:match];
         }
         
-        if ([self shouldReloadSection:destinationSection changedFromSection:sourceSection])
-        {
-            [reloadedSectionDestinationIndexes addIndex:match.destinationIndex];
+        NSUInteger const reloadedIndex = [self reloadedSectionIndexForDelta:delta change:match];
+        if (reloadedIndex != NSNotFound) {
+            [reloadedSectionDestinationIndexes addIndex:reloadedIndex];
         }
     } // for
     _reloadedSectionIndexes = [reloadedSectionDestinationIndexes copy];
@@ -214,33 +248,38 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
         // Get inserted index paths
         [sectionDelta.insertedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop)
         {
-            NSIndexPath *const indexPath = [NSIndexPath indexPathForRow:idx inSection:sectionMatch.destinationIndex];
-            [insertedItemIndexPaths addObject:indexPath];
+            NSIndexPath *const indexPath = [self insertedItemIndexPathForDelta:sectionDelta insertedIndex:idx sectionMatch:sectionMatch];
+            if (indexPath) {
+                [insertedItemIndexPaths addObject:indexPath];
+            }
         }];
         
         // Get deleted index paths
         [sectionDelta.deletedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop)
         {
-            NSIndexPath *const indexPath = [NSIndexPath indexPathForRow:idx inSection:sectionMatch.sourceIndex];
-            [deletedItemIndexPaths addObject:indexPath];
+            NSIndexPath *const indexPath = [self deletedItemIndexPathForDelta:sectionDelta deletedIndex:idx sectionMatch:sectionMatch];
+            if (indexPath) {
+                [deletedItemIndexPaths addObject:indexPath];
+            }
         }];
         
         // Get movements inside the section
-        [sectionDelta.movements enumerateObjectsUsingBlock:^(MUKArrayDeltaMatch *movement, BOOL *stop)
+        [sectionDelta.movements enumerateObjectsUsingBlock:^(MUKArrayDeltaMatch *match, BOOL *stop)
         {
-            NSIndexPath *const sourceIndexPath = [NSIndexPath indexPathForRow:movement.sourceIndex inSection:sectionMatch.destinationIndex];
-            NSIndexPath *const destinationIndexPath = [NSIndexPath indexPathForRow:movement.destinationIndex inSection:sectionMatch.destinationIndex];
-            
-            MUKDataSourceContentSectionItemMovement *const itemMovement = [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:sourceIndexPath destinationIndexPath:destinationIndexPath];
-            [itemMovements addObject:itemMovement];
+            MUKDataSourceContentSectionItemMovement *const movement = [self itemMovementForDelta:sectionDelta movement:match sectionMatch:sectionMatch];
+            if (movement) {
+                [itemMovements addObject:movement];
+            }
         }];
         
         // Get reloaded index paths (I get destination index paths for the same
         // reason I've got section destination indexes before)
         [sectionDelta.changes enumerateObjectsUsingBlock:^(MUKArrayDeltaMatch *change, BOOL *stop)
         {
-            NSIndexPath *const indexPath = [NSIndexPath indexPathForRow:change.destinationIndex inSection:sectionMatch.destinationIndex];
-            [reloadedItemIndexPaths addObject:indexPath];
+            NSIndexPath *const indexPath = [self reloadedItemIndexPathForDelta:sectionDelta change:change sectionMatch:sectionMatch];
+            if (indexPath) {
+                [reloadedItemIndexPaths addObject:indexPath];
+            }
         }];
     } // for
     

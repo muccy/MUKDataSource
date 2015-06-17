@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <MUKDataSource/MUKDataSourceContentSection.h>
-#import <MUKDataSource/MUKDataSourceIdentifiable.h>
 
 @interface MUKDataSourceTableSection : NSObject <MUKDataSourceContentSection>
 @property (nonatomic, copy, readonly) NSString *headerTitle;
