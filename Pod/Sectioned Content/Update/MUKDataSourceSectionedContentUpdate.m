@@ -1,11 +1,3 @@
-//
-//  MUKDataSourceSectionedContentUpdate.m
-//  
-//
-//  Created by Marco on 16/06/15.
-//
-//
-
 #import "MUKDataSourceSectionedContentUpdate.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 #import "MUKDataSourceContentSection.h"
@@ -161,12 +153,12 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 
 - (NSIndexPath *)insertedItemIndexPathForDelta:(MUKArrayDelta *)delta insertedIndex:(NSUInteger)idx sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
 {
-    return [NSIndexPath indexPathForRow:idx inSection:sectionMatch.destinationIndex];
+    return [NSIndexPath indexPathForItem:idx inSection:sectionMatch.destinationIndex];
 }
 
 - (NSIndexPath *)deletedItemIndexPathForDelta:(MUKArrayDelta *)delta deletedIndex:(NSUInteger)idx sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
 {
-    return [NSIndexPath indexPathForRow:idx inSection:sectionMatch.sourceIndex];
+    return [NSIndexPath indexPathForItem:idx inSection:sectionMatch.sourceIndex];
 }
 
 - (MUKDataSourceContentSectionItemMovement *)itemMovementForDelta:(MUKArrayDelta *)delta movement:(MUKArrayDeltaMatch *)movement sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
