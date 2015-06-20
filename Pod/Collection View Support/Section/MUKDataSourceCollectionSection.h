@@ -1,15 +1,12 @@
-//
-//  MUKDataSourceCollectionSection.h
-//  
-//
-//  Created by Marco on 16/06/15.
-//
-//
-
 #import <Foundation/Foundation.h>
 #import <MUKDataSource/MUKDataSourceContentSection.h>
 
-@interface MUKDataSourceCollectionSection : NSObject <MUKDataSourceContentSection>
-- (instancetype)initWithIdentifier:(id<NSCopying>)identifier items:(NSArray *)items;
+/**
+ Representation of a collection section
+ */
+@interface MUKDataSourceCollectionSection : MUKDataSourceContentSection
+/**
+ @returns YES when tableSection is equal to self
+ */
 - (BOOL)isEqualToDataSourceCollectionSection:(MUKDataSourceCollectionSection *)collectionSection;
 @end

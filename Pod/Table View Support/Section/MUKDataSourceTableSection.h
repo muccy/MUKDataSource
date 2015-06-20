@@ -1,21 +1,24 @@
-//
-//  MUKDataSourceTableSection.h
-//  
-//
-//  Created by Marco on 10/06/15.
-//
-//
-
 #import <Foundation/Foundation.h>
 #import <MUKDataSource/MUKDataSourceContentSection.h>
 
-@interface MUKDataSourceTableSection : NSObject <MUKDataSourceContentSection>
+/**
+ Representation of a table section
+ */
+@interface MUKDataSourceTableSection : MUKDataSourceContentSection
+/**
+ Header title
+ */
 @property (nonatomic, copy, readonly) NSString *headerTitle;
+/**
+ Footer title
+ */
 @property (nonatomic, copy, readonly) NSString *footerTitle;
+/**
+ Designated initializer
+ */
 - (instancetype)initWithIdentifier:(id<NSCopying>)identifier items:(NSArray *)items headerTitle:(NSString *)headerTitle footerTitle:(NSString *)footerTitle;
+/**
+ @returns YES when tableSection is equal to self
+ */
 - (BOOL)isEqualToDataSourceTableSection:(MUKDataSourceTableSection *)tableSection;
-
-- (instancetype)tableSectionWithItems:(NSArray *)newItems;
-- (instancetype)tableSectionRemovingItemAtIndex:(NSUInteger)idx;
-- (instancetype)tableSectionInsertingItem:(id)item atIndex:(NSUInteger)idx;
 @end

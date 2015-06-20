@@ -10,7 +10,6 @@
 #import <XCTest/XCTest.h>
 #import <MUKDataSource/MUKDataSource.h>
 #import "BasicItem.h"
-#import "BasicSection.h"
 
 @interface MUKDataSourceSectionedContentUpdateTests : XCTestCase
 @end
@@ -870,9 +869,9 @@
 
 #pragma mark - Private
 
-static inline BasicSection *Section(NSString *identifier, NSArray *items)
+static inline MUKDataSourceContentSection *Section(NSString *identifier, NSArray *items)
 {
-    return [[BasicSection alloc] initWithIdentifier:identifier items:items];
+    return [[MUKDataSourceContentSection alloc] initWithIdentifier:identifier items:items];
 }
 
 static inline NSIndexPath *IndexPathWithItem(NSUInteger Item) {

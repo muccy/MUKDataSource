@@ -149,7 +149,7 @@
     switch (editingStyle) {
         case UITableViewCellEditingStyleDelete: {
             // Remove committed row
-            MUKDataSourceTableSection *const section = [self.sections[indexPath.section] tableSectionRemovingItemAtIndex:indexPath.row];
+            MUKDataSourceTableSection *const section = [self.sections[indexPath.section] sectionByRemovingItemAtIndex:indexPath.row];
             
             // Recreate section
             NSMutableArray *const sections = [self.sections mutableCopy];
@@ -174,11 +174,11 @@
     
     // Remove moved item
     MUKDataSourceTableSection *const sourceSection = self.sections[sourceIndexPath.section];
-    MUKDataSourceTableSection *const newSourceSection = [sourceSection tableSectionRemovingItemAtIndex:sourceIndexPath.row];
+    MUKDataSourceTableSection *const newSourceSection = [sourceSection sectionByRemovingItemAtIndex:sourceIndexPath.row];
 
     // Insert moved item
     MUKDataSourceTableSection *const destinationSection = sourceIndexPath.section == destinationIndexPath.section ? newSourceSection : self.sections[destinationIndexPath.section];
-    MUKDataSourceTableSection *const newDestinationSection = [destinationSection tableSectionInsertingItem:movedItem atIndex:destinationIndexPath.row];
+    MUKDataSourceTableSection *const newDestinationSection = [destinationSection sectionByInsertingItem:movedItem atIndex:destinationIndexPath.row];
 
     // Set new sections
     NSMutableArray *const sections = [self.sections mutableCopy];

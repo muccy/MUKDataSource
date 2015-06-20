@@ -16,9 +16,16 @@
       <Group
          location = "group:Sectioned Content"
          name = "Sectioned Content">
-         <FileRef
-            location = "group:MUKDataSourceContentSection.h">
-         </FileRef>
+         <Group
+            location = "group:Section"
+            name = "Section">
+            <FileRef
+               location = "group:MUKDataSourceContentSection.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceContentSection.m">
+            </FileRef>
+         </Group>
          <Group
             location = "group:Update"
             name = "Update">

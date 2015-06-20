@@ -9,12 +9,10 @@
 /* Begin PBXBuildFile section */
 		063D4CE41B2F0443003BE629 /* MUKDataSourceTableSupportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */; };
 		063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CF91B30A893003BE629 /* BasicItem.m */; };
-		063D4CFD1B30A8FE003BE629 /* BasicSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CFC1B30A8FE003BE629 /* BasicSection.m */; };
 		0683FA461B285EEF002C694B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA451B285EEF002C694B /* main.m */; };
 		0683FA521B285EEF002C694B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA501B285EEF002C694B /* Main.storyboard */; };
 		0683FA541B285EEF002C694B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA531B285EEF002C694B /* Images.xcassets */; };
 		0683FA571B285EEF002C694B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA551B285EEF002C694B /* LaunchScreen.xib */; };
-		0683FA631B285EEF002C694B /* MUKDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA621B285EEF002C694B /* MUKDataSourceTests.m */; };
 		0683FA701B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA6F1B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m */; };
 		0683FA771B2D9942002C694B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA741B2D9942002C694B /* AppDelegate.m */; };
 		06C9154B1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C9154A1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m */; };
@@ -57,8 +55,6 @@
 		063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableSupportTests.m; sourceTree = "<group>"; };
 		063D4CF81B30A893003BE629 /* BasicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicItem.h; sourceTree = "<group>"; };
 		063D4CF91B30A893003BE629 /* BasicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicItem.m; sourceTree = "<group>"; };
-		063D4CFB1B30A8FE003BE629 /* BasicSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicSection.h; sourceTree = "<group>"; };
-		063D4CFC1B30A8FE003BE629 /* BasicSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicSection.m; sourceTree = "<group>"; };
 		0683FA401B285EEF002C694B /* MUKDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MUKDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0683FA441B285EEF002C694B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0683FA451B285EEF002C694B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -67,7 +63,6 @@
 		0683FA561B285EEF002C694B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		0683FA5C1B285EEF002C694B /* MUKDataSourceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MUKDataSourceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0683FA611B285EEF002C694B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0683FA621B285EEF002C694B /* MUKDataSourceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTests.m; sourceTree = "<group>"; };
 		0683FA6F1B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceSectionedContentUpdateTests.m; sourceTree = "<group>"; };
 		0683FA731B2D9942002C694B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0683FA741B2D9942002C694B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -188,7 +183,6 @@
 		0683FA5F1B285EEF002C694B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				0683FA621B285EEF002C694B /* MUKDataSourceTests.m */,
 				063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */,
 				0683FA6F1B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m */,
 				06C9154A1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m */,
@@ -196,8 +190,6 @@
 				0683FA601B285EEF002C694B /* Supporting Files */,
 				063D4CF81B30A893003BE629 /* BasicItem.h */,
 				063D4CF91B30A893003BE629 /* BasicItem.m */,
-				063D4CFB1B30A8FE003BE629 /* BasicSection.h */,
-				063D4CFC1B30A8FE003BE629 /* BasicSection.m */,
 			);
 			name = Tests;
 			path = MUKDataSourceTests;
@@ -745,11 +737,9 @@
 			files = (
 				063D4CE41B2F0443003BE629 /* MUKDataSourceTableSupportTests.m in Sources */,
 				0683FA701B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m in Sources */,
-				0683FA631B285EEF002C694B /* MUKDataSourceTests.m in Sources */,
 				063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */,
 				06C9154D1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m in Sources */,
 				06C9154B1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m in Sources */,
-				063D4CFD1B30A8FE003BE629 /* BasicSection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

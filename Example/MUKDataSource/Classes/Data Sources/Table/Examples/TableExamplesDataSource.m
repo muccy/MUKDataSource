@@ -36,7 +36,7 @@
         MUKDataSourceTableSection *const section = [dataSource tableSectionAtIndex:sectionIndex];
         
         NSUInteger const rowIndex = arc4random() % section.items.count;
-        MUKDataSourceTableSection *const newSection = [section tableSectionInsertingItem:[NSString stringWithFormat:@"%.0f", [NSDate timeIntervalSinceReferenceDate]]  atIndex:rowIndex];
+        MUKDataSourceTableSection *const newSection = [section sectionByInsertingItem:[NSString stringWithFormat:@"%.0f", [NSDate timeIntervalSinceReferenceDate]] atIndex:rowIndex];
         
         NSMutableArray *const sections = [dataSource.sections mutableCopy];
         [sections replaceObjectAtIndex:sectionIndex withObject:newSection];
