@@ -1,11 +1,3 @@
-//
-//  MUKDataSourceCollectionUpdate.m
-//  
-//
-//  Created by Marco on 16/06/15.
-//
-//
-
 #import "MUKDataSourceCollectionUpdate.h"
 #import "MUKDataSourceCollectionSection.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
@@ -78,10 +70,20 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
         } // for
     } completion:^(BOOL finished) {
         [collectionView performBatchUpdates:^{
-            [collectionView reloadSections:self.reloadedSectionIndexes];
-            [collectionView reloadItemsAtIndexPaths:[self.reloadedItemIndexPaths allObjects]];
+            [self reloadCollectionView:collectionView sectionsAtIndexes:self.reloadedSectionIndexes];
+            [self reloadCollectionView:collectionView itemsAtIndexPaths:self.reloadedItemIndexPaths];
         } completion:completionHandler];
     }];
+}
+
+- (void)reloadCollectionView:(UICollectionView *)collectionView sectionsAtIndexes:(NSIndexSet *)indexes
+{
+    [collectionView reloadSections:indexes];
+}
+
+- (void)reloadCollectionView:(UICollectionView *)collectionView itemsAtIndexPaths:(NSSet *)indexPaths
+{
+    [collectionView reloadItemsAtIndexPaths:[indexPaths allObjects]];
 }
 
 #pragma mark - Overrides
@@ -89,16 +91,11 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
 /*
  I reload destination indexes because collection views don't like to move
  a section which is reloaded.
- If you reload a section index which is a source index of a movement, table
- will throw a "attempt to perform a delete and a move from the same section".
- If you reload a section index which is a destionation index of a movement, table
- will throw a "attempt to perform an insert and a move to the same section".
- 
+
  To solve this problem I break update into two block of updates:
  1) insertion+deletion+move
  2) reload
  */
-
 - (NSIndexPath *)reloadedItemIndexPathForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
 {
     return [NSIndexPath indexPathForRow:change.destinationIndex inSection:sectionMatch.destinationIndex];
@@ -127,8 +124,6 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     for (MUKDataSourceContentSectionItemMovement *itemMovement in self.itemMovements) {
         if (MovementWithDestinationIndex(itemMovement.destinationIndexPath.section, self.sectionMovements))
         {
-            // Throws "-[__NSArrayM insertObject:atIndex:]: object cannot be nil"
-            // when you m
             return YES;
         }
     } // for

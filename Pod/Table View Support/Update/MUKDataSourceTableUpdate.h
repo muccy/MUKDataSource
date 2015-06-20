@@ -3,8 +3,8 @@
 /**
  How table should be updated to reflect the transition from source sections
  to destination sections.
- This subclass adds detection for section reloads. It uses destination indexes
- due the nature of applyToTableView:animated: both in 
+ @note This subclass adds detection for section reloads. It uses destination 
+ indexes due the nature of applyToTableView:animated: both in 
  reloadedSectionIndexForDelta:change: and 
  reloadedItemIndexPathForDelta:change:sectionMatch:
  */
@@ -16,7 +16,7 @@
 /**
  @brief         Apply update to a table view
  @discussion    Update is applied in two steps. First it inserts, deletes and 
-                moves table components. Then it attempt various reloads. This is
+                moves table components. Then it attempts various reloads. This is
                 necessary because table views don't like to mix movements and 
                 reloads.
  @param tableView   Table view instance to affect with update
