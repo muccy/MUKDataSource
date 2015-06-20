@@ -1,0 +1,29 @@
+{
+  "name": "MUKDataSource",
+  "version": "2.0.0",
+  "summary": "A central point to store, organize and load data on iOS. Ready to be your UITableView data source.",
+  "description": "A class designed to provide data.",
+  "homepage": "https://github.com/muccy/MUKDataSource",
+  "license": "MIT",
+  "authors": {
+    "Marco Muccinelli": "muccymac@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/muccy/MUKDataSource.git",
+    "tag": "2.0.0"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "requires_arc": true,
+  "source_files": "Pod/**/*.{h,m}",
+  "compiler_flags": "-Wdocumentation",
+  "dependencies": {
+    "KVOController": [
+      "~> 1.0.3"
+    ],
+    "MUKArrayDelta": [
+      "~> 1.1.2"
+    ]
+  }
+}

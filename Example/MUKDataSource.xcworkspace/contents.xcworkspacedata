@@ -1,1 +1,115 @@
-<?xml version='1.0' encoding='UTF-8'?><Workspace version='1.0'><FileRef location='group:MUKDataSource.xcodeproj'/><FileRef location='group:Pods/Pods.xcodeproj'/></Workspace>
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:../Pod"
+      name = "Pod">
+      <FileRef
+         location = "group:MUKDataSource.h">
+      </FileRef>
+      <FileRef
+         location = "group:MUKDataSource.m">
+      </FileRef>
+      <FileRef
+         location = "group:MUKDataSourceIdentifiable.h">
+      </FileRef>
+      <Group
+         location = "group:Sectioned Content"
+         name = "Sectioned Content">
+         <Group
+            location = "group:Section"
+            name = "Section">
+            <FileRef
+               location = "group:MUKDataSourceContentSection.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceContentSection.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Update"
+            name = "Update">
+            <FileRef
+               location = "group:MUKDataSourceSectionedContentUpdate.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceSectionedContentUpdate.m">
+            </FileRef>
+         </Group>
+      </Group>
+      <Group
+         location = "group:Table View Support"
+         name = "Table View Support">
+         <Group
+            location = "group:Section"
+            name = "Section">
+            <FileRef
+               location = "group:MUKDataSourceTableSection.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceTableSection.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Update"
+            name = "Update">
+            <FileRef
+               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Table View Support/Update/MUKDataSourceTableUpdate.h">
+            </FileRef>
+            <FileRef
+               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Table View Support/Update/MUKDataSourceTableUpdate.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:View Controller"
+            name = "View Controller">
+            <FileRef
+               location = "group:MUKTableViewController.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKTableViewController.m">
+            </FileRef>
+         </Group>
+      </Group>
+      <Group
+         location = "group:Collection View Support"
+         name = "Collection View Support">
+         <Group
+            location = "group:Section"
+            name = "Section">
+            <FileRef
+               location = "group:MUKDataSourceCollectionSection.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceCollectionSection.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Update"
+            name = "Update">
+            <FileRef
+               location = "group:MUKDataSourceCollectionUpdate.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKDataSourceCollectionUpdate.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:View Controller"
+            name = "View Controller">
+            <FileRef
+               location = "group:MUKCollectionViewController.h">
+            </FileRef>
+            <FileRef
+               location = "group:MUKCollectionViewController.m">
+            </FileRef>
+         </Group>
+      </Group>
+   </Group>
+   <FileRef
+      location = "group:MUKDataSource.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>
