@@ -1,11 +1,3 @@
-//
-//  MUKDataSourceTableSectionsUpdate.m
-//  
-//
-//  Created by Marco on 11/06/15.
-//
-//
-
 #import "MUKDataSourceTableUpdate.h"
 #import "MUKDataSourceTableSection.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
@@ -78,10 +70,22 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     
     [tableView beginUpdates];
     {
-        [tableView reloadSections:self.reloadedSectionIndexes withRowAnimation:animation];
-        [tableView reloadRowsAtIndexPaths:[self.reloadedItemIndexPaths allObjects] withRowAnimation:animation];
+        [self reloadTableView:tableView sectionsAtIndexes:self.reloadedSectionIndexes animated:animated];
+        [self reloadTableView:tableView rowsAtIndexPaths:self.reloadedItemIndexPaths animated:animated];
     }
     [tableView endUpdates];
+}
+
+- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes animated:(BOOL)animated
+{
+    UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
+    [tableView reloadSections:indexes withRowAnimation:animation];
+}
+
+- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animated:(BOOL)animated
+{
+    UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
+    [tableView reloadRowsAtIndexPaths:[indexPaths allObjects] withRowAnimation:animation];
 }
 
 #pragma mark Overrides
