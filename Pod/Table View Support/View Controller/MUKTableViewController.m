@@ -1,11 +1,3 @@
-//
-//  MUKTableViewController.m
-//  
-//
-//  Created by Marco on 10/06/15.
-//
-//
-
 #import "MUKTableViewController.h"
 #import <KVOController/FBKVOController.h>
 
