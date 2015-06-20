@@ -1,15 +1,13 @@
-//
-//  MUKDataSourceContentSection.h
-//  
-//
-//  Created by Marco on 10/06/15.
-//
-//
-
 #import <Foundation/Foundation.h>
 #import <MUKDataSource/MUKDataSourceIdentifiable.h>
 
+/**
+ A section of content
+ */
 @protocol MUKDataSourceContentSection <MUKDataSourceIdentifiable>
 @required
+/**
+ Items inside the section
+ */
 @property (nonatomic, copy, readonly) NSArray *items;
 @end
