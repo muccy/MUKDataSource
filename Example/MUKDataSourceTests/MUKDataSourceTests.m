@@ -72,6 +72,9 @@
     
     XCTAssertNoThrow([dataSource itemAtIndexPath:[NSIndexPath indexPathForItem:-1 inSection:0]]);
     XCTAssertNil([dataSource itemAtIndexPath:[NSIndexPath indexPathForItem:-1 inSection:0]]);
+    
+    XCTAssertNoThrow([dataSource itemAtIndexPath:nil]);
+    XCTAssertNil([dataSource itemAtIndexPath:nil]);
 }
 
 - (void)testIndexPathOfItemPassingTest {
@@ -89,6 +92,9 @@
         return [item isEqual:@"z"];
     }];
     XCTAssertNil(indexPath);
+    
+    XCTAssertNoThrow([dataSource indexPathOfItemPassingTest:nil]);
+    XCTAssertNil([dataSource indexPathOfItemPassingTest:nil]);
 }
 
 - (void)testIndexPathOfItem {
@@ -100,6 +106,9 @@
 
     indexPath = [dataSource indexPathOfItem:(id)@"z"];
     XCTAssertNil(indexPath);
+    
+    XCTAssertNoThrow([dataSource indexPathOfItem:nil]);
+    XCTAssertNil([dataSource indexPathOfItem:nil]);
 }
 
 @end
