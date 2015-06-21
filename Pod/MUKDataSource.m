@@ -43,6 +43,10 @@
 }
 
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath {
+    if (!indexPath) {
+        return nil;
+    }
+    
     id<MUKDataSourceContentSection> const section = [self sectionAtIndex:indexPath.section];
     if (indexPath.item >= 0 && indexPath.item < section.items.count) {
         return section.items[indexPath.item];
@@ -82,6 +86,10 @@
 }
 
 - (NSIndexPath *)indexPathOfItem:(id<MUKDataSourceIdentifiable>)itemToFind {
+    if (!itemToFind)  {
+        return nil;
+    }
+    
     return [self indexPathOfItemPassingTest:^BOOL(id<MUKDataSourceIdentifiable> item, NSIndexPath *indexPath, BOOL *stop)
     {
         return [itemToFind isEqual:item];
