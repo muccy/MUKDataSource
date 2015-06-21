@@ -48,8 +48,19 @@
  @brief Shortend to sectionByReplacingItemsWithItems: to insert an item
  @discussion If you have overridden sectionByReplacingItemsWithItems: you don't
  have to override also this method
+ @param item Item to insert
  @param idx Index where to insert item
  @returns New section with same identifier but with item inserted at given index
  */
 - (instancetype)sectionByInsertingItem:(id)item atIndex:(NSUInteger)idx;
+/**
+ @brief Shortend to sectionByReplacingItemsWithItems: to replace an item with
+ another
+ @discussion If you have overridden sectionByReplacingItemsWithItems: you don't
+ have to override also this method
+ @param idx Index of item to replace
+ @param newItem New item to insert in place of old one
+ @returns New section with same identifier but with item replaced
+ */
+- (instancetype)sectionByReplacingItemAtIndex:(NSUInteger)idx withItem:(id<MUKDataSourceIdentifiable>)newItem;
 @end

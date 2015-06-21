@@ -49,6 +49,18 @@
     return [self sectionByReplacingItemsWithItems:items];
 }
 
+- (instancetype)sectionByReplacingItemAtIndex:(NSUInteger)idx withItem:(id<MUKDataSourceIdentifiable>)newItem
+{
+    if (!newItem || idx >= self.items.count) {
+        return self;
+    }
+    
+    NSMutableArray *const items = [self.items mutableCopy];
+    [items replaceObjectAtIndex:idx withObject:newItem];
+    
+    return [self sectionByReplacingItemsWithItems:items];
+}
+
 #pragma mark - Overrides
 
 - (BOOL)isEqual:(id)object {
