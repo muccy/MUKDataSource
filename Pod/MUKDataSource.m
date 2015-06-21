@@ -7,13 +7,25 @@
 
 @implementation  MUKDataSource (SectionedContent)
 @dynamic sections;
+@dynamic allItems;
 
 - (NSArray *)sections {
     if ([_content isKindOfClass:[NSArray class]]) {
-        return (NSArray *)_content;
+        return (NSArray *)[(id)_content copy];
     }
     
     return nil;
+}
+
+- (NSArray *)allItems {
+    NSMutableArray *allItems = [NSMutableArray array];
+    for (id<MUKDataSourceContentSection> section in self.sections) {
+        if (section.items) {
+            [allItems addObjectsFromArray:section.items];
+        }
+    }
+    
+    return [allItems copy];
 }
 
 - (id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx {
@@ -37,6 +49,43 @@
     }
     
     return nil;
+}
+
+- (NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(id<MUKDataSourceIdentifiable>, NSIndexPath *, BOOL *))test
+{
+    if (!test) {
+        return nil;
+    }
+    
+    __block NSIndexPath *foundIndexPath = nil;
+    
+    [self.sections enumerateObjectsUsingBlock:^(id<MUKDataSourceContentSection> section, NSUInteger sectionIndex, BOOL *stopSectionCycle)
+    {
+        [section.items enumerateObjectsUsingBlock:^(id<MUKDataSourceIdentifiable> item, NSUInteger itemIndex, BOOL *stopItemCycle)
+        {
+            NSIndexPath *const indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
+            BOOL stop = NO;
+            
+            if (test(item, indexPath, &stop)) {
+                foundIndexPath = indexPath;
+                *stopItemCycle = YES;
+                *stopSectionCycle = YES;
+            }
+            else if (stop) {
+                *stopItemCycle = YES;
+                *stopSectionCycle = YES;
+            }
+        }];
+    }];
+    
+    return foundIndexPath;
+}
+
+- (NSIndexPath *)indexPathOfItem:(id<MUKDataSourceIdentifiable>)itemToFind {
+    return [self indexPathOfItemPassingTest:^BOOL(id<MUKDataSourceIdentifiable> item, NSIndexPath *indexPath, BOOL *stop)
+    {
+        return [itemToFind isEqual:item];
+    }];
 }
 
 + (NSSet *)keyPathsForValuesAffectingSections {

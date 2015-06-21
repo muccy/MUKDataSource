@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		063D4CE41B2F0443003BE629 /* MUKDataSourceTableSupportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */; };
 		063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CF91B30A893003BE629 /* BasicItem.m */; };
+		06808E751B3742B800A3B374 /* MUKDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06808E741B3742B800A3B374 /* MUKDataSourceTests.m */; };
 		0683FA461B285EEF002C694B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA451B285EEF002C694B /* main.m */; };
 		0683FA521B285EEF002C694B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA501B285EEF002C694B /* Main.storyboard */; };
 		0683FA541B285EEF002C694B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0683FA531B285EEF002C694B /* Images.xcassets */; };
@@ -55,6 +56,7 @@
 		063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableSupportTests.m; sourceTree = "<group>"; };
 		063D4CF81B30A893003BE629 /* BasicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicItem.h; sourceTree = "<group>"; };
 		063D4CF91B30A893003BE629 /* BasicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicItem.m; sourceTree = "<group>"; };
+		06808E741B3742B800A3B374 /* MUKDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTests.m; sourceTree = "<group>"; };
 		0683FA401B285EEF002C694B /* MUKDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MUKDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0683FA441B285EEF002C694B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0683FA451B285EEF002C694B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 		0683FA5F1B285EEF002C694B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				06808E741B3742B800A3B374 /* MUKDataSourceTests.m */,
 				063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */,
 				0683FA6F1B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m */,
 				06C9154A1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m */,
@@ -739,6 +742,7 @@
 				0683FA701B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m in Sources */,
 				063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */,
 				06C9154D1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m in Sources */,
+				06808E751B3742B800A3B374 /* MUKDataSourceTests.m in Sources */,
 				06C9154B1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

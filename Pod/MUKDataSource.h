@@ -20,7 +20,11 @@
 /**
  Data interpreted as sectioned content
  */
-@property (nonatomic, readonly) NSArray *sections;
+@property (nonatomic, copy, readonly) NSArray *sections;
+/**
+ Items inside every section
+ */
+@property (nonatomic, copy, readonly) NSArray *allItems;
 /**
  @returns Section at given index. It could return nil if no section is found.
  */
@@ -29,6 +33,15 @@
  @returns Item at given index path. It could return nil if no item is found.
  */
 - (id<MUKDataSourceIdentifiable>)itemAtIndexPath:(NSIndexPath *)indexPath;
+/**
+ @returns Index path for item passing given test. It could return nil if no item 
+ passes test.
+ */
+- (NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(id<MUKDataSourceIdentifiable> item, NSIndexPath *indexPath, BOOL *stop))test;
+/**
+ @returns Index path for given item. It could return nil if no item is found.
+ */
+- (NSIndexPath *)indexPathOfItem:(id<MUKDataSourceIdentifiable>)item;
 @end
 
 
