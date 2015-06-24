@@ -16,6 +16,25 @@
 
 @implementation MUKDataSourceSectionedContentUpdateTests
 
+- (void)testNoUpdate {
+    NSArray *const sourceSections = @[ Section(@"a", nil), Section(@"b", nil) ];
+    NSArray *const destinationSections = @[ Section(@"a", nil), Section(@"b", nil) ];
+    
+    MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
+    
+    XCTAssert(update.isEmpty);
+    
+    XCTAssertEqual(update.insertedSectionIndexes.count, 0);
+    XCTAssertEqual(update.deletedSectionIndexes.count, 0);
+    XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
+    XCTAssertEqual(update.sectionMovements.count, 0);
+    
+    XCTAssertEqual(update.insertedItemIndexPaths.count, 0);
+    XCTAssertEqual(update.deletedItemIndexPaths.count, 0);
+    XCTAssertEqual(update.reloadedItemIndexPaths.count, 0);
+    XCTAssertEqual(update.itemMovements.count, 0);
+}
+
 - (void)testSectionInsertion {
     NSArray *const sourceSections = @[ Section(@"a", nil), Section(@"b", nil) ];
     NSArray *const destinationSections = @[ Section(@"a", nil), Section(@"c", nil), Section(@"b", nil) ];
@@ -23,6 +42,8 @@
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
     NSIndexSet *const insertedSections = [NSIndexSet indexSetWithIndex:1];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -43,6 +64,8 @@
     
     NSIndexSet *const deletedSections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -61,7 +84,9 @@
     NSArray *const destinationSections = @[ Section(@"a", nil), Section(@"b", @[@"*"]), Section(@"c", @[@"*"]) ];
     
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
-
+    
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     // Abstract implementation never reloads sections
@@ -83,6 +108,8 @@
     // 0->3, 2->0
     NSSet *const sectionMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:3], [[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:2 destinationIndex:0], nil ];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -102,6 +129,8 @@
     
     NSIndexSet *const insertedSections = [NSIndexSet indexSetWithIndex:0];
     NSIndexSet *const deletedSections = [NSIndexSet indexSetWithIndex:0];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
@@ -127,6 +156,8 @@
     [insertedSections addIndex:1];
     [insertedSections addIndex:3];
     [insertedSections addIndex:5];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -154,6 +185,8 @@
     // 0->5, 1->2
     NSSet *const sectionMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:5], [[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:1 destinationIndex:2], nil ];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -175,6 +208,8 @@
     
     NSMutableIndexSet *const deletedSections = [NSMutableIndexSet indexSetWithIndex:0];
     [deletedSections addIndex:2];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
@@ -202,6 +237,8 @@
     // 4->1
     NSSet *const sectionMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:4 destinationIndex:1], nil ];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -223,6 +260,8 @@
     
     // 0->2, 2->0
     NSSet *const movements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:2], [[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:2 destinationIndex:0], nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -247,6 +286,8 @@
     NSMutableIndexSet *const insertedSections = [NSMutableIndexSet indexSetWithIndex:1];
     [insertedSections addIndex:3];
     NSIndexSet *const deletedSections = [NSIndexSet indexSetWithIndex:2];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
@@ -274,6 +315,8 @@
    
     NSSet *const movements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:2], nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -296,6 +339,8 @@
     NSIndexSet *const deletedSections = [NSIndexSet indexSetWithIndex:2];
     
     NSSet *const movements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:1], nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
@@ -323,6 +368,8 @@
     
     NSSet *const movements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:2], nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqualObjects(update.deletedSectionIndexes, deletedSections);
     // Abstract implementation never reloads sections
@@ -347,6 +394,8 @@
     MUKDataSourceSectionedContentUpdate *const update = [[MUKDataSourceSectionedContentUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -396,6 +445,8 @@
     
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -444,6 +495,8 @@
     
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -467,6 +520,8 @@
     
     NSSet *const sectionMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionMovement alloc] initWithSourceIndex:0 destinationIndex:1], nil];
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPath(0, 1), nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -492,6 +547,8 @@
     
     // 0->1, 1->3
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPath(0, 0) destinationIndexPath:IndexPath(0, 1)], [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPath(0, 1) destinationIndexPath:IndexPath(0, 3)], nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -523,6 +580,8 @@
     // e: -
     // f: (1, 3) -> (0, 2)
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPath(0, 0) destinationIndexPath:IndexPath(1, 0)], [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPath(1, 0) destinationIndexPath:IndexPath(0, 0)], [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPath(1, 1) destinationIndexPath:IndexPath(0, 3)], [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPath(1, 3) destinationIndexPath:IndexPath(0, 2)], nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -576,6 +635,8 @@
     NSIndexSet *const insertedSections = [NSIndexSet indexSetWithIndex:1];
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqualObjects(update.insertedSectionIndexes, insertedSections);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -626,6 +687,8 @@
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -650,6 +713,8 @@
     
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), IndexPathWithItem(1), IndexPathWithItem(3), IndexPathWithItem(5), nil];
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -676,6 +741,8 @@
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), IndexPathWithItem(4), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(5)], [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(1) destinationIndexPath:IndexPathWithItem(2)], nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -700,6 +767,8 @@
     
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), IndexPathWithItem(2), nil];
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(3), nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -726,6 +795,8 @@
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), IndexPathWithItem(3), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(4) destinationIndexPath:IndexPathWithItem(1)], nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -750,6 +821,8 @@
     
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(2)], [[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(2) destinationIndexPath:IndexPathWithItem(0)], nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -777,6 +850,8 @@
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -802,6 +877,8 @@
     NSSet *const insertedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(1), IndexPathWithItem(3), nil];
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(2)], nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
@@ -829,6 +906,8 @@
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(1)], nil];
     
+    XCTAssertFalse(update.isEmpty);
+    
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);
     XCTAssertEqual(update.reloadedSectionIndexes.count, 0);
@@ -855,6 +934,8 @@
     NSSet *const deletedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(2), nil];
     NSSet *const reloadedItemIndexPaths = [NSSet setWithObjects:IndexPathWithItem(0), nil];
     NSSet *const ItemMovements = [NSSet setWithObjects:[[MUKDataSourceContentSectionItemMovement alloc] initWithSourceIndexPath:IndexPathWithItem(0) destinationIndexPath:IndexPathWithItem(2)], nil];
+    
+    XCTAssertFalse(update.isEmpty);
     
     XCTAssertEqual(update.insertedSectionIndexes.count, 0);
     XCTAssertEqual(update.deletedSectionIndexes.count, 0);

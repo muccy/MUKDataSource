@@ -100,6 +100,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) NSSet *itemMovements;
 /**
+ YES when there are no insertions, no deletions, no reloads, no movements
+ */
+@property (nonatomic, readonly, getter=isEmpty) BOOL empty;
+/**
  Designated initializer
  */
 - (instancetype)initWithSourceSections:(NSArray *__nullable)sourceSections destinationSections:(NSArray *__nullable)destinationSections;

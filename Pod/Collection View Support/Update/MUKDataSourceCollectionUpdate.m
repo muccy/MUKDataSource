@@ -52,6 +52,10 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
         return;
     }
     
+    if (self.isEmpty) {
+        return;
+    }
+    
     [collectionView performBatchUpdates:^{
         [collectionView insertSections:self.insertedSectionIndexes];
         [collectionView deleteSections:self.deletedSectionIndexes];

@@ -46,6 +46,10 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
         return;
     }
     
+    if (self.isEmpty) {
+        return;
+    }
+    
     UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
     
     [tableView beginUpdates];
