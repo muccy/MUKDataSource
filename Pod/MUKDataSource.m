@@ -127,15 +127,14 @@
 
 @implementation MUKDataSource (TableViewSupport)
 
-- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)tableSections
-{
-    if (tableSections != _content) {
-        MUKDataSourceTableUpdate *const update = [self newTableUpdateFromSections:self.sections toSections:tableSections];
-        self.content = tableSections;
-        return update;
+- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)newSections {
+    NSArray *const oldSections = self.sections;
+    
+    if (newSections != _content) {
+        self.content = newSections;
     }
     
-    return nil;
+    return [self newTableUpdateFromSections:oldSections toSections:newSections];
 }
 
 - (MUKDataSourceTableSection *)tableSectionAtIndex:(NSInteger)idx {
@@ -162,14 +161,14 @@
 
 @implementation MUKDataSource (CollectionViewSupport)
 
-- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *)sections {
-    if (sections != _content) {
-        MUKDataSourceCollectionUpdate *const update = [self newCollectionUpdateFromSections:self.sections toSections:sections];
-        self.content = sections;
-        return update;
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *)newSections {
+    NSArray *const oldSections = self.sections;
+    
+    if (newSections != _content) {
+        self.content = newSections;
     }
     
-    return nil;
+    return [self newCollectionUpdateFromSections:oldSections toSections:newSections];
 }
 
 - (MUKDataSourceCollectionSection *)collectionSectionAtIndex:(NSInteger)idx {

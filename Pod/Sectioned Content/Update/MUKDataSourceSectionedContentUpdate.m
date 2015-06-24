@@ -97,6 +97,7 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 #pragma mark -
 
 @implementation MUKDataSourceSectionedContentUpdate
+@dynamic empty;
 
 - (instancetype)initWithSourceSections:(NSArray *)sourceSections destinationSections:(NSArray *)destinationSections
 {
@@ -124,6 +125,19 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     }
     
     return self;
+}
+
+#pragma mark - Accessors
+
+- (BOOL)isEmpty {
+    return (self.insertedSectionIndexes.count == 0 &&
+            self.deletedSectionIndexes.count == 0 &&
+            self.reloadedSectionIndexes.count == 0 &&
+            self.sectionMovements.count == 0 &&
+            self.insertedItemIndexPaths.count == 0 &&
+            self.deletedItemIndexPaths.count == 0 &&
+            self.reloadedItemIndexPaths.count == 0 &&
+            self.itemMovements.count == 0);
 }
 
 #pragma mark Build
