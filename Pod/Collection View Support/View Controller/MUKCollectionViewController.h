@@ -11,5 +11,5 @@
                 self.collectionView.dataSource. It also calls
                 registerReusableViewsForCollectionView: on it.
  */
-@property (nonatomic) MUKDataSource *dataSource;
+@property (nonatomic, nullable) MUKDataSource *dataSource;
 @end

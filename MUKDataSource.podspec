@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
   s.compiler_flags  = '-Wdocumentation'
   
   s.dependency  'KVOController', '~> 1.0.3'
-  s.dependency  'MUKArrayDelta', '~> 1.1.2'
+  s.dependency  'MUKArrayDelta', '~> 1.1.3'
 end

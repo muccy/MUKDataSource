@@ -126,11 +126,6 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     return self;
 }
 
-- (BOOL)shouldReloadSection:(id<MUKDataSourceContentSection>)section changedFromSection:(id<MUKDataSourceContentSection>)oldSection
-{
-    return NO;
-}
-
 #pragma mark Build
 
 - (NSIndexSet *)insertedSectionIndexesFromDelta:(MUKArrayDelta *)delta {

@@ -1,5 +1,7 @@
 #import <MUKDataSource/MUKDataSourceSectionedContentUpdate.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  How collection should be updated to reflect the transition from source sections
  to destination sections.
@@ -40,3 +42,5 @@
  */
 - (void)reloadCollectionView:(UICollectionView *)collectionView itemsAtIndexPaths:(NSSet *)indexPaths;
 @end
+
+NS_ASSUME_NONNULL_END

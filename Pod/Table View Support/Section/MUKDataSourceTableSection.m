@@ -2,6 +2,11 @@
 
 @implementation MUKDataSourceTableSection
 
+- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray * __nullable)items
+{
+    return [self initWithIdentifier:identifier items:items headerTitle:nil footerTitle:nil];
+}
+
 - (instancetype)initWithIdentifier:(id<NSCopying>)identifier items:(NSArray *)items headerTitle:(NSString *)headerTitle footerTitle:(NSString *)footerTitle
 {
     self = [super initWithIdentifier:identifier items:items];

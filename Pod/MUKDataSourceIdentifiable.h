@@ -9,5 +9,5 @@
  A value which identifies an object helps to find its change between two immutable 
  states (e.g.: a changed object inside between two immutable arrays)
  */
-@property (nonatomic, copy, readonly) id<NSObject, NSCopying> identifier;
+@property (nonatomic, copy, readonly, nullable) id<NSObject, NSCopying> identifier;
 @end
