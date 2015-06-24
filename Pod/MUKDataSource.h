@@ -32,7 +32,7 @@
 /**
  @returns Item at given index path. It could return nil if no item is found.
  */
-- (id<MUKDataSourceIdentifiable>)itemAtIndexPath:(NSIndexPath *)indexPath;
+- (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 /**
  @returns Index path for item passing given test. It could return nil if no item 
  passes test.
