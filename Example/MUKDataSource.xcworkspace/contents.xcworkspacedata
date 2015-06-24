@@ -105,6 +105,16 @@
             </FileRef>
          </Group>
       </Group>
+      <Group
+         location = "group:Content Placeholder"
+         name = "Content Placeholder">
+         <FileRef
+            location = "group:MUKDataSourceContentPlaceholder.h">
+         </FileRef>
+         <FileRef
+            location = "group:MUKDataSourceContentPlaceholder.m">
+         </FileRef>
+      </Group>
    </Group>
    <FileRef
       location = "group:MUKDataSource.xcodeproj">
