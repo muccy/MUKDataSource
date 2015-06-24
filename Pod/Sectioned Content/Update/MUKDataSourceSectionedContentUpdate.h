@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Movement of content section
  */
@@ -15,14 +17,14 @@
 /**
  Designated initializer
  */
-- (instancetype)initWithSourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex;
+- (instancetype)initWithSourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex NS_DESIGNATED_INITIALIZER;
 /**
  @returns YES when passed movement equals to self
  */
 - (BOOL)isEqualToContentSectionMovement:(MUKDataSourceContentSectionMovement *)movement;
 @end
 
-#pragma mark - 
+#pragma mark -
 
 /**
  Movement of section item
@@ -56,11 +58,11 @@
 /**
  Original sections
  */
-@property (nonatomic, copy, readonly) NSArray *sourceSections;
+@property (nonatomic, copy, readonly, nullable) NSArray *sourceSections;
 /**
  Sections after transition
  */
-@property (nonatomic, copy, readonly) NSArray *destinationSections;
+@property (nonatomic, copy, readonly, nullable) NSArray *destinationSections;
 /**
  Indexes of inserted sections
  */
@@ -100,7 +102,7 @@
 /**
  Designated initializer
  */
-- (instancetype)initWithSourceSections:(NSArray *)sourceSections destinationSections:(NSArray *)destinationSections;
+- (instancetype)initWithSourceSections:(NSArray *__nullable)sourceSections destinationSections:(NSArray *__nullable)destinationSections;
 @end
 
 @class MUKArrayDelta, MUKArrayDeltaMatch;
@@ -169,3 +171,5 @@
  */
 - (NSIndexPath *)reloadedItemIndexPathForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change sectionMatch:(MUKArrayDeltaMatch *)sectionMatch;
 @end
+
+NS_ASSUME_NONNULL_END

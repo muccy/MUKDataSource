@@ -42,6 +42,23 @@
     return nil;
 }
 
+- (id<MUKDataSourceContentSection>)sectionWithIdentifier:(id<NSObject,NSCopying>)identifier
+{
+    if (!identifier) {
+        return nil;
+    }
+    
+    for (id<MUKDataSourceContentSection> section in self.sections) {
+        if ([section respondsToSelector:@selector(identifier)]) {
+            if ([section.identifier isEqual:identifier]) {
+                return section;
+            }
+        }
+    } // for
+    
+    return nil;
+}
+
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath {
     if (!indexPath) {
         return nil;
@@ -97,6 +114,10 @@
 }
 
 + (NSSet *)keyPathsForValuesAffectingSections {
+    return [NSSet setWithObjects:NSStringFromSelector(@selector(content)), nil];
+}
+
++ (NSSet *)keyPathsForValuesAffectingAllItems {
     return [NSSet setWithObjects:NSStringFromSelector(@selector(content)), nil];
 }
 

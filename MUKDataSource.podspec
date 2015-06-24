@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "MUKDataSource"
-  s.version          = "2.0.2"
+  s.version          = "2.0.3"
   s.summary          = "A structure to provide immutable data to your views. Ready to be your UITableView or your UICollectionView data source."
   s.description      = <<-DESC
                         A class designed to provide data (it's not too surprising, I think). It gives a structure to provide immutable data to your views. When you change data you get update to apply. It is ready to back a `UITableView` or `UICollectionView` instance out of the box but it is designed to hold any kind of data for every kind of usage.
@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
   s.compiler_flags  = '-Wdocumentation'
   
   s.dependency  'KVOController', '~> 1.0.3'
-  s.dependency  'MUKArrayDelta', '~> 1.1.2'
+  s.dependency  'MUKArrayDelta', '~> 1.1.3'
 end

@@ -5,6 +5,8 @@
 #import <MUKDataSource/MUKDataSourceCollectionSection.h>
 #import <MUKDataSource/MUKDataSourceCollectionUpdate.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  An abstract class ready to hold and provide content data
  */
@@ -12,7 +14,7 @@
 /**
  Content data
  */
-@property (nonatomic, copy) id<NSObject, NSCopying> content;
+@property (nonatomic, copy, nullable) id<NSObject, NSCopying> content;
 @end
 
 
@@ -20,28 +22,32 @@
 /**
  Data interpreted as sectioned content
  */
-@property (nonatomic, copy, readonly) NSArray *sections;
+@property (nonatomic, copy, readonly, nullable) NSArray *sections;
 /**
  Items inside every section
  */
-@property (nonatomic, copy, readonly) NSArray *allItems;
+@property (nonatomic, copy, readonly, nullable) NSArray *allItems;
 /**
  @returns Section at given index. It could return nil if no section is found.
  */
-- (id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx;
+- (nullable id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx;
+/**
+ @returns Section with given identifier
+ */
+- (nullable id<MUKDataSourceContentSection>)sectionWithIdentifier:(id<NSObject, NSCopying>)identifier;
 /**
  @returns Item at given index path. It could return nil if no item is found.
  */
-- (id<MUKDataSourceIdentifiable>)itemAtIndexPath:(NSIndexPath *)indexPath;
+- (nullable id)itemAtIndexPath:(NSIndexPath *)indexPath;
 /**
  @returns Index path for item passing given test. It could return nil if no item 
  passes test.
  */
-- (NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(id<MUKDataSourceIdentifiable> item, NSIndexPath *indexPath, BOOL *stop))test;
+- (NSIndexPath *__nullable)indexPathOfItemPassingTest:(BOOL (^)(id<MUKDataSourceIdentifiable> item, NSIndexPath *indexPath, BOOL *stop))test;
 /**
  @returns Index path for given item. It could return nil if no item is found.
  */
-- (NSIndexPath *)indexPathOfItem:(id<MUKDataSourceIdentifiable>)item;
+- (NSIndexPath *__nullable)indexPathOfItem:(id<MUKDataSourceIdentifiable>)item;
 @end
 
 
@@ -57,14 +63,14 @@
  @returns Table section at given index. It could return nil if no table section
  is found.
  */
-- (MUKDataSourceTableSection *)tableSectionAtIndex:(NSInteger)idx;
+- (MUKDataSourceTableSection *__nullable)tableSectionAtIndex:(NSInteger)idx;
 /**
  @param sourceSections      Table sections before the update
  @param destinationSections Table sections after the update
  @returns New table update. Default implementation returns a valid
  MUKDataSourceTableUpdate instance.
  */
-- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections;
+- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to table view
  @discussion You override this method to register reusable views once. This method
@@ -119,7 +125,7 @@
  @returns Collection section at given index. It could return nil if no collection
  section is found.
  */
-- (MUKDataSourceCollectionSection *)collectionSectionAtIndex:(NSInteger)idx;
+- (MUKDataSourceCollectionSection *__nullable)collectionSectionAtIndex:(NSInteger)idx;
 /**
  You should override this method and provide your custom
  MUKDataSourceCollectionUpdate subclass in order to indicate sections to reload
@@ -128,7 +134,7 @@
  @returns New collection update. Default implementation returns a valid
  MUKDataSourceCollectionUpdate instance.
  */
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections;
+- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to collection view
  @discussion You override this method to register reusable views once. This method
@@ -155,3 +161,5 @@
  */
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
 @end
+
+NS_ASSUME_NONNULL_END

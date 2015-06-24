@@ -1,5 +1,7 @@
 #import <MUKDataSource/MUKDataSourceSectionedContentUpdate.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  How table should be updated to reflect the transition from source sections
  to destination sections.
@@ -42,3 +44,5 @@
  */
 - (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animated:(BOOL)animated;
 @end
+
+NS_ASSUME_NONNULL_END

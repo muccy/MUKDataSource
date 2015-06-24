@@ -11,5 +11,5 @@
                 self.tableView.dataSource. It also calls 
                 registerReusableViewsForTableView: on it.
  */
-@property (nonatomic) MUKDataSource *dataSource;
+@property (nonatomic, nullable) MUKDataSource *dataSource;
 @end
