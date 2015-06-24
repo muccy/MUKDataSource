@@ -30,6 +30,10 @@
  */
 - (id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx;
 /**
+ @returns Section with given identifier
+ */
+- (id<MUKDataSourceContentSection>)sectionWithIdentifier:(id<NSObject, NSCopying>)identifier;
+/**
  @returns Item at given index path. It could return nil if no item is found.
  */
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;

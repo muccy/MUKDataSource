@@ -54,6 +54,20 @@
     XCTAssertNil([dataSource sectionAtIndex:-1]);
 }
 
+- (void)testSectionWithIdentifier {
+    MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
+    dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a"items:nil], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:nil] ];
+    
+    XCTAssertEqualObjects([dataSource sectionWithIdentifier:@"a"], dataSource.sections[0]);
+    XCTAssertEqualObjects([dataSource sectionWithIdentifier:@"b"], dataSource.sections[1]);
+    
+    XCTAssertNoThrow([dataSource sectionWithIdentifier:@"c"]);
+    XCTAssertNil([dataSource sectionWithIdentifier:@"c"]);
+    
+    XCTAssertNoThrow([dataSource sectionWithIdentifier:nil]);
+    XCTAssertNil([dataSource sectionWithIdentifier:nil]);
+}
+
 - (void)testItemAtIndexPath {
     MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
     dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"1"items:@[ @"a", @"b"]], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"2" items:@[ @"c", @"d"] ] ];
