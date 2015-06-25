@@ -33,7 +33,7 @@
 
 - (void)performExample {
     MUKDataSourceTableUpdate *const update = [self.dataSource setTableSections:self.example.destinationSections];
-    [update applyToTableView:self.tableView animated:YES];
+    [update applyToTableView:self.tableView animation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
     
     if (self.dataSource.sections.count == 0) {
         self.dataSource.content = [self newEmptyPlaceholder];

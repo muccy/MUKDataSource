@@ -53,6 +53,16 @@
          <Group
             location = "group:Update"
             name = "Update">
+            <Group
+               location = "group:Animation"
+               name = "Animation">
+               <FileRef
+                  location = "group:MUKDataSourceTableUpdateAnimation.h">
+               </FileRef>
+               <FileRef
+                  location = "group:MUKDataSourceTableUpdateAnimation.m">
+               </FileRef>
+            </Group>
             <FileRef
                location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Table View Support/Update/MUKDataSourceTableUpdate.h">
             </FileRef>
