@@ -57,7 +57,9 @@
     NSMutableArray *const examples = [NSMutableArray array];
     
     [examples addObject:[self newSectionInsertionExample]];
+    [examples addObject:[self newSectionInsertionFromEmptyExample]];
     [examples addObject:[self newSectionDeletionExample]];
+    [examples addObject:[self newSectionDeletionToEmptyExample]];
     [examples addObject:[self newSectionReloadExample]];
     [examples addObject:[self newSectionMovementsExample]];
     [examples addObject:[self newSectionComboInsertionDeletionExample]];
@@ -82,11 +84,27 @@
     return example;
 }
 
+- (SectionedContentExample *)newSectionInsertionFromEmptyExample {
+    NSArray *const sourceSections = nil;
+    NSArray *const destinationSections = @[ TableSection(@"a", nil, nil), TableSection(@"c", nil, nil), TableSection(@"b", nil, nil) ];
+    
+    SectionedContentExample *const example = [[SectionedContentExample alloc] initWithIdentifier:@"insertion-from-empty" title:@"Insertion (from empty)" sourceSections:sourceSections destinationSections:destinationSections];
+    return example;
+}
+
 - (SectionedContentExample *)newSectionDeletionExample {
     NSArray *const sourceSections = @[ TableSection(@"a", nil, nil), TableSection(@"b", nil, nil), TableSection(@"c", nil, nil), TableSection(@"d", nil, nil) ];
     NSArray *const destinationSections = @[ TableSection(@"a", nil, nil), TableSection(@"d", nil, nil) ];
     
     SectionedContentExample *const example = [[SectionedContentExample alloc] initWithIdentifier:@"deletion" title:@"Deletion" sourceSections:sourceSections destinationSections:destinationSections];
+    return example;
+}
+
+- (SectionedContentExample *)newSectionDeletionToEmptyExample {
+    NSArray *const sourceSections = @[ TableSection(@"a", nil, nil), TableSection(@"b", nil, nil), TableSection(@"c", nil, nil), TableSection(@"d", nil, nil) ];
+    NSArray *const destinationSections = nil;
+    
+    SectionedContentExample *const example = [[SectionedContentExample alloc] initWithIdentifier:@"deletion-to-empty" title:@"Deletion (to empty)" sourceSections:sourceSections destinationSections:destinationSections];
     return example;
 }
 

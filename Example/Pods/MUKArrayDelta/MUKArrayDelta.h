@@ -38,20 +38,20 @@ typedef NS_ENUM(NSInteger, MUKArrayDeltaMatchType) {
 /**
  Designated initializer
  */
-- (instancetype)initWithType:(MUKArrayDeltaMatchType)type sourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex;
+- (nonnull instancetype)initWithType:(MUKArrayDeltaMatchType)type sourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex NS_DESIGNATED_INITIALIZER;
 /**
  @returns YES when two movements are equal
  */
-- (BOOL)isEqualToArrayDeltaMatch:(MUKArrayDeltaMatch *)match;
+- (BOOL)isEqualToArrayDeltaMatch:(MUKArrayDeltaMatch *__nonnull)match;
 @end
 
 
 /**
  Comparator which takes two items and returns match type
  */
-typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id object1, id object2);
+typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id __nonnull object1, id __nonnull object2);
 
-
+NS_ASSUME_NONNULL_BEGIN
 /**
  An object which tells you diffs between two arrays
  */
@@ -59,11 +59,11 @@ typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id object1, id object2)
 /**
  Source array
  */
-@property (nonatomic, copy, readonly) NSArray *sourceArray;
+@property (nonatomic, copy, readonly, nullable) NSArray *sourceArray;
 /**
  Destination array
  */
-@property (nonatomic, copy, readonly) NSArray *destinationArray;
+@property (nonatomic, copy, readonly, nullable) NSArray *destinationArray;
 /**
  Inserted indexes. Indexes refer to destinationArray.
  */
@@ -94,7 +94,7 @@ typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id object1, id object2)
                             It may be nil but you lose changes detection.
  @returns A fully initialized delta between sourceArray and destinationArray
  */
-- (instancetype)initWithSourceArray:(NSArray *)sourceArray destinationArray:(NSArray *)destinationArray matchTest:(MUKArrayDeltaMatchTest)matchTest;
+- (instancetype)initWithSourceArray:(NSArray *__nullable)sourceArray destinationArray:(NSArray *__nullable)destinationArray matchTest:(nullable MUKArrayDeltaMatchTest)matchTest NS_DESIGNATED_INITIALIZER;
 /**
  @returns YES when two deltas are equal
  */
@@ -105,3 +105,4 @@ typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id object1, id object2)
  */
 - (NSUInteger)intermediateDestinationIndexForMovement:(MUKArrayDeltaMatch *)movement;
 @end
+NS_ASSUME_NONNULL_END
