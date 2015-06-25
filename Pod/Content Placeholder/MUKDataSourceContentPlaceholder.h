@@ -3,18 +3,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- An object which conforms content placeholder protocol represents a particular
- state of content which should cover all items
- */
-@protocol MUKDataSourceContentPlaceholder <NSObject, NSCopying>
-@end
-
-/**
- @brief         A concrete implementation of content placeholder protocol.
+ @brief         State of content which should cover all items
  @discussion    You can set a MUKDataSourceContentPlaceholder object as
                 dataSource.content to cover every item
  */
-@interface MUKDataSourceContentPlaceholder : NSObject <MUKDataSourceContentPlaceholder>
+@interface MUKDataSourceContentPlaceholder : NSObject <NSCopying>
 /**
  Placeholder image
  */
