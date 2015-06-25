@@ -41,7 +41,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -56,7 +56,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -86,7 +86,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -101,7 +101,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -116,7 +116,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -151,7 +151,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -168,7 +168,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -200,7 +200,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -217,7 +217,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -249,7 +249,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -282,7 +282,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -299,7 +299,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -332,7 +332,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -367,7 +367,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
 }
 
@@ -400,7 +400,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -436,7 +436,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -458,7 +458,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
 
     XCTAssert(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItems.count);
 }
@@ -480,7 +480,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -516,7 +516,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -538,7 +538,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
 
     XCTAssert(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItems.count);
 }
@@ -573,7 +573,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -609,7 +609,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -631,7 +631,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItems.count);
 }
@@ -653,7 +653,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -677,7 +677,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsA.count);
     XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItemsB.count);
@@ -715,7 +715,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -742,7 +742,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
 
     XCTAssert(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsA.count);
     XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItemsC.count);
@@ -766,7 +766,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsA.count);
     XCTAssertEqual([tableView numberOfRowsInSection:1], destinationItemsB.count);
@@ -789,7 +789,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItemsB.count);
 }
@@ -811,7 +811,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -847,7 +847,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -869,7 +869,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -905,7 +905,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -927,7 +927,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -963,7 +963,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -1000,7 +1000,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -1022,7 +1022,7 @@
     MUKDataSourceTableUpdate *const update = [dataSource setTableSections:destinationSections];
     
     XCTAssertFalse(update.needsReloadData);
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -1059,7 +1059,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }
@@ -1097,7 +1097,7 @@
     
     XCTAssertFalse(update.needsReloadData);
     
-    XCTAssertNoThrow([update applyToTableView:tableView animated:NO]);
+    XCTAssertNoThrow([update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation defaultAnimation]]);
     XCTAssertEqual([tableView numberOfSections], destinationSections.count);
     XCTAssertEqual([tableView numberOfRowsInSection:0], destinationItems.count);
 }

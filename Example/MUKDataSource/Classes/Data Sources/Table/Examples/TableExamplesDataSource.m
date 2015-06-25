@@ -42,7 +42,7 @@
         [sections replaceObjectAtIndex:sectionIndex withObject:newSection];
         
         MUKDataSourceTableUpdate *const update = [dataSource setTableSections:sections];
-        [update applyToTableView:tableView animated:YES];
+        [update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
     }]];
     
     TablePlayground *playground = [[TablePlayground alloc] initWithIdentifier:@"playground" title:@"Playground" commands:commands];

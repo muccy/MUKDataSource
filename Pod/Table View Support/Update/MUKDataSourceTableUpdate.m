@@ -40,8 +40,9 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     return self;
 }
 
-- (void)applyToTableView:(UITableView *)tableView animated:(BOOL)animated {
-    if (self.needsReloadData) {
+- (void)applyToTableView:(UITableView *)tableView animation:(MUKDataSourceTableUpdateAnimation * __nullable)animation
+{
+    if (self.needsReloadData || !animation) {
         [tableView reloadData];
         return;
     }
@@ -50,20 +51,18 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
         return;
     }
     
-    UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
-    
     [tableView beginUpdates];
     {
-        [tableView insertSections:self.insertedSectionIndexes withRowAnimation:animation];
-        [tableView deleteSections:self.deletedSectionIndexes withRowAnimation:animation];
+        [tableView insertSections:self.insertedSectionIndexes withRowAnimation:animation.sectionsInsertionAnimation];
+        [tableView deleteSections:self.deletedSectionIndexes withRowAnimation:animation.sectionsDeletionAnimation];
         
         for (MUKDataSourceContentSectionMovement *movement in self.sectionMovements)
         {
             [tableView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
         } // for
         
-        [tableView insertRowsAtIndexPaths:[self.insertedItemIndexPaths allObjects] withRowAnimation:animation];
-        [tableView deleteRowsAtIndexPaths:[self.deletedItemIndexPaths allObjects] withRowAnimation:animation];
+        [tableView insertRowsAtIndexPaths:[self.insertedItemIndexPaths allObjects] withRowAnimation:animation.rowsInsertionAnimation];
+        [tableView deleteRowsAtIndexPaths:[self.deletedItemIndexPaths allObjects] withRowAnimation:animation.rowsDeletionAnimation];
         
         for (MUKDataSourceContentSectionItemMovement *movement in self.itemMovements)
         {
@@ -74,21 +73,19 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     
     [tableView beginUpdates];
     {
-        [self reloadTableView:tableView sectionsAtIndexes:self.reloadedSectionIndexes animated:animated];
-        [self reloadTableView:tableView rowsAtIndexPaths:self.reloadedItemIndexPaths animated:animated];
+        [self reloadTableView:tableView sectionsAtIndexes:self.reloadedSectionIndexes animation:animation.sectionsReloadAnimation];
+        [self reloadTableView:tableView rowsAtIndexPaths:self.reloadedItemIndexPaths animation:animation.rowsReloadAnimation];
     }
     [tableView endUpdates];
 }
 
-- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes animated:(BOOL)animated
+- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes animation:(UITableViewRowAnimation)animation
 {
-    UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
     [tableView reloadSections:indexes withRowAnimation:animation];
 }
 
-- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animated:(BOOL)animated
+- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animation:(UITableViewRowAnimation)animation
 {
-    UITableViewRowAnimation const animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
     [tableView reloadRowsAtIndexPaths:[indexPaths allObjects] withRowAnimation:animation];
 }
 

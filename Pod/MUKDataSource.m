@@ -234,7 +234,7 @@
 
             // Apply update
             MUKDataSourceTableUpdate *const update = [self setTableSections:sections];
-            [update applyToTableView:tableView animated:YES];
+            [update applyToTableView:tableView animation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
             
             break;
         }

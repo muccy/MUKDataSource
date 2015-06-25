@@ -1,4 +1,5 @@
 #import <MUKDataSource/MUKDataSourceSectionedContentUpdate.h>
+#import <MUKDataSource/MUKDataSourceTableUpdateAnimation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -6,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
  How table should be updated to reflect the transition from source sections
  to destination sections.
  @note This subclass adds detection for section reloads. It uses destination 
- indexes due the nature of applyToTableView:animated: both in 
+ indexes due the nature of applyToTableView:animation: both in
  reloadedSectionIndexForDelta:change: and 
  reloadedItemIndexPathForDelta:change:sectionMatch:
  */
@@ -22,27 +23,28 @@ NS_ASSUME_NONNULL_BEGIN
                 necessary because table views don't like to mix movements and 
                 reloads.
  @param tableView   Table view instance to affect with update
- @param animated    If YES transition will be animated
+ @param animation   Animation to apply to table view. If you pass nil, table view
+                    data will be reloaded with -reloadData.
  */
-- (void)applyToTableView:(UITableView *)tableView animated:(BOOL)animated;
+- (void)applyToTableView:(UITableView *)tableView animation:(MUKDataSourceTableUpdateAnimation *__nullable)animation;
 /**
  Reload sections in a table view.
  You may want to override this method when default behavior to call
  table view's reloadSections:withRowAnimation: is not proper for you.
  @param tableView   Table view instance to affect with update
  @param indexes     Indexes to reload
- @param animated    If YES transition will be animated
+ @param animation   Animation to apply
  */
-- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes animated:(BOOL)animated;
+- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes animation:(UITableViewRowAnimation)animation;
 /**
  Reload rows in a table view.
  You may want to override this method when default behavior to call
  table view's reloadRowsAtIndexPaths:withRowAnimation: is not proper for you.
  @param tableView   Table view instance to affect with update
  @param indexPaths  Index paths to reload
- @param animated    If YES transition will be animated
+ @param animation   Animation to apply
  */
-- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animated:(BOOL)animated;
+- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animation:(UITableViewRowAnimation)animation;
 @end
 
 NS_ASSUME_NONNULL_END
