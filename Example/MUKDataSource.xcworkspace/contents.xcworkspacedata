@@ -108,6 +108,16 @@
       <Group
          location = "group:Content Placeholder"
          name = "Content Placeholder">
+         <Group
+            location = "group:View"
+            name = "View">
+            <FileRef
+               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Content Placeholder/View/MUKDataSourceContentPlaceholderView.h">
+            </FileRef>
+            <FileRef
+               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Content Placeholder/View/MUKDataSourceContentPlaceholderView.m">
+            </FileRef>
+         </Group>
          <FileRef
             location = "group:MUKDataSourceContentPlaceholder.h">
          </FileRef>

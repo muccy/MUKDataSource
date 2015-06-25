@@ -34,11 +34,25 @@
      }];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Perform" style:UIBarButtonItemStylePlain target:self action:@selector(performExample)];
+    
+    if (self.dataSource.sections.count == 0) {
+        self.dataSource.content = [self newEmptyPlaceholder];
+    }
 }
 
 - (void)performExample {
     MUKDataSourceCollectionUpdate *const update = [self.dataSource setCollectionSections:self.example.destinationSections];
     [update applyToCollectionView:self.collectionView completion:nil];
+    
+    if (self.dataSource.sections.count == 0) {
+        self.dataSource.content = [self newEmptyPlaceholder];
+    }
+}
+
+#pragma mark - Private
+
+- (MUKDataSourceContentPlaceholder *)newEmptyPlaceholder {
+    return [[MUKDataSourceContentPlaceholder alloc] initWithTitle:@"Empty" subtitle:@"No sections in this collection view" image:nil];
 }
 
 @end
