@@ -32,7 +32,7 @@
 - (void)restorePlayground {
     TablePlaygroundDataSource *const dataSource = (TablePlaygroundDataSource *)self.dataSource;
     MUKDataSourceTableUpdate *const update = [self.dataSource setTableSections:[dataSource originalSections]];
-    [update applyToTableView:self.tableView animation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
+    [update applyToTableView:self.tableView withAnimation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
 }
 
 #pragma mark - <UITableViewControllerDelegate>
