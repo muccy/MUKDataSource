@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
  How table should be updated to reflect the transition from source sections
  to destination sections.
  @note This subclass adds detection for section reloads. It uses destination 
- indexes due the nature of applyToTableView:animation: both in
+ indexes due the nature of applyToTableView:withAnimation: both in
  reloadedSectionIndexForDelta:change: and 
  reloadedItemIndexPathForDelta:change:sectionMatch:
  */
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param animation   Animation to apply to table view. If you pass nil, table view
                     data will be reloaded with -reloadData.
  */
-- (void)applyToTableView:(UITableView *)tableView animation:(MUKDataSourceTableUpdateAnimation *__nullable)animation;
+- (void)applyToTableView:(UITableView *)tableView withAnimation:(MUKDataSourceTableUpdateAnimation *__nullable)animation;
 /**
  Reload sections in a table view.
  You may want to override this method when default behavior to call
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param indexes     Indexes to reload
  @param animation   Animation to apply
  */
-- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes animation:(UITableViewRowAnimation)animation;
+- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes withRowAnimation:(UITableViewRowAnimation)animation;
 /**
  Reload rows in a table view.
  You may want to override this method when default behavior to call
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param indexPaths  Index paths to reload
  @param animation   Animation to apply
  */
-- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animation:(UITableViewRowAnimation)animation;
+- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 @end
 
 NS_ASSUME_NONNULL_END

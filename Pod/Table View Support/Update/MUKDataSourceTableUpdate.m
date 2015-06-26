@@ -40,7 +40,7 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     return self;
 }
 
-- (void)applyToTableView:(UITableView *)tableView animation:(MUKDataSourceTableUpdateAnimation * __nullable)animation
+- (void)applyToTableView:(UITableView *)tableView withAnimation:(MUKDataSourceTableUpdateAnimation * __nullable)animation
 {
     if (self.needsReloadData || !animation) {
         [tableView reloadData];
@@ -73,18 +73,18 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     
     [tableView beginUpdates];
     {
-        [self reloadTableView:tableView sectionsAtIndexes:self.reloadedSectionIndexes animation:animation.sectionsReloadAnimation];
-        [self reloadTableView:tableView rowsAtIndexPaths:self.reloadedItemIndexPaths animation:animation.rowsReloadAnimation];
+        [self reloadTableView:tableView sectionsAtIndexes:self.reloadedSectionIndexes withRowAnimation:animation.sectionsReloadAnimation];
+        [self reloadTableView:tableView rowsAtIndexPaths:self.reloadedItemIndexPaths withRowAnimation:animation.rowsReloadAnimation];
     }
     [tableView endUpdates];
 }
 
-- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes animation:(UITableViewRowAnimation)animation
+- (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes withRowAnimation:(UITableViewRowAnimation)animation
 {
     [tableView reloadSections:indexes withRowAnimation:animation];
 }
 
-- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths animation:(UITableViewRowAnimation)animation
+- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     [tableView reloadRowsAtIndexPaths:[indexPaths allObjects] withRowAnimation:animation];
 }
