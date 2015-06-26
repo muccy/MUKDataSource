@@ -39,7 +39,7 @@ MUKContentFetch *fetch = [[FlowersFetch alloc] initWithRequest:request];
 	if (response.resultType == MUKContentFetchResultTypeSuccess) {
 		MUKDataSourceTableSection *section = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"flowers" items:response.object headerTitle:@"Flowers" footerTitle:nil];
 		MUKDataSourceTableUpdate *update = [self.dataSource setTableSections:@[section]];
-		[update applyToTableView:self.tableView animation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
+		[update applyToTableView:self.tableView withAnimation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
 	}
 	else if (response.resultType == MUKContentFetchResultTypeFailed) {
 		MUKDataSourceContentPlaceholder *placeholder = [[MUKDataSourceContentPlaceholder alloc] initWithTitle:@"Error" subtitle:[response.error localizedDescription] image:nil];
