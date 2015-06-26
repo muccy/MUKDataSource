@@ -104,12 +104,6 @@ NS_ASSUME_NONNULL_BEGIN
  @returns Footer title for matching table section
  */
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section;
-/**
- You should override this method to handle UITableViewCellEditingStyleInsert.
- In default implementation, UITableViewCellEditingStyleDelete case is handled by 
- removing table item at index path and applying the corresponding update.
- */
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 

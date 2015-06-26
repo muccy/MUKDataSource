@@ -221,30 +221,6 @@
     return [self tableSectionAtIndex:section].footerTitle;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (editingStyle) {
-        case UITableViewCellEditingStyleDelete: {
-            // Remove committed row
-            MUKDataSourceTableSection *const section = [self.sections[indexPath.section] sectionByRemovingItemAtIndex:indexPath.row];
-            
-            // Recreate section
-            NSMutableArray *const sections = [self.sections mutableCopy];
-            [sections replaceObjectAtIndex:indexPath.section withObject:section];
-
-            // Apply update
-            MUKDataSourceTableUpdate *const update = [self setTableSections:sections];
-            [update applyToTableView:tableView withAnimation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
-            
-            break;
-        }
-            
-        default:
-            // Do nothing
-            break;
-    }
-}
-
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
     id<MUKDataSourceIdentifiable> const movedItem = [self itemAtIndexPath:sourceIndexPath];
