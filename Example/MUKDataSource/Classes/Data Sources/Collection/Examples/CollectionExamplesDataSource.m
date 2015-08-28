@@ -8,15 +8,14 @@
 
 #import "CollectionExamplesDataSource.h"
 #import "SectionedContentExample.h"
-#import "TitledCollectionSection.h"
 
 @implementation CollectionExamplesDataSource
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        MUKDataSourceTableSection *const sectionExamplesSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"section-examples" items:[self newSectionExamples] headerTitle:@"Section" footerTitle:nil];
-        MUKDataSourceTableSection *const rowExamplesSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"row-examples" items:[self newRowExamples] headerTitle:@"Row" footerTitle:nil];
+        MUKDataSourceContentSection *const sectionExamplesSection = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"section-examples" items:[self newSectionExamples] header:@"Section" footer:nil];
+        MUKDataSourceContentSection *const rowExamplesSection = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"row-examples" items:[self newRowExamples] header:@"Row" footer:nil];
         [self setTableSections:@[sectionExamplesSection, rowExamplesSection]];
     }
     
@@ -561,9 +560,10 @@
 
 #pragma mark - Private — Section Generation
 
-static inline TitledCollectionSection *CollectionSection(NSString *identifier, NSString *title, NSArray *items)
+static inline MUKDataSourceContentSection *CollectionSection(NSString *identifier, NSString *title, NSArray *items)
 {
-    return [[TitledCollectionSection alloc] initWithIdentifier:identifier items:items ?: @[@""] title:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]]];
+    NSString *const header = [@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]];
+    return [[MUKDataSourceContentSection alloc] initWithIdentifier:identifier items:items ?: @[@""] header:header footer:nil];
 }
 
 @end

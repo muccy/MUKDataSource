@@ -1,5 +1,4 @@
 #import "MUKDataSourceCollectionUpdate.h"
-#import "MUKDataSourceCollectionSection.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 
 static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet *movements)
@@ -100,9 +99,25 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
  1) insertion+deletion+move
  2) reload
  */
+
+- (NSUInteger)reloadedSectionIndexForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change
+{
+    NSUInteger const idx = [super reloadedSectionIndexForDelta:delta change:change];
+    if (idx != NSNotFound) {
+        return change.destinationIndex;
+    }
+    
+    return idx;
+}
+
 - (NSIndexPath *)reloadedItemIndexPathForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
 {
-    return [NSIndexPath indexPathForRow:change.destinationIndex inSection:sectionMatch.destinationIndex];
+    NSIndexPath *const indexPath = [super reloadedItemIndexPathForDelta:delta change:change sectionMatch:sectionMatch];
+    if (indexPath) {
+        return [NSIndexPath indexPathForRow:change.destinationIndex inSection:sectionMatch.destinationIndex];
+    }
+    
+    return indexPath;
 }
 
 #pragma mark - Private

@@ -4,21 +4,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- A section of content
- */
-@protocol MUKDataSourceContentSection <MUKDataSourceIdentifiable>
-@required
-/**
- Items inside the section
- */
-@property (nonatomic, copy, readonly, nullable) NSArray *items;
-@end
-
-
-/**
  Base class to implement MUKDataSourceContentSection protocol
  */
-@interface MUKDataSourceContentSection : NSObject <MUKDataSourceContentSection>
+@interface MUKDataSourceContentSection : NSObject <MUKDataSourceIdentifiable>
 /**
  @brief         Section identifier
  @discussion    You should give a value when you're interested in detecting
@@ -26,9 +14,25 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy, readonly, nullable) id<NSObject, NSCopying> identifier;
 /**
+ Items inside the section
+ */
+@property (nonatomic, copy, readonly, nullable) NSArray *items;
+/**
+ Object which identifies represents header
+ */
+@property (nonatomic, readonly, nullable) id<NSObject> header;
+/**
+ Object which identifies represents footer
+ */
+@property (nonatomic, readonly, nullable) id<NSObject> footer;
+/**
  Designated initializer
  */
-- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray *__nullable)items NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray *__nullable)items header:(id<NSObject> __nullable)header footer:(id<NSObject> __nullable)footer NS_DESIGNATED_INITIALIZER;
+/**
+ Convenience identifier which sets to nil both header and footer
+ */
+- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray *__nullable)items;
 /**
  @returns YES when section is equal to self
  */

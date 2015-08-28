@@ -9,8 +9,6 @@
 #import "TitlesDataSource.h"
 #import "CollectionViewCell.h"
 #import "CollectionSectionHeaderView.h"
-#import "TitledCollectionSection.h"
-#import "CollectionUpdate.h"
 
 static NSString *const kCellIdentifier = @"Cell";
 static NSString *const kSectionHeaderIdentifier = @"SectionHeader";
@@ -26,11 +24,6 @@ static NSString *const kSectionHeaderIdentifier = @"SectionHeader";
     [super registerReusableViewsForCollectionView:collectionView];
     [collectionView registerClass:[CollectionViewCell class] forCellWithReuseIdentifier:kCellIdentifier];
     [collectionView registerClass:[CollectionSectionHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kSectionHeaderIdentifier];
-}
-
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections
-{
-    return [[CollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -50,9 +43,9 @@ static NSString *const kSectionHeaderIdentifier = @"SectionHeader";
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    CollectionSectionHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kSectionHeaderIdentifier forIndexPath:indexPath];
-    TitledCollectionSection *section = (TitledCollectionSection *)[self collectionSectionAtIndex:indexPath.section];
-    headerView.textLabel.text = section.title;
+    CollectionSectionHeaderView *const headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kSectionHeaderIdentifier forIndexPath:indexPath];
+    MUKDataSourceContentSection * const section = [self sectionAtIndex:indexPath.section];
+    headerView.textLabel.text = [section.header isKindOfClass:[NSString class]] ? (NSString *)section.header : nil;
     return headerView;
 }
 

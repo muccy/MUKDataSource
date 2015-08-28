@@ -23,11 +23,11 @@
 }
 
 - (NSArray *)originalSections {
-    MUKDataSourceTableSection *const commandsSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"a" items:self.playground.commands headerTitle:nil footerTitle:nil];
+    MUKDataSourceContentSection *const commandsSection = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a" items:self.playground.commands header:nil footer:nil];
     
-    MUKDataSourceTableSection *const section1 = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"a" items:@[ @"a", @"b", @"c"] headerTitle:@"A" footerTitle:nil];
-    MUKDataSourceTableSection *const section2 = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"b" items:@[ @"c", @"d", @"e"] headerTitle:@"B" footerTitle:nil];
-    MUKDataSourceTableSection *const section3 = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"c" items:@[ @"f", @"g", @"h"] headerTitle:@"C" footerTitle:nil];
+    MUKDataSourceContentSection *const section1 = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a" items:@[ @"a", @"b", @"c"] header:@"A" footer:nil];
+    MUKDataSourceContentSection *const section2 = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:@[ @"c", @"d", @"e"] header:@"B" footer:nil];
+    MUKDataSourceContentSection *const section3 = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"c" items:@[ @"f", @"g", @"h"] header:@"C" footer:nil];
     
     return @[ commandsSection, section1, section2, section3 ];
 }
@@ -55,7 +55,7 @@
         switch (editingStyle) {
             case UITableViewCellEditingStyleDelete: {
                 // Remove committed row
-                MUKDataSourceTableSection *const section = [self.sections[indexPath.section] sectionByRemovingItemAtIndex:indexPath.row];
+                MUKDataSourceContentSection *const section = [self.sections[indexPath.section] sectionByRemovingItemAtIndex:indexPath.row];
                 
                 // Recreate section
                 NSMutableArray *const sections = [self.sections mutableCopy];

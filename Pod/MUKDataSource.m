@@ -19,22 +19,25 @@
 
 - (NSArray *)allItems {
     NSMutableArray *allItems = [NSMutableArray array];
-    for (id<MUKDataSourceContentSection> section in self.sections) {
-        if (section.items) {
-            [allItems addObjectsFromArray:section.items];
+    for (id obj in self.sections) {
+        if ([obj isKindOfClass:[MUKDataSourceContentSection class]]) {
+            MUKDataSourceContentSection *const section = obj;
+
+            if (section.items) {
+                [allItems addObjectsFromArray:section.items];
+            }
         }
-    }
+    } // for
     
     return [allItems copy];
 }
 
-- (id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx {
+- (MUKDataSourceContentSection *__nullable)sectionAtIndex:(NSInteger)idx {
     NSArray *const sections = self.sections;
     
     if (idx >= 0 && idx < sections.count) {
-        id<MUKDataSourceContentSection> const section = sections[idx];
-        if ([section conformsToProtocol:@protocol(MUKDataSourceContentSection)])
-        {
+        MUKDataSourceContentSection *const section = sections[idx];
+        if ([section isKindOfClass:[MUKDataSourceContentSection class]]) {
             return section;
         }
     }
@@ -42,14 +45,16 @@
     return nil;
 }
 
-- (id<MUKDataSourceContentSection>)sectionWithIdentifier:(id<NSObject,NSCopying>)identifier
+- (MUKDataSourceContentSection *__nullable)sectionWithIdentifier:(id<NSObject,NSCopying>)identifier
 {
     if (!identifier) {
         return nil;
     }
     
-    for (id<MUKDataSourceContentSection> section in self.sections) {
-        if ([section respondsToSelector:@selector(identifier)]) {
+    for (id obj in self.sections) {
+        if ([obj isKindOfClass:[MUKDataSourceContentSection class]]) {
+            MUKDataSourceContentSection *const section = obj;
+            
             if ([section.identifier isEqual:identifier]) {
                 return section;
             }
@@ -64,7 +69,7 @@
         return nil;
     }
     
-    id<MUKDataSourceContentSection> const section = [self sectionAtIndex:indexPath.section];
+    MUKDataSourceContentSection *const section = [self sectionAtIndex:indexPath.section];
     if (indexPath.item >= 0 && indexPath.item < section.items.count) {
         return section.items[indexPath.item];
     }
@@ -80,23 +85,27 @@
     
     __block NSIndexPath *foundIndexPath = nil;
     
-    [self.sections enumerateObjectsUsingBlock:^(id<MUKDataSourceContentSection> section, NSUInteger sectionIndex, BOOL *stopSectionCycle)
+    [self.sections enumerateObjectsUsingBlock:^(id obj, NSUInteger sectionIndex, BOOL *stopSectionCycle)
     {
-        [section.items enumerateObjectsUsingBlock:^(id<MUKDataSourceIdentifiable> item, NSUInteger itemIndex, BOOL *stopItemCycle)
-        {
-            NSIndexPath *const indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
-            BOOL stop = NO;
+        if ([obj isKindOfClass:[MUKDataSourceContentSection class]]) {
+            MUKDataSourceContentSection *const section = obj;
             
-            if (test(item, indexPath, &stop)) {
-                foundIndexPath = indexPath;
-                *stopItemCycle = YES;
-                *stopSectionCycle = YES;
-            }
-            else if (stop) {
-                *stopItemCycle = YES;
-                *stopSectionCycle = YES;
-            }
-        }];
+            [section.items enumerateObjectsUsingBlock:^(id<MUKDataSourceIdentifiable> item, NSUInteger itemIndex, BOOL *stopItemCycle)
+            {
+                NSIndexPath *const indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
+                BOOL stop = NO;
+                
+                if (test(item, indexPath, &stop)) {
+                    foundIndexPath = indexPath;
+                    *stopItemCycle = YES;
+                    *stopSectionCycle = YES;
+                }
+                else if (stop) {
+                    *stopItemCycle = YES;
+                    *stopSectionCycle = YES;
+                }
+            }];
+        } // if
     }];
     
     return foundIndexPath;
@@ -127,7 +136,8 @@
 
 @implementation MUKDataSource (TableViewSupport)
 
-- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)newSections {
+- (MUKDataSourceTableUpdate *__nonnull)setTableSections:(NSArray *__nullable)newSections
+{
     NSArray *const oldSections = self.sections;
     
     if (newSections != _content) {
@@ -137,16 +147,7 @@
     return [self newTableUpdateFromSections:oldSections toSections:newSections];
 }
 
-- (MUKDataSourceTableSection *)tableSectionAtIndex:(NSInteger)idx {
-    id<MUKDataSourceContentSection> const section = [self sectionAtIndex:idx];
-    if ([section isKindOfClass:[MUKDataSourceTableSection class]]) {
-        return (MUKDataSourceTableSection *)section;
-    }
-    
-    return nil;
-}
-
-- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections
+- (MUKDataSourceTableUpdate *__nonnull)newTableUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections
 {
     return [[MUKDataSourceTableUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
@@ -161,7 +162,8 @@
 
 @implementation MUKDataSource (CollectionViewSupport)
 
-- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *)newSections {
+- (MUKDataSourceCollectionUpdate *__nonnull)setCollectionSections:(NSArray *__nullable)newSections
+{
     NSArray *const oldSections = self.sections;
     
     if (newSections != _content) {
@@ -171,16 +173,8 @@
     return [self newCollectionUpdateFromSections:oldSections toSections:newSections];
 }
 
-- (MUKDataSourceCollectionSection *)collectionSectionAtIndex:(NSInteger)idx {
-    id<MUKDataSourceContentSection> const section = [self sectionAtIndex:idx];
-    if ([section isKindOfClass:[MUKDataSourceCollectionSection class]]) {
-        return (MUKDataSourceCollectionSection *)section;
-    }
-    
-    return nil;
-}
 
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections
+- (MUKDataSourceCollectionUpdate *__nonnull)newCollectionUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections
 {
     return [[MUKDataSourceCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
@@ -198,7 +192,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)idx
 {
-    MUKDataSourceTableSection *const section = [self tableSectionAtIndex:idx];
+    MUKDataSourceContentSection *const section = [self sectionAtIndex:idx];
     return section.items.count;
 }
 
@@ -211,14 +205,26 @@
     return self.sections.count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIdx
 {
-    return [self tableSectionAtIndex:section].headerTitle;
+    MUKDataSourceContentSection *const section = [self sectionAtIndex:sectionIdx];
+    
+    if ([section.header isKindOfClass:[NSString class]]) {
+        return (NSString *)section.header;
+    }
+    
+    return nil;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)sectionIdx
 {
-    return [self tableSectionAtIndex:section].footerTitle;
+    MUKDataSourceContentSection *const section = [self sectionAtIndex:sectionIdx];
+    
+    if ([section.footer isKindOfClass:[NSString class]]) {
+        return (NSString *)section.footer;
+    }
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
@@ -226,12 +232,12 @@
     id<MUKDataSourceIdentifiable> const movedItem = [self itemAtIndexPath:sourceIndexPath];
     
     // Remove moved item
-    MUKDataSourceTableSection *const sourceSection = self.sections[sourceIndexPath.section];
-    MUKDataSourceTableSection *const newSourceSection = [sourceSection sectionByRemovingItemAtIndex:sourceIndexPath.row];
+    MUKDataSourceContentSection *const sourceSection = self.sections[sourceIndexPath.section];
+    MUKDataSourceContentSection *const newSourceSection = [sourceSection sectionByRemovingItemAtIndex:sourceIndexPath.row];
 
     // Insert moved item
-    MUKDataSourceTableSection *const destinationSection = sourceIndexPath.section == destinationIndexPath.section ? newSourceSection : self.sections[destinationIndexPath.section];
-    MUKDataSourceTableSection *const newDestinationSection = [destinationSection sectionByInsertingItem:movedItem atIndex:destinationIndexPath.row];
+    MUKDataSourceContentSection *const destinationSection = sourceIndexPath.section == destinationIndexPath.section ? newSourceSection : self.sections[destinationIndexPath.section];
+    MUKDataSourceContentSection *const newDestinationSection = [destinationSection sectionByInsertingItem:movedItem atIndex:destinationIndexPath.row];
 
     // Set new sections
     NSMutableArray *const sections = [self.sections mutableCopy];
@@ -248,7 +254,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self collectionSectionAtIndex:section].items.count;
+    return [self sectionAtIndex:section].items.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

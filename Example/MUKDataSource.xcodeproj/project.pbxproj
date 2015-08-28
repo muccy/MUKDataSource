@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		063D4CE41B2F0443003BE629 /* MUKDataSourceTableSupportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */; };
+		063D4CE41B2F0443003BE629 /* MUKDataSourceContentSectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CE31B2F0443003BE629 /* MUKDataSourceContentSectionTests.m */; };
 		063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 063D4CF91B30A893003BE629 /* BasicItem.m */; };
 		06808E751B3742B800A3B374 /* MUKDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06808E741B3742B800A3B374 /* MUKDataSourceTests.m */; };
 		0683FA461B285EEF002C694B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0683FA451B285EEF002C694B /* main.m */; };
@@ -33,11 +33,9 @@
 		06C9159C1B31A6CC006B4D94 /* TablePlaygroundDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C9159B1B31A6CC006B4D94 /* TablePlaygroundDataSource.m */; };
 		06C915A11B31AA4E006B4D94 /* CollectionExamplesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915A01B31AA4E006B4D94 /* CollectionExamplesViewController.m */; };
 		06C915A61B31AA82006B4D94 /* CollectionExamplesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915A51B31AA82006B4D94 /* CollectionExamplesDataSource.m */; };
-		06C915AB1B31AAE6006B4D94 /* TitledCollectionSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915AA1B31AAE6006B4D94 /* TitledCollectionSection.m */; };
 		06C915B01B31ADEB006B4D94 /* CollectionExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915AF1B31ADEB006B4D94 /* CollectionExampleViewController.m */; };
 		06C915B61B31AF30006B4D94 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915B51B31AF30006B4D94 /* CollectionViewCell.m */; };
 		06C915BA1B31B247006B4D94 /* CollectionSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915B91B31B247006B4D94 /* CollectionSectionHeaderView.m */; };
-		06C915BE1B31B8D0006B4D94 /* CollectionUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915BD1B31B8D0006B4D94 /* CollectionUpdate.m */; };
 		4899C46890BB1C25B329F6D8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C82181A8B8647E020A3326B7 /* libPods.a */; };
 		53573B1C29C682A3B1B27834 /* libPods-MUKDataSourceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */; };
 /* End PBXBuildFile section */
@@ -53,7 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTableSupportTests.m; sourceTree = "<group>"; };
+		063D4CE31B2F0443003BE629 /* MUKDataSourceContentSectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceContentSectionTests.m; sourceTree = "<group>"; };
 		063D4CF81B30A893003BE629 /* BasicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicItem.h; sourceTree = "<group>"; };
 		063D4CF91B30A893003BE629 /* BasicItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicItem.m; sourceTree = "<group>"; };
 		06808E741B3742B800A3B374 /* MUKDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourceTests.m; sourceTree = "<group>"; };
@@ -102,16 +100,12 @@
 		06C915A01B31AA4E006B4D94 /* CollectionExamplesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionExamplesViewController.m; sourceTree = "<group>"; };
 		06C915A41B31AA82006B4D94 /* CollectionExamplesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionExamplesDataSource.h; sourceTree = "<group>"; };
 		06C915A51B31AA82006B4D94 /* CollectionExamplesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionExamplesDataSource.m; sourceTree = "<group>"; };
-		06C915A91B31AAE6006B4D94 /* TitledCollectionSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitledCollectionSection.h; sourceTree = "<group>"; };
-		06C915AA1B31AAE6006B4D94 /* TitledCollectionSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitledCollectionSection.m; sourceTree = "<group>"; };
 		06C915AE1B31ADEB006B4D94 /* CollectionExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionExampleViewController.h; sourceTree = "<group>"; };
 		06C915AF1B31ADEB006B4D94 /* CollectionExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionExampleViewController.m; sourceTree = "<group>"; };
 		06C915B41B31AF30006B4D94 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		06C915B51B31AF30006B4D94 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		06C915B81B31B247006B4D94 /* CollectionSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionSectionHeaderView.h; sourceTree = "<group>"; };
 		06C915B91B31B247006B4D94 /* CollectionSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionSectionHeaderView.m; sourceTree = "<group>"; };
-		06C915BC1B31B8D0006B4D94 /* CollectionUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionUpdate.h; sourceTree = "<group>"; };
-		06C915BD1B31B8D0006B4D94 /* CollectionUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionUpdate.m; sourceTree = "<group>"; };
 		15726E95C35402D1C5289608 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA921ACB481F431EC205FE74 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -186,7 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				06808E741B3742B800A3B374 /* MUKDataSourceTests.m */,
-				063D4CE31B2F0443003BE629 /* MUKDataSourceTableSupportTests.m */,
+				063D4CE31B2F0443003BE629 /* MUKDataSourceContentSectionTests.m */,
 				0683FA6F1B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m */,
 				06C9154A1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m */,
 				06C9154C1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m */,
@@ -235,7 +229,6 @@
 				06C915531B319836006B4D94 /* Example */,
 				06C9154F1B31978D006B4D94 /* Sectioned Content Example */,
 				06C915891B31A442006B4D94 /* Table */,
-				06C915A71B31AAD6006B4D94 /* Collection */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -451,24 +444,6 @@
 			path = Examples;
 			sourceTree = "<group>";
 		};
-		06C915A71B31AAD6006B4D94 /* Collection */ = {
-			isa = PBXGroup;
-			children = (
-				06C915A81B31AAD6006B4D94 /* Section */,
-				06C915BB1B31B8BB006B4D94 /* Update */,
-			);
-			path = Collection;
-			sourceTree = "<group>";
-		};
-		06C915A81B31AAD6006B4D94 /* Section */ = {
-			isa = PBXGroup;
-			children = (
-				06C915A91B31AAE6006B4D94 /* TitledCollectionSection.h */,
-				06C915AA1B31AAE6006B4D94 /* TitledCollectionSection.m */,
-			);
-			path = Section;
-			sourceTree = "<group>";
-		};
 		06C915AD1B31AD66006B4D94 /* Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -511,15 +486,6 @@
 				06C915B91B31B247006B4D94 /* CollectionSectionHeaderView.m */,
 			);
 			path = "Section Header";
-			sourceTree = "<group>";
-		};
-		06C915BB1B31B8BB006B4D94 /* Update */ = {
-			isa = PBXGroup;
-			children = (
-				06C915BC1B31B8D0006B4D94 /* CollectionUpdate.h */,
-				06C915BD1B31B8D0006B4D94 /* CollectionUpdate.m */,
-			);
-			path = Update;
 			sourceTree = "<group>";
 		};
 		1399B1FBCD64F5A7A447DFC0 /* Pods */ = {
@@ -715,7 +681,6 @@
 				06C915A61B31AA82006B4D94 /* CollectionExamplesDataSource.m in Sources */,
 				06C915A11B31AA4E006B4D94 /* CollectionExamplesViewController.m in Sources */,
 				06C915781B31A0D6006B4D94 /* TableExampleViewController.m in Sources */,
-				06C915AB1B31AAE6006B4D94 /* TitledCollectionSection.m in Sources */,
 				0683FA461B285EEF002C694B /* main.m in Sources */,
 				06C915BA1B31B247006B4D94 /* CollectionSectionHeaderView.m in Sources */,
 				06C9158D1B31A44E006B4D94 /* TablePlayground.m in Sources */,
@@ -725,7 +690,6 @@
 				06C915741B31A0AE006B4D94 /* TableExamplesViewController.m in Sources */,
 				06C915B01B31ADEB006B4D94 /* CollectionExampleViewController.m in Sources */,
 				06C915521B3197A6006B4D94 /* SectionedContentExample.m in Sources */,
-				06C915BE1B31B8D0006B4D94 /* CollectionUpdate.m in Sources */,
 				06C9155B1B3198C5006B4D94 /* SectionedContentExamplesViewController.m in Sources */,
 				06C915701B319F58006B4D94 /* Item.m in Sources */,
 				06C915611B319907006B4D94 /* SectionedContentExamplesDataSource.m in Sources */,
@@ -738,7 +702,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				063D4CE41B2F0443003BE629 /* MUKDataSourceTableSupportTests.m in Sources */,
+				063D4CE41B2F0443003BE629 /* MUKDataSourceContentSectionTests.m in Sources */,
 				0683FA701B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m in Sources */,
 				063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */,
 				06C9154D1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m in Sources */,

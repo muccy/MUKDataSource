@@ -6,8 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  How table should be updated to reflect the transition from source sections
  to destination sections.
- @note This subclass adds detection for section reloads. It uses destination 
- indexes due the nature of applyToTableView:withAnimation: both in
+ @note This subclass uses destination indexes due the nature of 
+ applyToTableView:withAnimation: both in
  reloadedSectionIndexForDelta:change: and 
  reloadedItemIndexPathForDelta:change:sectionMatch:
  */

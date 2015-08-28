@@ -33,7 +33,7 @@
 
 - (void)testAllItemsInSections {
     MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
-    dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a"items:nil], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:nil] ];
+    dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a" items:nil], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:nil] ];
     XCTAssertEqualObjects(dataSource.allItems, @[]);
     
     dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"1"items:@[ @"a", @"b"]], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"2" items:@[ @"c", @"d"] ] ];
@@ -42,7 +42,7 @@
 
 - (void)testSectionAtIndex {
     MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
-    dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a"items:nil], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:nil] ];
+    dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a" items:nil], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:nil] ];
     
     XCTAssertEqualObjects([dataSource sectionAtIndex:0], dataSource.sections[0]);
     XCTAssertEqualObjects([dataSource sectionAtIndex:1], dataSource.sections[1]);
@@ -56,7 +56,7 @@
 
 - (void)testSectionWithIdentifier {
     MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
-    dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a"items:nil], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:nil] ];
+    dataSource.content = @[ [[MUKDataSourceContentSection alloc] initWithIdentifier:@"a" items:nil], [[MUKDataSourceContentSection alloc] initWithIdentifier:@"b" items:nil] ];
     
     XCTAssertEqualObjects([dataSource sectionWithIdentifier:@"a"], dataSource.sections[0]);
     XCTAssertEqualObjects([dataSource sectionWithIdentifier:@"b"], dataSource.sections[1]);

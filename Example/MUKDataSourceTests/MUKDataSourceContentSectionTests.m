@@ -10,22 +10,22 @@
 #import <XCTest/XCTest.h>
 #import <MUKDataSource/MUKDataSource.h>
 
-@interface MUKDataSourceTableSupportTests : XCTestCase
+@interface MUKDataSourceContentSectionTests : XCTestCase
 
 @end
 
-@implementation MUKDataSourceTableSupportTests
+@implementation MUKDataSourceContentSectionTests
 
 - (void)testSections {
     MUKDataSource *const dataSource = [[MUKDataSource alloc] init];
     
-    NSArray *const sections = @[ TableSection(@"1", nil, @[@"a"]), TableSection(@"2", nil, @[@"b", @"c", @"d"]), TableSection(@"3", nil, @[@"e", @"f"]) ];
+    NSArray *const sections = @[ Section(@"1", nil, @[@"a"]), Section(@"2", nil, @[@"b", @"c", @"d"]), Section(@"3", nil, @[@"e", @"f"]) ];
     [dataSource setTableSections:sections];
     
-    XCTAssertEqualObjects([dataSource tableSectionAtIndex:0], sections[0]);
-    XCTAssertEqualObjects([dataSource tableSectionAtIndex:1], sections[1]);
-    XCTAssertNil([dataSource tableSectionAtIndex:3]);
-    XCTAssertNoThrow([dataSource tableSectionAtIndex:3]);
+    XCTAssertEqualObjects([dataSource sectionAtIndex:0], sections[0]);
+    XCTAssertEqualObjects([dataSource sectionAtIndex:1], sections[1]);
+    XCTAssertNil([dataSource sectionAtIndex:3]);
+    XCTAssertNoThrow([dataSource sectionAtIndex:3]);
     
     XCTAssertEqualObjects([dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]], [sections[0] items][0]);
     XCTAssertEqualObjects([dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]], [sections[2] items][1]);
@@ -34,25 +34,25 @@
 }
 
 - (void)testSectionEdit {
-    MUKDataSourceTableSection *const originalSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"identifier" items:@[@"a", @"b", @"c"] headerTitle:@"header" footerTitle:@"footer"];
+    MUKDataSourceContentSection *const originalSection = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"identifier" items:@[@"a", @"b", @"c"] header:@"header" footer:@"footer"];
     
-    MUKDataSourceTableSection *section = [originalSection sectionByReplacingItemsWithItems:@[@"d"]];
+    MUKDataSourceContentSection *section = [originalSection sectionByReplacingItemsWithItems:@[@"d"]];
     XCTAssertEqualObjects(section.items, @[@"d"]);
     XCTAssertEqualObjects(section.identifier, originalSection.identifier);
-    XCTAssertEqualObjects(section.headerTitle, originalSection.headerTitle);
-    XCTAssertEqualObjects(section.footerTitle, originalSection.footerTitle);
+    XCTAssertEqualObjects(section.header, originalSection.header);
+    XCTAssertEqualObjects(section.footer, originalSection.footer);
 
     section = [originalSection sectionByInsertingItem:@"x" atIndex:1];
     XCTAssertEqualObjects(section.items, (@[@"a", @"x", @"b", @"c"]));
     XCTAssertEqualObjects(section.identifier, originalSection.identifier);
-    XCTAssertEqualObjects(section.headerTitle, originalSection.headerTitle);
-    XCTAssertEqualObjects(section.footerTitle, originalSection.footerTitle);
+    XCTAssertEqualObjects(section.header, originalSection.header);
+    XCTAssertEqualObjects(section.footer, originalSection.footer);
     
     section = [originalSection sectionByRemovingItemAtIndex:1];
     XCTAssertEqualObjects(section.items, (@[@"a", @"c"]));
     XCTAssertEqualObjects(section.identifier, originalSection.identifier);
-    XCTAssertEqualObjects(section.headerTitle, originalSection.headerTitle);
-    XCTAssertEqualObjects(section.footerTitle, originalSection.footerTitle);
+    XCTAssertEqualObjects(section.header, originalSection.header);
+    XCTAssertEqualObjects(section.footer, originalSection.footer);
     
     section = [originalSection sectionByInsertingItem:@"x" atIndex:10];
     XCTAssertEqualObjects(section, originalSection);
@@ -63,9 +63,9 @@
 
 #pragma mark - Private
 
-static inline MUKDataSourceTableSection *TableSection(NSString *identifier, NSString *title, NSArray *items)
+static inline MUKDataSourceContentSection *Section(NSString *identifier, NSString *title, NSArray *items)
 {
-    return [[MUKDataSourceTableSection alloc] initWithIdentifier:identifier items:items ?: @[@""] headerTitle:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]] footerTitle:nil];
+    return [[MUKDataSourceContentSection alloc] initWithIdentifier:identifier items:items ?: @[@""] header:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]] footer:nil];
 }
 
 @end

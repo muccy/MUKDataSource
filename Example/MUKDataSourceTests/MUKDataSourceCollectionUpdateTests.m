@@ -14,77 +14,10 @@
 
 static NSTimeInterval const kUpdateTimeout = 1.0;
 
-@interface RichCollectionSection : MUKDataSourceCollectionSection
-@property (nonatomic, copy, readonly) NSString *title;
-- (instancetype)initWithIdentifier:(id<NSCopying>)identifier title:(NSString *)title items:(NSArray *)items;
-@end
-
-@implementation RichCollectionSection
-
-- (instancetype)initWithIdentifier:(id<NSCopying>)identifier title:(NSString *)title items:(NSArray *)items
-{
-    self = [super initWithIdentifier:identifier items:items];
-    if (self) {
-        _title = [title copy];
-    }
-    
-    return self;
-}
-
-- (BOOL)isEqual:(id)object {
-    if (![super isEqual:object]) {
-        return NO;
-    }
-    
-    if ([object isKindOfClass:[self class]]) {
-        RichCollectionSection *const section = object;
-        BOOL const haveSameTitle = (!self.title && !section.title) || [self.title isEqualToString:section.title];
-        return haveSameTitle; // other params tested in superclass
-    }
-    
-    return NO;
-}
-
-- (NSUInteger)hash {
-    return [super hash] ^ [self.title hash];
-}
-
-@end
-
-#pragma mark -
-
-@interface RichCollectionUpdate : MUKDataSourceCollectionUpdate
-@end
-
-@implementation RichCollectionUpdate
-
-- (NSUInteger)reloadedSectionIndexForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change
-{
-    RichCollectionSection *const sourceSection = delta.sourceArray[change.sourceIndex];
-    RichCollectionSection *const destinationSection = delta.destinationArray[change.destinationIndex];
-    
-    BOOL const sameTitle = (!destinationSection.title && !sourceSection.title) || [destinationSection.title isEqualToString:sourceSection.title];
-    
-    if (!sameTitle) {
-        return change.destinationIndex;
-    }
-    
-    return NSNotFound;
-}
-
-@end
-
-#pragma mark -
-
 @interface BasicCollectionDataSource : MUKDataSource
 @end
 
 @implementation BasicCollectionDataSource
-
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *)sourceSections toSections:(NSArray *)destinationSections
-{
-    return [[RichCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
-}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -532,7 +465,7 @@ static NSTimeInterval const kUpdateTimeout = 1.0;
     NSArray *const sourceSections = @[ CollectionSection(@"a", nil, nil), CollectionSection(@"b", nil, nil), CollectionSection(@"c", nil, nil) ];
     NSArray *const destinationSections = @[ CollectionSection(@"a", nil, nil), CollectionSection(@"b", @"B'", nil), CollectionSection(@"c", nil, @[@"New item!"]) ];
     
-    MUKDataSourceCollectionUpdate *const update = [[RichCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
+    MUKDataSourceCollectionUpdate *const update = [[MUKDataSourceCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
     
     NSIndexSet *const reloadedSections = [NSIndexSet indexSetWithIndex:1];
     XCTAssertEqualObjects(update.reloadedSectionIndexes, reloadedSections);
@@ -1419,9 +1352,10 @@ static NSTimeInterval const kUpdateTimeout = 1.0;
     return collectionView;
 }
 
-static inline RichCollectionSection *CollectionSection(NSString *identifier, NSString *title, NSArray *items)
+static inline MUKDataSourceContentSection *CollectionSection(NSString *identifier, NSString *title, NSArray *items)
 {
-    return [[RichCollectionSection alloc] initWithIdentifier:identifier title:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]] items:items ?: @[@""]];
+    NSString *const header = [@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]];
+    return [[MUKDataSourceContentSection alloc] initWithIdentifier:identifier items:items ?: @[@""] header:header footer:nil];
 }
 
 static inline NSIndexPath *IndexPathWithItem(NSUInteger row) {
