@@ -16,9 +16,9 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        MUKDataSourceTableSection *const playgroundSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"playground" items:[self newPlaygrounds] headerTitle:nil footerTitle:nil];
-        MUKDataSourceTableSection *const sectionExamplesSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"section-examples" items:[self newSectionExamples] headerTitle:@"Section" footerTitle:nil];
-        MUKDataSourceTableSection *const rowExamplesSection = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"row-examples" items:[self newRowExamples] headerTitle:@"Row" footerTitle:nil];
+        MUKDataSourceContentSection *const playgroundSection = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"playground" items:[self newPlaygrounds] header:nil footer:nil];
+        MUKDataSourceContentSection *const sectionExamplesSection = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"section-examples" items:[self newSectionExamples] header:@"Section" footer:nil];
+        MUKDataSourceContentSection *const rowExamplesSection = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"row-examples" items:[self newRowExamples] header:@"Row" footer:nil];
         [self setTableSections:@[playgroundSection, sectionExamplesSection, rowExamplesSection]];
     }
     
@@ -33,10 +33,10 @@
     NSArray *commands = @[ [[TablePlaygroundCommand alloc] initWithIdentifier:@"add-row" title:@"Add Row" editingStyle:UITableViewCellEditingStyleInsert action:^(MUKDataSource *dataSource, UITableView *tableView)
     {
         NSUInteger const sectionIndex = (arc4random() % (dataSource.sections.count-1)) + 1;
-        MUKDataSourceTableSection *const section = [dataSource tableSectionAtIndex:sectionIndex];
+        MUKDataSourceContentSection *const section = [dataSource sectionAtIndex:sectionIndex];
         
         NSUInteger const rowIndex = arc4random() % section.items.count;
-        MUKDataSourceTableSection *const newSection = [section sectionByInsertingItem:[NSString stringWithFormat:@"%.0f", [NSDate timeIntervalSinceReferenceDate]] atIndex:rowIndex];
+        MUKDataSourceContentSection *const newSection = [section sectionByInsertingItem:[NSString stringWithFormat:@"%.0f", [NSDate timeIntervalSinceReferenceDate]] atIndex:rowIndex];
         
         NSMutableArray *const sections = [dataSource.sections mutableCopy];
         [sections replaceObjectAtIndex:sectionIndex withObject:newSection];
@@ -589,9 +589,9 @@
 
 #pragma mark - Private — Section Generation
 
-static inline MUKDataSourceTableSection *TableSection(NSString *identifier, NSString *title, NSArray *items)
+static inline MUKDataSourceContentSection *TableSection(NSString *identifier, NSString *title, NSArray *items)
 {
-    return [[MUKDataSourceTableSection alloc] initWithIdentifier:identifier items:items ?: @[@""] headerTitle:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]] footerTitle:nil];
+    return [[MUKDataSourceContentSection alloc] initWithIdentifier:identifier items:items ?: @[@""] header:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]] footer:nil];
 }
 
 @end

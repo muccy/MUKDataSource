@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <MUKDataSource/MUKDataSourceTableSection.h>
+#import <MUKDataSource/MUKDataSourceContentSection.h>
 #import <MUKDataSource/MUKDataSourceTableUpdate.h>
-#import <MUKDataSource/MUKDataSourceCollectionSection.h>
 #import <MUKDataSource/MUKDataSourceCollectionUpdate.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -30,11 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @returns Section at given index. It could return nil if no section is found.
  */
-- (nullable id<MUKDataSourceContentSection>)sectionAtIndex:(NSInteger)idx;
+- (MUKDataSourceContentSection *__nullable)sectionAtIndex:(NSInteger)idx;
 /**
  @returns Section with given identifier
  */
-- (nullable id<MUKDataSourceContentSection>)sectionWithIdentifier:(id<NSObject, NSCopying>)identifier;
+- (MUKDataSourceContentSection *__nullable)sectionWithIdentifier:(id<NSObject, NSCopying>)identifier;
 /**
  @returns Item at given index path. It could return nil if no item is found.
  */
@@ -54,16 +53,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MUKDataSource (TableViewSupport)
 /**
  Sets table view sections
- @param tableSections An array of MUKDataSourceTableSection objects
+ @param tableSections An array of MUKDataSourceContentSection objects
  @returns The update to apply to your UITableView instance or nil if no update
  is generated
  */
-- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *)tableSections;
-/**
- @returns Table section at given index. It could return nil if no table section
- is found.
- */
-- (MUKDataSourceTableSection *__nullable)tableSectionAtIndex:(NSInteger)idx;
+- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *__nullable)tableSections;
 /**
  @param sourceSections      Table sections before the update
  @param destinationSections Table sections after the update
@@ -110,16 +104,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MUKDataSource (CollectionViewSupport)
 /**
  Sets collection view sections
- @param collectionSections An array of MUKDataSourceCollectionSection objects
+ @param collectionSections An array of MUKDataSourceContentSection objects
  @returns The update to apply to your UICollectionView instance or nil if no update
  is generated
  */
-- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *)collectionSections;
-/**
- @returns Collection section at given index. It could return nil if no collection
- section is found.
- */
-- (MUKDataSourceCollectionSection *__nullable)collectionSectionAtIndex:(NSInteger)idx;
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *__nullable)collectionSections;
 /**
  You should override this method and provide your custom
  MUKDataSourceCollectionUpdate subclass in order to indicate sections to reload

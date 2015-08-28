@@ -106,15 +106,12 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
         _sourceSections = [sourceSections copy];
         _destinationSections = [destinationSections copy];
         
-        MUKArrayDelta *const sectionsDelta = [[MUKArrayDelta alloc] initWithSourceArray:sourceSections destinationArray:destinationSections matchTest:^MUKArrayDeltaMatchType(id<MUKDataSourceContentSection> section1, id<MUKDataSourceContentSection> section2)
+        MUKArrayDelta *const sectionsDelta = [[MUKArrayDelta alloc] initWithSourceArray:sourceSections destinationArray:destinationSections matchTest:^MUKArrayDeltaMatchType(MUKDataSourceContentSection *section1, MUKDataSourceContentSection *section2)
         {
             if ([section1 isEqual:section2]) {
                 return MUKArrayDeltaMatchTypeEqual;
             }
-            else if ([section1 respondsToSelector:@selector(identifier)] &&
-                     [section2 respondsToSelector:@selector(identifier)] &&
-                     [section1.identifier isEqual:section2.identifier])
-            {
+            else if ([section1.identifier isEqual:section2.identifier]) {
                 return MUKArrayDeltaMatchTypeChange;
             }
             
@@ -157,6 +154,17 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 
 - (NSUInteger)reloadedSectionIndexForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change
 {
+    MUKDataSourceContentSection *const sourceSection = delta.sourceArray[change.sourceIndex];
+    MUKDataSourceContentSection *const destinationSection = delta.destinationArray[change.destinationIndex];
+    
+    BOOL const sameHeader = (!destinationSection.header && !sourceSection.header) || [destinationSection.header isEqual:sourceSection.header];
+    BOOL const sameFooter = (!destinationSection.footer && !sourceSection.footer) || [destinationSection.footer isEqual:sourceSection.footer];
+    BOOL const shouldReload = !sameHeader || !sameFooter;
+    
+    if (shouldReload) {
+        return change.sourceIndex;
+    }
+    
     return NSNotFound;
 }
 
@@ -202,8 +210,8 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     NSMutableSet *const unresolvedSectionChanges = [NSMutableSet set];
     
     for (MUKArrayDeltaMatch *match in delta.changes) {
-        id<MUKDataSourceContentSection> const sourceSection = delta.sourceArray[match.sourceIndex];
-        id<MUKDataSourceContentSection> const destinationSection = delta.destinationArray[match.destinationIndex];
+        MUKDataSourceContentSection *const sourceSection = delta.sourceArray[match.sourceIndex];
+        MUKDataSourceContentSection *const destinationSection = delta.destinationArray[match.destinationIndex];
         
         if (![sourceSection.items isEqualToArray:destinationSection.items]) {
             [unresolvedSectionChanges addObject:match];
@@ -240,8 +248,8 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     
     for (MUKArrayDeltaMatch *const sectionMatch in unresolvedSectionChanges) {
         // Get involved sections
-        id<MUKDataSourceContentSection> const sourceSection = delta.sourceArray[sectionMatch.sourceIndex];
-        id<MUKDataSourceContentSection> const destinationSection = delta.destinationArray[sectionMatch.destinationIndex];
+        MUKDataSourceContentSection *const sourceSection = delta.sourceArray[sectionMatch.sourceIndex];
+        MUKDataSourceContentSection *const destinationSection = delta.destinationArray[sectionMatch.destinationIndex];
         
         // Get delta of this section change
         MUKArrayDelta *const sectionDelta = [[MUKArrayDelta alloc] initWithSourceArray:sourceSection.items destinationArray:destinationSection.items matchTest:itemsMatchTest];
@@ -291,12 +299,12 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     
     [deletedItemIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *deletedIndexPath, NSUInteger deletedIndexPathIndex, BOOL *stop)
     {
-        id<MUKDataSourceContentSection> const deletedItemSection = delta.sourceArray[deletedIndexPath.section];
+        MUKDataSourceContentSection *const deletedItemSection = delta.sourceArray[deletedIndexPath.section];
         id<MUKDataSourceIdentifiable> const deletedItem = deletedItemSection.items[deletedIndexPath.row];
         
         [insertedItemIndexPaths enumerateObjectsAtIndexes:validInsertedItemIndexPathIndexes options:0 usingBlock:^(NSIndexPath *insertedIndexPath, NSUInteger insertedIndexPathIndex, BOOL *stop)
         {
-            id<MUKDataSourceContentSection> const insertedItemSection = delta.destinationArray[insertedIndexPath.section];
+            MUKDataSourceContentSection *const insertedItemSection = delta.destinationArray[insertedIndexPath.section];
             if ([insertedItemSection.identifier isEqual:deletedItemSection.identifier])
             {
                 // Same section: do not inspect this case

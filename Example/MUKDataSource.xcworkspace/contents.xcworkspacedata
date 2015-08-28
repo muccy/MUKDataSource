@@ -41,16 +41,6 @@
          location = "group:Table View Support"
          name = "Table View Support">
          <Group
-            location = "group:Section"
-            name = "Section">
-            <FileRef
-               location = "group:MUKDataSourceTableSection.h">
-            </FileRef>
-            <FileRef
-               location = "group:MUKDataSourceTableSection.m">
-            </FileRef>
-         </Group>
-         <Group
             location = "group:Update"
             name = "Update">
             <Group
@@ -84,16 +74,6 @@
       <Group
          location = "group:Collection View Support"
          name = "Collection View Support">
-         <Group
-            location = "group:Section"
-            name = "Section">
-            <FileRef
-               location = "group:MUKDataSourceCollectionSection.h">
-            </FileRef>
-            <FileRef
-               location = "group:MUKDataSourceCollectionSection.m">
-            </FileRef>
-         </Group>
          <Group
             location = "group:Update"
             name = "Update">

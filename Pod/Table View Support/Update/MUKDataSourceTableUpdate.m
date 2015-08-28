@@ -1,5 +1,4 @@
 #import "MUKDataSourceTableUpdate.h"
-#import "MUKDataSourceTableSection.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 
 static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet *movements)
@@ -103,26 +102,24 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
  1) insertion+deletion+move
  2) reload
  */
-
 - (NSUInteger)reloadedSectionIndexForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change
 {
-    MUKDataSourceTableSection *const sourceSection = delta.sourceArray[change.sourceIndex];
-    MUKDataSourceTableSection *const destinationSection = delta.destinationArray[change.destinationIndex];
-    
-    BOOL const sameHeaderTitle = (!destinationSection.headerTitle && !sourceSection.headerTitle) || [destinationSection.headerTitle isEqualToString:sourceSection.headerTitle];
-    BOOL const sameFooterTitle = (!destinationSection.footerTitle && !sourceSection.footerTitle) || [destinationSection.footerTitle isEqualToString:sourceSection.footerTitle];
-    BOOL const shouldReload = !sameHeaderTitle || !sameFooterTitle;
-    
-    if (shouldReload) {
+    NSUInteger const idx = [super reloadedSectionIndexForDelta:delta change:change];
+    if (idx != NSNotFound) {
         return change.destinationIndex;
     }
     
-    return NSNotFound;
+    return idx;
 }
 
 - (NSIndexPath *)reloadedItemIndexPathForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
 {
-    return [NSIndexPath indexPathForRow:change.destinationIndex inSection:sectionMatch.destinationIndex];
+    NSIndexPath *const indexPath = [super reloadedItemIndexPathForDelta:delta change:change sectionMatch:sectionMatch];
+    if (indexPath) {
+        return [NSIndexPath indexPathForRow:change.destinationIndex inSection:sectionMatch.destinationIndex];
+    }
+    
+    return indexPath;
 }
 
 #pragma mark - Private

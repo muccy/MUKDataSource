@@ -1117,9 +1117,9 @@
     return tableView;
 }
 
-static inline MUKDataSourceTableSection *TableSection(NSString *identifier, NSString *title, NSArray *items)
+static inline MUKDataSourceContentSection *TableSection(NSString *identifier, NSString *title, NSArray *items)
 {
-    return [[MUKDataSourceTableSection alloc] initWithIdentifier:identifier items:items ?: @[@""] headerTitle:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]] footerTitle:nil];
+    return [[MUKDataSourceContentSection alloc] initWithIdentifier:identifier items:items ?: @[@""] header:[@"Section: " stringByAppendingString:title ?: [identifier uppercaseString]] footer:nil];
 }
 
 static inline NSIndexPath *IndexPathWithRow(NSUInteger row) {

@@ -37,7 +37,7 @@ MUKContentFetchRequest *request = [[MUKContentFetchRequest alloc] init];
 MUKContentFetch *fetch = [[FlowersFetch alloc] initWithRequest:request];
 [fetch startWithCompletionHandler:^(MUKContentFetchResponse *response) {
 	if (response.resultType == MUKContentFetchResultTypeSuccess) {
-		MUKDataSourceTableSection *section = [[MUKDataSourceTableSection alloc] initWithIdentifier:@"flowers" items:response.object headerTitle:@"Flowers" footerTitle:nil];
+		MUKDataSourceContentSection *section = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"flowers" items:response.object header:@"Flowers" footer:nil];
 		MUKDataSourceTableUpdate *update = [self.dataSource setTableSections:@[section]];
 		[update applyToTableView:self.tableView withAnimation:[MUKDataSourceTableUpdateAnimation automaticAnimation]];
 	}

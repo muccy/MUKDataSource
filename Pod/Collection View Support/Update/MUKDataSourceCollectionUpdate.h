@@ -7,8 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
  to destination sections.
  @note This subclass uses destination indexes due the nature of 
  applyToCollectionView:completion: in reloadedItemIndexPathForDelta:change:sectionMatch:.
- @note You should use destination indexes if you subclass 
- reloadedSectionIndexForDelta:change: (which still returns NSNotFound here)
  */
 @interface MUKDataSourceCollectionUpdate : MUKDataSourceSectionedContentUpdate
 /**

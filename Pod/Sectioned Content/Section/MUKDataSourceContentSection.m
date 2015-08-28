@@ -4,27 +4,36 @@
 @synthesize identifier = _identifier;
 @synthesize items = _items;
 
-- (instancetype)initWithIdentifier:(id<NSCopying>)identifier items:(NSArray *)items
+- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray * __nullable)items header:(id<NSObject> __nullable)header footer:(id<NSObject> __nullable)footer
 {
     self = [super init];
     if (self) {
         _identifier = [(id)identifier copy];
         _items = [items copy];
+        _header = header;
+        _footer = footer;
     }
     
     return self;
+}
+
+- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray *__nullable)items
+{
+    return [self initWithIdentifier:identifier items:items header:nil footer:nil];
 }
 
 - (BOOL)isEqualToDataSourceContentSection:(MUKDataSourceContentSection *)section
 {
     BOOL const sameIdentifier = (!self.identifier && !section.identifier) || [self.identifier isEqual:section.identifier];
     BOOL const sameItems = (!self.items && !section.items) || [self.items isEqualToArray:section.items];
+    BOOL const sameHeader = (!self.header && !section.header) || [self.header isEqual:section.header];
+    BOOL const sameFooter = (!self.footer && !section.footer) || [self.footer isEqual:section.footer];
     
-    return sameIdentifier && sameItems;
+    return sameIdentifier && sameItems && sameHeader && sameFooter;
 }
 
 - (instancetype)sectionByReplacingItemsWithItems:(NSArray *)newItems {
-    return [[[self class] alloc] initWithIdentifier:self.identifier items:newItems];
+    return [[[self class] alloc] initWithIdentifier:self.identifier items:newItems header:self.header footer:self.footer];
 }
 
 - (instancetype)sectionByRemovingItemAtIndex:(NSUInteger)idx {
@@ -76,7 +85,7 @@
 }
 
 - (NSUInteger)hash {
-    return 634209 ^ [self.identifier hash] ^ [self.items hash];
+    return 634209 ^ [self.identifier hash] ^ [self.items hash] ^ [self.header hash] ^ [self.footer hash];
 }
 
 @end

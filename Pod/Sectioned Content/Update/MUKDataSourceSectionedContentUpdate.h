@@ -73,8 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSIndexSet *deletedSectionIndexes;
 /**
  Indexes of sections to reload.
- Please note that reloadSectionIndexes will always be empty because a plain
- content section cannot change. Subclasses may express a meaningful value.
  */
 @property (nonatomic, readonly) NSIndexSet *reloadedSectionIndexes;
 /**
