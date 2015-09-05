@@ -188,6 +188,20 @@
 
 #pragma mark -
 
+@implementation MUKDataSource (PageViewControllerSupport)
+
+- (UIViewController *__nullable)newViewControllerForPageAtIndex:(NSInteger)idx {
+    return nil;
+}
+
+- (NSInteger)pageIndexForViewController:(UIViewController *)viewController {
+    return NSNotFound;
+}
+
+@end
+
+#pragma mark -
+
 @implementation MUKDataSource (UITableViewDataSourceImplementedMethods)
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)idx
@@ -265,6 +279,32 @@
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return self.sections.count;
+}
+
+@end
+
+#pragma mark -
+
+@implementation MUKDataSource (UIPageViewControllerDataSourceImplementedMethods)
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+{
+    NSInteger const idx = [self pageIndexForViewController:viewController];
+    if (idx == NSNotFound) {
+        return nil;
+    }
+    
+    return [self newViewControllerForPageAtIndex:idx-1];
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+{
+    NSInteger const idx = [self pageIndexForViewController:viewController];
+    if (idx == NSNotFound) {
+        return nil;
+    }
+    
+    return [self newViewControllerForPageAtIndex:idx+1];
 }
 
 @end

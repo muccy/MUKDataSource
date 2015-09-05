@@ -145,4 +145,35 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
 @end
 
+@interface MUKDataSource (PageViewControllerSupport)
+/**
+ @param idx Page index
+ @returns A new view controller which displays page at given index. Default 
+ implementation returns nil.
+ */
+- (UIViewController *__nullable)newViewControllerForPageAtIndex:(NSInteger)idx;
+/**
+ @param viewController The view controller which represents a page
+ @returns The index of given view controller in page view controller. Default
+ implementation returns NSNotFound.
+ */
+- (NSInteger)pageIndexForViewController:(UIViewController *)viewController;
+@end
+
+/**
+ Implemented methods for UIPageViewControllerDataSource protocol
+ */
+@interface MUKDataSource (UIPageViewControllerDataSourceImplementedMethods) <UIPageViewControllerDataSource>
+/**
+ @returns The view controller returned by -newViewControllerForPageAtIndex:, 
+ called with current index - 1
+ */
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController;
+/**
+ @returns The view controller returned by -newViewControllerForPageAtIndex:,
+ called with current index - 1
+ */
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController;
+@end
+
 NS_ASSUME_NONNULL_END
