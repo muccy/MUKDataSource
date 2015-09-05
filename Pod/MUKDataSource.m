@@ -1,13 +1,14 @@
 #import "MUKDataSource.h"
 
+id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
+
 @implementation MUKDataSource
 @end
 
 #pragma mark -
 
 @implementation  MUKDataSource (SectionedContent)
-@dynamic sections;
-@dynamic allItems;
+@dynamic sections, allItems;
 
 - (NSArray *)sections {
     if ([_content isKindOfClass:[NSArray class]]) {
@@ -189,13 +190,102 @@
 #pragma mark -
 
 @implementation MUKDataSource (PageViewControllerSupport)
+@dynamic pages;
 
-- (UIViewController *__nullable)newViewControllerForPageAtIndex:(NSInteger)idx {
+- (NSArray * __nullable)pages {
+    if ([self.content isKindOfClass:[NSArray class]]) {
+        return (NSArray *)self.content;
+    }
+    
     return nil;
 }
 
-- (NSInteger)pageIndexForViewController:(UIViewController *)viewController {
-    return NSNotFound;
+- (nullable id)pageAtIndex:(NSInteger)idx {
+    NSArray *const pages = self.pages;
+    if (idx >= 0 && idx < pages.count) {
+        return pages[idx];
+    }
+    
+    return nil;
+}
+
+- (nullable id<MUKDataSourceIdentifiable>)pageForViewController:(UIViewController * __nonnull)viewController
+{
+    return nil;
+}
+
+- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id<MUKDataSourceIdentifiable>)page
+{
+    if ([self.content isKindOfClass:[NSArray class]]) {
+        NSInteger const idx = [self indexOfPageUsingIdentifiers:page];
+        if (idx == NSNotFound) {
+            return nil;
+        }
+        
+        return [self pageAtIndex:idx+1];
+    }
+
+    return nil;
+}
+
+- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id<MUKDataSourceIdentifiable>)page
+{
+    if ([self.content isKindOfClass:[NSArray class]]) {
+        NSInteger const idx = [self indexOfPageUsingIdentifiers:page];
+        if (idx == NSNotFound) {
+            return nil;
+        }
+        
+        return [self pageAtIndex:idx-1];
+    }
+    
+    return nil;
+}
+
+- (BOOL)page:(id<MUKDataSourceIdentifiable>)page1 precedesPage:(id<MUKDataSourceIdentifiable>)page2
+{
+    NSInteger const idx1 = [self indexOfPageUsingIdentifiers:page1];
+    if (idx1 == NSNotFound) {
+        return NO;
+    }
+    
+    NSInteger const idx2 = [self indexOfPageUsingIdentifiers:page2];
+    if (idx2 == NSNotFound) {
+        return NO;
+    }
+    
+    return idx1 < idx2;
+}
+
+- (UIViewController * __nullable)newViewControllerForPage:(id<MUKDataSourceIdentifiable> __nonnull)page
+{
+    return nil;
+}
+
++ (NSSet *)keyPathsForValuesAffectingPages {
+    return [NSSet setWithObjects:NSStringFromSelector(@selector(content)), nil];
+}
+
+- (NSInteger)indexOfPageUsingIdentifiers:(id<MUKDataSourceIdentifiable>)page {
+    return [self.pages indexOfObjectPassingTest:^BOOL(id<MUKDataSourceIdentifiable> obj, NSUInteger idx, BOOL *stop)
+    {
+        BOOL matches;
+        
+        if ([page respondsToSelector:@selector(identifier)] &&
+            [obj respondsToSelector:@selector(identifier)])
+        {
+            matches = [page.identifier isEqual:obj.identifier];
+        }
+        else {
+            matches = [page isEqual:obj];
+        }
+        
+        if (matches) {
+            *stop = YES;
+        }
+        
+        return matches;
+    }];
 }
 
 @end
@@ -289,22 +379,16 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-    NSInteger const idx = [self pageIndexForViewController:viewController];
-    if (idx == NSNotFound) {
-        return nil;
-    }
-    
-    return [self newViewControllerForPageAtIndex:idx-1];
+    id<MUKDataSourceIdentifiable> const page = [self pageForViewController:viewController];
+    id<MUKDataSourceIdentifiable> const newPage = [self pagePrecedingPage:page];
+    return newPage ? [self newViewControllerForPage:newPage] : nil;
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-    NSInteger const idx = [self pageIndexForViewController:viewController];
-    if (idx == NSNotFound) {
-        return nil;
-    }
-    
-    return [self newViewControllerForPageAtIndex:idx+1];
+    id<MUKDataSourceIdentifiable> const page = [self pageForViewController:viewController];
+    id<MUKDataSourceIdentifiable> const newPage = [self pageFollowingPage:page];
+    return newPage ? [self newViewControllerForPage:newPage] : nil;
 }
 
 @end

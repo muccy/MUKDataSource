@@ -96,6 +96,16 @@
          </Group>
       </Group>
       <Group
+         location = "group:Page View Controller Support"
+         name = "Page View Controller Support">
+         <FileRef
+            location = "group:MUKPageViewController.h">
+         </FileRef>
+         <FileRef
+            location = "group:MUKPageViewController.m">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:Content Placeholder"
          name = "Content Placeholder">
          <Group

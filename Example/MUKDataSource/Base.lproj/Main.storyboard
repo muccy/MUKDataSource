@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Tab Bar Controller-->
@@ -17,6 +17,7 @@
                     <connections>
                         <segue destination="8se-is-CaJ" kind="relationship" relationship="viewControllers" id="hXH-pv-KTR"/>
                         <segue destination="4O7-yZ-HCv" kind="relationship" relationship="viewControllers" id="7vT-lD-jXC"/>
+                        <segue destination="taf-SZ-jr2" kind="relationship" relationship="viewControllers" id="pjP-mu-vG0"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -120,6 +121,27 @@
             </objects>
             <point key="canvasLocation" x="735" y="338"/>
         </scene>
+        <!--Page View Controller-->
+        <scene sceneID="Agv-cE-39e">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="AiI-Gy-S17" customClass="PageViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="tDb-S5-RXp">
+                        <barButtonItem key="leftBarButtonItem" title="Previous" id="bLi-Ht-37X">
+                            <connections>
+                                <action selector="goToPreviousPage:" destination="AiI-Gy-S17" id="7nH-ql-LZm"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="PtT-Oi-keY">
+                            <connections>
+                                <action selector="goToNextPage:" destination="AiI-Gy-S17" id="e3X-af-ns4"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rmb-mE-l6j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1547" y="1047"/>
+        </scene>
         <!--Collection View Examples-->
         <scene sceneID="DEU-jY-hcN">
             <objects>
@@ -166,6 +188,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xtw-CH-jX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2252" y="340"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="cC9-TA-wT1">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="taf-SZ-jr2" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Page View Controller" id="E4N-g7-e87"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gNJ-sh-zru">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="AiI-Gy-S17" kind="relationship" relationship="rootViewController" id="iru-Zu-vG9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7o9-cx-s4C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="735" y="1047"/>
         </scene>
     </scenes>
 </document>
