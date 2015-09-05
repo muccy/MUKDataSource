@@ -39,6 +39,7 @@
 		06E735791B9AF8DC00F628CB /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E735781B9AF8DC00F628CB /* PageViewController.m */; };
 		06E7357D1B9AF93E00F628CB /* PageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E7357C1B9AF93E00F628CB /* PageDataSource.m */; };
 		06E735801B9B3C1100F628CB /* PageItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E7357F1B9B3C1100F628CB /* PageItemViewController.m */; };
+		06E735821B9B483900F628CB /* MUKDataSourcePagedContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */; };
 		4899C46890BB1C25B329F6D8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C82181A8B8647E020A3326B7 /* libPods.a */; };
 		53573B1C29C682A3B1B27834 /* libPods-MUKDataSourceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */; };
 /* End PBXBuildFile section */
@@ -115,6 +116,7 @@
 		06E7357C1B9AF93E00F628CB /* PageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageDataSource.m; sourceTree = "<group>"; };
 		06E7357E1B9B3C1100F628CB /* PageItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageItemViewController.h; sourceTree = "<group>"; };
 		06E7357F1B9B3C1100F628CB /* PageItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageItemViewController.m; sourceTree = "<group>"; };
+		06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourcePagedContentTests.m; sourceTree = "<group>"; };
 		15726E95C35402D1C5289608 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA921ACB481F431EC205FE74 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				0683FA6F1B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m */,
 				06C9154A1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m */,
 				06C9154C1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m */,
+				06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */,
 				0683FA601B285EEF002C694B /* Supporting Files */,
 				063D4CF81B30A893003BE629 /* BasicItem.h */,
 				063D4CF91B30A893003BE629 /* BasicItem.m */,
@@ -741,6 +744,7 @@
 				063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */,
 				06C9154D1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m in Sources */,
 				06808E751B3742B800A3B374 /* MUKDataSourceTests.m in Sources */,
+				06E735821B9B483900F628CB /* MUKDataSourcePagedContentTests.m in Sources */,
 				06C9154B1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

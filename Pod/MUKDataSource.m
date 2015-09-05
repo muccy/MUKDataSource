@@ -214,7 +214,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id<MUKDataSourceIdentifiable>)page
+- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id)page
 {
     if ([self.content isKindOfClass:[NSArray class]]) {
         NSInteger const idx = [self indexOfPageUsingIdentifiers:page];
@@ -228,7 +228,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id<MUKDataSourceIdentifiable>)page
+- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id)page
 {
     if ([self.content isKindOfClass:[NSArray class]]) {
         NSInteger const idx = [self indexOfPageUsingIdentifiers:page];
@@ -242,8 +242,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (BOOL)page:(id<MUKDataSourceIdentifiable>)page1 precedesPage:(id<MUKDataSourceIdentifiable>)page2
-{
+- (BOOL)page:(id)page1 precedesPage:(id)page2 {
     NSInteger const idx1 = [self indexOfPageUsingIdentifiers:page1];
     if (idx1 == NSNotFound) {
         return NO;

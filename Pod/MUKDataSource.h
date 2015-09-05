@@ -161,8 +161,7 @@ extern id const MUKDataSourceIndefiniteContent;
 /**
  @param viewController The view controller which represents a page
  @returns Page represented by view controller. Default implementation returns nil.
- @warning You need to override this method if you are using a definite number of 
- pages
+ @warning You need to override this method
  */
 - (nullable id<MUKDataSourceIdentifiable>)pageForViewController:(UIViewController *)viewController;
 /**
@@ -170,19 +169,19 @@ extern id const MUKDataSourceIndefiniteContent;
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id<MUKDataSourceIdentifiable>)page;
+- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id)page;
 /**
  @returns Page before given page.
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id<MUKDataSourceIdentifiable>)page;
+- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id)page;
 /**
  @returns YES if page 1 precedes page 2
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (BOOL)page:(id<MUKDataSourceIdentifiable>)page1 precedesPage:(id<MUKDataSourceIdentifiable>)page2;
+- (BOOL)page:(id)page1 precedesPage:(id)page2;
 /**
  @param page Page item
  @returns A new view controller which displays page at given index. Default
