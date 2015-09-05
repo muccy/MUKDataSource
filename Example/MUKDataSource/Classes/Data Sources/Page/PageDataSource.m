@@ -22,8 +22,12 @@
 
 - (nullable id<MUKDataSourceIdentifiable>)pageForViewController:(UIViewController * __nonnull)viewController
 {
-    PageItemViewController *const pageItemViewController = (PageItemViewController *)viewController;
-    return pageItemViewController.item;
+    if ([viewController isKindOfClass:[PageItemViewController class]]) {
+        PageItemViewController *const pageItemViewController = (PageItemViewController *)viewController;
+        return pageItemViewController.item;
+    }
+    
+    return nil;
 }
 
 #pragma mark - Overrides (for indefinite number of pages)

@@ -126,11 +126,38 @@
             <objects>
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="AiI-Gy-S17" customClass="PageViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="tDb-S5-RXp">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" title="Previous" id="bLi-Ht-37X">
                             <connections>
                                 <action selector="goToPreviousPage:" destination="AiI-Gy-S17" id="7nH-ql-LZm"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="YZL-Jm-mCy">
+                            <rect key="frame" x="220" y="6" width="160" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zy2-AP-ZcJ">
+                                    <rect key="frame" x="0.0" y="6" width="103" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dyb-oN-UiA">
+                                    <rect key="frame" x="111" y="1" width="51" height="31"/>
+                                    <connections>
+                                        <action selector="placeholderSwitchTriggered:" destination="AiI-Gy-S17" eventType="valueChanged" id="a7J-LO-GeN"/>
+                                    </connections>
+                                </switch>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="dyb-oN-UiA" firstAttribute="leading" secondItem="Zy2-AP-ZcJ" secondAttribute="trailing" constant="8" id="7lx-Ig-Wsp"/>
+                                <constraint firstItem="Zy2-AP-ZcJ" firstAttribute="leading" secondItem="YZL-Jm-mCy" secondAttribute="leading" id="A5b-Yx-sP0"/>
+                                <constraint firstAttribute="centerY" secondItem="dyb-oN-UiA" secondAttribute="centerY" id="W7E-nZ-0vu"/>
+                                <constraint firstAttribute="centerY" secondItem="Zy2-AP-ZcJ" secondAttribute="centerY" id="bGR-SH-Vlq"/>
+                                <constraint firstAttribute="trailing" secondItem="dyb-oN-UiA" secondAttribute="trailing" id="c5g-bz-ibG"/>
+                            </constraints>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="PtT-Oi-keY">
                             <connections>
                                 <action selector="goToNextPage:" destination="AiI-Gy-S17" id="e3X-af-ns4"/>

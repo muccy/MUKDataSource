@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface MUKPageViewController : UIPageViewController
 /**
- When you set pageDataSource you set self.dataSource, too
+ When you set pageDataSource you set self.dataSource to it, too
  */
 @property (nonatomic, nullable) MUKDataSource *pageDataSource;
 /**
@@ -29,14 +29,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setCurrentPages:(NSArray *)pages animated:(BOOL)animated completion:(void (^__nullable)(BOOL finished))completionHandler;
 @end
 
+@interface MUKPageViewController (ContentPlaceholder)
+/**
+ @param placeholder Placeholder set as data source content
+ @returns View to display when a placeholder is set. You can return nil not to
+ show a view. By default it returns a MUKDataSourceContentPlaceholderView instance.
+ */
+- (UIView *__nullable)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder;
+@end
+
 @interface MUKPageViewController (UIPageViewControllerDelegateImplementedMethods) <UIPageViewControllerDelegate>
-/**
- Prepares currentPageIndex, currentViewController change
- */
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers;
-/**
- Concludes currentPageIndex, currentViewController change
- */
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed;
 @end
 

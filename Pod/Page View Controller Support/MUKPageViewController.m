@@ -1,5 +1,6 @@
 #import "MUKPageViewController.h"
 #import <KVOController/FBKVOController.h>
+#import "MUKDataSourceContentPlaceholderView.h"
 
 @interface MUKPageViewController ()
 @property (nonatomic, readwrite, getter=isPageViewControllerTransitionInProgress) BOOL pageViewControllerTransitionInProgress;
@@ -31,23 +32,36 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self.KVOController observe:self keyPath:NSStringFromSelector(@selector(pageDataSource)) options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKPageViewController *observer, MUKPageViewController *object, NSDictionary *change)
+    NSString *const dataSourceKeyPath = NSStringFromSelector(@selector(pageDataSource));
+    [self.KVOController observe:self keyPath:dataSourceKeyPath options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKPageViewController *observer, MUKPageViewController *object, NSDictionary *change)
     {
         observer.dataSource = observer.pageDataSource;
     }];
 
     // Observe placeholder
-//    NSString *const contentKeyPath = [dataSourceKeyPath stringByAppendingFormat:@".%@", NSStringFromSelector(@selector(content))];
-//    [self.KVOController observe:self keyPath:contentKeyPath options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKCollectionViewController *observer, MUKCollectionViewController *object, NSDictionary *change)
-//     {
-//         if ([observer.dataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
-//         {
-//             [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.dataSource.content];
-//         }
-//         else {
-//             [observer didSetContentPlaceholder:nil];
-//         }
-//     }];
+    NSString *const contentKeyPath = [dataSourceKeyPath stringByAppendingFormat:@".%@", NSStringFromSelector(@selector(content))];
+    [self.KVOController observe:self keyPath:contentKeyPath options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKPageViewController *observer, MUKPageViewController *object, NSDictionary *change)
+    {
+        if ([observer.pageDataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
+        {
+            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.pageDataSource.content];
+        }
+        else {
+            [observer didSetContentPlaceholder:nil];
+        }
+    }];
+}
+
+#pragma mark - Content Placeholder
+
+- (UIView * __nullable)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder * __nonnull)placeholder
+{
+    MUKDataSourceContentPlaceholderView *const view = [[MUKDataSourceContentPlaceholderView alloc] initWithFrame:self.view.bounds];
+    view.titleLabel.text = placeholder.title;
+    view.textLabel.text = placeholder.subtitle;
+    view.imageView.image = placeholder.image;
+    
+    return view;
 }
 
 #pragma mark - Overrides
@@ -144,6 +158,35 @@
         __strong __typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf didChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
     }];
+}
+
+#pragma mark - Private
+
+- (void)didSetContentPlaceholder:(MUKDataSourceContentPlaceholder * __nullable)placeholder
+{
+    if (placeholder) {
+        // Insert placeholder view
+        UIView *const contentPlaceholderView = [self viewForContentPlaceholder:placeholder];
+        
+        // Create wrapper view controller
+        UIViewController *const viewController = [[UIViewController alloc] init];
+        contentPlaceholderView.frame = viewController.view.bounds;
+        contentPlaceholderView.translatesAutoresizingMaskIntoConstraints = NO;
+        [viewController.view addSubview:contentPlaceholderView];
+        
+        [contentPlaceholderView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(0)-[contentPlaceholderView]-(0)-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(contentPlaceholderView)]];
+        
+        id const topGuide = viewController.topLayoutGuide;
+        id const bottomGuide = viewController.bottomLayoutGuide;
+        [contentPlaceholderView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topGuide]-(0)-[contentPlaceholderView]-(0)-[bottomGuide]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(contentPlaceholderView, topGuide, bottomGuide)]];
+ 
+        // Set view controllers
+        [self willChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+        [self setViewControllers:@[ viewController ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+        [self didChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+    }
+    
+    // Nothing to do in "else" case because view controllers are overwritten
 }
 
 #pragma mark - <UIPageViewControllerDelegate>

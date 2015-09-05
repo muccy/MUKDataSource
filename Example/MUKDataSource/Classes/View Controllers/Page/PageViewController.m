@@ -12,7 +12,7 @@
 #define INDEFINITE_CONTENT  1
 
 @interface PageViewController ()
-
+@property (nonatomic) BOOL contentAlreadySet;
 @end
 
 @implementation PageViewController
@@ -21,6 +21,18 @@
     [super viewDidLoad];
     
     self.pageDataSource = [[PageDataSource alloc] init];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (!self.contentAlreadySet) {
+        [self setContent];
+        self.contentAlreadySet = YES;
+    }
+}
+
+- (void)setContent {
 #if INDEFINITE_CONTENT
     self.pageDataSource.content = MUKDataSourceIndefiniteContent;
     [self setCurrentPages:@[ @0 ] animated:NO completion:nil];
@@ -45,6 +57,15 @@
     
     if (nextPage) {
         [self setCurrentPages:@[nextPage] animated:YES completion:nil];
+    }
+}
+
+- (IBAction)placeholderSwitchTriggered:(UISwitch *)sender {
+    if (sender.on) {
+        self.pageDataSource.content = [[MUKDataSourceContentPlaceholder alloc] initWithTitle:@"Placeholder" subtitle:@"Placeholder Subtitle" image:nil];
+    }
+    else {
+        [self setContent];
     }
 }
 
