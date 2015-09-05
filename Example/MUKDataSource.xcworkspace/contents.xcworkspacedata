@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <FileRef
+      location = "group:../MUKDataSource.podspec">
+   </FileRef>
    <Group
       location = "group:../Pod"
       name = "Pod">
@@ -94,6 +97,16 @@
                location = "group:MUKCollectionViewController.m">
             </FileRef>
          </Group>
+      </Group>
+      <Group
+         location = "group:Page View Controller Support"
+         name = "Page View Controller Support">
+         <FileRef
+            location = "group:MUKPageViewController.h">
+         </FileRef>
+         <FileRef
+            location = "group:MUKPageViewController.m">
+         </FileRef>
       </Group>
       <Group
          location = "group:Content Placeholder"

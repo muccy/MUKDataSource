@@ -6,6 +6,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern id const MUKDataSourceIndefiniteContent;
+
 /**
  An abstract class ready to hold and provide content data
  */
@@ -143,6 +145,67 @@ NS_ASSUME_NONNULL_BEGIN
  @returns Number of sections in self.sections
  */
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
+@end
+
+@interface MUKDataSource (PageViewControllerSupport)
+/**
+ Data interpreted as paged content. 
+ @warning This returns nil when you use indefinite number of pages (setting
+ `self.content = MUKDataSourceIndefiniteContent`)
+ */
+@property (nonatomic, copy, readonly, nullable) NSArray *pages;
+/**
+ @returns Page at given index or nil, if idx is out of bounds
+ */
+- (nullable id)pageAtIndex:(NSInteger)idx;
+/**
+ @param viewController The view controller which represents a page
+ @returns Page represented by view controller. Default implementation returns nil.
+ @warning You need to override this method
+ */
+- (nullable id<MUKDataSourceIdentifiable>)pageForViewController:(UIViewController *)viewController;
+/**
+ @returns Page after given page.
+ @warning You need to override this method if you are using an indefinite number
+ of pages.
+ */
+- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id)page;
+/**
+ @returns Page before given page.
+ @warning You need to override this method if you are using an indefinite number
+ of pages.
+ */
+- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id)page;
+/**
+ @returns YES if page 1 precedes page 2
+ @warning You need to override this method if you are using an indefinite number
+ of pages.
+ */
+- (BOOL)page:(id)page1 precedesPage:(id)page2;
+/**
+ @param page Page item
+ @returns A new view controller which displays page at given index. Default
+ implementation returns nil.
+ @warning You need to override this method to provide new view controllers on
+ response of user gestures.
+ */
+- (UIViewController *__nullable)newViewControllerForPage:(id<MUKDataSourceIdentifiable>)page;
+@end
+
+/**
+ Implemented methods for UIPageViewControllerDataSource protocol
+ */
+@interface MUKDataSource (UIPageViewControllerDataSourceImplementedMethods) <UIPageViewControllerDataSource>
+/**
+ @returns The view controller returned by -newViewControllerForPage:atIndex:,
+ called with result of -pagePrecedingPage:
+ */
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController;
+/**
+ @returns The view controller returned by -newViewControllerForPage:,
+ called with result of -pageFollowingPage:
+ */
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController;
 @end
 
 NS_ASSUME_NONNULL_END
