@@ -36,6 +36,10 @@
 		06C915B01B31ADEB006B4D94 /* CollectionExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915AF1B31ADEB006B4D94 /* CollectionExampleViewController.m */; };
 		06C915B61B31AF30006B4D94 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915B51B31AF30006B4D94 /* CollectionViewCell.m */; };
 		06C915BA1B31B247006B4D94 /* CollectionSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C915B91B31B247006B4D94 /* CollectionSectionHeaderView.m */; };
+		06E735791B9AF8DC00F628CB /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E735781B9AF8DC00F628CB /* PageViewController.m */; };
+		06E7357D1B9AF93E00F628CB /* PageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E7357C1B9AF93E00F628CB /* PageDataSource.m */; };
+		06E735801B9B3C1100F628CB /* PageItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E7357F1B9B3C1100F628CB /* PageItemViewController.m */; };
+		06E735821B9B483900F628CB /* MUKDataSourcePagedContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */; };
 		4899C46890BB1C25B329F6D8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C82181A8B8647E020A3326B7 /* libPods.a */; };
 		53573B1C29C682A3B1B27834 /* libPods-MUKDataSourceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */; };
 /* End PBXBuildFile section */
@@ -106,6 +110,13 @@
 		06C915B51B31AF30006B4D94 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		06C915B81B31B247006B4D94 /* CollectionSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionSectionHeaderView.h; sourceTree = "<group>"; };
 		06C915B91B31B247006B4D94 /* CollectionSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionSectionHeaderView.m; sourceTree = "<group>"; };
+		06E735771B9AF8DC00F628CB /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
+		06E735781B9AF8DC00F628CB /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
+		06E7357B1B9AF93E00F628CB /* PageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageDataSource.h; sourceTree = "<group>"; };
+		06E7357C1B9AF93E00F628CB /* PageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageDataSource.m; sourceTree = "<group>"; };
+		06E7357E1B9B3C1100F628CB /* PageItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageItemViewController.h; sourceTree = "<group>"; };
+		06E7357F1B9B3C1100F628CB /* PageItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageItemViewController.m; sourceTree = "<group>"; };
+		06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourcePagedContentTests.m; sourceTree = "<group>"; };
 		15726E95C35402D1C5289608 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		9982A8D823E053383D66CE83 /* libPods-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA921ACB481F431EC205FE74 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -184,6 +195,7 @@
 				0683FA6F1B2D7952002C694B /* MUKDataSourceSectionedContentUpdateTests.m */,
 				06C9154A1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m */,
 				06C9154C1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m */,
+				06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */,
 				0683FA601B285EEF002C694B /* Supporting Files */,
 				063D4CF81B30A893003BE629 /* BasicItem.h */,
 				063D4CF91B30A893003BE629 /* BasicItem.m */,
@@ -257,6 +269,7 @@
 				06C915581B3198B2006B4D94 /* Sectioned Content Examples */,
 				06C915651B319DB4006B4D94 /* Table */,
 				06C9159D1B31A9DD006B4D94 /* Collection */,
+				06E735761B9AF8C100F628CB /* Page */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -277,6 +290,7 @@
 				06C9155E1B3198F0006B4D94 /* Sectioned Content Examples */,
 				06C915691B319E35006B4D94 /* Table */,
 				06C915A21B31AA69006B4D94 /* Collection */,
+				06E7357A1B9AF92A00F628CB /* Page */,
 			);
 			path = "Data Sources";
 			sourceTree = "<group>";
@@ -488,6 +502,26 @@
 			path = "Section Header";
 			sourceTree = "<group>";
 		};
+		06E735761B9AF8C100F628CB /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				06E7357E1B9B3C1100F628CB /* PageItemViewController.h */,
+				06E7357F1B9B3C1100F628CB /* PageItemViewController.m */,
+				06E735771B9AF8DC00F628CB /* PageViewController.h */,
+				06E735781B9AF8DC00F628CB /* PageViewController.m */,
+			);
+			path = Page;
+			sourceTree = "<group>";
+		};
+		06E7357A1B9AF92A00F628CB /* Page */ = {
+			isa = PBXGroup;
+			children = (
+				06E7357B1B9AF93E00F628CB /* PageDataSource.h */,
+				06E7357C1B9AF93E00F628CB /* PageDataSource.m */,
+			);
+			path = Page;
+			sourceTree = "<group>";
+		};
 		1399B1FBCD64F5A7A447DFC0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -681,7 +715,9 @@
 				06C915A61B31AA82006B4D94 /* CollectionExamplesDataSource.m in Sources */,
 				06C915A11B31AA4E006B4D94 /* CollectionExamplesViewController.m in Sources */,
 				06C915781B31A0D6006B4D94 /* TableExampleViewController.m in Sources */,
+				06E735801B9B3C1100F628CB /* PageItemViewController.m in Sources */,
 				0683FA461B285EEF002C694B /* main.m in Sources */,
+				06E7357D1B9AF93E00F628CB /* PageDataSource.m in Sources */,
 				06C915BA1B31B247006B4D94 /* CollectionSectionHeaderView.m in Sources */,
 				06C9158D1B31A44E006B4D94 /* TablePlayground.m in Sources */,
 				06C915911B31A476006B4D94 /* TablePlaygroundCommand.m in Sources */,
@@ -695,6 +731,7 @@
 				06C915611B319907006B4D94 /* SectionedContentExamplesDataSource.m in Sources */,
 				06C915851B31A376006B4D94 /* TableExamplesDataSource.m in Sources */,
 				06C915801B31A240006B4D94 /* TitlesDataSource.m in Sources */,
+				06E735791B9AF8DC00F628CB /* PageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -707,6 +744,7 @@
 				063D4CFA1B30A893003BE629 /* BasicItem.m in Sources */,
 				06C9154D1B316D08006B4D94 /* MUKDataSourceCollectionUpdateTests.m in Sources */,
 				06808E751B3742B800A3B374 /* MUKDataSourceTests.m in Sources */,
+				06E735821B9B483900F628CB /* MUKDataSourcePagedContentTests.m in Sources */,
 				06C9154B1B3165F1006B4D94 /* MUKDataSourceTableUpdateTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

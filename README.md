@@ -7,7 +7,7 @@
 
 `MUKDataSource` is class designed to provide data (it's not too surprising, I think). It gives a structure to provide immutable data to your views. When you change data you get update to apply.
 
-`MUKDataSource` is ready to back a `UITableView` or `UICollectionView` instance out of the box but it is designed to hold any kind of data for every kind of usage.
+`MUKDataSource` is ready to back a `UITableView`, `UICollectionView` or `UIPageViewController` instance out of the box but it is designed to hold any kind of data for every kind of usage.
 
 ## Usage
 
