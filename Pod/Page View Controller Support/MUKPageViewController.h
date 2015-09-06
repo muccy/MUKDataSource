@@ -27,6 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
  @param completionHandler Block called when transition is completed
  */
 - (void)setCurrentPages:(NSArray *)pages animated:(BOOL)animated completion:(void (^__nullable)(BOOL finished))completionHandler;
+/**
+ Callback called when self.currentPages is about to change
+ */
+- (void)willChangeCurrentPages NS_REQUIRES_SUPER;
+/**
+ Callback invoked when the change initiated by -willChangeCurrentPages has finished
+ */
+- (void)didChangeCurrentPages NS_REQUIRES_SUPER;
 @end
 
 @interface MUKPageViewController (ContentPlaceholder)
