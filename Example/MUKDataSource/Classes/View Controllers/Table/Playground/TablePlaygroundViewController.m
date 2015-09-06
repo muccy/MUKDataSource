@@ -9,22 +9,27 @@
 #import "TablePlaygroundViewController.h"
 #import "TablePlaygroundDataSource.h"
 #import "TablePlaygroundCommand.h"
-#import <KVOController/FBKVOController.h>
 
 @implementation TablePlaygroundViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.dataSource = [[TablePlaygroundDataSource alloc] initWithPlayground:self.example];
-    
-    [self.KVOController observe:self keyPath:NSStringFromSelector(@selector(example)) options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(TablePlaygroundViewController *observer, TablePlaygroundViewController *object, NSDictionary *change)
-     {
-         observer.title = observer.example.title;
-     }];
-    
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Restore" style:UIBarButtonItemStylePlain target:self action:@selector(restorePlayground)];
     
     [self setEditing:YES animated:NO];
+}
+
+#pragma mark - Accessors
+
+- (void)setExample:(TablePlayground *)example {
+    if (_example != example) {
+        _example = example;
+    }
+    
+    // React
+    self.title = self.example.title;
 }
 
 #pragma mark - Private

@@ -4,33 +4,25 @@
 
 @interface MUKCollectionViewController ()
 @property (nonatomic, weak) UIView *contentPlaceholderView;
+@property (nonatomic, getter=isObservingDataSourceContent) BOOL observingDataSourceContent;
 @end
 
 @implementation MUKCollectionViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    // Keep collection view data source bound with self.dataSource from now on
-    NSString *const dataSourceKeyPath = NSStringFromSelector(@selector(dataSource));
-    [self.KVOController observe:self keyPath:dataSourceKeyPath options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKCollectionViewController *observer, MUKCollectionViewController *object, NSDictionary *change)
-     {
-         [observer.dataSource registerReusableViewsForCollectionView:observer.collectionView];
-         observer.collectionView.dataSource = observer.dataSource;
-     }];
+    if (!self.isObservingDataSourceContent) {
+        [self observeDataSourceContent];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     
-    // Observe placeholder
-    NSString *const contentKeyPath = [dataSourceKeyPath stringByAppendingFormat:@".%@", NSStringFromSelector(@selector(content))];
-    [self.KVOController observe:self keyPath:contentKeyPath options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKCollectionViewController *observer, MUKCollectionViewController *object, NSDictionary *change)
-    {
-        if ([observer.dataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
-        {
-            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.dataSource.content];
-        }
-        else {
-            [observer didSetContentPlaceholder:nil];
-        }
-    }];
+    if (self.isObservingDataSourceContent) {
+        [self unobserveDataSourceContent];
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -43,6 +35,17 @@
         {
             self.contentPlaceholderView.frame = self.collectionView.bounds;
         }
+    }
+}
+
+#pragma mark - Accessors
+
+- (void)setDataSource:(MUKDataSource *)dataSource {
+    if (dataSource != _dataSource) {
+        _dataSource = dataSource;
+        
+        [dataSource registerReusableViewsForCollectionView:self.collectionView];
+        self.collectionView.dataSource = dataSource;
     }
 }
 
@@ -60,35 +63,64 @@
 
 #pragma mark - Private
 
++ (NSString *__nonnull)dataSourceContentKeyPath {
+    return [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(dataSource)), NSStringFromSelector(@selector(content))];
+}
+
+- (void)observeDataSourceContent {
+    [self.KVOControllerNonRetaining observe:self keyPath:[[self class] dataSourceContentKeyPath] options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKCollectionViewController *observer, MUKCollectionViewController *object, NSDictionary *change)
+    {
+        if ([observer.dataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
+        {
+            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.dataSource.content];
+        }
+        else {
+            [observer didSetContentPlaceholder:nil];
+        }
+    }];
+    
+    self.observingDataSourceContent = YES;
+}
+
+- (void)unobserveDataSourceContent {
+    [self.KVOControllerNonRetaining unobserve:self keyPath:[[self class] dataSourceContentKeyPath]];
+    self.observingDataSourceContent = NO;
+}
+
 - (void)didSetContentPlaceholder:(MUKDataSourceContentPlaceholder * __nullable)placeholder
 {
-    static NSTimeInterval const kAnimationDuration = 0.2;
-    
     if (placeholder) {
         // Insert placeholder view
         UIView *const contentPlaceholderView = [self viewForContentPlaceholder:placeholder];
         
+        BOOL needsAnimation;
         if (self.contentPlaceholderView) {
             // A placeholder view is already displayed
             [self.contentPlaceholderView removeFromSuperview];
+            needsAnimation = NO;
+        }
+        else {
+            needsAnimation = YES;
         }
         
-        contentPlaceholderView.alpha = 0.0f;
+        contentPlaceholderView.alpha = needsAnimation ? 0.0f : 1.0f;
         contentPlaceholderView.backgroundColor = [UIColor clearColor];
         contentPlaceholderView.frame = self.collectionView.bounds;
         
         [self.collectionView addSubview:contentPlaceholderView];
         self.contentPlaceholderView = contentPlaceholderView;
         
-        [UIView animateWithDuration:kAnimationDuration animations:^{
-            contentPlaceholderView.alpha = 1.0f;
-        }];
+        if (needsAnimation) {
+            [UIView animateWithDuration:0.25 animations:^{
+                contentPlaceholderView.alpha = 1.0f;
+            }];
+        }
     }
     else if (self.contentPlaceholderView) {
         // Remove placeholder view
         UIView *const contentPlaceholderView = self.contentPlaceholderView;
         
-        [UIView animateWithDuration:kAnimationDuration animations:^{
+        [UIView animateWithDuration:0.25 animations:^{
             contentPlaceholderView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             [contentPlaceholderView removeFromSuperview];

@@ -7,7 +7,6 @@
 //
 
 #import "TableExampleViewController.h"
-#import <KVOController/FBKVOController.h>
 #import "TitlesDataSource.h"
 
 @implementation TableExampleViewController
@@ -17,12 +16,7 @@
     [super viewDidLoad];
     
     self.dataSource = [[TitlesDataSource alloc] init];
-    
-    [self.KVOController observe:self keyPath:NSStringFromSelector(@selector(example)) options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(TableExampleViewController *observer, TableExampleViewController *object, NSDictionary *change)
-     {
-         observer.title = observer.example.title;
-         observer.dataSource.content = observer.example.sourceSections;
-     }];
+    self.dataSource.content = self.example.sourceSections;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Perform" style:UIBarButtonItemStylePlain target:self action:@selector(performExample)];
     
@@ -38,6 +32,18 @@
     if (self.dataSource.sections.count == 0) {
         self.dataSource.content = [self newEmptyPlaceholder];
     }
+}
+
+#pragma mark - Accessors
+
+- (void)setExample:(SectionedContentExample *)example {
+    if (_example != example) {
+        _example = example;
+    }
+    
+    // React
+    self.title = self.example.title;
+    self.dataSource.content = self.example.sourceSections;
 }
 
 #pragma mark - Private
