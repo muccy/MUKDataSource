@@ -4,6 +4,7 @@
 
 @interface MUKPageViewController ()
 @property (nonatomic, readwrite, getter=isPageViewControllerTransitionInProgress) BOOL pageViewControllerTransitionInProgress;
+@property (nonatomic, getter=isObservingDataSourceContent) BOOL observingDataSourceContent;
 @end
 
 @implementation MUKPageViewController
@@ -28,28 +29,29 @@
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    NSString *const dataSourceKeyPath = NSStringFromSelector(@selector(pageDataSource));
-    [self.KVOController observe:self keyPath:dataSourceKeyPath options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKPageViewController *observer, MUKPageViewController *object, NSDictionary *change)
-    {
-        observer.dataSource = observer.pageDataSource;
-    }];
+    if (!self.isObservingDataSourceContent) {
+        [self observeDataSourceContent];
+    }
+}
 
-    // Observe placeholder
-    NSString *const contentKeyPath = [dataSourceKeyPath stringByAppendingFormat:@".%@", NSStringFromSelector(@selector(content))];
-    [self.KVOController observe:self keyPath:contentKeyPath options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKPageViewController *observer, MUKPageViewController *object, NSDictionary *change)
-    {
-        if ([observer.pageDataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
-        {
-            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.pageDataSource.content];
-        }
-        else {
-            [observer didSetContentPlaceholder:nil];
-        }
-    }];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    if (self.isObservingDataSourceContent) {
+        [self unobserveDataSourceContent];
+    }
+}
+
+#pragma mark - Accessors
+
+- (void)setPageDataSource:(MUKDataSource *)pageDataSource {
+    if (pageDataSource != _pageDataSource) {
+        _pageDataSource = pageDataSource;
+        self.dataSource = pageDataSource;
+    }
 }
 
 #pragma mark - Content Placeholder
@@ -161,6 +163,30 @@
 }
 
 #pragma mark - Private
+
++ (NSString *__nonnull)dataSourceContentKeyPath {
+    return [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(pageDataSource)), NSStringFromSelector(@selector(content))];
+}
+
+- (void)observeDataSourceContent {
+    [self.KVOControllerNonRetaining observe:self keyPath:[[self class] dataSourceContentKeyPath] options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKPageViewController *observer, MUKPageViewController *object, NSDictionary *change)
+    {
+        if ([observer.pageDataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
+        {
+            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.pageDataSource.content];
+        }
+        else {
+            [observer didSetContentPlaceholder:nil];
+        }
+    }];
+    
+    self.observingDataSourceContent = YES;
+}
+
+- (void)unobserveDataSourceContent {
+    [self.KVOControllerNonRetaining unobserve:self keyPath:[[self class] dataSourceContentKeyPath]];
+    self.observingDataSourceContent = NO;
+}
 
 - (void)didSetContentPlaceholder:(MUKDataSourceContentPlaceholder * __nullable)placeholder
 {
