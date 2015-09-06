@@ -152,14 +152,22 @@
     }
     
     // Make transition
-    [self willChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
-
+    [self willChangeCurrentPages];
+    
     __weak typeof(self) weakSelf = self;
     [self setViewControllers:[viewControllers copy] direction:direction animated:animated completion:^(BOOL finished)
     {
         __strong __typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf didChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+        [strongSelf didChangeCurrentPages];
     }];
+}
+
+- (void)willChangeCurrentPages {
+    [self willChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+}
+
+- (void)didChangeCurrentPages {
+    [self didChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
 }
 
 #pragma mark - Private
@@ -207,9 +215,9 @@
         [contentPlaceholderView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topGuide]-(0)-[contentPlaceholderView]-(0)-[bottomGuide]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(contentPlaceholderView, topGuide, bottomGuide)]];
  
         // Set view controllers
-        [self willChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+        [self willChangeCurrentPages];
         [self setViewControllers:@[ viewController ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-        [self didChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+        [self didChangeCurrentPages];
     }
     
     // Nothing to do in "else" case because view controllers are overwritten
@@ -220,12 +228,12 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
     self.pageViewControllerTransitionInProgress = YES;
-    [self willChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+    [self willChangeCurrentPages];
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
-    [self didChangeValueForKey:NSStringFromSelector(@selector(currentPages))];
+    [self didChangeCurrentPages];
     self.pageViewControllerTransitionInProgress = NO;
 }
 
