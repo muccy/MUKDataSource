@@ -1,6 +1,6 @@
 #import "MUKDataSource.h"
 
-id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
+MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 
 @implementation MUKDataSource
 @end
@@ -8,64 +8,57 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 #pragma mark -
 
 @implementation  MUKDataSource (SectionedContent)
-@dynamic sections, allItems;
 
-- (NSArray *)sections {
+- (NSArray<MUKDataSourceContentSection *> *)sections {
     if ([_content isKindOfClass:[NSArray class]]) {
-        return (NSArray *)[(id)_content copy];
+        if ([[(NSArray *)_content firstObject] isKindOfClass:[MUKDataSourceContentSection class]])
+        {
+            // Assume if first object is a section, every object will be a section
+            return (NSArray *)[(id)_content copy];
+        }
     }
     
     return nil;
 }
 
-- (NSArray *)allItems {
-    NSMutableArray *allItems = [NSMutableArray array];
-    for (id obj in self.sections) {
-        if ([obj isKindOfClass:[MUKDataSourceContentSection class]]) {
-            MUKDataSourceContentSection *const section = obj;
-
-            if (section.items) {
-                [allItems addObjectsFromArray:section.items];
-            }
+- (NSArray<MUKDataSourceContentSectionItem> *)allItems {
+    NSMutableArray<MUKDataSourceContentSectionItem> *const allItems = [NSMutableArray array];
+    
+    for (MUKDataSourceContentSection *section in self.sections) {
+        if (section.items) {
+            [allItems addObjectsFromArray:section.items];
         }
     } // for
     
     return [allItems copy];
 }
 
-- (MUKDataSourceContentSection *__nullable)sectionAtIndex:(NSInteger)idx {
-    NSArray *const sections = self.sections;
+- (MUKDataSourceContentSection *)sectionAtIndex:(NSInteger)idx {
+    NSArray<MUKDataSourceContentSection *> *const sections = self.sections;
     
     if (idx >= 0 && idx < sections.count) {
-        MUKDataSourceContentSection *const section = sections[idx];
-        if ([section isKindOfClass:[MUKDataSourceContentSection class]]) {
-            return section;
-        }
+        return sections[idx];
     }
     
     return nil;
 }
 
-- (MUKDataSourceContentSection *__nullable)sectionWithIdentifier:(id<NSObject,NSCopying>)identifier
+- (MUKDataSourceContentSection *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier
 {
     if (!identifier) {
         return nil;
     }
     
-    for (id obj in self.sections) {
-        if ([obj isKindOfClass:[MUKDataSourceContentSection class]]) {
-            MUKDataSourceContentSection *const section = obj;
-            
-            if ([section.identifier isEqual:identifier]) {
-                return section;
-            }
+    for (MUKDataSourceContentSection *section in self.sections) {
+        if ([section.identifier isEqual:identifier]) {
+            return section;
         }
     } // for
     
     return nil;
 }
 
-- (id)itemAtIndexPath:(NSIndexPath *)indexPath {
+- (MUKDataSourceContentSectionItem)itemAtIndexPath:(NSIndexPath *)indexPath {
     if (!indexPath) {
         return nil;
     }
@@ -78,7 +71,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(id<MUKDataSourceIdentifiable>, NSIndexPath *, BOOL *))test
+- (NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(MUKDataSourceContentSectionItem _Nonnull, NSIndexPath * _Nonnull, BOOL * _Nonnull))test
 {
     if (!test) {
         return nil;
@@ -86,38 +79,34 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     
     __block NSIndexPath *foundIndexPath = nil;
     
-    [self.sections enumerateObjectsUsingBlock:^(id obj, NSUInteger sectionIndex, BOOL *stopSectionCycle)
+    [self.sections enumerateObjectsUsingBlock:^(MUKDataSourceContentSection *section, NSUInteger sectionIndex, BOOL *stopSectionCycle)
     {
-        if ([obj isKindOfClass:[MUKDataSourceContentSection class]]) {
-            MUKDataSourceContentSection *const section = obj;
+        [section.items enumerateObjectsUsingBlock:^(MUKDataSourceContentSectionItem item, NSUInteger itemIndex, BOOL *stopItemCycle)
+        {
+            NSIndexPath *const indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
+            BOOL stop = NO;
             
-            [section.items enumerateObjectsUsingBlock:^(id<MUKDataSourceIdentifiable> item, NSUInteger itemIndex, BOOL *stopItemCycle)
-            {
-                NSIndexPath *const indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
-                BOOL stop = NO;
-                
-                if (test(item, indexPath, &stop)) {
-                    foundIndexPath = indexPath;
-                    *stopItemCycle = YES;
-                    *stopSectionCycle = YES;
-                }
-                else if (stop) {
-                    *stopItemCycle = YES;
-                    *stopSectionCycle = YES;
-                }
-            }];
-        } // if
+            if (test(item, indexPath, &stop)) {
+                foundIndexPath = indexPath;
+                *stopItemCycle = YES;
+                *stopSectionCycle = YES;
+            }
+            else if (stop) {
+                *stopItemCycle = YES;
+                *stopSectionCycle = YES;
+            }
+        }];
     }];
     
     return foundIndexPath;
 }
 
-- (NSIndexPath *)indexPathOfItem:(id<MUKDataSourceIdentifiable>)itemToFind {
+- (NSIndexPath *)indexPathOfItem:(MUKDataSourceContentSectionItem)itemToFind {
     if (!itemToFind)  {
         return nil;
     }
     
-    return [self indexPathOfItemPassingTest:^BOOL(id<MUKDataSourceIdentifiable> item, NSIndexPath *indexPath, BOOL *stop)
+    return [self indexPathOfItemPassingTest:^BOOL(MUKDataSourceContentSectionItem item, NSIndexPath *indexPath, BOOL *stop)
     {
         return [itemToFind isEqual:item];
     }];
@@ -137,9 +126,9 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 
 @implementation MUKDataSource (TableViewSupport)
 
-- (MUKDataSourceTableUpdate *__nonnull)setTableSections:(NSArray *__nullable)newSections
+- (MUKDataSourceTableUpdate *)setTableSections:(NSArray<MUKDataSourceContentSection *> *)newSections
 {
-    NSArray *const oldSections = self.sections;
+    NSArray<MUKDataSourceContentSection *> *const oldSections = self.sections;
     
     if (newSections != _content) {
         self.content = newSections;
@@ -148,7 +137,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return [self newTableUpdateFromSections:oldSections toSections:newSections];
 }
 
-- (MUKDataSourceTableUpdate *__nonnull)newTableUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections
+- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(NSArray<MUKDataSourceContentSection *> *)destinationSections
 {
     return [[MUKDataSourceTableUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
@@ -163,9 +152,9 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 
 @implementation MUKDataSource (CollectionViewSupport)
 
-- (MUKDataSourceCollectionUpdate *__nonnull)setCollectionSections:(NSArray *__nullable)newSections
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray<MUKDataSourceContentSection *> *)newSections
 {
-    NSArray *const oldSections = self.sections;
+    NSArray<MUKDataSourceContentSection *> *const oldSections = self.sections;
     
     if (newSections != _content) {
         self.content = newSections;
@@ -174,8 +163,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return [self newCollectionUpdateFromSections:oldSections toSections:newSections];
 }
 
-
-- (MUKDataSourceCollectionUpdate *__nonnull)newCollectionUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections
+- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(NSArray<MUKDataSourceContentSection *> *)destinationSections
 {
     return [[MUKDataSourceCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
@@ -190,9 +178,8 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 #pragma mark -
 
 @implementation MUKDataSource (PageViewControllerSupport)
-@dynamic pages;
 
-- (NSArray * __nullable)pages {
+- (NSArray<MUKDataSourceContentPage> *)pages {
     if ([self.content isKindOfClass:[NSArray class]]) {
         return (NSArray *)self.content;
     }
@@ -200,8 +187,9 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (nullable id)pageAtIndex:(NSInteger)idx {
-    NSArray *const pages = self.pages;
+- (MUKDataSourceContentPage)pageAtIndex:(NSInteger)idx {
+    NSArray<MUKDataSourceContentPage> *const pages = self.pages;
+    
     if (idx >= 0 && idx < pages.count) {
         return pages[idx];
     }
@@ -209,13 +197,12 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (nullable id<MUKDataSourceIdentifiable>)pageForViewController:(UIViewController * __nonnull)viewController
+- (MUKDataSourceContentPage)pageForViewController:(UIViewController *)viewController
 {
     return nil;
 }
 
-- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id)page
-{
+- (MUKDataSourceContentPage)pageFollowingPage:(MUKDataSourceContentPage)page {
     if ([self.content isKindOfClass:[NSArray class]]) {
         NSInteger const idx = [self indexOfPageUsingIdentifiers:page];
         if (idx == NSNotFound) {
@@ -228,7 +215,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id)page
+- (MUKDataSourceContentPage)pagePrecedingPage:(MUKDataSourceContentPage)page
 {
     if ([self.content isKindOfClass:[NSArray class]]) {
         NSInteger const idx = [self indexOfPageUsingIdentifiers:page];
@@ -242,7 +229,8 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return nil;
 }
 
-- (BOOL)page:(id)page1 precedesPage:(id)page2 {
+- (BOOL)page:(MUKDataSourceContentPage)page1 precedesPage:(MUKDataSourceContentPage)page2
+{
     NSInteger const idx1 = [self indexOfPageUsingIdentifiers:page1];
     if (idx1 == NSNotFound) {
         return NO;
@@ -256,7 +244,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return idx1 < idx2;
 }
 
-- (UIViewController * __nullable)newViewControllerForPage:(id<MUKDataSourceIdentifiable> __nonnull)page
+- (UIViewController *)newViewControllerForPage:(MUKDataSourceContentPage)page
 {
     return nil;
 }
@@ -265,18 +253,18 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     return [NSSet setWithObjects:NSStringFromSelector(@selector(content)), nil];
 }
 
-- (NSInteger)indexOfPageUsingIdentifiers:(id<MUKDataSourceIdentifiable>)page {
-    return [self.pages indexOfObjectPassingTest:^BOOL(id<MUKDataSourceIdentifiable> obj, NSUInteger idx, BOOL *stop)
+- (NSInteger)indexOfPageUsingIdentifiers:(MUKDataSourceContentPage)pageToFind {
+    return [self.pages indexOfObjectPassingTest:^BOOL(MUKDataSourceContentPage page, NSUInteger idx, BOOL *stop)
     {
         BOOL matches;
         
-        if ([page respondsToSelector:@selector(identifier)] &&
-            [obj respondsToSelector:@selector(identifier)])
+        if ([pageToFind respondsToSelector:@selector(identifier)] &&
+            [page respondsToSelector:@selector(identifier)])
         {
-            matches = [page.identifier isEqual:obj.identifier];
+            matches = [pageToFind.identifier isEqual:page.identifier];
         }
         else {
-            matches = [page isEqual:obj];
+            matches = [pageToFind isEqual:page];
         }
         
         if (matches) {
@@ -332,7 +320,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    id<MUKDataSourceIdentifiable> const movedItem = [self itemAtIndexPath:sourceIndexPath];
+    MUKDataSourceContentSectionItem const movedItem = [self itemAtIndexPath:sourceIndexPath];
     
     // Remove moved item
     MUKDataSourceContentSection *const sourceSection = self.sections[sourceIndexPath.section];
@@ -343,7 +331,7 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
     MUKDataSourceContentSection *const newDestinationSection = [destinationSection sectionByInsertingItem:movedItem atIndex:destinationIndexPath.row];
 
     // Set new sections
-    NSMutableArray *const sections = [self.sections mutableCopy];
+    NSMutableArray<MUKDataSourceContentSection *> *const sections = [self.sections mutableCopy];
     [sections replaceObjectAtIndex:sourceIndexPath.section withObject:newSourceSection];
     [sections replaceObjectAtIndex:destinationIndexPath.section withObject:newDestinationSection];
     self.content = sections;
@@ -378,15 +366,15 @@ id const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-    id<MUKDataSourceIdentifiable> const page = [self pageForViewController:viewController];
-    id<MUKDataSourceIdentifiable> const newPage = [self pagePrecedingPage:page];
+    MUKDataSourceContentPage const page = [self pageForViewController:viewController];
+    MUKDataSourceContentPage const newPage = [self pagePrecedingPage:page];
     return newPage ? [self newViewControllerForPage:newPage] : nil;
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-    id<MUKDataSourceIdentifiable> const page = [self pageForViewController:viewController];
-    id<MUKDataSourceIdentifiable> const newPage = [self pageFollowingPage:page];
+    MUKDataSourceContentPage const page = [self pageForViewController:viewController];
+    MUKDataSourceContentPage const newPage = [self pageFollowingPage:page];
     return newPage ? [self newViewControllerForPage:newPage] : nil;
 }
 
