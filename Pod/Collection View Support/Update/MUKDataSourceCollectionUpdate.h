@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param collectionView      Table view instance to affect with update
  @param completionHandler   A block called when all updates are completed
  */
-- (void)applyToCollectionView:(UICollectionView *)collectionView completion:(void (^ __nullable)(BOOL finished))completionHandler;
+- (void)applyToCollectionView:(UICollectionView *)collectionView completion:(void (^ _Nullable)(BOOL finished))completionHandler;
 /**
  Reload sections in a collection view.
  You may want to override this method when default behavior to call
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param collectionView  Table view instance to affect with update
  @param indexPaths      Index paths to reload
  */
-- (void)reloadCollectionView:(UICollectionView *)collectionView itemsAtIndexPaths:(NSSet *)indexPaths;
+- (void)reloadCollectionView:(UICollectionView *)collectionView itemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
 @end
 
 NS_ASSUME_NONNULL_END
