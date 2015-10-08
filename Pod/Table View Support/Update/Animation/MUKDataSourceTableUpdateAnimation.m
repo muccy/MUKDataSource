@@ -25,4 +25,10 @@
     return [[[self class] alloc] initWithSectionsInsertionAnimation:UITableViewRowAnimationNone sectionsDeletionAnimation:UITableViewRowAnimationNone sectionsReloadAnimation:UITableViewRowAnimationNone rowsInsertionAnimation:UITableViewRowAnimationNone rowsDeletionAnimation:UITableViewRowAnimationNone rowsReloadAnimation:UITableViewRowAnimationNone];
 }
 
+#pragma mark - Overrides
+
+- (instancetype)init {
+    return [self initWithSectionsInsertionAnimation:UITableViewRowAnimationAutomatic sectionsDeletionAnimation:UITableViewRowAnimationAutomatic sectionsReloadAnimation:UITableViewRowAnimationAutomatic rowsInsertionAnimation:UITableViewRowAnimationAutomatic rowsDeletionAnimation:UITableViewRowAnimationAutomatic rowsReloadAnimation:UITableViewRowAnimationAutomatic];
+}
+
 @end
