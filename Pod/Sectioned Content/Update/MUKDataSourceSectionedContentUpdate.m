@@ -28,6 +28,10 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 
 #pragma mark Overrides
 
+- (instancetype)init {
+    return [self initWithSourceIndex:0 destinationIndex:0];
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
@@ -72,6 +76,10 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 
 #pragma mark Overrides
 
+- (instancetype)init {
+    return [self initWithSourceIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] destinationIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
@@ -99,7 +107,7 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 @implementation MUKDataSourceSectionedContentUpdate
 @dynamic empty;
 
-- (instancetype)initWithSourceSections:(NSArray *)sourceSections destinationSections:(NSArray *)destinationSections
+- (instancetype)initWithSourceSections:(NSArray<MUKDataSourceContentSection *> *)sourceSections destinationSections:(NSArray<MUKDataSourceContentSection *> *)destinationSections
 {
     self = [super init];
     if (self) {
@@ -135,6 +143,12 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
             self.deletedItemIndexPaths.count == 0 &&
             self.reloadedItemIndexPaths.count == 0 &&
             self.itemMovements.count == 0);
+}
+
+#pragma mark - Overrides
+
+- (instancetype)init {
+    return [self initWithSourceSections:nil destinationSections:nil];
 }
 
 #pragma mark Build
@@ -197,7 +211,7 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     _insertedSectionIndexes = [self insertedSectionIndexesFromDelta:delta];
     _deletedSectionIndexes = [self deletedSectionIndexesFromDelta:delta];
     
-    NSMutableSet *sectionMovements = [NSMutableSet setWithCapacity:delta.movements.count];
+    NSMutableSet<MUKDataSourceContentSectionMovement *> *sectionMovements = [NSMutableSet setWithCapacity:delta.movements.count];
     for (MUKArrayDeltaMatch *match in delta.movements) {
         MUKDataSourceContentSectionMovement *const movement = [self sectionMovementForDelta:delta movement:match];
         if (movement) {
@@ -207,7 +221,7 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     _sectionMovements = [sectionMovements copy];
     
     NSMutableIndexSet *const reloadedSectionDestinationIndexes = [NSMutableIndexSet indexSet];
-    NSMutableSet *const unresolvedSectionChanges = [NSMutableSet set];
+    NSMutableSet<MUKArrayDeltaMatch *> *const unresolvedSectionChanges = [NSMutableSet set];
     
     for (MUKArrayDeltaMatch *match in delta.changes) {
         MUKDataSourceContentSection *const sourceSection = delta.sourceArray[match.sourceIndex];
@@ -226,12 +240,12 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     
     // Now cycle through all not resolved changes looking for their deltas and
     // compose rows update
-    NSMutableArray *insertedItemIndexPaths = [NSMutableArray array];
-    NSMutableArray *deletedItemIndexPaths = [NSMutableArray array];
-    NSMutableSet *reloadedItemIndexPaths = [NSMutableSet set];
-    NSMutableSet *itemMovements = [NSMutableSet set];
+    NSMutableArray<NSIndexPath *> *insertedItemIndexPaths = [NSMutableArray array];
+    NSMutableArray<NSIndexPath *> *deletedItemIndexPaths = [NSMutableArray array];
+    NSMutableSet<NSIndexPath *> *reloadedItemIndexPaths = [NSMutableSet set];
+    NSMutableSet<MUKDataSourceContentSectionItemMovement *> *itemMovements = [NSMutableSet set];
     
-    MUKArrayDeltaMatchTest const itemsMatchTest = ^MUKArrayDeltaMatchType(id<MUKDataSourceIdentifiable> object1, id<MUKDataSourceIdentifiable> object2)
+    MUKArrayDeltaMatchTest const itemsMatchTest = ^MUKArrayDeltaMatchType(MUKDataSourceContentSectionItem object1, MUKDataSourceContentSectionItem object2)
     {
         if ([object1 isEqual:object2]) {
             return MUKArrayDeltaMatchTypeEqual;
@@ -300,7 +314,7 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
     [deletedItemIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *deletedIndexPath, NSUInteger deletedIndexPathIndex, BOOL *stop)
     {
         MUKDataSourceContentSection *const deletedItemSection = delta.sourceArray[deletedIndexPath.section];
-        id<MUKDataSourceIdentifiable> const deletedItem = deletedItemSection.items[deletedIndexPath.row];
+        MUKDataSourceContentSectionItem const deletedItem = deletedItemSection.items[deletedIndexPath.row];
         
         [insertedItemIndexPaths enumerateObjectsAtIndexes:validInsertedItemIndexPathIndexes options:0 usingBlock:^(NSIndexPath *insertedIndexPath, NSUInteger insertedIndexPathIndex, BOOL *stop)
         {
@@ -312,7 +326,7 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
             }
             
             // Test deleted and inserted items
-            id<MUKDataSourceIdentifiable> const insertedItem = insertedItemSection.items[insertedIndexPath.row];
+            MUKDataSourceContentSectionItem const insertedItem = insertedItemSection.items[insertedIndexPath.row];
             MUKArrayDeltaMatchType const matchType = itemsMatchTest(deletedItem, insertedItem);
             
             if (matchType != MUKArrayDeltaMatchTypeNone) {
