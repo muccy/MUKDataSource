@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <MUKDataSource/MUKDataSource.h>
 #import <MUKDataSource/MUKDataSourceContentPlaceholder.h>
+#import <MUKDataSource/MUKDataSourceContentPage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Currently displayed pages
  */
-@property (nonatomic, readonly) NSArray *currentPages;
+@property (nonatomic, readonly) NSArray<MUKDataSourceContentPage> *currentPages;
 /**
  YES if user is changing page with a gesture
  */
@@ -26,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param animated YES if transition should be animated
  @param completionHandler Block called when transition is completed
  */
-- (void)setCurrentPages:(NSArray *)pages animated:(BOOL)animated completion:(void (^__nullable)(BOOL finished))completionHandler;
+- (void)setCurrentPages:(NSArray<MUKDataSourceContentPage> *)pages animated:(BOOL)animated completion:(void (^_Nullable)(BOOL finished))completionHandler;
 /**
  Callback called when self.currentPages is about to change
  */
@@ -43,12 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
  @returns View to display when a placeholder is set. You can return nil not to
  show a view. By default it returns a MUKDataSourceContentPlaceholderView instance.
  */
-- (UIView *__nullable)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder;
+- (nullable UIView *)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder;
 @end
 
 @interface MUKPageViewController (UIPageViewControllerDelegateImplementedMethods) <UIPageViewControllerDelegate>
-- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers;
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers;
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed;
 @end
 
 NS_ASSUME_NONNULL_END
