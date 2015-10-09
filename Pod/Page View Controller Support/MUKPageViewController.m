@@ -8,7 +8,6 @@
 @end
 
 @implementation MUKPageViewController
-@dynamic currentPages;
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
@@ -56,7 +55,7 @@
 
 #pragma mark - Content Placeholder
 
-- (UIView * __nullable)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder * __nonnull)placeholder
+- (UIView *)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder
 {
     MUKDataSourceContentPlaceholderView *const view = [[MUKDataSourceContentPlaceholderView alloc] initWithFrame:self.view.bounds];
     view.titleLabel.text = placeholder.title;
@@ -69,7 +68,7 @@
 #pragma mark - Overrides
 
 // http://stackoverflow.com/a/25549277
-- (void)setViewControllers:(NSArray*)viewControllers direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler
+- (void)setViewControllers:(NSArray<UIViewController *> *)viewControllers direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler
 {
     if (!animated) {
         [super setViewControllers:viewControllers direction:direction animated:NO completion:completionHandler];
@@ -93,27 +92,23 @@
 
 #pragma mark - Accessors
 
-- (NSArray * __nonnull)currentPages {
-    NSMutableArray *const pages = [NSMutableArray arrayWithCapacity:1];
+- (NSArray<MUKDataSourceContentPage> *)currentPages {
+    NSMutableArray<MUKDataSourceContentPage> *const pages = [NSMutableArray arrayWithCapacity:1];
     
     for (UIViewController *viewController in self.viewControllers) {
-        id<MUKDataSourceIdentifiable> const page = [self.pageDataSource pageForViewController:viewController];
+        MUKDataSourceContentPage const page = [self.pageDataSource pageForViewController:viewController];
         
         if (page) {
             [pages addObject:page];
         }
     } // for
     
-    if (pages.count) {
-        return [pages copy];
-    }
-    
-    return nil;
+    return pages.count > 0 ? [pages copy] : nil;
 }
 
 #pragma mark - Methods
 
-- (void)setCurrentPages:(NSArray * __nonnull)pages animated:(BOOL)animated completion:(void (^ __nullable)(BOOL))completionHandler
+- (void)setCurrentPages:(NSArray<MUKDataSourceContentPage> *)pages animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler
 {
     if (pages.count < 1) {
         if (completionHandler) {
@@ -124,8 +119,8 @@
     }
     
     // Create matching view controllers
-    NSMutableArray *const viewControllers = [NSMutableArray arrayWithCapacity:pages.count];
-    for (id<MUKDataSourceIdentifiable> page in pages) {
+    NSMutableArray<UIViewController *> *const viewControllers = [NSMutableArray arrayWithCapacity:pages.count];
+    for (MUKDataSourceContentPage page in pages) {
         UIViewController *const viewController = [self.pageDataSource newViewControllerForPage:page];
         
         if (viewController) {
@@ -143,7 +138,7 @@
     
     // Choose direction
     UIPageViewControllerNavigationDirection direction;
-    NSArray *const currentPages = self.currentPages;
+    NSArray<MUKDataSourceContentPage> *const currentPages = self.currentPages;
     if (currentPages.count == 0) {
         direction = UIPageViewControllerNavigationDirectionForward;
     }
@@ -172,7 +167,7 @@
 
 #pragma mark - Private
 
-+ (NSString *__nonnull)dataSourceContentKeyPath {
++ (NSString *)dataSourceContentKeyPath {
     return [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(pageDataSource)), NSStringFromSelector(@selector(content))];
 }
 
@@ -196,7 +191,7 @@
     self.observingDataSourceContent = NO;
 }
 
-- (void)didSetContentPlaceholder:(MUKDataSourceContentPlaceholder * __nullable)placeholder
+- (void)didSetContentPlaceholder:(nullable MUKDataSourceContentPlaceholder *)placeholder
 {
     if (placeholder) {
         // Insert placeholder view

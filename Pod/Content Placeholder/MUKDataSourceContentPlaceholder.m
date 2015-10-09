@@ -2,7 +2,7 @@
 
 @implementation MUKDataSourceContentPlaceholder
 
-- (instancetype)initWithTitle:(NSString * __nullable)title subtitle:(NSString * __nullable)subtitle image:(UIImage * __nullable)image
+- (instancetype)initWithTitle:(NSString *)title subtitle:(NSString *)subtitle image:(UIImage *)image
 {
     self = [super init];
     if (self) {
@@ -23,6 +23,10 @@
 }
 
 #pragma mark - Overrides
+
+- (instancetype)init {
+    return [self initWithTitle:nil subtitle:nil image:nil];
+}
 
 - (BOOL)isEqual:(id)object {
     if (self == object) {

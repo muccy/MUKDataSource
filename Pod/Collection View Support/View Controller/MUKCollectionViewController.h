@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  @returns View to display when a placeholder is set. You can return nil not to
  show a view. By default it returns a MUKDataSourceContentPlaceholderView instance.
  */
-- (UIView *__nullable)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder;
+- (nullable UIView *)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder;
 @end
 
 NS_ASSUME_NONNULL_END

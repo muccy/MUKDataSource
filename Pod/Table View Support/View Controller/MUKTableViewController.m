@@ -52,7 +52,7 @@
 
 #pragma mark - Content Placeholder
 
-- (UIView * __nullable)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder * __nonnull)placeholder
+- (UIView *)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder
 {
     MUKDataSourceContentPlaceholderView *const view = [[MUKDataSourceContentPlaceholderView alloc] initWithFrame:self.tableView.bounds];
     view.titleLabel.text = placeholder.title;
@@ -64,7 +64,7 @@
 
 #pragma mark - Private
 
-+ (NSString *__nonnull)dataSourceContentKeyPath {
++ (nonnull NSString *)dataSourceContentKeyPath {
     return [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(dataSource)), NSStringFromSelector(@selector(content))];
 }
 
@@ -88,7 +88,7 @@
     self.observingDataSourceContent = NO;
 }
 
-- (void)didSetContentPlaceholder:(MUKDataSourceContentPlaceholder * __nullable)placeholder
+- (void)didSetContentPlaceholder:(nullable MUKDataSourceContentPlaceholder *)placeholder
 {
     if (placeholder) {
         // Insert placeholder view

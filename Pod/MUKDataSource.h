@@ -3,10 +3,17 @@
 #import <MUKDataSource/MUKDataSourceContentSection.h>
 #import <MUKDataSource/MUKDataSourceTableUpdate.h>
 #import <MUKDataSource/MUKDataSourceCollectionUpdate.h>
+#import <MUKDataSource/MUKDataSourceContentPage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern id const MUKDataSourceIndefiniteContent;
+typedef __kindof id<NSObject, NSCopying> MUKDataSourceContent;
+
+/**
+ A content which means content is indefinite.
+ It is used by page view controller data sources.
+ */
+extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
 
 /**
  An abstract class ready to hold and provide content data
@@ -15,7 +22,7 @@ extern id const MUKDataSourceIndefiniteContent;
 /**
  Content data
  */
-@property (nonatomic, copy, nullable) id<NSObject, NSCopying> content;
+@property (nonatomic, copy, nullable) MUKDataSourceContent content;
 @end
 
 
@@ -23,32 +30,32 @@ extern id const MUKDataSourceIndefiniteContent;
 /**
  Data interpreted as sectioned content
  */
-@property (nonatomic, copy, readonly, nullable) NSArray *sections;
+@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSection *> *sections;
 /**
  Items inside every section
  */
-@property (nonatomic, copy, readonly, nullable) NSArray *allItems;
+@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSectionItem> *allItems;
 /**
  @returns Section at given index. It could return nil if no section is found.
  */
-- (MUKDataSourceContentSection *__nullable)sectionAtIndex:(NSInteger)idx;
+- (nullable MUKDataSourceContentSection *)sectionAtIndex:(NSInteger)idx;
 /**
  @returns Section with given identifier
  */
-- (MUKDataSourceContentSection *__nullable)sectionWithIdentifier:(id<NSObject, NSCopying>)identifier;
+- (nullable MUKDataSourceContentSection *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier;
 /**
  @returns Item at given index path. It could return nil if no item is found.
  */
-- (nullable id)itemAtIndexPath:(NSIndexPath *)indexPath;
+- (nullable MUKDataSourceContentSectionItem)itemAtIndexPath:(NSIndexPath *)indexPath;
 /**
  @returns Index path for item passing given test. It could return nil if no item 
  passes test.
  */
-- (NSIndexPath *__nullable)indexPathOfItemPassingTest:(BOOL (^)(id<MUKDataSourceIdentifiable> item, NSIndexPath *indexPath, BOOL *stop))test;
+- (nullable NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(MUKDataSourceContentSectionItem item, NSIndexPath *indexPath, BOOL *stop))test;
 /**
  @returns Index path for given item. It could return nil if no item is found.
  */
-- (NSIndexPath *__nullable)indexPathOfItem:(id<MUKDataSourceIdentifiable>)item;
+- (nullable NSIndexPath *)indexPathOfItem:(MUKDataSourceContentSectionItem)item;
 @end
 
 
@@ -59,14 +66,14 @@ extern id const MUKDataSourceIndefiniteContent;
  @returns The update to apply to your UITableView instance or nil if no update
  is generated
  */
-- (MUKDataSourceTableUpdate *)setTableSections:(NSArray *__nullable)tableSections;
+- (MUKDataSourceTableUpdate *)setTableSections:(nullable NSArray<MUKDataSourceContentSection *> *)tableSections;
 /**
  @param sourceSections      Table sections before the update
  @param destinationSections Table sections after the update
  @returns New table update. Default implementation returns a valid
  MUKDataSourceTableUpdate instance.
  */
-- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections;
+- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(nullable NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(nullable NSArray<MUKDataSourceContentSection *> *)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to table view
  @discussion You override this method to register reusable views once. This method
@@ -95,11 +102,11 @@ extern id const MUKDataSourceIndefiniteContent;
 /**
  @returns Header title for matching table section
  */
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
 /**
  @returns Footer title for matching table section
  */
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section;
+- (nullable NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section;
 @end
 
 
@@ -110,7 +117,7 @@ extern id const MUKDataSourceIndefiniteContent;
  @returns The update to apply to your UICollectionView instance or nil if no update
  is generated
  */
-- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray *__nullable)collectionSections;
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(nullable NSArray<MUKDataSourceContentSection *> *)collectionSections;
 /**
  You should override this method and provide your custom
  MUKDataSourceCollectionUpdate subclass in order to indicate sections to reload
@@ -119,7 +126,7 @@ extern id const MUKDataSourceIndefiniteContent;
  @returns New collection update. Default implementation returns a valid
  MUKDataSourceCollectionUpdate instance.
  */
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray *__nullable)sourceSections toSections:(NSArray *__nullable)destinationSections;
+- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(nullable NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(nullable NSArray<MUKDataSourceContentSection *> *)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to collection view
  @discussion You override this method to register reusable views once. This method
@@ -153,35 +160,35 @@ extern id const MUKDataSourceIndefiniteContent;
  @warning This returns nil when you use indefinite number of pages (setting
  `self.content = MUKDataSourceIndefiniteContent`)
  */
-@property (nonatomic, copy, readonly, nullable) NSArray *pages;
+@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentPage> *pages;
 /**
  @returns Page at given index or nil, if idx is out of bounds
  */
-- (nullable id)pageAtIndex:(NSInteger)idx;
+- (nullable MUKDataSourceContentPage)pageAtIndex:(NSInteger)idx;
 /**
  @param viewController The view controller which represents a page
  @returns Page represented by view controller. Default implementation returns nil.
  @warning You need to override this method
  */
-- (nullable id<MUKDataSourceIdentifiable>)pageForViewController:(UIViewController *)viewController;
+- (nullable MUKDataSourceContentPage)pageForViewController:(UIViewController *)viewController;
 /**
  @returns Page after given page.
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (nullable id<MUKDataSourceIdentifiable>)pageFollowingPage:(id)page;
+- (nullable MUKDataSourceContentPage)pageFollowingPage:(MUKDataSourceContentPage)page;
 /**
  @returns Page before given page.
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (nullable id<MUKDataSourceIdentifiable>)pagePrecedingPage:(id)page;
+- (nullable MUKDataSourceContentPage)pagePrecedingPage:(MUKDataSourceContentPage)page;
 /**
  @returns YES if page 1 precedes page 2
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (BOOL)page:(id)page1 precedesPage:(id)page2;
+- (BOOL)page:(MUKDataSourceContentPage)page1 precedesPage:(MUKDataSourceContentPage)page2;
 /**
  @param page Page item
  @returns A new view controller which displays page at given index. Default
@@ -189,7 +196,7 @@ extern id const MUKDataSourceIndefiniteContent;
  @warning You need to override this method to provide new view controllers on
  response of user gestures.
  */
-- (UIViewController *__nullable)newViewControllerForPage:(id<MUKDataSourceIdentifiable>)page;
+- (nullable UIViewController *)newViewControllerForPage:(MUKDataSourceContentPage)page;
 @end
 
 /**
@@ -200,12 +207,12 @@ extern id const MUKDataSourceIndefiniteContent;
  @returns The view controller returned by -newViewControllerForPage:atIndex:,
  called with result of -pagePrecedingPage:
  */
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController;
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController;
 /**
  @returns The view controller returned by -newViewControllerForPage:,
  called with result of -pageFollowingPage:
  */
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController;
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController;
 @end
 
 NS_ASSUME_NONNULL_END
