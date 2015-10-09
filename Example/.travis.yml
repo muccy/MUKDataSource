@@ -1,0 +1,13 @@
+language: objective-c
+osx_image: xcode7
+podfile: Example/Podfile
+script:
+    xctool 
+    -workspace Example/MUKDataSource.xcworkspace 
+    -scheme TestApp 
+    -sdk iphonesimulator
+    build test 
+    CODE_SIGN_IDENTITY="" 
+    CODE_SIGNING_REQUIRED=NO
+notifications:
+    email: false

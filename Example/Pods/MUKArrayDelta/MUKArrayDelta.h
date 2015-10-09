@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Type of match between two items
  */
@@ -38,20 +40,19 @@ typedef NS_ENUM(NSInteger, MUKArrayDeltaMatchType) {
 /**
  Designated initializer
  */
-- (nonnull instancetype)initWithType:(MUKArrayDeltaMatchType)type sourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithType:(MUKArrayDeltaMatchType)type sourceIndex:(NSUInteger)sourceIndex destinationIndex:(NSUInteger)destinationIndex NS_DESIGNATED_INITIALIZER;
 /**
  @returns YES when two movements are equal
  */
-- (BOOL)isEqualToArrayDeltaMatch:(MUKArrayDeltaMatch *__nonnull)match;
+- (BOOL)isEqualToArrayDeltaMatch:(MUKArrayDeltaMatch *)match;
 @end
 
 
 /**
  Comparator which takes two items and returns match type
  */
-typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id __nonnull object1, id __nonnull object2);
+typedef MUKArrayDeltaMatchType (^MUKArrayDeltaMatchTest)(id object1, id object2);
 
-NS_ASSUME_NONNULL_BEGIN
 /**
  An object which tells you diffs between two arrays
  */
@@ -75,17 +76,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set of MUKArrayDeltaMatch objects which represent equal matches
  */
-@property (nonatomic, readonly) NSSet *equalMatches;
+@property (nonatomic, readonly) NSSet<MUKArrayDeltaMatch *> *equalMatches;
 /**
  Set of MUKArrayDeltaMatch objects which represent partial matches
  */
-@property (nonatomic, readonly) NSSet *changes;
+@property (nonatomic, readonly) NSSet<MUKArrayDeltaMatch *> *changes;
 /**
  Set of MUKArrayDeltaMatch objects which represent movements.
  A match contained in movements set is contained inside equalMatches or
  changes set, too.
  */
-@property (nonatomic, readonly) NSSet *movements;
+@property (nonatomic, readonly) NSSet<MUKArrayDeltaMatch *> *movements;
 /**
  Designated initializer.
  @param sourceArray         Source array
@@ -94,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
                             It may be nil but you lose changes detection.
  @returns A fully initialized delta between sourceArray and destinationArray
  */
-- (instancetype)initWithSourceArray:(NSArray *__nullable)sourceArray destinationArray:(NSArray *__nullable)destinationArray matchTest:(nullable MUKArrayDeltaMatchTest)matchTest NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSourceArray:(nullable NSArray *)sourceArray destinationArray:(nullable NSArray *)destinationArray matchTest:(nullable MUKArrayDeltaMatchTest)matchTest NS_DESIGNATED_INITIALIZER;
 /**
  @returns YES when two deltas are equal
  */
@@ -105,4 +106,5 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSUInteger)intermediateDestinationIndexForMovement:(MUKArrayDeltaMatch *)movement;
 @end
+
 NS_ASSUME_NONNULL_END

@@ -20,6 +20,10 @@
 
 #pragma mark Overrides
 
+- (instancetype)init {
+    return [self initWithType:MUKArrayDeltaMatchTypeNone sourceIndex:0 destinationIndex:0];
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
@@ -95,9 +99,9 @@
             }
             
             NSMutableIndexSet *const availableDestinationIndexes = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, destinationArray.count)];
-            NSMutableArray *allMatches = [NSMutableArray array];
-            NSMutableSet *changeMatches = [NSMutableSet set];
-            NSMutableSet *equalMatches = [NSMutableSet set];
+            NSMutableArray<MUKArrayDeltaMatch *> *allMatches = [NSMutableArray array];
+            NSMutableSet<MUKArrayDeltaMatch *> *changeMatches = [NSMutableSet set];
+            NSMutableSet<MUKArrayDeltaMatch *> *equalMatches = [NSMutableSet set];
             NSMutableIndexSet *deletedIndexes = [NSMutableIndexSet indexSet];
             
             [sourceArray enumerateObjectsUsingBlock:^(id sourceObject, NSUInteger sourceIndex, BOOL *stop)
@@ -156,7 +160,7 @@
             [availableDestinationIndexes removeAllIndexes];
 
             // Find movements inside matches
-            NSMutableSet *const movements = [NSMutableSet set];
+            NSMutableSet<MUKArrayDeltaMatch *> *const movements = [NSMutableSet set];
             
             [allMatches enumerateObjectsUsingBlock:^(MUKArrayDeltaMatch *match, NSUInteger idx, BOOL *stop)
             {
@@ -199,6 +203,10 @@
 }
 
 #pragma mark Overrides
+
+- (instancetype)init {
+    return [self initWithSourceArray:nil destinationArray:nil matchTest:nil];
+}
 
 - (BOOL)isEqual:(id)object {
     if (self == object) {

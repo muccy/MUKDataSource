@@ -3,6 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef __kindof id<MUKDataSourceIdentifiable> MUKDataSourceContentSectionItem;
+typedef __kindof id<NSObject> MUKDataSourceContentSectionHeaderFooter;
+
 /**
  Base class to implement MUKDataSourceContentSection protocol
  */
@@ -16,23 +19,23 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Items inside the section
  */
-@property (nonatomic, copy, readonly, nullable) NSArray *items;
+@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSectionItem> *items;
 /**
  Object which identifies represents header
  */
-@property (nonatomic, readonly, nullable) id<NSObject> header;
+@property (nonatomic, readonly, nullable) MUKDataSourceContentSectionHeaderFooter header;
 /**
  Object which identifies represents footer
  */
-@property (nonatomic, readonly, nullable) id<NSObject> footer;
+@property (nonatomic, readonly, nullable) MUKDataSourceContentSectionHeaderFooter footer;
 /**
  Designated initializer
  */
-- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray *__nullable)items header:(id<NSObject> __nullable)header footer:(id<NSObject> __nullable)footer NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(nullable MUKDataSourceIdentifier)identifier items:(nullable NSArray<MUKDataSourceContentSectionItem> *)items header:(nullable MUKDataSourceContentSectionHeaderFooter)header footer:(nullable MUKDataSourceContentSectionHeaderFooter)footer NS_DESIGNATED_INITIALIZER;
 /**
  Convenience identifier which sets to nil both header and footer
  */
-- (instancetype)initWithIdentifier:(nullable id<NSCopying>)identifier items:(NSArray *__nullable)items;
+- (instancetype)initWithIdentifier:(nullable MUKDataSourceIdentifier)identifier items:(nullable NSArray<MUKDataSourceContentSectionItem> *)items;
 /**
  @returns YES when section is equal to self
  */
@@ -41,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param newItems New items of resulting section
  @returns New section with same identifier but with newItems instead of current ones
  */
-- (instancetype)sectionByReplacingItemsWithItems:(NSArray *__nullable)newItems;
+- (instancetype)sectionByReplacingItemsWithItems:(nullable NSArray<MUKDataSourceContentSectionItem> *)newItems;
 /**
  @brief Shortend to sectionByReplacingItemsWithItems: to remove an item
  @discussion If you have overridden sectionByReplacingItemsWithItems: you don't
@@ -58,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param idx Index where to insert item
  @returns New section with same identifier but with item inserted at given index
  */
-- (instancetype)sectionByInsertingItem:(id)item atIndex:(NSUInteger)idx;
+- (instancetype)sectionByInsertingItem:(MUKDataSourceContentSectionItem)item atIndex:(NSUInteger)idx;
 /**
  @brief Shortend to sectionByReplacingItemsWithItems: to replace an item with
  another
@@ -68,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param newItem New item to insert in place of old one
  @returns New section with same identifier but with item replaced
  */
-- (instancetype)sectionByReplacingItemAtIndex:(NSUInteger)idx withItem:(id<MUKDataSourceIdentifiable>)newItem;
+- (instancetype)sectionByReplacingItemAtIndex:(NSUInteger)idx withItem:(MUKDataSourceContentSectionItem)newItem;
 @end
 
 NS_ASSUME_NONNULL_END

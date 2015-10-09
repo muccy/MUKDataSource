@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated initializer
  */
-- (instancetype)initWithTitle:(NSString *__nullable)title subtitle:(NSString *__nullable)subtitle image:(UIImage *__nullable)image NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTitle:(nullable NSString *)title subtitle:(nullable NSString *)subtitle image:(nullable UIImage *)image NS_DESIGNATED_INITIALIZER;
 /**
  @returns YES if passed placeholder is equal to self
  */

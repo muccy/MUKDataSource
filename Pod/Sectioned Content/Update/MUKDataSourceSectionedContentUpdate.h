@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated initializer
  */
-- (instancetype)initWithSourceIndexPath:(NSIndexPath *)sourceIndexPath destinationIndexPath:(NSIndexPath *)destinationIndexPath;
+- (instancetype)initWithSourceIndexPath:(NSIndexPath *)sourceIndexPath destinationIndexPath:(NSIndexPath *)destinationIndexPath NS_DESIGNATED_INITIALIZER;
 /**
  @returns YES when passed movement equals to self
  */
@@ -54,15 +54,16 @@ NS_ASSUME_NONNULL_BEGIN
  How sectioned content should be updated to reflect the transition from
  source sections to destination sections
  */
+@class MUKDataSourceContentSection;
 @interface MUKDataSourceSectionedContentUpdate : NSObject
 /**
  Original sections
  */
-@property (nonatomic, copy, readonly, nullable) NSArray *sourceSections;
+@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSection *> *sourceSections;
 /**
  Sections after transition
  */
-@property (nonatomic, copy, readonly, nullable) NSArray *destinationSections;
+@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSection *> *destinationSections;
 /**
  Indexes of inserted sections
  */
@@ -79,24 +80,24 @@ NS_ASSUME_NONNULL_BEGIN
  A set of MUKDataSourceContentSectionMovement objects which express movements
  of sections from source to destination
  */
-@property (nonatomic, readonly) NSSet *sectionMovements;
+@property (nonatomic, readonly) NSSet<MUKDataSourceContentSectionMovement *> *sectionMovements;
 /**
  Index paths of inserted items (inside sections)
  */
-@property (nonatomic, readonly) NSSet *insertedItemIndexPaths;
+@property (nonatomic, readonly) NSSet<NSIndexPath *> *insertedItemIndexPaths;
 /**
  Index paths of deleted items (from sections)
  */
-@property (nonatomic, readonly) NSSet *deletedItemIndexPaths;
+@property (nonatomic, readonly) NSSet<NSIndexPath *> *deletedItemIndexPaths;
 /**
  Index paths of items to reload (inside sections) because they are changed
  */
-@property (nonatomic, readonly) NSSet *reloadedItemIndexPaths;
+@property (nonatomic, readonly) NSSet<NSIndexPath *> *reloadedItemIndexPaths;
 /**
  A set of MUKDataSourceContentSectionItemMovement objects which express movements
  of items from source to destination, also between different sections
  */
-@property (nonatomic, readonly) NSSet *itemMovements;
+@property (nonatomic, readonly) NSSet<MUKDataSourceContentSectionItemMovement *> *itemMovements;
 /**
  YES when there are no insertions, no deletions, no reloads, no movements
  */
@@ -104,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated initializer
  */
-- (instancetype)initWithSourceSections:(NSArray *__nullable)sourceSections destinationSections:(NSArray *__nullable)destinationSections;
+- (instancetype)initWithSourceSections:(nullable NSArray<MUKDataSourceContentSection *> *)sourceSections destinationSections:(nullable NSArray<MUKDataSourceContentSection *> *)destinationSections NS_DESIGNATED_INITIALIZER;
 @end
 
 @class MUKArrayDelta, MUKArrayDeltaMatch;

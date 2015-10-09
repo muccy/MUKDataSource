@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param animation   Animation to apply to table view. If you pass nil, table view
                     data will be reloaded with -reloadData.
  */
-- (void)applyToTableView:(UITableView *)tableView withAnimation:(MUKDataSourceTableUpdateAnimation *__nullable)animation;
+- (void)applyToTableView:(UITableView *)tableView withAnimation:(nullable MUKDataSourceTableUpdateAnimation *)animation;
 /**
  Reload sections in a table view.
  You may want to override this method when default behavior to call
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param indexPaths  Index paths to reload
  @param animation   Animation to apply
  */
-- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
+- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -1,7 +1,7 @@
 #import "MUKDataSourceCollectionUpdate.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 
-static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet *movements)
+static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
 {
     for (MUKDataSourceContentSectionMovement *movement in movements) {
         if (movement.destinationIndex == idx) {
@@ -12,7 +12,7 @@ static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInte
     return nil;
 }
 
-static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet *movements)
+static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
 {
     for (MUKDataSourceContentSectionMovement *movement in movements) {
         if (movement.sourceIndex == idx) {
@@ -39,7 +39,7 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     return self;
 }
 
-- (void)applyToCollectionView:(UICollectionView *)collectionView completion:(void (^)(BOOL))completionHandler
+- (void)applyToCollectionView:(UICollectionView *)collectionView completion:(void (^ _Nullable)(BOOL finished))completionHandler
 {
     if (self.needsReloadData) {
         [collectionView reloadData];
@@ -84,9 +84,9 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     [collectionView reloadSections:indexes];
 }
 
-- (void)reloadCollectionView:(UICollectionView *)collectionView itemsAtIndexPaths:(NSSet *)indexPaths
+- (void)reloadCollectionView:(UICollectionView *)collectionView itemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
 {
-    [collectionView reloadItemsAtIndexPaths:[indexPaths allObjects]];
+    [collectionView reloadItemsAtIndexPaths:indexPaths.allObjects];
 }
 
 #pragma mark - Overrides

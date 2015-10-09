@@ -1,7 +1,7 @@
 #import "MUKDataSourceTableUpdate.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 
-static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet *movements)
+static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
 {
     for (MUKDataSourceContentSectionMovement *movement in movements) {
         if (movement.destinationIndex == idx) {
@@ -12,7 +12,7 @@ static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInte
     return nil;
 }
 
-static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet *movements)
+static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
 {
     for (MUKDataSourceContentSectionMovement *movement in movements) {
         if (movement.sourceIndex == idx) {
@@ -25,7 +25,7 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
 
 @implementation MUKDataSourceTableUpdate
 
-- (instancetype)initWithSourceSections:(NSArray *)sourceSections destinationSections:(NSArray *)destinationSections
+- (instancetype)initWithSourceSections:(NSArray<MUKDataSourceContentSection *> *)sourceSections destinationSections:(NSArray<MUKDataSourceContentSection *> *)destinationSections
 {
     self = [super initWithSourceSections:sourceSections destinationSections:destinationSections];
     if (self) {
@@ -83,9 +83,9 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     [tableView reloadSections:indexes withRowAnimation:animation];
 }
 
-- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
+- (void)reloadTableView:(UITableView *)tableView rowsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [tableView reloadRowsAtIndexPaths:[indexPaths allObjects] withRowAnimation:animation];
+    [tableView reloadRowsAtIndexPaths:indexPaths.allObjects withRowAnimation:animation];
 }
 
 #pragma mark Overrides

@@ -51,7 +51,7 @@
 
 #pragma mark - Content Placeholder
 
-- (UIView * __nullable)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder * __nonnull)placeholder
+- (UIView *)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder
 {
     MUKDataSourceContentPlaceholderView *const view = [[MUKDataSourceContentPlaceholderView alloc] initWithFrame:self.collectionView.bounds];
     view.titleLabel.text = placeholder.title;
