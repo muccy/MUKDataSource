@@ -9,7 +9,7 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
 
 @implementation  MUKDataSource (SectionedContent)
 
-- (NSArray<MUKDataSourceContentSection *> *)sections {
+- (NSArray<__kindof MUKDataSourceContentSection *> *)sections {
     if ([_content isKindOfClass:[NSArray class]]) {
         if ([[(NSArray *)_content firstObject] isKindOfClass:[MUKDataSourceContentSection class]])
         {
@@ -33,8 +33,8 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
     return [allItems copy];
 }
 
-- (MUKDataSourceContentSection *)sectionAtIndex:(NSInteger)idx {
-    NSArray<MUKDataSourceContentSection *> *const sections = self.sections;
+- (__kindof MUKDataSourceContentSection *)sectionAtIndex:(NSInteger)idx {
+    NSArray<__kindof MUKDataSourceContentSection *> *const sections = self.sections;
     
     if (idx >= 0 && idx < sections.count) {
         return sections[idx];
@@ -43,7 +43,7 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
     return nil;
 }
 
-- (MUKDataSourceContentSection *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier
+- (__kindof MUKDataSourceContentSection *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier
 {
     if (!identifier) {
         return nil;
@@ -137,7 +137,7 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
     return [self newTableUpdateFromSections:oldSections toSections:newSections];
 }
 
-- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(NSArray<MUKDataSourceContentSection *> *)destinationSections
+- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(NSArray<__kindof MUKDataSourceContentSection *> *)sourceSections toSections:(NSArray<__kindof MUKDataSourceContentSection *> *)destinationSections
 {
     return [[MUKDataSourceTableUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
@@ -152,9 +152,9 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
 
 @implementation MUKDataSource (CollectionViewSupport)
 
-- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray<MUKDataSourceContentSection *> *)newSections
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(NSArray<__kindof MUKDataSourceContentSection *> *)newSections
 {
-    NSArray<MUKDataSourceContentSection *> *const oldSections = self.sections;
+    NSArray<__kindof MUKDataSourceContentSection *> *const oldSections = self.sections;
     
     if (newSections != _content) {
         self.content = newSections;
@@ -163,7 +163,7 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
     return [self newCollectionUpdateFromSections:oldSections toSections:newSections];
 }
 
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(NSArray<MUKDataSourceContentSection *> *)destinationSections
+- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(NSArray<__kindof MUKDataSourceContentSection *> *)sourceSections toSections:(NSArray<__kindof MUKDataSourceContentSection *> *)destinationSections
 {
     return [[MUKDataSourceCollectionUpdate alloc] initWithSourceSections:sourceSections destinationSections:destinationSections];
 }
@@ -197,7 +197,7 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
     return nil;
 }
 
-- (MUKDataSourceContentPage)pageForViewController:(UIViewController *)viewController
+- (MUKDataSourceContentPage)pageForViewController:(__kindof UIViewController *)viewController
 {
     return nil;
 }
@@ -244,7 +244,7 @@ MUKDataSourceContent const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndef
     return idx1 < idx2;
 }
 
-- (UIViewController *)newViewControllerForPage:(MUKDataSourceContentPage)page
+- (__kindof UIViewController *)newViewControllerForPage:(MUKDataSourceContentPage)page
 {
     return nil;
 }

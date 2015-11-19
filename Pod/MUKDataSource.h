@@ -30,7 +30,7 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
 /**
  Data interpreted as sectioned content
  */
-@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSection *> *sections;
+@property (nonatomic, copy, readonly, nullable) NSArray<__kindof MUKDataSourceContentSection *> *sections;
 /**
  Items inside every section
  */
@@ -38,11 +38,11 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
 /**
  @returns Section at given index. It could return nil if no section is found.
  */
-- (nullable MUKDataSourceContentSection *)sectionAtIndex:(NSInteger)idx;
+- (nullable __kindof MUKDataSourceContentSection *)sectionAtIndex:(NSInteger)idx;
 /**
  @returns Section with given identifier
  */
-- (nullable MUKDataSourceContentSection *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier;
+- (nullable __kindof MUKDataSourceContentSection *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier;
 /**
  @returns Item at given index path. It could return nil if no item is found.
  */
@@ -66,14 +66,14 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
  @returns The update to apply to your UITableView instance or nil if no update
  is generated
  */
-- (MUKDataSourceTableUpdate *)setTableSections:(nullable NSArray<MUKDataSourceContentSection *> *)tableSections;
+- (MUKDataSourceTableUpdate *)setTableSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)tableSections;
 /**
  @param sourceSections      Table sections before the update
  @param destinationSections Table sections after the update
  @returns New table update. Default implementation returns a valid
  MUKDataSourceTableUpdate instance.
  */
-- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(nullable NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(nullable NSArray<MUKDataSourceContentSection *> *)destinationSections;
+- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)sourceSections toSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to table view
  @discussion You override this method to register reusable views once. This method
@@ -117,7 +117,7 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
  @returns The update to apply to your UICollectionView instance or nil if no update
  is generated
  */
-- (MUKDataSourceCollectionUpdate *)setCollectionSections:(nullable NSArray<MUKDataSourceContentSection *> *)collectionSections;
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)collectionSections;
 /**
  You should override this method and provide your custom
  MUKDataSourceCollectionUpdate subclass in order to indicate sections to reload
@@ -126,7 +126,7 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
  @returns New collection update. Default implementation returns a valid
  MUKDataSourceCollectionUpdate instance.
  */
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(nullable NSArray<MUKDataSourceContentSection *> *)sourceSections toSections:(nullable NSArray<MUKDataSourceContentSection *> *)destinationSections;
+- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)sourceSections toSections:(nullable __kindof NSArray<MUKDataSourceContentSection *> *)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to collection view
  @discussion You override this method to register reusable views once. This method
@@ -170,7 +170,7 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
  @returns Page represented by view controller. Default implementation returns nil.
  @warning You need to override this method
  */
-- (nullable MUKDataSourceContentPage)pageForViewController:(UIViewController *)viewController;
+- (nullable MUKDataSourceContentPage)pageForViewController:(__kindof UIViewController *)viewController;
 /**
  @returns Page after given page.
  @warning You need to override this method if you are using an indefinite number
@@ -196,7 +196,7 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
  @warning You need to override this method to provide new view controllers on
  response of user gestures.
  */
-- (nullable UIViewController *)newViewControllerForPage:(MUKDataSourceContentPage)page;
+- (nullable __kindof UIViewController *)newViewControllerForPage:(MUKDataSourceContentPage)page;
 @end
 
 /**
