@@ -128,31 +128,26 @@
             }];
         }
     }
-    else {
-        // Remove placeholder view (which could be nil)
-        UIView *const _Nullable contentPlaceholderView = self.contentPlaceholderView;
+    else if (self.contentPlaceholderView) {
+        // Remove placeholder view
+        UIView *const contentPlaceholderView = self.contentPlaceholderView;
         
         // Re-enable separators
         UITableViewCellSeparatorStyle const separatorStyleBeforeContentPlaceholderView = self.separatorStyleBeforeContentPlaceholderView;
         self.suppressesSeparators = NO;
         
-        if (contentPlaceholderView) {
-            __weak typeof(self) weakSelf = self;
-            [UIView animateWithDuration:0.25 animations:^{
-                contentPlaceholderView.alpha = 0.0f;
-            } completion:^(BOOL finished) {
-                __strong __typeof(weakSelf) strongSelf = weakSelf;
-                [contentPlaceholderView removeFromSuperview];
-                
-                // Doublecheck separators could be enabled
-                if (!strongSelf.suppressesSeparators) {
-                    strongSelf.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
-                }
-            }];
-        }
-        else {
-            self.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
-        }
+        __weak typeof(self) weakSelf = self;
+        [UIView animateWithDuration:0.25 animations:^{
+            contentPlaceholderView.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            [contentPlaceholderView removeFromSuperview];
+            
+            // Doublecheck separators could be enabled
+            if (!strongSelf.suppressesSeparators) {
+                strongSelf.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
+            }
+        }];
     }
 }
 
