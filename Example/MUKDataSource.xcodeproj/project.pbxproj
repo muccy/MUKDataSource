@@ -554,6 +554,7 @@
 				0683FA3D1B285EEF002C694B /* Frameworks */,
 				0683FA3E1B285EEF002C694B /* Resources */,
 				7FA9EBC5D90168A8A647B2C1 /* Copy Pods Resources */,
+				6C7901C1BB790A41B7F3A629 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -573,6 +574,7 @@
 				0683FA591B285EEF002C694B /* Frameworks */,
 				0683FA5A1B285EEF002C694B /* Resources */,
 				AB8A4F2AE82DB605C858FF4C /* Copy Pods Resources */,
+				9601117EB1FBB0C8A2545377 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -657,6 +659,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		6C7901C1BB790A41B7F3A629 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7FA9EBC5D90168A8A647B2C1 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -670,6 +687,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9601117EB1FBB0C8A2545377 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MUKDataSourceTests/Pods-MUKDataSourceTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AB8A4F2AE82DB605C858FF4C /* Copy Pods Resources */ = {

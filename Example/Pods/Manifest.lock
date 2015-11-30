@@ -1,7 +1,7 @@
 PODS:
   - KVOController (1.0.3)
   - MUKArrayDelta (1.2.0)
-  - MUKDataSource (2.5.0):
+  - MUKDataSource (2.5.1):
     - KVOController (~> 1.0.3)
     - MUKArrayDelta (~> 1.2.0)
 
@@ -16,6 +16,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
   MUKArrayDelta: cbe29bd6da281e54b5bfb10132b2c6e81839e6b9
-  MUKDataSource: 2304c93b0b1b4780cca801a9dd73ba013d410e2b
+  MUKDataSource: 0801b4657690f97f75d41bf6175da29bec427920
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
