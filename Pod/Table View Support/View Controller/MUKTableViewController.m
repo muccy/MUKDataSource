@@ -6,6 +6,7 @@
 @property (nonatomic, weak) UIView *contentPlaceholderView;
 @property (nonatomic) UITableViewCellSeparatorStyle separatorStyleBeforeContentPlaceholderView;
 @property (nonatomic, getter=isObservingDataSourceContent) BOOL observingDataSourceContent;
+@property (nonatomic) BOOL suppressesSeparators;
 @end
 
 @implementation MUKTableViewController
@@ -102,7 +103,12 @@
         }
         else {
             // No placeholder view displayed
-            self.separatorStyleBeforeContentPlaceholderView = self.tableView.separatorStyle;
+            
+            // Catch separator style before to suppress them
+            if (!self.suppressesSeparators) {
+                self.separatorStyleBeforeContentPlaceholderView = self.tableView.separatorStyle;
+            }
+            
             needsAnimation = YES;
         }
         
@@ -113,6 +119,7 @@
         [self.tableView addSubview:contentPlaceholderView];
         self.contentPlaceholderView = contentPlaceholderView;
         
+        self.suppressesSeparators = YES;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         if (needsAnimation) {
@@ -121,17 +128,31 @@
             }];
         }
     }
-    else if (self.contentPlaceholderView) {
-        // Remove placeholder view
-        UIView *const contentPlaceholderView = self.contentPlaceholderView;
-        UITableViewCellSeparatorStyle const separatorStyleBeforeContentPlaceholderView = self.separatorStyleBeforeContentPlaceholderView;
+    else {
+        // Remove placeholder view (which could be nil)
+        UIView *const _Nullable contentPlaceholderView = self.contentPlaceholderView;
         
-        [UIView animateWithDuration:0.25 animations:^{
-            contentPlaceholderView.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            [contentPlaceholderView removeFromSuperview];
+        // Re-enable separators
+        UITableViewCellSeparatorStyle const separatorStyleBeforeContentPlaceholderView = self.separatorStyleBeforeContentPlaceholderView;
+        self.suppressesSeparators = NO;
+        
+        if (contentPlaceholderView) {
+            __weak typeof(self) weakSelf = self;
+            [UIView animateWithDuration:0.25 animations:^{
+                contentPlaceholderView.alpha = 0.0f;
+            } completion:^(BOOL finished) {
+                __strong __typeof(weakSelf) strongSelf = weakSelf;
+                [contentPlaceholderView removeFromSuperview];
+                
+                // Doublecheck separators could be enabled
+                if (!strongSelf.suppressesSeparators) {
+                    strongSelf.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
+                }
+            }];
+        }
+        else {
             self.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
-        }];
+        }
     }
 }
 

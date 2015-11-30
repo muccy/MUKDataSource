@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  When you set pageDataSource you set self.dataSource to it, too
  */
-@property (nonatomic, nullable) MUKDataSource *pageDataSource;
+@property (nonatomic, nullable) __kindof MUKDataSource *pageDataSource;
 /**
  Currently displayed pages
  */
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  @returns View to display when a placeholder is set. You can return nil not to
  show a view. By default it returns a MUKDataSourceContentPlaceholderView instance.
  */
-- (nullable UIView *)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder;
+- (nullable __kindof UIView *)viewForContentPlaceholder:(__kindof MUKDataSourceContentPlaceholder *)placeholder;
 @end
 
 @interface MUKPageViewController (UIPageViewControllerDelegateImplementedMethods) <UIPageViewControllerDelegate>

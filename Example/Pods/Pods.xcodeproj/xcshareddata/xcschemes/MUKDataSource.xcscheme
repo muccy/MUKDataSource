@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0710"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FEB7E09F2A544975D1108ECCFA61B4CD"
+               BlueprintIdentifier = "70214BCE42E27AC036F4EB72DC2521E2"
                BuildableName = "libMUKDataSource.a"
                BlueprintName = "MUKDataSource"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FEB7E09F2A544975D1108ECCFA61B4CD"
+            BlueprintIdentifier = "70214BCE42E27AC036F4EB72DC2521E2"
             BuildableName = "libMUKDataSource.a"
             BlueprintName = "MUKDataSource"
             ReferencedContainer = "container:Pods.xcodeproj">
