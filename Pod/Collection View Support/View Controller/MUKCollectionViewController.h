@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
                 self.collectionView.dataSource. It also calls
                 registerReusableViewsForCollectionView: on it.
  */
-@property (nonatomic, nullable) MUKDataSource *dataSource;
+@property (nonatomic, nullable) __kindof MUKDataSource *dataSource;
 @end
 
 @interface MUKCollectionViewController (ContentPlaceholder)
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  @returns View to display when a placeholder is set. You can return nil not to
  show a view. By default it returns a MUKDataSourceContentPlaceholderView instance.
  */
-- (nullable UIView *)viewForContentPlaceholder:(MUKDataSourceContentPlaceholder *)placeholder;
+- (nullable __kindof UIView *)viewForContentPlaceholder:(__kindof MUKDataSourceContentPlaceholder *)placeholder;
 @end
 
 NS_ASSUME_NONNULL_END
