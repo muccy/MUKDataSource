@@ -4,7 +4,7 @@
 
 @interface MUKCollectionViewController ()
 @property (nonatomic, weak) UIView *contentPlaceholderView;
-@property (nonatomic, getter=isObservingDataSourceContent) BOOL observingDataSourceContent;
+@property (nonatomic, copy, nullable) dispatch_block_t postponedPlaceholderViewManipulation;
 @end
 
 @implementation MUKCollectionViewController
@@ -12,16 +12,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!self.isObservingDataSourceContent) {
-        [self observeDataSourceContent];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    
-    if (self.isObservingDataSourceContent) {
-        [self unobserveDataSourceContent];
+    if (self.postponedPlaceholderViewManipulation) {
+        self.postponedPlaceholderViewManipulation();
+        self.postponedPlaceholderViewManipulation = nil;
     }
 }
 
@@ -40,12 +33,22 @@
 
 #pragma mark - Accessors
 
-- (void)setDataSource:(MUKDataSource *)dataSource {
-    if (dataSource != _dataSource) {
-        _dataSource = dataSource;
+- (void)setDataSource:(MUKDataSource *)newDataSource {
+    if (newDataSource != _dataSource) {
+        MUKDataSource *const oldDataSource = _dataSource;
+        _dataSource = newDataSource;
         
-        [dataSource registerReusableViewsForCollectionView:self.collectionView];
-        self.collectionView.dataSource = dataSource;
+        [newDataSource registerReusableViewsForCollectionView:self.collectionView];
+        self.collectionView.dataSource = newDataSource;
+        
+        // Observe content
+        if (oldDataSource) {
+            [self unobserveContentOfDataSource:oldDataSource];
+        }
+        
+        if (newDataSource) {
+            [self observeContentOfDataSource:newDataSource];
+        }
     }
 }
 
@@ -63,68 +66,74 @@
 
 #pragma mark - Private
 
-+ (NSString *__nonnull)dataSourceContentKeyPath {
-    return [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(dataSource)), NSStringFromSelector(@selector(content))];
-}
-
-- (void)observeDataSourceContent {
-    [self.KVOControllerNonRetaining observe:self keyPath:[[self class] dataSourceContentKeyPath] options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKCollectionViewController *observer, MUKCollectionViewController *object, NSDictionary *change)
+- (void)observeContentOfDataSource:(nonnull MUKDataSource *)dataSource {
+    [self.KVOController observe:dataSource keyPath:NSStringFromSelector(@selector(content)) options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKCollectionViewController *observer, MUKDataSource *object, NSDictionary *change)
     {
-        if ([observer.dataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
+        if ([object.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
         {
-            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.dataSource.content];
+            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)object.content];
         }
         else {
             [observer didSetContentPlaceholder:nil];
         }
     }];
-    
-    self.observingDataSourceContent = YES;
 }
 
-- (void)unobserveDataSourceContent {
-    [self.KVOControllerNonRetaining unobserve:self keyPath:[[self class] dataSourceContentKeyPath]];
-    self.observingDataSourceContent = NO;
+- (void)unobserveContentOfDataSource:(nonnull MUKDataSource *)dataSource {
+    [self.KVOController unobserve:dataSource keyPath:NSStringFromSelector(@selector(content))];
 }
 
 - (void)didSetContentPlaceholder:(MUKDataSourceContentPlaceholder * __nullable)placeholder
 {
-    if (placeholder) {
-        // Insert placeholder view
-        UIView *const contentPlaceholderView = [self viewForContentPlaceholder:placeholder];
-        
-        BOOL needsAnimation;
-        if (self.contentPlaceholderView) {
-            // A placeholder view is already displayed
-            [self.contentPlaceholderView removeFromSuperview];
-            needsAnimation = NO;
+    BOOL const isOnscreen = [self isViewLoaded] && self.view.window;
+
+    __weak typeof(self) weakSelf = self;
+    dispatch_block_t const job = ^{
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
+        if (placeholder) {
+            // Insert placeholder view
+            UIView *const contentPlaceholderView = [strongSelf viewForContentPlaceholder:placeholder];
+            
+            BOOL needsAnimation;
+            if (strongSelf.contentPlaceholderView) {
+                // A placeholder view is already displayed
+                [strongSelf.contentPlaceholderView removeFromSuperview];
+                needsAnimation = NO;
+            }
+            else {
+                needsAnimation = isOnscreen;
+            }
+            
+            contentPlaceholderView.alpha = needsAnimation ? 0.0f : 1.0f;
+            contentPlaceholderView.backgroundColor = [UIColor clearColor];
+            contentPlaceholderView.frame = strongSelf.collectionView.bounds;
+            
+            [strongSelf.collectionView addSubview:contentPlaceholderView];
+            strongSelf.contentPlaceholderView = contentPlaceholderView;
+            
+            if (needsAnimation) {
+                [UIView animateWithDuration:0.25 animations:^{
+                    contentPlaceholderView.alpha = 1.0f;
+                }];
+            }
         }
-        else {
-            needsAnimation = YES;
-        }
-        
-        contentPlaceholderView.alpha = needsAnimation ? 0.0f : 1.0f;
-        contentPlaceholderView.backgroundColor = [UIColor clearColor];
-        contentPlaceholderView.frame = self.collectionView.bounds;
-        
-        [self.collectionView addSubview:contentPlaceholderView];
-        self.contentPlaceholderView = contentPlaceholderView;
-        
-        if (needsAnimation) {
+        else if (strongSelf.contentPlaceholderView) {
+            // Remove placeholder view
+            UIView *const contentPlaceholderView = strongSelf.contentPlaceholderView;
+            
             [UIView animateWithDuration:0.25 animations:^{
-                contentPlaceholderView.alpha = 1.0f;
+                contentPlaceholderView.alpha = 0.0f;
+            } completion:^(BOOL finished) {
+                [contentPlaceholderView removeFromSuperview];
             }];
         }
+    }; // job
+    
+    if (isOnscreen) {
+        job();
     }
-    else if (self.contentPlaceholderView) {
-        // Remove placeholder view
-        UIView *const contentPlaceholderView = self.contentPlaceholderView;
-        
-        [UIView animateWithDuration:0.25 animations:^{
-            contentPlaceholderView.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            [contentPlaceholderView removeFromSuperview];
-        }];
+    else {
+        self.postponedPlaceholderViewManipulation = job;
     }
 }
 
