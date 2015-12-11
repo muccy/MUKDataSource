@@ -5,8 +5,9 @@
 @interface MUKTableViewController ()
 @property (nonatomic, weak) UIView *contentPlaceholderView;
 @property (nonatomic) UITableViewCellSeparatorStyle separatorStyleBeforeContentPlaceholderView;
-@property (nonatomic, getter=isObservingDataSourceContent) BOOL observingDataSourceContent;
 @property (nonatomic) BOOL suppressesSeparators;
+
+@property (nonatomic, copy, nullable) dispatch_block_t postponedPlaceholderViewManipulation;
 @end
 
 @implementation MUKTableViewController
@@ -14,16 +15,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!self.isObservingDataSourceContent) {
-        [self observeDataSourceContent];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    
-    if (self.isObservingDataSourceContent) {
-        [self unobserveDataSourceContent];
+    if (self.postponedPlaceholderViewManipulation) {
+        self.postponedPlaceholderViewManipulation();
+        self.postponedPlaceholderViewManipulation = nil;
     }
 }
 
@@ -42,12 +36,22 @@
 
 #pragma mark - Accessors
 
-- (void)setDataSource:(MUKDataSource *)dataSource {
-    if (dataSource != _dataSource) {
-        _dataSource = dataSource;
+- (void)setDataSource:(MUKDataSource *)newDataSource {
+    if (newDataSource != _dataSource) {
+        MUKDataSource *const oldDataSource = _dataSource;
+        _dataSource = newDataSource;
         
-        [dataSource registerReusableViewsForTableView:self.tableView];
-        self.tableView.dataSource = dataSource;
+        [newDataSource registerReusableViewsForTableView:self.tableView];
+        self.tableView.dataSource = newDataSource;
+        
+        // Observe content
+        if (oldDataSource) {
+            [self unobserveContentOfDataSource:oldDataSource];
+        }
+        
+        if (newDataSource) {
+            [self observeContentOfDataSource:newDataSource];
+        }
     }
 }
 
@@ -65,89 +69,96 @@
 
 #pragma mark - Private
 
-+ (nonnull NSString *)dataSourceContentKeyPath {
-    return [NSString stringWithFormat:@"%@.%@", NSStringFromSelector(@selector(dataSource)), NSStringFromSelector(@selector(content))];
-}
-
-- (void)observeDataSourceContent {
-    [self.KVOControllerNonRetaining observe:self keyPath:[[self class] dataSourceContentKeyPath] options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKTableViewController *observer, MUKTableViewController *object, NSDictionary *change)
+- (void)observeContentOfDataSource:(nonnull MUKDataSource *)dataSource {
+    [self.KVOController observe:dataSource keyPath:NSStringFromSelector(@selector(content)) options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(MUKTableViewController *observer, MUKDataSource *object, NSDictionary *change)
     {
-        if ([observer.dataSource.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
+        if ([object.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
         {
-            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)observer.dataSource.content];
+            [observer didSetContentPlaceholder:(MUKDataSourceContentPlaceholder *)object.content];
         }
         else {
             [observer didSetContentPlaceholder:nil];
         }
     }];
-    
-    self.observingDataSourceContent = YES;
 }
 
-- (void)unobserveDataSourceContent {
-    [self.KVOControllerNonRetaining unobserve:self keyPath:[[self class] dataSourceContentKeyPath]];
-    self.observingDataSourceContent = NO;
+- (void)unobserveContentOfDataSource:(nonnull MUKDataSource *)dataSource {
+    [self.KVOController unobserve:dataSource keyPath:NSStringFromSelector(@selector(content))];
 }
 
 - (void)didSetContentPlaceholder:(nullable MUKDataSourceContentPlaceholder *)placeholder
 {
-    if (placeholder) {
-        // Insert placeholder view
-        UIView *const contentPlaceholderView = [self viewForContentPlaceholder:placeholder];
+    BOOL const isOnscreen = [self isViewLoaded] && self.view.window;
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_block_t const job = ^{
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
         
-        BOOL needsAnimation;
-        if (self.contentPlaceholderView) {
-            // A placeholder view is already displayed
-            [self.contentPlaceholderView removeFromSuperview];
-            needsAnimation = NO;
-        }
-        else {
-            // No placeholder view displayed
+        if (placeholder) {
+            // Insert placeholder view
+            UIView *const contentPlaceholderView = [strongSelf viewForContentPlaceholder:placeholder];
             
-            // Catch separator style before to suppress them
-            if (!self.suppressesSeparators) {
-                self.separatorStyleBeforeContentPlaceholderView = self.tableView.separatorStyle;
+            BOOL needsAnimation;
+            if (strongSelf.contentPlaceholderView) {
+                // A placeholder view is already displayed
+                [strongSelf.contentPlaceholderView removeFromSuperview];
+                needsAnimation = NO;
+            }
+            else {
+                // No placeholder view displayed
+                
+                // Catch separator style before to suppress them
+                if (!strongSelf.suppressesSeparators) {
+                    strongSelf.separatorStyleBeforeContentPlaceholderView = strongSelf.tableView.separatorStyle;
+                }
+                
+                needsAnimation = isOnscreen;
             }
             
-            needsAnimation = YES;
+            contentPlaceholderView.alpha = needsAnimation ? 0.0f : 1.0f;
+            contentPlaceholderView.backgroundColor = [UIColor clearColor];
+            contentPlaceholderView.frame = strongSelf.tableView.bounds;
+            
+            [strongSelf.tableView addSubview:contentPlaceholderView];
+            strongSelf.contentPlaceholderView = contentPlaceholderView;
+            
+            strongSelf.suppressesSeparators = YES;
+            strongSelf.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            
+            if (needsAnimation) {
+                [UIView animateWithDuration:0.25 animations:^{
+                    contentPlaceholderView.alpha = 1.0f;
+                }];
+            }
         }
-        
-        contentPlaceholderView.alpha = needsAnimation ? 0.0f : 1.0f;
-        contentPlaceholderView.backgroundColor = [UIColor clearColor];
-        contentPlaceholderView.frame = self.tableView.bounds;
-        
-        [self.tableView addSubview:contentPlaceholderView];
-        self.contentPlaceholderView = contentPlaceholderView;
-        
-        self.suppressesSeparators = YES;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
-        if (needsAnimation) {
+        else if (strongSelf.contentPlaceholderView) {
+            // Remove placeholder view
+            UIView *const contentPlaceholderView = strongSelf.contentPlaceholderView;
+            
+            // Re-enable separators
+            UITableViewCellSeparatorStyle const separatorStyleBeforeContentPlaceholderView = strongSelf.separatorStyleBeforeContentPlaceholderView;
+            strongSelf.suppressesSeparators = NO;
+            
+            __weak typeof(strongSelf) weakSelf = strongSelf;
             [UIView animateWithDuration:0.25 animations:^{
-                contentPlaceholderView.alpha = 1.0f;
+                contentPlaceholderView.alpha = 0.0f;
+            } completion:^(BOOL finished) {
+                __strong __typeof(weakSelf) strongSelf = weakSelf;
+                [contentPlaceholderView removeFromSuperview];
+                
+                // Doublecheck separators could be enabled
+                if (!strongSelf.suppressesSeparators) {
+                    strongSelf.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
+                }
             }];
         }
+    }; // job
+    
+    if (isOnscreen) {
+        job();
     }
-    else if (self.contentPlaceholderView) {
-        // Remove placeholder view
-        UIView *const contentPlaceholderView = self.contentPlaceholderView;
-        
-        // Re-enable separators
-        UITableViewCellSeparatorStyle const separatorStyleBeforeContentPlaceholderView = self.separatorStyleBeforeContentPlaceholderView;
-        self.suppressesSeparators = NO;
-        
-        __weak typeof(self) weakSelf = self;
-        [UIView animateWithDuration:0.25 animations:^{
-            contentPlaceholderView.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            __strong __typeof(weakSelf) strongSelf = weakSelf;
-            [contentPlaceholderView removeFromSuperview];
-            
-            // Doublecheck separators could be enabled
-            if (!strongSelf.suppressesSeparators) {
-                strongSelf.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
-            }
-        }];
+    else {
+        self.postponedPlaceholderViewManipulation = job;
     }
 }
 

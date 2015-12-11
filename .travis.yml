@@ -1,12 +1,13 @@
-# reference: http://www.objc.io/issue-6/travis-ci.html
-
 language: objective-c
-before_install:
-- brew update
-- if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
-- gem install cocoapods --quiet
-- pod --version
+osx_image: xcode7.1
+podfile: Example/Podfile
 script:
-- xctool test -workspace Example/MUKDataSource.xcworkspace -scheme MUKDataSource -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+    xctool 
+    -workspace Example/MUKDataSource.xcworkspace 
+    -scheme MUKDataSource 
+    -sdk iphonesimulator
+    build test 
+    CODE_SIGN_IDENTITY="" 
+    CODE_SIGNING_REQUIRED=NO
 notifications:
-  email: false
+    email: false
