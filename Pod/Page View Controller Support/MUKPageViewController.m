@@ -219,10 +219,11 @@
     }; // job
     
     if ([self isViewLoaded] && self.view.window) {
+        self.postponedPlaceholderViewManipulation = nil; // Cancel previous
         job();
     }
     else {
-        self.postponedPlaceholderViewManipulation = job;
+        self.postponedPlaceholderViewManipulation = job; // Postpone
     }
 }
 
