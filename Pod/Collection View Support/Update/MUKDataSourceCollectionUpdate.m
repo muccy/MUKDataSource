@@ -55,28 +55,34 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
         return;
     }
     
-    [collectionView performBatchUpdates:^{
-        [collectionView insertSections:self.insertedSectionIndexes];
-        [collectionView deleteSections:self.deletedSectionIndexes];
-
-        for (MUKDataSourceContentSectionMovement *movement in self.sectionMovements)
-        {
-            [collectionView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
-        } // for
-        
-        [collectionView insertItemsAtIndexPaths:[self.insertedItemIndexPaths allObjects]];
-        [collectionView deleteItemsAtIndexPaths:[self.deletedItemIndexPaths allObjects]];
-
-        for (MUKDataSourceContentSectionItemMovement *movement in self.itemMovements)
-        {
-            [collectionView moveItemAtIndexPath:movement.sourceIndexPath toIndexPath:movement.destinationIndexPath];
-        } // for
-    } completion:^(BOOL finished) {
+    @try {
         [collectionView performBatchUpdates:^{
-            [self reloadCollectionView:collectionView sectionsAtIndexes:self.reloadedSectionIndexes];
-            [self reloadCollectionView:collectionView itemsAtIndexPaths:self.reloadedItemIndexPaths];
-        } completion:completionHandler];
-    }];
+            [collectionView insertSections:self.insertedSectionIndexes];
+            [collectionView deleteSections:self.deletedSectionIndexes];
+
+            for (MUKDataSourceContentSectionMovement *movement in self.sectionMovements)
+            {
+                [collectionView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
+            } // for
+            
+            [collectionView insertItemsAtIndexPaths:[self.insertedItemIndexPaths allObjects]];
+            [collectionView deleteItemsAtIndexPaths:[self.deletedItemIndexPaths allObjects]];
+
+            for (MUKDataSourceContentSectionItemMovement *movement in self.itemMovements)
+            {
+                [collectionView moveItemAtIndexPath:movement.sourceIndexPath toIndexPath:movement.destinationIndexPath];
+            } // for
+        } completion:^(BOOL finished) {
+            [collectionView performBatchUpdates:^{
+                [self reloadCollectionView:collectionView sectionsAtIndexes:self.reloadedSectionIndexes];
+                [self reloadCollectionView:collectionView itemsAtIndexPaths:self.reloadedItemIndexPaths];
+            } completion:completionHandler];
+        }];
+    }
+    @catch (NSException *exception) {
+        // Build a more explainatory exception
+        [NSException raise:MUKDataSourceSectionedContentUpdateException format:@"Collection view exception: %@ ('%@')\n\nUpdate description:\n%@", exception.name, exception.reason, self.prettyDescription];
+    }
 }
 
 - (void)reloadCollectionView:(UICollectionView *)collectionView sectionsAtIndexes:(NSIndexSet *)indexes
