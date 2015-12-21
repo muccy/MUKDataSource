@@ -49,12 +49,20 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ %lu -> %lu", [super description], (unsigned long)self.sourceIndex, (unsigned long)self.destinationIndex];
+    return [NSString stringWithFormat:@"%@ (%@)", [super description], self.prettyDescription];
+}
+
+#pragma mark Debug
+
+- (NSString *)prettyDescription {
+    return [NSString stringWithFormat:@"%lu -> %lu", (unsigned long)self.sourceIndex, (unsigned long)self.destinationIndex];
 }
 
 @end
 
 #pragma mark -
+
+NSString *const MUKDataSourceSectionedContentUpdateException = @"MUKDataSourceSectionedContentUpdateException";
 
 @implementation MUKDataSourceContentSectionItemMovement
 
@@ -97,7 +105,13 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ %@ -> %@", [super description], IndexPathDescription(self.sourceIndexPath), IndexPathDescription(self.destinationIndexPath)];
+    return [NSString stringWithFormat:@"%@ [%@]", [super description], self.prettyDescription];
+}
+
+#pragma mark Debug
+
+- (NSString *)prettyDescription {
+    return [NSString stringWithFormat:@"%@ -> %@", IndexPathDescription(self.sourceIndexPath), IndexPathDescription(self.destinationIndexPath)];
 }
 
 @end
@@ -203,6 +217,79 @@ static inline NSString *IndexPathDescription(NSIndexPath *indexPath) {
 - (NSIndexPath *)reloadedItemIndexPathForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change sectionMatch:(MUKArrayDeltaMatch *)sectionMatch
 {
     return [NSIndexPath indexPathForRow:change.sourceIndex inSection:sectionMatch.sourceIndex];
+}
+
+#pragma mark Debug
+
+- (NSString *)prettyDescription {
+    NSMutableString *const string = [NSMutableString string];
+    
+    if (self.insertedSectionIndexes.count || self.deletedSectionIndexes.count ||
+        self.reloadedSectionIndexes.count || self.sectionMovements.count)
+    {
+        [string appendString:@"SECTIONS"];
+        [string appendString:@"\n========"];
+        
+        if (self.insertedSectionIndexes.count) {
+            [string appendFormat:@"\n\tInserted: %@", self.insertedSectionIndexes];
+        }
+        
+        if (self.deletedSectionIndexes.count) {
+            [string appendFormat:@"\n\tDeleted: %@", self.insertedSectionIndexes];
+        }
+        
+        if (self.reloadedSectionIndexes.count) {
+            [string appendFormat:@"\n\tReloaded: %@", self.reloadedSectionIndexes];
+        }
+        
+        if (self.sectionMovements.count) {
+            NSSet<NSString *> *const prettyDesctiptions = [self.sectionMovements valueForKey:NSStringFromSelector(@selector(prettyDescription))];
+            NSString *const prettyDesctiptionsString = [prettyDesctiptions.allObjects componentsJoinedByString:@", "];
+            [string appendFormat:@"\n\tMovements: %@", prettyDesctiptionsString];
+        }
+    }
+    
+    if (self.insertedItemIndexPaths.count || self.deletedItemIndexPaths.count ||
+        self.reloadedItemIndexPaths.count || self.itemMovements.count)
+    {
+        if (string.length) {
+            [string appendString:@"\n\n"];
+        }
+        
+        [string appendString:@"ITEMS"];
+        [string appendString:@"\n====="];
+        
+        NSString * _Nonnull (^ const indexPathsToString)(NSSet<NSIndexPath *> * _Nonnull) = ^(NSSet<NSIndexPath *> * _Nonnull indexPaths)
+        {
+            NSMutableArray<NSString *> *const strings = [NSMutableArray arrayWithCapacity:indexPaths.count];
+            
+            for (NSIndexPath *indexPath in indexPaths) {
+                [strings addObject:IndexPathDescription(indexPath)];
+            } // for
+            
+            return [strings componentsJoinedByString:@", "];
+        };
+
+        if (self.insertedItemIndexPaths.count) {
+            [string appendFormat:@"\n\tInserted: %@", indexPathsToString(self.insertedItemIndexPaths)];
+        }
+        
+        if (self.deletedItemIndexPaths.count) {
+            [string appendFormat:@"\n\tDeleted: %@", indexPathsToString(self.deletedItemIndexPaths)];
+        }
+        
+        if (self.reloadedItemIndexPaths.count) {
+            [string appendFormat:@"\n\tReloaded: %@", indexPathsToString(self.reloadedItemIndexPaths)];
+        }
+        
+        if (self.itemMovements.count) {
+            NSSet<NSString *> *const prettyDesctiptions = [self.itemMovements valueForKey:NSStringFromSelector(@selector(prettyDescription))];
+            NSString *const prettyDesctiptionsString = [prettyDesctiptions.allObjects componentsJoinedByString:@", "];
+            [string appendFormat:@"\n\tMovements: %@", prettyDesctiptionsString];
+        }
+    }
+    
+    return [string copy];
 }
 
 #pragma mark Private

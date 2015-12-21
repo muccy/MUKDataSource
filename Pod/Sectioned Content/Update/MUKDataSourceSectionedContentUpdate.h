@@ -24,6 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isEqualToContentSectionMovement:(MUKDataSourceContentSectionMovement *)movement;
 @end
 
+@interface MUKDataSourceContentSectionMovement (Debug)
+@property (nonatomic, readonly, copy) NSString *prettyDescription;
+@end
+
 #pragma mark -
 
 /**
@@ -48,7 +52,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isEqualToContentSectionItemMovement:(MUKDataSourceContentSectionItemMovement *)movement;
 @end
 
+@interface MUKDataSourceContentSectionItemMovement (Debug)
+@property (nonatomic, readonly, copy) NSString *prettyDescription;
+@end
+
 #pragma mark -
+
+/// Name of exception raised when applying update caused a fatal exception
+extern NSString *const MUKDataSourceSectionedContentUpdateException;
 
 /**
  How sectioned content should be updated to reflect the transition from
@@ -173,6 +184,11 @@ NS_ASSUME_NONNULL_BEGIN
             change source index as item
  */
 - (NSIndexPath *)reloadedItemIndexPathForDelta:(MUKArrayDelta *)delta change:(MUKArrayDeltaMatch *)change sectionMatch:(MUKArrayDeltaMatch *)sectionMatch;
+@end
+
+
+@interface MUKDataSourceSectionedContentUpdate (Debug)
+@property (nonatomic, readonly, copy) NSString *prettyDescription;
 @end
 
 NS_ASSUME_NONNULL_END

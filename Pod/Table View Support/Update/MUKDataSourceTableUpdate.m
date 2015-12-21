@@ -50,32 +50,38 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
         return;
     }
     
-    [tableView beginUpdates];
-    {
-        [tableView insertSections:self.insertedSectionIndexes withRowAnimation:animation.sectionsInsertionAnimation];
-        [tableView deleteSections:self.deletedSectionIndexes withRowAnimation:animation.sectionsDeletionAnimation];
-        
-        for (MUKDataSourceContentSectionMovement *movement in self.sectionMovements)
+    @try {
+        [tableView beginUpdates];
         {
-            [tableView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
-        } // for
+            [tableView insertSections:self.insertedSectionIndexes withRowAnimation:animation.sectionsInsertionAnimation];
+            [tableView deleteSections:self.deletedSectionIndexes withRowAnimation:animation.sectionsDeletionAnimation];
+            
+            for (MUKDataSourceContentSectionMovement *movement in self.sectionMovements)
+            {
+                [tableView moveSection:movement.sourceIndex toSection:movement.destinationIndex];
+            } // for
+            
+            [tableView insertRowsAtIndexPaths:[self.insertedItemIndexPaths allObjects] withRowAnimation:animation.rowsInsertionAnimation];
+            [tableView deleteRowsAtIndexPaths:[self.deletedItemIndexPaths allObjects] withRowAnimation:animation.rowsDeletionAnimation];
+            
+            for (MUKDataSourceContentSectionItemMovement *movement in self.itemMovements)
+            {
+                [tableView moveRowAtIndexPath:movement.sourceIndexPath toIndexPath:movement.destinationIndexPath];
+            } // for
+        }
+        [tableView endUpdates];
         
-        [tableView insertRowsAtIndexPaths:[self.insertedItemIndexPaths allObjects] withRowAnimation:animation.rowsInsertionAnimation];
-        [tableView deleteRowsAtIndexPaths:[self.deletedItemIndexPaths allObjects] withRowAnimation:animation.rowsDeletionAnimation];
-        
-        for (MUKDataSourceContentSectionItemMovement *movement in self.itemMovements)
+        [tableView beginUpdates];
         {
-            [tableView moveRowAtIndexPath:movement.sourceIndexPath toIndexPath:movement.destinationIndexPath];
-        } // for
+            [self reloadTableView:tableView sectionsAtIndexes:self.reloadedSectionIndexes withRowAnimation:animation.sectionsReloadAnimation];
+            [self reloadTableView:tableView rowsAtIndexPaths:self.reloadedItemIndexPaths withRowAnimation:animation.rowsReloadAnimation];
+        }
+        [tableView endUpdates];
     }
-    [tableView endUpdates];
-    
-    [tableView beginUpdates];
-    {
-        [self reloadTableView:tableView sectionsAtIndexes:self.reloadedSectionIndexes withRowAnimation:animation.sectionsReloadAnimation];
-        [self reloadTableView:tableView rowsAtIndexPaths:self.reloadedItemIndexPaths withRowAnimation:animation.rowsReloadAnimation];
+    @catch (NSException *exception) {
+        // Build a more explainatory exception
+        [NSException raise:MUKDataSourceSectionedContentUpdateException format:@"Table view exception: %@ ('%@')\n\nUpdate description:\n%@", exception.name, exception.reason, self.prettyDescription];
     }
-    [tableView endUpdates];
 }
 
 - (void)reloadTableView:(UITableView *)tableView sectionsAtIndexes:(NSIndexSet *)indexes withRowAnimation:(UITableViewRowAnimation)animation
