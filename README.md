@@ -33,8 +33,7 @@ You can download data how you want but [MUKContentFetch](https://github.com/mucc
 
 ```objective-c
 // FlowersFetch contains download+parse logic
-MUKContentFetchRequest *request = [[MUKContentFetchRequest alloc] init];
-MUKContentFetch *fetch = [[FlowersFetch alloc] initWithRequest:request];
+MUKContentFetch *fetch = [[FlowersFetch alloc] init];
 [fetch startWithCompletionHandler:^(MUKContentFetchResponse *response) {
 	if (response.resultType == MUKContentFetchResultTypeSuccess) {
 		MUKDataSourceContentSection *section = [[MUKDataSourceContentSection alloc] initWithIdentifier:@"flowers" items:response.object header:@"Flowers" footer:nil];
