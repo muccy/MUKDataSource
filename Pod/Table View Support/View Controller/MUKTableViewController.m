@@ -12,6 +12,15 @@
 
 @implementation MUKTableViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    if (self.dataSource) {
+        [self.dataSource registerReusableViewsForTableView:self.tableView];
+        self.tableView.dataSource = self.dataSource;
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -41,8 +50,10 @@
         MUKDataSource *const oldDataSource = _dataSource;
         _dataSource = newDataSource;
         
-        [newDataSource registerReusableViewsForTableView:self.tableView];
-        self.tableView.dataSource = newDataSource;
+        if ([self isViewLoaded]) {
+            [newDataSource registerReusableViewsForTableView:self.tableView];
+            self.tableView.dataSource = newDataSource;
+        }
         
         // Observe content
         if (oldDataSource) {

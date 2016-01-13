@@ -9,6 +9,15 @@
 
 @implementation MUKCollectionViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    if (self.dataSource) {
+        [self.dataSource registerReusableViewsForCollectionView:self.collectionView];
+        self.collectionView.dataSource = self.dataSource;
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -38,8 +47,10 @@
         MUKDataSource *const oldDataSource = _dataSource;
         _dataSource = newDataSource;
         
-        [newDataSource registerReusableViewsForCollectionView:self.collectionView];
-        self.collectionView.dataSource = newDataSource;
+        if ([self isViewLoaded]) {
+            [newDataSource registerReusableViewsForCollectionView:self.collectionView];
+            self.collectionView.dataSource = newDataSource;
+        }
         
         // Observe content
         if (oldDataSource) {
