@@ -2,9 +2,17 @@
 #import <KVOController/FBKVOController.h>
 #import "MUKDataSourceContentPlaceholderView.h"
 
+@interface MUKPageViewControllerReserved : NSObject
+@property (nonatomic, copy, nullable) dispatch_block_t postponedPlaceholderViewManipulation;
+@property (nonatomic) BOOL isInsideViewWillAppearSession;
+@end
+
+@implementation MUKPageViewControllerReserved
+@end
+
 @interface MUKPageViewController ()
 @property (nonatomic, readwrite, getter=isPageViewControllerTransitionInProgress) BOOL pageViewControllerTransitionInProgress;
-@property (nonatomic, copy, nullable) dispatch_block_t postponedPlaceholderViewManipulation;
+@property (nonatomic, readonly, nonnull) MUKPageViewControllerReserved *reserved;
 @end
 
 @implementation MUKPageViewController
@@ -31,10 +39,17 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (self.postponedPlaceholderViewManipulation) {
-        self.postponedPlaceholderViewManipulation();
-        self.postponedPlaceholderViewManipulation = nil;
+    self.reserved.isInsideViewWillAppearSession = YES;
+    
+    if (self.reserved.postponedPlaceholderViewManipulation) {
+        self.reserved.postponedPlaceholderViewManipulation();
+        self.reserved.postponedPlaceholderViewManipulation = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.reserved.isInsideViewWillAppearSession = NO;
 }
 
 #pragma mark - Accessors
@@ -218,12 +233,13 @@
         // Nothing to do in "else" case because view controllers are overwritten
     }; // job
     
-    if ([self isViewLoaded] && self.view.window) {
-        self.postponedPlaceholderViewManipulation = nil; // Cancel previous
+    BOOL const isOnscreen = self.reserved.isInsideViewWillAppearSession || ([self isViewLoaded] && self.view.window);
+    if (isOnscreen) {
+        self.reserved.postponedPlaceholderViewManipulation = nil; // Cancel previous
         job();
     }
     else {
-        self.postponedPlaceholderViewManipulation = job; // Postpone
+        self.reserved.postponedPlaceholderViewManipulation = job; // Postpone
     }
 }
 

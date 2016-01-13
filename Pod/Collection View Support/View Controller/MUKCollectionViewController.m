@@ -2,12 +2,21 @@
 #import <KVOController/FBKVOController.h>
 #import "MUKDataSourceContentPlaceholderView.h"
 
-@interface MUKCollectionViewController ()
+@interface MUKCollectionViewControllerReserved : NSObject
 @property (nonatomic, weak) UIView *contentPlaceholderView;
 @property (nonatomic, copy, nullable) dispatch_block_t postponedPlaceholderViewManipulation;
+@property (nonatomic) BOOL isInsideViewWillAppearSession;
+@end
+
+@implementation MUKCollectionViewControllerReserved
+@end
+
+@interface MUKCollectionViewController ()
+@property (nonatomic, readonly, nonnull) MUKCollectionViewControllerReserved *reserved;
 @end
 
 @implementation MUKCollectionViewController
+@synthesize reserved = _reserved;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -21,26 +30,41 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (self.postponedPlaceholderViewManipulation) {
-        self.postponedPlaceholderViewManipulation();
-        self.postponedPlaceholderViewManipulation = nil;
+    self.reserved.isInsideViewWillAppearSession = YES;
+    
+    if (self.reserved.postponedPlaceholderViewManipulation) {
+        self.reserved.postponedPlaceholderViewManipulation();
+        self.reserved.postponedPlaceholderViewManipulation = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.reserved.isInsideViewWillAppearSession = NO;
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    if (self.contentPlaceholderView) {
-        [self.collectionView bringSubviewToFront:self.contentPlaceholderView];
+    if (self.reserved.contentPlaceholderView) {
+        [self.collectionView bringSubviewToFront:self.reserved.contentPlaceholderView];
         
         if (!self.collectionView.isTracking && !self.collectionView.isDragging && !self.collectionView.isDecelerating)
         {
-            self.contentPlaceholderView.frame = self.collectionView.bounds;
+            self.reserved.contentPlaceholderView.frame = self.collectionView.bounds;
         }
     }
 }
 
 #pragma mark - Accessors
+
+- (MUKCollectionViewControllerReserved *)reserved {
+    if (!_reserved) {
+        _reserved = [[MUKCollectionViewControllerReserved alloc] init];
+    }
+    
+    return _reserved;
+}
 
 - (void)setDataSource:(MUKDataSource *)newDataSource {
     if (newDataSource != _dataSource) {
@@ -96,7 +120,7 @@
 
 - (void)didSetContentPlaceholder:(MUKDataSourceContentPlaceholder * __nullable)placeholder
 {
-    BOOL const isOnscreen = [self isViewLoaded] && self.view.window;
+    BOOL const isOnscreen = self.reserved.isInsideViewWillAppearSession || ([self isViewLoaded] && self.view.window);
 
     __weak typeof(self) weakSelf = self;
     dispatch_block_t const job = ^{
@@ -106,9 +130,9 @@
             UIView *const contentPlaceholderView = [strongSelf viewForContentPlaceholder:placeholder];
             
             BOOL needsAnimation;
-            if (strongSelf.contentPlaceholderView) {
+            if (strongSelf.reserved.contentPlaceholderView) {
                 // A placeholder view is already displayed
-                [strongSelf.contentPlaceholderView removeFromSuperview];
+                [strongSelf.reserved.contentPlaceholderView removeFromSuperview];
                 needsAnimation = NO;
             }
             else {
@@ -120,7 +144,7 @@
             contentPlaceholderView.frame = strongSelf.collectionView.bounds;
             
             [strongSelf.collectionView addSubview:contentPlaceholderView];
-            strongSelf.contentPlaceholderView = contentPlaceholderView;
+            strongSelf.reserved.contentPlaceholderView = contentPlaceholderView;
             
             if (needsAnimation) {
                 [UIView animateWithDuration:0.25 animations:^{
@@ -128,9 +152,9 @@
                 }];
             }
         }
-        else if (strongSelf.contentPlaceholderView) {
+        else if (strongSelf.reserved.contentPlaceholderView) {
             // Remove placeholder view
-            UIView *const contentPlaceholderView = strongSelf.contentPlaceholderView;
+            UIView *const contentPlaceholderView = strongSelf.reserved.contentPlaceholderView;
             
             [UIView animateWithDuration:0.25 animations:^{
                 contentPlaceholderView.alpha = 0.0f;
@@ -141,11 +165,11 @@
     }; // job
     
     if (isOnscreen) {
-        self.postponedPlaceholderViewManipulation = nil; // Cancel previous
+        self.reserved.postponedPlaceholderViewManipulation = nil; // Cancel previous
         job();
     }
     else {
-        self.postponedPlaceholderViewManipulation = job; // Postpone
+        self.reserved.postponedPlaceholderViewManipulation = job; // Postpone
     }
 }
 
