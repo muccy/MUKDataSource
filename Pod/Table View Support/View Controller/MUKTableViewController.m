@@ -2,47 +2,80 @@
 #import <KVOController/FBKVOController.h>
 #import "MUKDataSourceContentPlaceholderView.h"
 
-@interface MUKTableViewController ()
+@interface MUKTableViewControllerReserved : NSObject
 @property (nonatomic, weak) UIView *contentPlaceholderView;
 @property (nonatomic) UITableViewCellSeparatorStyle separatorStyleBeforeContentPlaceholderView;
-@property (nonatomic) BOOL suppressesSeparators;
-
+@property (nonatomic) BOOL suppressesSeparators, isInsideViewWillAppearSession;
 @property (nonatomic, copy, nullable) dispatch_block_t postponedPlaceholderViewManipulation;
 @end
 
+@implementation MUKTableViewControllerReserved
+@end
+
+@interface MUKTableViewController ()
+@property (nonatomic, readonly, nonnull) MUKTableViewControllerReserved *reserved;
+@end
+
 @implementation MUKTableViewController
+@synthesize reserved = _reserved;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    if (self.dataSource) {
+        [self.dataSource registerReusableViewsForTableView:self.tableView];
+        self.tableView.dataSource = self.dataSource;
+    }
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (self.postponedPlaceholderViewManipulation) {
-        self.postponedPlaceholderViewManipulation();
-        self.postponedPlaceholderViewManipulation = nil;
+    self.reserved.isInsideViewWillAppearSession = YES;
+    
+    if (self.reserved.postponedPlaceholderViewManipulation) {
+        self.reserved.postponedPlaceholderViewManipulation();
+        self.reserved.postponedPlaceholderViewManipulation = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.reserved.isInsideViewWillAppearSession = NO;
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    if (self.contentPlaceholderView) {
-        [self.tableView bringSubviewToFront:self.contentPlaceholderView];
+    if (self.reserved.contentPlaceholderView) {
+        [self.tableView bringSubviewToFront:self.reserved.contentPlaceholderView];
         
         if (!self.tableView.isTracking && !self.tableView.isDragging && !self.tableView.isDecelerating)
         {
-            self.contentPlaceholderView.frame = self.tableView.bounds;
+            self.reserved.contentPlaceholderView.frame = self.tableView.bounds;
         }
     }
 }
 
 #pragma mark - Accessors
 
+- (MUKTableViewControllerReserved *)reserved {
+    if (!_reserved) {
+        _reserved = [[MUKTableViewControllerReserved alloc] init];
+    }
+    
+    return _reserved;
+}
+
 - (void)setDataSource:(MUKDataSource *)newDataSource {
     if (newDataSource != _dataSource) {
         MUKDataSource *const oldDataSource = _dataSource;
         _dataSource = newDataSource;
         
-        [newDataSource registerReusableViewsForTableView:self.tableView];
-        self.tableView.dataSource = newDataSource;
+        if ([self isViewLoaded]) {
+            [newDataSource registerReusableViewsForTableView:self.tableView];
+            self.tableView.dataSource = newDataSource;
+        }
         
         // Observe content
         if (oldDataSource) {
@@ -88,7 +121,7 @@
 
 - (void)didSetContentPlaceholder:(nullable MUKDataSourceContentPlaceholder *)placeholder
 {
-    BOOL const isOnscreen = [self isViewLoaded] && self.view.window;
+    BOOL const isOnscreen = self.reserved.isInsideViewWillAppearSession || ([self isViewLoaded] && self.view.window);
     
     __weak typeof(self) weakSelf = self;
     dispatch_block_t const job = ^{
@@ -99,17 +132,17 @@
             UIView *const contentPlaceholderView = [strongSelf viewForContentPlaceholder:placeholder];
             
             BOOL needsAnimation;
-            if (strongSelf.contentPlaceholderView) {
+            if (strongSelf.reserved.contentPlaceholderView) {
                 // A placeholder view is already displayed
-                [strongSelf.contentPlaceholderView removeFromSuperview];
+                [strongSelf.reserved.contentPlaceholderView removeFromSuperview];
                 needsAnimation = NO;
             }
             else {
                 // No placeholder view displayed
                 
                 // Catch separator style before to suppress them
-                if (!strongSelf.suppressesSeparators) {
-                    strongSelf.separatorStyleBeforeContentPlaceholderView = strongSelf.tableView.separatorStyle;
+                if (!strongSelf.reserved.suppressesSeparators) {
+                    strongSelf.reserved.separatorStyleBeforeContentPlaceholderView = strongSelf.tableView.separatorStyle;
                 }
                 
                 needsAnimation = isOnscreen;
@@ -120,9 +153,9 @@
             contentPlaceholderView.frame = strongSelf.tableView.bounds;
             
             [strongSelf.tableView addSubview:contentPlaceholderView];
-            strongSelf.contentPlaceholderView = contentPlaceholderView;
+            strongSelf.reserved.contentPlaceholderView = contentPlaceholderView;
             
-            strongSelf.suppressesSeparators = YES;
+            strongSelf.reserved.suppressesSeparators = YES;
             strongSelf.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             
             if (needsAnimation) {
@@ -131,13 +164,13 @@
                 }];
             }
         }
-        else if (strongSelf.contentPlaceholderView) {
+        else if (strongSelf.reserved.contentPlaceholderView) {
             // Remove placeholder view
-            UIView *const contentPlaceholderView = strongSelf.contentPlaceholderView;
+            UIView *const contentPlaceholderView = strongSelf.reserved.contentPlaceholderView;
             
             // Re-enable separators
-            UITableViewCellSeparatorStyle const separatorStyleBeforeContentPlaceholderView = strongSelf.separatorStyleBeforeContentPlaceholderView;
-            strongSelf.suppressesSeparators = NO;
+            UITableViewCellSeparatorStyle const separatorStyleBeforeContentPlaceholderView = strongSelf.reserved.separatorStyleBeforeContentPlaceholderView;
+            strongSelf.reserved.suppressesSeparators = NO;
             
             __weak typeof(strongSelf) weakSelf = strongSelf;
             [UIView animateWithDuration:0.25 animations:^{
@@ -147,7 +180,7 @@
                 [contentPlaceholderView removeFromSuperview];
                 
                 // Doublecheck separators could be enabled
-                if (!strongSelf.suppressesSeparators) {
+                if (!strongSelf.reserved.suppressesSeparators) {
                     strongSelf.tableView.separatorStyle = separatorStyleBeforeContentPlaceholderView;
                 }
             }];
@@ -155,11 +188,11 @@
     }; // job
     
     if (isOnscreen) {
-        self.postponedPlaceholderViewManipulation = nil; // Cancel previous
+        self.reserved.postponedPlaceholderViewManipulation = nil; // Cancel previous
         job();
     }
     else {
-        self.postponedPlaceholderViewManipulation = job; // Postpone
+        self.reserved.postponedPlaceholderViewManipulation = job; // Postpone
     }
 }
 
