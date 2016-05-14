@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/**/*.{h,m}'
   s.compiler_flags  = '-Wdocumentation'
   
-  s.dependency  'KVOController', '~> 1.0.3'
   s.dependency  'MUKArrayDelta', '~> 1.2.0'
+  s.dependency  'MUKSignal', '~> 1.0.2'
 end

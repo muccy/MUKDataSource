@@ -1,6 +1,5 @@
 target 'MUKDataSource' do
   pod "MUKDataSource", :path => "../"
-  pod 'KVOController', '~> 1.0.3'
-
+  
   target "MUKDataSourceTests"
 end
