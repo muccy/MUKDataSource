@@ -10,12 +10,19 @@
       <FileRef
          location = "group:MUKDataSource.h">
       </FileRef>
-      <FileRef
-         location = "group:MUKDataSource.m">
-      </FileRef>
-      <FileRef
-         location = "group:MUKDataSourceIdentifiable.h">
-      </FileRef>
+      <Group
+         location = "group:Base"
+         name = "Base">
+         <FileRef
+            location = "group:MUKDataSource-Base.h">
+         </FileRef>
+         <FileRef
+            location = "group:MUKDataSource-Base.m">
+         </FileRef>
+         <FileRef
+            location = "group:MUKDataSourceIdentifiable.h">
+         </FileRef>
+      </Group>
       <Group
          location = "group:Sectioned Content"
          name = "Sectioned Content">
