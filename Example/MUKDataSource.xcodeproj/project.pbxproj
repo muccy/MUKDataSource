@@ -40,8 +40,8 @@
 		06E7357D1B9AF93E00F628CB /* PageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E7357C1B9AF93E00F628CB /* PageDataSource.m */; };
 		06E735801B9B3C1100F628CB /* PageItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E7357F1B9B3C1100F628CB /* PageItemViewController.m */; };
 		06E735821B9B483900F628CB /* MUKDataSourcePagedContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */; };
-		4D744E19E459DA238FCC9E47 /* libPods-MUKDataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94E6E9907A5404CBF38EBB95 /* libPods-MUKDataSource.a */; };
-		9BD7AF115275CEC57D14484D /* libPods-MUKDataSource-MUKDataSourceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBBF9B589D465E33496B0EEA /* libPods-MUKDataSource-MUKDataSourceTests.a */; };
+		1651D34D20DF30116971AFF8 /* libPods-MUKDataSource-MUKDataSourceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF034C56DCC8D2162618BD02 /* libPods-MUKDataSource-MUKDataSourceTests.a */; };
+		5EF0D7F0ED270D5F6381382E /* libPods-MUKDataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 331C3E0B9C8E020685EC73A5 /* libPods-MUKDataSource.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,12 +117,12 @@
 		06E7357E1B9B3C1100F628CB /* PageItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageItemViewController.h; sourceTree = "<group>"; };
 		06E7357F1B9B3C1100F628CB /* PageItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageItemViewController.m; sourceTree = "<group>"; };
 		06E735811B9B483800F628CB /* MUKDataSourcePagedContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDataSourcePagedContentTests.m; sourceTree = "<group>"; };
-		3CF3B752AB06B70D7409FB44 /* Pods-MUKDataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource.debug.xcconfig"; sourceTree = "<group>"; };
-		615124D4608A4A1C13BF4AD5 /* Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource-MUKDataSourceTests/Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig"; sourceTree = "<group>"; };
-		94E6E9907A5404CBF38EBB95 /* libPods-MUKDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DF2692FEA24FCFE88363CA9F /* Pods-MUKDataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource.release.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource.release.xcconfig"; sourceTree = "<group>"; };
-		FBBF9B589D465E33496B0EEA /* libPods-MUKDataSource-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSource-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FD36DBB26DC584F759AC6116 /* Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource-MUKDataSourceTests/Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig"; sourceTree = "<group>"; };
+		331C3E0B9C8E020685EC73A5 /* libPods-MUKDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		499F7DF15A30DE7B9344F2E6 /* Pods-MUKDataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource.debug.xcconfig"; sourceTree = "<group>"; };
+		4D1E28B78B3142D5050C98F6 /* Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource-MUKDataSourceTests/Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig"; sourceTree = "<group>"; };
+		8B559BA609AE551736A7F699 /* Pods-MUKDataSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource.release.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource.release.xcconfig"; sourceTree = "<group>"; };
+		AF034C56DCC8D2162618BD02 /* libPods-MUKDataSource-MUKDataSourceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUKDataSource-MUKDataSourceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B16BE7944D7F22B97A1257D5 /* Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MUKDataSource-MUKDataSourceTests/Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D744E19E459DA238FCC9E47 /* libPods-MUKDataSource.a in Frameworks */,
+				5EF0D7F0ED270D5F6381382E /* libPods-MUKDataSource.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9BD7AF115275CEC57D14484D /* libPods-MUKDataSource-MUKDataSourceTests.a in Frameworks */,
+				1651D34D20DF30116971AFF8 /* libPods-MUKDataSource-MUKDataSourceTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,8 +151,8 @@
 				0683FA421B285EEF002C694B /* App */,
 				0683FA5F1B285EEF002C694B /* Tests */,
 				0683FA411B285EEF002C694B /* Products */,
-				B6ACE31D334161B8375FC56F /* Pods */,
-				9C070F23DFEE545DB12F59DD /* Frameworks */,
+				5D556F0FB5978B79CAF261F0 /* Pods */,
+				12DBBD5B778244846CB2920E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -522,22 +522,22 @@
 			path = Page;
 			sourceTree = "<group>";
 		};
-		9C070F23DFEE545DB12F59DD /* Frameworks */ = {
+		12DBBD5B778244846CB2920E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				94E6E9907A5404CBF38EBB95 /* libPods-MUKDataSource.a */,
-				FBBF9B589D465E33496B0EEA /* libPods-MUKDataSource-MUKDataSourceTests.a */,
+				331C3E0B9C8E020685EC73A5 /* libPods-MUKDataSource.a */,
+				AF034C56DCC8D2162618BD02 /* libPods-MUKDataSource-MUKDataSourceTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B6ACE31D334161B8375FC56F /* Pods */ = {
+		5D556F0FB5978B79CAF261F0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3CF3B752AB06B70D7409FB44 /* Pods-MUKDataSource.debug.xcconfig */,
-				DF2692FEA24FCFE88363CA9F /* Pods-MUKDataSource.release.xcconfig */,
-				615124D4608A4A1C13BF4AD5 /* Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig */,
-				FD36DBB26DC584F759AC6116 /* Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig */,
+				499F7DF15A30DE7B9344F2E6 /* Pods-MUKDataSource.debug.xcconfig */,
+				8B559BA609AE551736A7F699 /* Pods-MUKDataSource.release.xcconfig */,
+				B16BE7944D7F22B97A1257D5 /* Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig */,
+				4D1E28B78B3142D5050C98F6 /* Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -549,12 +549,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0683FA661B285EEF002C694B /* Build configuration list for PBXNativeTarget "MUKDataSource" */;
 			buildPhases = (
-				F8195BE1B26E541D3DA7007E /* 📦 Check Pods Manifest.lock */,
+				2F2C4C9475FF7673D23A96D8 /* 📦 Check Pods Manifest.lock */,
 				0683FA3C1B285EEF002C694B /* Sources */,
 				0683FA3D1B285EEF002C694B /* Frameworks */,
 				0683FA3E1B285EEF002C694B /* Resources */,
-				C510622268A4D62FBA1791BD /* 📦 Embed Pods Frameworks */,
-				6173C529EAA8A250CF278664 /* 📦 Copy Pods Resources */,
+				9194770F3EDEFD2D1D60B860 /* 📦 Embed Pods Frameworks */,
+				671CD5DA9FB70BB74B553F0A /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -569,12 +569,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0683FA691B285EEF002C694B /* Build configuration list for PBXNativeTarget "MUKDataSourceTests" */;
 			buildPhases = (
-				86A6081453B6ABFA46028C13 /* 📦 Check Pods Manifest.lock */,
+				909D37D07BC0A61C45BCD808 /* 📦 Check Pods Manifest.lock */,
 				0683FA581B285EEF002C694B /* Sources */,
 				0683FA591B285EEF002C694B /* Frameworks */,
 				0683FA5A1B285EEF002C694B /* Resources */,
-				FB36785E6CD8CBD00FC196D7 /* 📦 Embed Pods Frameworks */,
-				33F85AA5F5408AB7B5F63245 /* 📦 Copy Pods Resources */,
+				BBBA3395F5735F26844613C9 /* 📦 Embed Pods Frameworks */,
+				A5FD7D0013EEBE1CF5FE024D /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -644,22 +644,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		33F85AA5F5408AB7B5F63245 /* 📦 Copy Pods Resources */ = {
+		2F2C4C9475FF7673D23A96D8 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MUKDataSource-MUKDataSourceTests/Pods-MUKDataSource-MUKDataSourceTests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6173C529EAA8A250CF278664 /* 📦 Copy Pods Resources */ = {
+		671CD5DA9FB70BB74B553F0A /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -674,7 +674,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		86A6081453B6ABFA46028C13 /* 📦 Check Pods Manifest.lock */ = {
+		909D37D07BC0A61C45BCD808 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -689,7 +689,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		C510622268A4D62FBA1791BD /* 📦 Embed Pods Frameworks */ = {
+		9194770F3EDEFD2D1D60B860 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -704,22 +704,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MUKDataSource/Pods-MUKDataSource-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F8195BE1B26E541D3DA7007E /* 📦 Check Pods Manifest.lock */ = {
+		A5FD7D0013EEBE1CF5FE024D /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MUKDataSource-MUKDataSourceTests/Pods-MUKDataSource-MUKDataSourceTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FB36785E6CD8CBD00FC196D7 /* 📦 Embed Pods Frameworks */ = {
+		BBBA3395F5735F26844613C9 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -890,7 +890,7 @@
 		};
 		0683FA671B285EEF002C694B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3CF3B752AB06B70D7409FB44 /* Pods-MUKDataSource.debug.xcconfig */;
+			baseConfigurationReference = 499F7DF15A30DE7B9344F2E6 /* Pods-MUKDataSource.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MUKDataSource/Info.plist;
@@ -902,7 +902,7 @@
 		};
 		0683FA681B285EEF002C694B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF2692FEA24FCFE88363CA9F /* Pods-MUKDataSource.release.xcconfig */;
+			baseConfigurationReference = 8B559BA609AE551736A7F699 /* Pods-MUKDataSource.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MUKDataSource/Info.plist;
@@ -914,7 +914,7 @@
 		};
 		0683FA6A1B285EEF002C694B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 615124D4608A4A1C13BF4AD5 /* Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig */;
+			baseConfigurationReference = B16BE7944D7F22B97A1257D5 /* Pods-MUKDataSource-MUKDataSourceTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -935,7 +935,7 @@
 		};
 		0683FA6B1B285EEF002C694B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FD36DBB26DC584F759AC6116 /* Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig */;
+			baseConfigurationReference = 4D1E28B78B3142D5050C98F6 /* Pods-MUKDataSource-MUKDataSourceTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
