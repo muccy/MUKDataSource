@@ -7,14 +7,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Simple table view controller which holds a data source
  */
-@interface MUKTableViewController : UITableViewController
+@interface MUKTableViewController<__covariant ItemType> : UITableViewController
 /**
  @brief         Data source
  @discussion    When you assign a data source it is also assigned to 
                 self.tableView.dataSource. It also calls 
                 registerReusableViewsForTableView: on it.
  */
-@property (nonatomic, nullable) __kindof MUKDataSource *dataSource;
+@property (nonatomic, nullable) __kindof MUKDataSource<ItemType> *dataSource;
 @end
 
 @interface MUKTableViewController (ContentPlaceholder)
