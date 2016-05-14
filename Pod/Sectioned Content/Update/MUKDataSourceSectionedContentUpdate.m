@@ -332,14 +332,14 @@ NSString *const MUKDataSourceSectionedContentUpdateException = @"MUKDataSourceSe
     NSMutableSet<NSIndexPath *> *reloadedItemIndexPaths = [NSMutableSet set];
     NSMutableSet<MUKDataSourceContentSectionItemMovement *> *itemMovements = [NSMutableSet set];
     
-    MUKArrayDeltaMatchTest const itemsMatchTest = ^MUKArrayDeltaMatchType(MUKDataSourceContentSectionItem object1, MUKDataSourceContentSectionItem object2)
+    MUKArrayDeltaMatchTest const itemsMatchTest = ^MUKArrayDeltaMatchType(id object1, id object2)
     {
         if ([object1 isEqual:object2]) {
             return MUKArrayDeltaMatchTypeEqual;
         }
         else if ([object1 respondsToSelector:@selector(identifier)] &&
                  [object2 respondsToSelector:@selector(identifier)] &&
-                 [object1.identifier isEqual:object2.identifier])
+                 [[object1 identifier] isEqual:[object2 identifier]])
         {
             return MUKArrayDeltaMatchTypeChange;
         }
@@ -401,7 +401,7 @@ NSString *const MUKDataSourceSectionedContentUpdateException = @"MUKDataSourceSe
     [deletedItemIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *deletedIndexPath, NSUInteger deletedIndexPathIndex, BOOL *stop)
     {
         MUKDataSourceContentSection *const deletedItemSection = delta.sourceArray[deletedIndexPath.section];
-        MUKDataSourceContentSectionItem const deletedItem = deletedItemSection.items[deletedIndexPath.row];
+        id const deletedItem = deletedItemSection.items[deletedIndexPath.row];
         
         [insertedItemIndexPaths enumerateObjectsAtIndexes:validInsertedItemIndexPathIndexes options:0 usingBlock:^(NSIndexPath *insertedIndexPath, NSUInteger insertedIndexPathIndex, BOOL *stop)
         {
@@ -413,7 +413,7 @@ NSString *const MUKDataSourceSectionedContentUpdateException = @"MUKDataSourceSe
             }
             
             // Test deleted and inserted items
-            MUKDataSourceContentSectionItem const insertedItem = insertedItemSection.items[insertedIndexPath.row];
+            id const insertedItem = insertedItemSection.items[insertedIndexPath.row];
             MUKArrayDeltaMatchType const matchType = itemsMatchTest(deletedItem, insertedItem);
             
             if (matchType != MUKArrayDeltaMatchTypeNone) {

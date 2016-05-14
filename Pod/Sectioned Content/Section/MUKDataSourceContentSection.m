@@ -4,7 +4,7 @@
 @synthesize identifier = _identifier;
 @synthesize items = _items;
 
-- (instancetype)initWithIdentifier:(MUKDataSourceIdentifier)identifier items:(NSArray<MUKDataSourceContentSectionItem> *)items header:(nullable MUKDataSourceContentSectionHeaderFooter)header footer:(nullable MUKDataSourceContentSectionHeaderFooter)footer
+- (instancetype)initWithIdentifier:(MUKDataSourceIdentifier)identifier items:(NSArray *)items header:(nullable MUKDataSourceContentSectionHeaderFooter)header footer:(nullable MUKDataSourceContentSectionHeaderFooter)footer
 {
     self = [super init];
     if (self) {
@@ -17,7 +17,7 @@
     return self;
 }
 
-- (instancetype)initWithIdentifier:(MUKDataSourceIdentifier)identifier items:(NSArray<MUKDataSourceContentSectionItem> *)items
+- (instancetype)initWithIdentifier:(MUKDataSourceIdentifier)identifier items:(NSArray *)items
 {
     return [self initWithIdentifier:identifier items:items header:nil footer:nil];
 }
@@ -32,7 +32,7 @@
     return sameIdentifier && sameItems && sameHeader && sameFooter;
 }
 
-- (instancetype)sectionByReplacingItemsWithItems:(NSArray<MUKDataSourceContentSectionItem> *)newItems
+- (instancetype)sectionByReplacingItemsWithItems:(NSArray *)newItems
 {
     return [[[self class] alloc] initWithIdentifier:self.identifier items:newItems header:self.header footer:self.footer];
 }
@@ -42,31 +42,31 @@
         return self;
     }
     
-    NSMutableArray<MUKDataSourceContentSectionItem> *const items = [self.items mutableCopy];
+    NSMutableArray *const items = [self.items mutableCopy];
     [items removeObjectAtIndex:idx];
     
     return [self sectionByReplacingItemsWithItems:items];
 }
 
-- (instancetype)sectionByInsertingItem:(MUKDataSourceContentSectionItem)item atIndex:(NSUInteger)idx
+- (instancetype)sectionByInsertingItem:(id)item atIndex:(NSUInteger)idx
 {
     if (!item || idx > self.items.count) {
         return self;
     }
     
-    NSMutableArray<MUKDataSourceContentSectionItem> *const items = [self.items mutableCopy];
+    NSMutableArray *const items = [self.items mutableCopy];
     [items insertObject:item atIndex:idx];
     
     return [self sectionByReplacingItemsWithItems:items];
 }
 
-- (instancetype)sectionByReplacingItemAtIndex:(NSUInteger)idx withItem:(MUKDataSourceContentSectionItem)newItem
+- (instancetype)sectionByReplacingItemAtIndex:(NSUInteger)idx withItem:(id)newItem
 {
     if (!newItem || idx >= self.items.count) {
         return self;
     }
     
-    NSMutableArray<MUKDataSourceContentSectionItem> *const items = [self.items mutableCopy];
+    NSMutableArray *const items = [self.items mutableCopy];
     [items replaceObjectAtIndex:idx withObject:newItem];
     
     return [self sectionByReplacingItemsWithItems:items];

@@ -111,11 +111,11 @@
 
 #pragma mark - Accessors
 
-- (NSArray<MUKDataSourceContentPage> *)currentPages {
-    NSMutableArray<MUKDataSourceContentPage> *const pages = [NSMutableArray arrayWithCapacity:1];
+- (NSArray *)currentPages {
+    NSMutableArray *const pages = [NSMutableArray arrayWithCapacity:1];
     
     for (UIViewController *viewController in self.viewControllers) {
-        MUKDataSourceContentPage const page = [self.pageDataSource pageForViewController:viewController];
+        id const page = [self.pageDataSource pageForViewController:viewController];
         
         if (page) {
             [pages addObject:page];
@@ -127,7 +127,7 @@
 
 #pragma mark - Methods
 
-- (void)setCurrentPages:(NSArray<MUKDataSourceContentPage> *)pages animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler
+- (void)setCurrentPages:(NSArray *)pages animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler
 {
     if (pages.count < 1) {
         if (completionHandler) {
@@ -139,7 +139,7 @@
     
     // Create matching view controllers
     NSMutableArray<UIViewController *> *const viewControllers = [NSMutableArray arrayWithCapacity:pages.count];
-    for (MUKDataSourceContentPage page in pages) {
+    for (id page in pages) {
         UIViewController *const viewController = [self.pageDataSource newViewControllerForPage:page];
         
         if (viewController) {
@@ -157,7 +157,7 @@
     
     // Choose direction
     UIPageViewControllerNavigationDirection direction;
-    NSArray<MUKDataSourceContentPage> *const currentPages = self.currentPages;
+    NSArray *const currentPages = self.currentPages;
     if (currentPages.count == 0) {
         direction = UIPageViewControllerNavigationDirectionForward;
     }

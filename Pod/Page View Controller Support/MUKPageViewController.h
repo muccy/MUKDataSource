@@ -1,22 +1,21 @@
 #import <UIKit/UIKit.h>
 #import <MUKDataSource/MUKDataSource.h>
 #import <MUKDataSource/MUKDataSourceContentPlaceholder.h>
-#import <MUKDataSource/MUKDataSourceContentPage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  Simple page view controller which holds a data source and sets as delegate itself
  */
-@interface MUKPageViewController : UIPageViewController
+@interface MUKPageViewController<__covariant PageType> : UIPageViewController
 /**
  When you set pageDataSource you set self.dataSource to it, too
  */
-@property (nonatomic, nullable) __kindof MUKDataSource *pageDataSource;
+@property (nonatomic, nullable) __kindof MUKDataSource<PageType> *pageDataSource;
 /**
  Currently displayed pages
  */
-@property (nonatomic, readonly) NSArray<MUKDataSourceContentPage> *currentPages;
+@property (nonatomic, readonly) NSArray<PageType> *currentPages;
 /**
  YES if user is changing page with a gesture
  */
@@ -27,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param animated YES if transition should be animated
  @param completionHandler Block called when transition is completed
  */
-- (void)setCurrentPages:(NSArray<MUKDataSourceContentPage> *)pages animated:(BOOL)animated completion:(void (^_Nullable)(BOOL finished))completionHandler;
+- (void)setCurrentPages:(NSArray<PageType> *)pages animated:(BOOL)animated completion:(void (^_Nullable)(BOOL finished))completionHandler;
 /**
  Callback called when self.currentPages is about to change
  */
