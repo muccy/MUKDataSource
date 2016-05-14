@@ -32,6 +32,9 @@
                 [strongSelf didSetContentPlaceholder:nil];
             }
         }]];
+        
+        // Wait for first -viewWillAppear:
+        [_contentObservation suspend];
     }
     
     return self;
