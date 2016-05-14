@@ -19,11 +19,11 @@
   "source_files": "Pod/**/*.{h,m}",
   "compiler_flags": "-Wdocumentation",
   "dependencies": {
-    "KVOController": [
-      "~> 1.0.3"
-    ],
     "MUKArrayDelta": [
       "~> 1.2.0"
+    ],
+    "MUKSignal": [
+      "~> 1.0.2"
     ]
   }
 }
