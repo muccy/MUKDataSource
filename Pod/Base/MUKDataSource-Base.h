@@ -2,77 +2,62 @@
 #import <MUKDataSource/MUKDataSourceContentSection.h>
 #import <MUKDataSource/MUKDataSourceTableUpdate.h>
 #import <MUKDataSource/MUKDataSourceCollectionUpdate.h>
-#import <MUKDataSource/MUKDataSourceContentPage.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-typedef __kindof id<NSObject, NSCopying> MUKDataSourceContent;
 
 /**
  A content which means content is indefinite.
  It is used by page view controller data sources.
  */
-extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
+extern NSObject *const MUKDataSourceIndefiniteContent;
 
 /**
- An abstract class ready to hold and provide content data
+ An object ready to hold and provide content data.
+ The generic type is the type of contained item: it could be the type of items 
+ contained in sections or the type of pages.
  */
-@interface MUKDataSource : NSObject
-/**
- Content data
- */
-@property (nonatomic, copy, nullable) MUKDataSourceContent content;
+@interface MUKDataSource<__covariant ObjectType> : NSObject
+/// Content data
+@property (nonatomic, copy, nullable) __kindof NSObject *content;
 @end
 
 
-@interface MUKDataSource (SectionedContent)
-/**
- Data interpreted as sectioned content
- */
-@property (nonatomic, copy, readonly, nullable) NSArray<__kindof MUKDataSourceContentSection *> *sections;
-/**
- Items inside every section
- */
-@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSectionItem> *allItems;
-/**
- @returns Section at given index. It could return nil if no section is found.
- */
-- (nullable __kindof MUKDataSourceContentSection *)sectionAtIndex:(NSInteger)idx;
-/**
- @returns Section with given identifier
- */
-- (nullable __kindof MUKDataSourceContentSection *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier;
-/**
- @returns Item at given index path. It could return nil if no item is found.
- */
-- (nullable MUKDataSourceContentSectionItem)itemAtIndexPath:(NSIndexPath *)indexPath;
+@interface MUKDataSource<__covariant ItemType> (SectionedContent)
+/// Data interpreted as sectioned content
+@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentSection<ItemType> *> *sections;
+/// Items inside every section
+@property (nonatomic, copy, readonly, nullable) NSArray<ItemType> *allItems;
+/// @returns Section at given index. It could return nil if no section is found.
+- (nullable MUKDataSourceContentSection<ItemType> *)sectionAtIndex:(NSInteger)idx;
+/// @returns Section with given identifier
+- (nullable MUKDataSourceContentSection<ItemType> *)sectionWithIdentifier:(MUKDataSourceIdentifier)identifier;
+/// @returns Item at given index path. It could return nil if no item is found.
+- (nullable ItemType)itemAtIndexPath:(NSIndexPath *)indexPath;
 /**
  @returns Index path for item passing given test. It could return nil if no item 
  passes test.
  */
-- (nullable NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(MUKDataSourceContentSectionItem item, NSIndexPath *indexPath, BOOL *stop))test;
-/**
- @returns Index path for given item. It could return nil if no item is found.
- */
-- (nullable NSIndexPath *)indexPathOfItem:(MUKDataSourceContentSectionItem)item;
+- (nullable NSIndexPath *)indexPathOfItemPassingTest:(BOOL (^)(ItemType item, NSIndexPath *indexPath, BOOL *stop))test;
+/// @returns Index path for given item. It could return nil if no item is found.
+- (nullable NSIndexPath *)indexPathOfItem:(ItemType)item;
 @end
 
 
-@interface MUKDataSource (TableViewSupport)
+@interface MUKDataSource<__covariant ItemType> (TableViewSupport)
 /**
  Sets table view sections
  @param tableSections An array of MUKDataSourceContentSection objects
  @returns The update to apply to your UITableView instance or nil if no update
  is generated
  */
-- (MUKDataSourceTableUpdate *)setTableSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)tableSections;
+- (MUKDataSourceTableUpdate *)setTableSections:(nullable NSArray<MUKDataSourceContentSection<ItemType> *> *)tableSections;
 /**
  @param sourceSections      Table sections before the update
  @param destinationSections Table sections after the update
  @returns New table update. Default implementation returns a valid
  MUKDataSourceTableUpdate instance.
  */
-- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)sourceSections toSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)destinationSections;
+- (MUKDataSourceTableUpdate *)newTableUpdateFromSections:(nullable NSArray<MUKDataSourceContentSection<ItemType> *> *)sourceSections toSections:(nullable NSArray<MUKDataSourceContentSection<ItemType> *> *)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to table view
  @discussion You override this method to register reusable views once. This method
@@ -81,42 +66,32 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
 - (void)registerReusableViewsForTableView:(UITableView *)tableView;
 @end
 
-/** 
- Implemented methods for UITableViewDataSource protocol
- */
+/// Implemented methods for UITableViewDataSource protocol
 @interface MUKDataSource (UITableViewDataSourceImplementedMethods) <UITableViewDataSource>
-/**
- @returns Number of items inside matching table section
- */
+/// @returns Number of items inside matching table section
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)idx;
 /**
  @warning You have to override this method: default implementation leads UITableView
  to crash
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-/**
- @returns Number of sections in self.sections
- */
+/// @returns Number of sections in self.sections
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
-/**
- @returns Header title for matching table section
- */
+/// @returns Header title for matching table section
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
-/**
- @returns Footer title for matching table section
- */
+/// @returns Footer title for matching table section
 - (nullable NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section;
 @end
 
 
-@interface MUKDataSource (CollectionViewSupport)
+@interface MUKDataSource<__covariant ItemType> (CollectionViewSupport)
 /**
  Sets collection view sections
  @param collectionSections An array of MUKDataSourceContentSection objects
  @returns The update to apply to your UICollectionView instance or nil if no update
  is generated
  */
-- (MUKDataSourceCollectionUpdate *)setCollectionSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)collectionSections;
+- (MUKDataSourceCollectionUpdate *)setCollectionSections:(nullable NSArray<MUKDataSourceContentSection<ItemType> *> *)collectionSections;
 /**
  You should override this method and provide your custom
  MUKDataSourceCollectionUpdate subclass in order to indicate sections to reload
@@ -125,7 +100,7 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
  @returns New collection update. Default implementation returns a valid
  MUKDataSourceCollectionUpdate instance.
  */
-- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(nullable NSArray<__kindof MUKDataSourceContentSection *> *)sourceSections toSections:(nullable __kindof NSArray<MUKDataSourceContentSection *> *)destinationSections;
+- (MUKDataSourceCollectionUpdate *)newCollectionUpdateFromSections:(nullable NSArray<MUKDataSourceContentSection<ItemType> *> *)sourceSections toSections:(nullable NSArray<MUKDataSourceContentSection<ItemType> *> *)destinationSections;
 /**
  Register reusable views (e.g.: cell, header/footer) to collection view
  @discussion You override this method to register reusable views once. This method
@@ -134,60 +109,54 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
 - (void)registerReusableViewsForCollectionView:(UICollectionView *)collectionView;
 @end
 
-/**
- Implemented methods for UICollectionViewDataSource protocol
- */
+/// Implemented methods for UICollectionViewDataSource protocol
 @interface MUKDataSource (UICollectionViewDataSourceImplementedMethods) <UICollectionViewDataSource>
-/**
- @returns Number of items inside matching collection section
- */
+/// @returns Number of items inside matching collection section
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
 /**
  @warning You have to override this method: default implementation leads 
  UICollectionView to crash
  */
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
-/**
- @returns Number of sections in self.sections
- */
+/// @returns Number of sections in self.sections
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
 @end
 
-@interface MUKDataSource (PageViewControllerSupport)
+@interface MUKDataSource<__covariant PageType> (PageViewControllerSupport)
 /**
  Data interpreted as paged content. 
  @warning This returns nil when you use indefinite number of pages (setting
  `self.content = MUKDataSourceIndefiniteContent`)
  */
-@property (nonatomic, copy, readonly, nullable) NSArray<MUKDataSourceContentPage> *pages;
+@property (nonatomic, copy, readonly, nullable) NSArray<PageType> *pages;
 /**
  @returns Page at given index or nil, if idx is out of bounds
  */
-- (nullable MUKDataSourceContentPage)pageAtIndex:(NSInteger)idx;
+- (nullable PageType)pageAtIndex:(NSInteger)idx;
 /**
  @param viewController The view controller which represents a page
  @returns Page represented by view controller. Default implementation returns nil.
  @warning You need to override this method
  */
-- (nullable MUKDataSourceContentPage)pageForViewController:(__kindof UIViewController *)viewController;
+- (nullable PageType)pageForViewController:(__kindof UIViewController *)viewController;
 /**
  @returns Page after given page.
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (nullable MUKDataSourceContentPage)pageFollowingPage:(MUKDataSourceContentPage)page;
+- (nullable PageType)pageFollowingPage:(PageType)page;
 /**
  @returns Page before given page.
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (nullable MUKDataSourceContentPage)pagePrecedingPage:(MUKDataSourceContentPage)page;
+- (nullable PageType)pagePrecedingPage:(PageType)page;
 /**
  @returns YES if page 1 precedes page 2
  @warning You need to override this method if you are using an indefinite number
  of pages.
  */
-- (BOOL)page:(MUKDataSourceContentPage)page1 precedesPage:(MUKDataSourceContentPage)page2;
+- (BOOL)page:(PageType)page1 precedesPage:(PageType)page2;
 /**
  @param page Page item
  @returns A new view controller which displays page at given index. Default
@@ -195,12 +164,10 @@ extern MUKDataSourceContent const MUKDataSourceIndefiniteContent;
  @warning You need to override this method to provide new view controllers on
  response of user gestures.
  */
-- (nullable __kindof UIViewController *)newViewControllerForPage:(MUKDataSourceContentPage)page;
+- (nullable __kindof UIViewController *)newViewControllerForPage:(PageType)page;
 @end
 
-/**
- Implemented methods for UIPageViewControllerDataSource protocol
- */
+/// Implemented methods for UIPageViewControllerDataSource protocol
 @interface MUKDataSource (UIPageViewControllerDataSourceImplementedMethods) <UIPageViewControllerDataSource>
 /**
  @returns The view controller returned by -newViewControllerForPage:atIndex:,
