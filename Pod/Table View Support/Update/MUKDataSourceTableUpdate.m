@@ -1,7 +1,9 @@
 #import "MUKDataSourceTableUpdate.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 
-static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
+#define DISABLE_MOVEMENTS_TO_DELETED_ROW    1
+
+static MUKDataSourceContentSectionMovement *SectionMovementWithDestinationIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
 {
     for (MUKDataSourceContentSectionMovement *movement in movements) {
         if (movement.destinationIndex == idx) {
@@ -12,10 +14,21 @@ static MUKDataSourceContentSectionMovement *MovementWithDestinationIndex(NSUInte
     return nil;
 }
 
-static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
+static MUKDataSourceContentSectionMovement *SectionMovementWithSourceIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
 {
     for (MUKDataSourceContentSectionMovement *movement in movements) {
         if (movement.sourceIndex == idx) {
+            return movement;
+        }
+    } // for
+    
+    return nil;
+}
+
+static MUKDataSourceContentSectionItemMovement *ItemMovementWithDestinationIndexPath(NSIndexPath *indexPath, NSSet<MUKDataSourceContentSectionItemMovement *> *movements)
+{
+    for (MUKDataSourceContentSectionItemMovement *movement in movements) {
+        if ([movement.destinationIndexPath isEqual:indexPath]) {
             return movement;
         }
     } // for
@@ -132,7 +145,7 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
 
 - (BOOL)needsToForceReloadData {
     for (NSIndexPath *indexPath in self.insertedItemIndexPaths) {
-        if (MovementWithDestinationIndex(indexPath.section, self.sectionMovements))
+        if (SectionMovementWithDestinationIndex(indexPath.section, self.sectionMovements))
         {
             // Throws "-[__NSArrayM insertObject:atIndex:]: object cannot be nil"
             // when you insert a row in a moved section
@@ -141,16 +154,28 @@ static MUKDataSourceContentSectionMovement *MovementWithSourceIndex(NSUInteger i
     } // for
     
     for (NSIndexPath *indexPath in self.deletedItemIndexPaths) {
-        if (MovementWithSourceIndex(indexPath.section, self.sectionMovements))
+        if (SectionMovementWithSourceIndex(indexPath.section, self.sectionMovements))
         {
             // Throws "-[__NSArrayM insertObject:atIndex:]: object cannot be nil"
             // when you delete a row in a moved section
             return YES;
         } // if
+#if DISABLE_MOVEMENTS_TO_DELETED_ROW
+        /*
+         That is an attempt to fix this crash: https://fabric.io/tcc/ios/apps/it.tcc.torinogranata/issues/57449961ffcdc04250526e2e/sessions/984b4a91953c4cd586327f4860a430ed
+         This crash is not deterministic: if you reproduce the exact scenario
+         inside the test app, table view does not throw any exception. So,
+         I try to remain conservative, hoping this will fix the problem.
+         */
+        else if (ItemMovementWithDestinationIndexPath(indexPath, self.itemMovements))
+        {
+            return YES;
+        }
+#endif
     } // for
     
     for (MUKDataSourceContentSectionItemMovement *itemMovement in self.itemMovements) {
-        if (MovementWithDestinationIndex(itemMovement.destinationIndexPath.section, self.sectionMovements))
+        if (SectionMovementWithDestinationIndex(itemMovement.destinationIndexPath.section, self.sectionMovements))
         {
             // Throws "-[__NSArrayM insertObject:atIndex:]: object cannot be nil"
             // when you move a row to a moved section

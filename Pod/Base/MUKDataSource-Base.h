@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern NSObject *const MUKDataSourceIndefiniteContent;
 
+/// Exception raised when data source some required data is missing
+extern NSString *const MUKDataSourceInconsistencyException;
+
 /**
  An object ready to hold and provide content data.
  The generic type is the type of contained item: it could be the type of items 
@@ -71,8 +74,8 @@ extern NSObject *const MUKDataSourceIndefiniteContent;
 /// @returns Number of items inside matching table section
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)idx;
 /**
- @warning You have to override this method: default implementation leads UITableView
- to crash
+ @warning You have to override this method: default implementation throws a
+ MUKDataSourceInconsistencyException
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 /// @returns Number of sections in self.sections
@@ -114,8 +117,8 @@ extern NSObject *const MUKDataSourceIndefiniteContent;
 /// @returns Number of items inside matching collection section
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
 /**
- @warning You have to override this method: default implementation leads 
- UICollectionView to crash
+ @warning You have to override this method: default implementation throws a
+ MUKDataSourceInconsistencyException
  */
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 /// @returns Number of sections in self.sections
@@ -136,7 +139,8 @@ extern NSObject *const MUKDataSourceIndefiniteContent;
 /**
  @param viewController The view controller which represents a page
  @returns Page represented by view controller. Default implementation returns nil.
- @warning You need to override this method
+ @warning You need to override this method. Default implementation throws a 
+ MUKDataSourceInconsistencyException.
  */
 - (nullable PageType)pageForViewController:(__kindof UIViewController *)viewController;
 /**
@@ -162,7 +166,8 @@ extern NSObject *const MUKDataSourceIndefiniteContent;
  @returns A new view controller which displays page at given index. Default
  implementation returns nil.
  @warning You need to override this method to provide new view controllers on
- response of user gestures.
+ response of user gestures. Default implementation throws a 
+ MUKDataSourceInconsistencyException.
  */
 - (nullable __kindof UIViewController *)newViewControllerForPage:(PageType)page;
 @end

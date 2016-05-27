@@ -1,6 +1,7 @@
 #import "MUKDataSource.h"
 
 NSObject *const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
+NSString *const MUKDataSourceInconsistencyException = @"MUKDataSourceInconsistencyException";
 
 @implementation MUKDataSource
 @end
@@ -183,6 +184,7 @@ NSObject *const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteConten
 
 - (id)pageForViewController:(__kindof UIViewController *)viewController
 {
+    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a page for view controller %@", viewController];
     return nil;
 }
 
@@ -211,6 +213,7 @@ NSObject *const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteConten
 }
 
 - (__kindof UIViewController *)newViewControllerForPage:(id)page {
+    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a view controller for page %@", page];
     return nil;
 }
 
@@ -254,6 +257,9 @@ NSObject *const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteConten
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    id const item = [self itemAtIndexPath:indexPath];
+    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a cell for item %@ at index path (%i, %i)", item, indexPath.section, indexPath.row];
+    
     return nil;
 }
 
@@ -316,6 +322,9 @@ NSObject *const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteConten
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    id const item = [self itemAtIndexPath:indexPath];
+    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a cell for item %@ at index path (%i, %i)", item, indexPath.section, indexPath.item];
+    
     return nil;
 }
 
