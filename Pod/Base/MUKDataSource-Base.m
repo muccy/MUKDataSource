@@ -258,7 +258,7 @@ NSString *const MUKDataSourceInconsistencyException = @"MUKDataSourceInconsisten
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id const item = [self itemAtIndexPath:indexPath];
-    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a cell for item %@ at index path (%i, %i)", item, indexPath.section, indexPath.row];
+    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a cell for item %@ at index path (%li, %li)", item, (long)indexPath.section, (long)indexPath.row];
     
     return nil;
 }
@@ -323,7 +323,7 @@ NSString *const MUKDataSourceInconsistencyException = @"MUKDataSourceInconsisten
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id const item = [self itemAtIndexPath:indexPath];
-    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a cell for item %@ at index path (%i, %i)", item, indexPath.section, indexPath.item];
+    [NSException raise:MUKDataSourceInconsistencyException format:@"Data source failed to provide a cell for item %@ at index path (%li, %li)", item, (long)indexPath.section, (long)indexPath.item];
     
     return nil;
 }
