@@ -1,8 +1,6 @@
 #import "MUKDataSourceTableUpdate.h"
 #import <MUKArrayDelta/MUKArrayDelta.h>
 
-#define DISABLE_MOVEMENTS_TO_DELETED_ROW    1
-
 static MUKDataSourceContentSectionMovement *SectionMovementWithDestinationIndex(NSUInteger idx, NSSet<MUKDataSourceContentSectionMovement *> *movements)
 {
     for (MUKDataSourceContentSectionMovement *movement in movements) {
@@ -160,18 +158,6 @@ static MUKDataSourceContentSectionItemMovement *ItemMovementWithDestinationIndex
             // when you delete a row in a moved section
             return YES;
         } // if
-#if DISABLE_MOVEMENTS_TO_DELETED_ROW
-        /*
-         That is an attempt to fix this crash: https://fabric.io/tcc/ios/apps/it.tcc.torinogranata/issues/57449961ffcdc04250526e2e/sessions/984b4a91953c4cd586327f4860a430ed
-         This crash is not deterministic: if you reproduce the exact scenario
-         inside the test app, table view does not throw any exception. So,
-         I try to remain conservative, hoping this will fix the problem.
-         */
-        else if (ItemMovementWithDestinationIndexPath(indexPath, self.itemMovements))
-        {
-            return YES;
-        }
-#endif
     } // for
     
     for (MUKDataSourceContentSectionItemMovement *itemMovement in self.itemMovements) {
