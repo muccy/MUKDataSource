@@ -23,17 +23,6 @@ static MUKDataSourceContentSectionMovement *SectionMovementWithSourceIndex(NSUIn
     return nil;
 }
 
-static MUKDataSourceContentSectionItemMovement *ItemMovementWithDestinationIndexPath(NSIndexPath *indexPath, NSSet<MUKDataSourceContentSectionItemMovement *> *movements)
-{
-    for (MUKDataSourceContentSectionItemMovement *movement in movements) {
-        if ([movement.destinationIndexPath isEqual:indexPath]) {
-            return movement;
-        }
-    } // for
-    
-    return nil;
-}
-
 @implementation MUKDataSourceTableUpdate
 
 - (instancetype)initWithSourceSections:(NSArray<MUKDataSourceContentSection *> *)sourceSections destinationSections:(NSArray<MUKDataSourceContentSection *> *)destinationSections
