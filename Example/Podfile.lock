@@ -1,9 +1,9 @@
 PODS:
   - MUKArrayDelta (1.2.0)
-  - MUKDataSource (2.5.7):
+  - MUKDataSource (2.5.11):
     - MUKArrayDelta (~> 1.2.0)
     - MUKSignal (~> 1.0.2)
-  - MUKSignal (1.0.2)
+  - MUKSignal (1.0.5)
 
 DEPENDENCIES:
   - MUKDataSource (from `../`)
@@ -14,9 +14,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   MUKArrayDelta: cbe29bd6da281e54b5bfb10132b2c6e81839e6b9
-  MUKDataSource: 34cc2da5bea8a2c20b33cce2821019c1b4f382d1
-  MUKSignal: 436b5e30e589df5ee2f3c9e1031644398c9865e0
+  MUKDataSource: edba5a4d6027bc3a235f358ec82f5a96275be01c
+  MUKSignal: 3b6f161c7337883d2d6570f0246ce460cb05373d
 
 PODFILE CHECKSUM: 66e6929c979ff119e664371538e3eff6e8821192
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.3.1

@@ -5,5 +5,6 @@
 #import <MUKSignal/MUKNotificationSignal.h>
 #import <MUKSignal/MUKKVOSignal.h>
 #import <MUKSignal/MUKControlActionSignal.h>
+#import <MUKSignal/MUKCompoundSignal.h>
 
 #import <MUKSignal/MUKSignalObservation.h>
