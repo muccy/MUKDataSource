@@ -7,7 +7,7 @@
 @property (nonatomic, weak) UIView *contentPlaceholderView;
 @property (nonatomic) UITableViewCellSeparatorStyle separatorStyleBeforeContentPlaceholderView;
 @property (nonatomic) BOOL suppressesSeparators;
-@property (nonatomic, nonnull, readonly) MUKSignalObservation<MUKKVOSignal *> *contentObservation;
+@property (nonatomic, nonnull, readonly) MUKSignalObservation<MUKSignal<MUKDataSourceContentChange *> *> *contentObservation;
 @end
 
 @implementation MUKTableViewControllerReserved
@@ -16,28 +16,38 @@
     self = [super init];
     if (self) {
         _owner = owner;
-        
-        MUKKVOSignal *const signal = [[MUKKVOSignal alloc] initWithObject:owner keyPath:@"dataSource.content"];
-        
+    }
+    
+    return self;
+}
+
+- (void)setupContentObservation {
+    MUKDataSource *const dataSource = self.owner.dataSource;
+    
+    if (dataSource) {
+        BOOL const observationWasRunning = self.contentObservation && ![self.contentObservation.signal isSuspended:self.contentObservation.token];
+
         __weak __typeof__(self) weakSelf = self;
-        _contentObservation = [MUKSignalObservation observationWithSignal:signal token:[signal subscribe:^(MUKKVOSignalChange * _Nonnull change)
+        _contentObservation = [MUKSignalObservation observationWithSignal:dataSource.contentChangedSignal token:[dataSource.contentChangedSignal subscribe:^(MUKDataSourceContentChange * _Nonnull change)
         {
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
             
-            if ([change.value isKindOfClass:[MUKDataSourceContentPlaceholder class]])
+            if ([change.content isKindOfClass:[MUKDataSourceContentPlaceholder class]])
             {
-                [strongSelf didSetContentPlaceholder:change.value];
+                [strongSelf didSetContentPlaceholder:change.content];
             }
             else {
                 [strongSelf didSetContentPlaceholder:nil];
             }
         }]];
         
-        // Wait for first -viewWillAppear:
-        [_contentObservation suspend];
+        if (!observationWasRunning) {
+            [self.contentObservation suspend];
+        }
     }
-    
-    return self;
+    else {
+        _contentObservation = nil;
+    }
 }
 
 /*
@@ -184,6 +194,7 @@
 - (void)setDataSource:(MUKDataSource *)newDataSource {
     if (newDataSource != _dataSource) {
         _dataSource = newDataSource;
+        [self.reserved setupContentObservation];
         
         if ([self isViewLoaded]) {
             [newDataSource registerReusableViewsForTableView:self.tableView];

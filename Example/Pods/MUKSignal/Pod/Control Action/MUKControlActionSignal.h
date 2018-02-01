@@ -3,7 +3,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// A signal sent when a control receives an action for an event
-@interface MUKControlActionSignal<__covariant T:UIControl *> : MUKSignal
+@interface MUKControlActionSignal<__covariant T:UIControl *> : MUKSignal<UIEvent *>
 /// Observed control
 @property (nonatomic, readonly, weak) T control;
 /// Observed control events

@@ -3,7 +3,47 @@
 NSObject *const MUKDataSourceIndefiniteContent = @"MUKDataSourceIndefiniteContent";
 NSString *const MUKDataSourceInconsistencyException = @"MUKDataSourceInconsistencyException";
 
+#pragma mark -
+
+@implementation MUKDataSourceContentChange
+
+- (instancetype)initWithOldContent:(nullable __kindof NSObject *)oldContent newContent:(nullable __kindof NSObject *)newContent
+{
+    self = [super init];
+    if (self) {
+        _oldContent = [oldContent copy];
+        _content = [newContent copy];
+    }
+    
+    return self;
+}
+
+@end
+
+#pragma mark -
+
 @implementation MUKDataSource
+@synthesize contentChangedSignal = _contentChangedSignal;
+
+#pragma mark Accessors
+
+- (MUKSignal *)contentChangedSignal {
+    if (!_contentChangedSignal) {
+        _contentChangedSignal = [[MUKSignal alloc] init];
+    }
+    
+    return _contentChangedSignal;
+}
+
+- (void)setContent:(__kindof NSObject *)content {
+    if (content != _content) {
+        id const oldContent = _content;
+        _content = [content copy];
+        MUKDataSourceContentChange *const change = [[MUKDataSourceContentChange alloc] initWithOldContent:oldContent newContent:content];
+        [_contentChangedSignal dispatch:change]; // dispatch only if someone already subscribed
+    }
+}
+
 @end
 
 #pragma mark -
