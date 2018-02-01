@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MUKNotificationSignal : MUKSignal
+@interface MUKNotificationSignal : MUKSignal<NSNotification *>
 /// Observed notification name
 @property (nonatomic, readonly, nullable, copy) NSString *name;
 /// Observed notification object

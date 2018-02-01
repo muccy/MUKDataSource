@@ -62,6 +62,10 @@ static void *KVOContext = &KVOContext;
     return self;
 }
 
+- (BOOL)isObservingObject:(__kindof NSObject *)object {
+    return self.objectToUnobserve == object;
+}
+
 #pragma mark - Overrides
 
 - (instancetype)init {

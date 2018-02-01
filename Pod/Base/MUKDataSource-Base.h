@@ -2,6 +2,7 @@
 #import <MUKDataSource/MUKDataSourceContentSection.h>
 #import <MUKDataSource/MUKDataSourceTableUpdate.h>
 #import <MUKDataSource/MUKDataSourceCollectionUpdate.h>
+#import <MUKSignal/MUKSignal.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,6 +15,13 @@ extern NSObject *const MUKDataSourceIndefiniteContent;
 /// Exception raised when data source some required data is missing
 extern NSString *const MUKDataSourceInconsistencyException;
 
+/// Payload of contentChangedSignal
+@interface MUKDataSourceContentChange: NSObject
+@property (nonatomic, readonly, copy, nullable) __kindof NSObject *oldContent, *content;
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+
 /**
  An object ready to hold and provide content data.
  The generic type is the type of contained item: it could be the type of items 
@@ -22,6 +30,8 @@ extern NSString *const MUKDataSourceInconsistencyException;
 @interface MUKDataSource<__covariant ObjectType> : NSObject
 /// Content data
 @property (nonatomic, copy, nullable) __kindof NSObject *content;
+/// Signal fired when content changes
+@property (nonatomic, readonly) MUKSignal<MUKDataSourceContentChange *> *contentChangedSignal;
 @end
 
 

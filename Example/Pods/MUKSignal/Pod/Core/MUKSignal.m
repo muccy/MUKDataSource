@@ -50,6 +50,28 @@ static NSString *const kNullPayload = @"MUKSignal-NullPayload";
     return token;
 }
 
+- (id)subscribeWithTarget:(__weak id)target action:(SEL)action {
+    return [self subscribe:^(id  _Nullable payload) {
+        __strong __typeof__(target) strongTarget = target;
+        
+        // Prevent leaks warning by using invocation
+        // http://stackoverflow.com/a/28276187/224629
+        NSMethodSignature *const signature = [strongTarget methodSignatureForSelector:action];
+        
+        if (signature) {
+            NSInvocation *const invocation = [NSInvocation invocationWithMethodSignature:signature];
+            invocation.target = strongTarget;
+            invocation.selector = action;
+            
+            if (signature.numberOfArguments > 2) {
+                [invocation setArgument:&payload atIndex:2];
+            }
+            
+            [invocation invoke];
+        }
+    }];
+}
+
 - (void)unsubscribe:(id)token {
     [_subscriptions removeObjectForKey:token];
     [_suspendedDispatchPayloads removeObjectForKey:token];
