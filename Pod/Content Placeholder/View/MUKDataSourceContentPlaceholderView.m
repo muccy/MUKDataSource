@@ -86,8 +86,16 @@ static void CommonInit(MUKDataSourceContentPlaceholderView *me) {
 
 - (void)insertAllSubviews {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor darkTextColor];
+
+    UIColor *textColor;
+    if (@available(iOS 13, *)) {
+        textColor = UIColor.labelColor;
+    }
+    else {
+        textColor = UIColor.darkGrayColor;
+    }
+
+    label.textColor = textColor;
     label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     label.numberOfLines = 1;
     label.textAlignment = NSTextAlignmentCenter;
@@ -96,7 +104,15 @@ static void CommonInit(MUKDataSourceContentPlaceholderView *me) {
     
     label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor lightGrayColor];
+    
+    if (@available(iOS 13, *)) {
+        textColor = UIColor.secondaryLabelColor;
+    }
+    else {
+        textColor = UIColor.lightGrayColor;
+    }
+    
+    label.textColor = textColor;
     label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     label.numberOfLines = 0;
     label.textAlignment = NSTextAlignmentCenter;

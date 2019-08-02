@@ -115,6 +115,19 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    UIColor *backgroundColor;
+    if (@available(iOS 13, *)) {
+        backgroundColor = UIColor.systemBackgroundColor;
+    }
+    else {
+        backgroundColor = UIColor.whiteColor;
+    }
+    self.view.backgroundColor = backgroundColor;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.reserved.contentObservation resume];

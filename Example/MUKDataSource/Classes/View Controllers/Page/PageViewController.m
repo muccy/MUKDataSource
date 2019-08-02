@@ -20,7 +20,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    UIColor *backgroundColor;
+    if (@available(iOS 13, *)) {
+        backgroundColor = UIColor.systemBackgroundColor;
+    }
+    else {
+        backgroundColor = UIColor.whiteColor;
+    }
+    self.view.backgroundColor = backgroundColor;
     self.pageDataSource = [[PageDataSource alloc] init];
 }
 
