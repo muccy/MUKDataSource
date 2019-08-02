@@ -146,7 +146,7 @@
     else {
         backgroundColor = UIColor.whiteColor;
     }
-    self.view.backgroundColor = backgroundColor;
+    self.collectionView.backgroundColor = backgroundColor;
     
     if (self.dataSource) {
         [self.dataSource registerReusableViewsForCollectionView:self.collectionView];

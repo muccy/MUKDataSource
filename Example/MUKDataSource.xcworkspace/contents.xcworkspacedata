@@ -122,10 +122,10 @@
             location = "group:View"
             name = "View">
             <FileRef
-               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Content Placeholder/View/MUKDataSourceContentPlaceholderView.h">
+               location = "group:MUKDataSourceContentPlaceholderView.h">
             </FileRef>
             <FileRef
-               location = "group:/Users/muccy/Developer/Cocoa/Git/MUKit/GitHub/MUKDataSource/Pod/Content Placeholder/View/MUKDataSourceContentPlaceholderView.m">
+               location = "group:MUKDataSourceContentPlaceholderView.m">
             </FileRef>
          </Group>
          <FileRef
