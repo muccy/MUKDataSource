@@ -139,6 +139,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIColor *backgroundColor;
+    if (@available(iOS 13, *)) {
+        backgroundColor = UIColor.systemBackgroundColor;
+    }
+    else {
+        backgroundColor = UIColor.whiteColor;
+    }
+    self.view.backgroundColor = backgroundColor;
+    
     if (self.dataSource) {
         [self.dataSource registerReusableViewsForCollectionView:self.collectionView];
         self.collectionView.dataSource = self.dataSource;
