@@ -172,7 +172,7 @@
                 backgroundColor = UIColor.systemBackgroundColor;
                 break;
         }
-        self.view.backgroundColor = UIColor.systemBackgroundColor;
+        self.view.backgroundColor = backgroundColor;
     }
     else {
         // leave old behaviour untouched
