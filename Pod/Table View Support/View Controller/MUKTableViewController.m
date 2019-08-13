@@ -160,14 +160,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIColor *backgroundColor;
     if (@available(iOS 13, *)) {
-        backgroundColor = UIColor.systemBackgroundColor;
+        UIColor *backgroundColor;
+        switch (self.tableView.style) {
+            case UITableViewStyleGrouped:
+            case UITableViewStyleInsetGrouped:
+                backgroundColor = UIColor.systemGroupedBackgroundColor;
+                break;
+                
+            default:
+                backgroundColor = UIColor.systemBackgroundColor;
+                break;
+        }
+        self.view.backgroundColor = UIColor.systemBackgroundColor;
     }
     else {
-        backgroundColor = UIColor.whiteColor;
+        // leave old behaviour untouched
     }
-    self.view.backgroundColor = backgroundColor;
     
     if (self.dataSource) {
         [self.dataSource registerReusableViewsForTableView:self.tableView];
