@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
   s.compiler_flags  = '-Wdocumentation'
   
   s.dependency  'MUKArrayDelta', '~> 1.2.0'
-  s.dependency  'MUKSignal', '~> 1.0.2'
+  s.dependency  'MUKSignal', '~> 1.1'
 end
